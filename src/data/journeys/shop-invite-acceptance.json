@@ -1,0 +1,221 @@
+{
+  "slug": "shop-invite-acceptance",
+  "title": "Shop Invite → Accept (or Register & Auto-Accept)",
+  "persona": "shop-member",
+  "description": "A user receives a shop invite email, lands on the invite page, and either accepts directly (if authenticated) or registers a new account with auto-accept.",
+  "relatedIssues": [250, 251, 252, 253, 254, 255],
+  "flows": [
+    {
+      "id": "invite-sent",
+      "title": "Owner Sends Invite",
+      "trigger": "Shop owner clicks 'Invite' in Shop Members section",
+      "steps": [
+        {
+          "id": "open-modal",
+          "label": "Owner clicks Invite button",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/shops/components/invite-member-modal/index.tsx"
+        },
+        {
+          "id": "enter-details",
+          "label": "Enter recipient email + select role",
+          "layer": "client",
+          "status": "built",
+          "notes": "RoleSelect dropdown filters out Owner role. Validates via validateInviteInput()."
+        },
+        {
+          "id": "create-invite",
+          "label": "POST /api/shops/[id]/invites",
+          "layer": "server",
+          "status": "built",
+          "route": "POST /api/shops/[id]/invites",
+          "codeRef": "src/app/api/shops/[id]/invites/route.ts",
+          "notes": "Requires requireShopPermission('members', 'full'). Enforces 5-member cap (members + pending invites).",
+          "errorCases": [
+            { "condition": "Members + pending invites >= 5", "result": "MEMBER_LIMIT_REACHED", "httpStatus": 409 },
+            { "condition": "Email already a shop member", "result": "ALREADY_MEMBER", "httpStatus": 409 },
+            { "condition": "Duplicate pending invite for same email", "result": "DUPLICATE_INVITE", "httpStatus": 409 }
+          ]
+        },
+        {
+          "id": "insert-row",
+          "label": "Insert shop_invites row with 7-day expiry token",
+          "layer": "database",
+          "status": "built"
+        },
+        {
+          "id": "send-email",
+          "label": "Send invite email via Resend with /invite/{token} link",
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/features/email/templates/shop-invite.tsx",
+          "notes": "Email failure is logged but does NOT block the 201 response. Invite is still created."
+        }
+      ]
+    },
+    {
+      "id": "accept-authenticated",
+      "title": "Accept Invite (Already Logged In)",
+      "trigger": "Authenticated user clicks invite link from email",
+      "steps": [
+        {
+          "id": "land-on-page",
+          "label": "User lands on /invite/[token]",
+          "layer": "client",
+          "status": "built",
+          "route": "/invite/[token]",
+          "codeRef": "src/app/(frontend)/invite/[token]/page.tsx",
+          "notes": "Server component fetches invite data via admin client. Invalid token → 404."
+        },
+        {
+          "id": "check-auth",
+          "label": "InviteAccept checks useAuth() session",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/shops/components/invite-accept/index.tsx"
+        },
+        {
+          "id": "show-accept-button",
+          "label": "Show invite details + 'Accept Invitation' button",
+          "layer": "client",
+          "status": "built",
+          "notes": "Shows shop name, avatar, inviter name, assigned role."
+        },
+        {
+          "id": "click-accept",
+          "label": "User clicks Accept Invitation",
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "accept-api",
+          "label": "POST /api/invites/[token]/accept",
+          "layer": "server",
+          "status": "built",
+          "route": "POST /api/invites/[token]/accept",
+          "codeRef": "src/app/api/invites/[token]/accept/route.ts",
+          "notes": "Uses cookie session auth (no X-Nessi-Context header). Looks up invite by token via admin client.",
+          "errorCases": [
+            { "condition": "Already a shop member", "result": "ALREADY_MEMBER", "httpStatus": 409 },
+            { "condition": "Shop at member cap", "result": "MEMBER_LIMIT_REACHED", "httpStatus": 409 },
+            { "condition": "Member belongs to 5 shops already", "result": "SHOP_LIMIT_REACHED", "httpStatus": 409 },
+            { "condition": "Invite expired", "result": "INVITE_EXPIRED", "httpStatus": 400 },
+            { "condition": "Invite revoked", "result": "INVITE_REVOKED", "httpStatus": 400 }
+          ]
+        },
+        {
+          "id": "insert-membership",
+          "label": "Insert shop_members row with invite's role_id",
+          "layer": "database",
+          "status": "built"
+        },
+        {
+          "id": "mark-accepted",
+          "label": "Update shop_invites status = 'accepted'",
+          "layer": "database",
+          "status": "built"
+        },
+        {
+          "id": "redirect-success",
+          "label": "Redirect to /dashboard + success toast",
+          "layer": "client",
+          "status": "built",
+          "notes": "Member now sees shop in navbar context switcher dropdown."
+        }
+      ],
+      "branches": [
+        {
+          "afterStep": "land-on-page",
+          "condition": "Invite still valid?",
+          "paths": [
+            { "label": "Pending + not expired", "goTo": "check-auth" },
+            { "label": "Expired", "goTo": "END" },
+            { "label": "Revoked", "goTo": "END" },
+            { "label": "Already accepted", "goTo": "END" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "accept-new-user",
+      "title": "Register & Auto-Accept (New User)",
+      "trigger": "Unauthenticated new user clicks invite link, then signs up",
+      "steps": [
+        {
+          "id": "land-unauthenticated",
+          "label": "User lands on /invite/[token] without session",
+          "layer": "client",
+          "status": "built",
+          "route": "/invite/[token]"
+        },
+        {
+          "id": "show-auth-options",
+          "label": "Show 'Sign Up' and 'Sign In' buttons (no Accept yet)",
+          "layer": "client",
+          "status": "built",
+          "notes": "Sign Up navigates to ?register=true&invite={token}"
+        },
+        {
+          "id": "click-signup",
+          "label": "User clicks 'Sign Up'",
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "navbar-detects-params",
+          "label": "Navbar useEffect detects ?register=true&invite={token}",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/components/navigation/navbar/index.tsx",
+          "notes": "Stores inviteToken in component state, opens register modal, cleans URL params."
+        },
+        {
+          "id": "register",
+          "label": "User enters email + password → POST /api/auth/register",
+          "layer": "server",
+          "status": "built",
+          "route": "POST /api/auth/register"
+        },
+        {
+          "id": "otp-verify",
+          "label": "User enters 6-digit OTP code → verifyOtp(type='signup')",
+          "layer": "client",
+          "status": "built",
+          "notes": "inviteToken is threaded: Navbar → RegisterForm → OtpInput via props."
+        },
+        {
+          "id": "session-established",
+          "label": "Session established via cookies",
+          "layer": "server",
+          "status": "built"
+        },
+        {
+          "id": "auto-accept",
+          "label": "acceptShopInvite(token) called automatically",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/shops/services/shop-invites.ts",
+          "notes": "Called inside OtpInput after verifyOtp succeeds. Failure is NEVER blocking — account creation always completes. Error → toast suggesting manual acceptance."
+        },
+        {
+          "id": "auto-accept-success",
+          "label": "Toast: 'You've joined {shopName}!' + redirect to /dashboard",
+          "layer": "client",
+          "status": "built",
+          "notes": "onInviteAccepted callback fires in Navbar, shows toast, navigates."
+        }
+      ],
+      "branches": [
+        {
+          "afterStep": "auto-accept",
+          "condition": "Accept result?",
+          "paths": [
+            { "label": "Success", "goTo": "auto-accept-success" },
+            { "label": "Failure", "goTo": "END" }
+          ]
+        }
+      ]
+    }
+  ]
+}

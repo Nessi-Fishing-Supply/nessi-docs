@@ -1,0 +1,93 @@
+////////////////////
+/// Colors — Design System v1
+////////////////////
+:root {
+  // Primary (Green)
+  --color-primary-100: #d6e9e4;
+  --color-primary-200: #9ecabb;
+  --color-primary-300: #6bad99;
+  --color-primary-400: #3d8c75;
+  --color-primary-500: #1e4a40;
+  --color-primary-600: #163831;
+  --color-primary-700: #0e2822;
+  --color-primary-800: #081812;
+  --color-primary-900: #030c09;
+
+  // Accent (Orange)
+  --color-accent-100: #fbe9d9;
+  --color-accent-200: #f5c8a0;
+  --color-accent-300: #eea86b;
+  --color-accent-400: #e89048;
+  --color-accent-500: #e27739;
+  --color-accent-600: #cc6830;
+  --color-accent-700: #b55a28;
+  --color-accent-800: #8a4018;
+  --color-accent-900: #5c2a0c;
+
+  // Surface (Sand)
+  --color-surface-100: #faf7f2;
+  --color-surface-200: #f5eddf;
+  --color-surface-300: #ede0cb;
+  --color-surface-400: #e3d1b4;
+  --color-surface-500: #d9ccba;
+  --color-surface-600: #c4b49e;
+  --color-surface-700: #a89278;
+  --color-surface-800: #7a6e62;
+  --color-surface-900: #4a3f35;
+
+  // Destructive (Maroon)
+  --color-destructive-100: #f5d0d0;
+  --color-destructive-200: #e8a0a0;
+  --color-destructive-300: #d47070;
+  --color-destructive-400: #b84040;
+  --color-destructive-500: #681a19;
+  --color-destructive-600: #551414;
+  --color-destructive-700: #410f0f;
+  --color-destructive-800: #2a0909;
+  --color-destructive-900: #150404;
+
+  // Neutral (Text & UI)
+  --color-neutral-100: #f8f8f7;
+  --color-neutral-200: #efefed;
+  --color-neutral-300: #e0dfdc;
+  --color-neutral-400: #c8c6c1;
+  --color-neutral-500: #a09d97;
+  --color-neutral-600: #78756f;
+  --color-neutral-700: #524f4a;
+  --color-neutral-800: #2e2c28;
+  --color-neutral-900: #1c1c1c;
+
+  // White
+  --color-white: #fff;
+
+  // Success
+  --color-success-100: #d4edda;
+  --color-success-200: #a8d9bc;
+  --color-success-500: #1a6b43;
+  --color-success-700: #0f4028;
+
+  // Warning
+  --color-warning-100: #fef3dc;
+  --color-warning-200: #f5d08a;
+  --color-warning-500: #b86e0a;
+  --color-warning-700: #7a4706;
+
+  // Error
+  --color-error-100: #fde8e8;
+  --color-error-200: #f5b5b5;
+  --color-error-500: #b91c1c;
+  --color-error-700: #7a1010;
+
+  // Info
+  --color-info-100: #d6e9e4;
+  --color-info-200: #9ecabb;
+  --color-info-500: #1e4a40;
+  --color-info-700: #0e2822;
+
+  // Surfaces
+  --surface-page: var(--color-surface-300);
+  --surface-raised: var(--color-surface-200);
+  --surface-overlay: var(--color-surface-100);
+  --surface-sunken: var(--color-surface-400);
+  --surface-nav: var(--color-primary-500);
+}

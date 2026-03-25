@@ -1,0 +1,148 @@
+@use '@/styles/mixins/breakpoints' as *;
+
+.flow {
+  background: var(--surface-raised);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-500);
+  padding: var(--spacing-500);
+  margin-bottom: var(--spacing-500);
+
+  @include breakpoint(md) {
+    padding: var(--spacing-600);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-400);
+  margin-bottom: var(--spacing-500);
+  padding-bottom: var(--spacing-400);
+  border-bottom: 1px solid var(--color-neutral-300);
+}
+
+.headerLeft {
+  display: flex;
+  gap: var(--spacing-300);
+  align-items: flex-start;
+}
+
+.flowNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-circle);
+  background: var(--color-primary-500);
+  color: var(--color-white);
+  font-size: var(--font-size-600);
+  font-weight: var(--font-weight-600);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: var(--font-size-900);
+  font-weight: var(--font-weight-600);
+  color: var(--color-neutral-800);
+  margin: 0;
+  line-height: var(--line-height-200);
+}
+
+.trigger {
+  font-size: var(--font-size-600);
+  color: var(--color-neutral-500);
+  margin: var(--spacing-50) 0 0;
+  font-style: italic;
+}
+
+.layerSummary {
+  display: flex;
+  gap: var(--spacing-100);
+  flex-shrink: 0;
+  padding-top: var(--spacing-100);
+}
+
+.layerDot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-circle);
+
+  &[data-layer='client'] {
+    background: var(--color-primary-400);
+  }
+
+  &[data-layer='server'] {
+    background: var(--color-accent-500);
+  }
+
+  &[data-layer='database'] {
+    background: var(--color-info-500);
+  }
+
+  &[data-layer='background'] {
+    background: var(--color-warning-500);
+  }
+
+  &[data-layer='email'] {
+    background: var(--color-destructive-400);
+  }
+
+  &[data-layer='external'] {
+    background: var(--color-neutral-600);
+  }
+}
+
+// Steps timeline
+.steps {
+  display: flex;
+  flex-direction: column;
+}
+
+// Branches
+.branches {
+  margin-top: var(--spacing-400);
+  padding-top: var(--spacing-400);
+  border-top: 1px dashed var(--color-neutral-300);
+}
+
+.branch {
+  margin-bottom: var(--spacing-300);
+}
+
+.branchCondition {
+  font-size: var(--font-size-600);
+  font-weight: var(--font-weight-600);
+  color: var(--color-neutral-700);
+  margin-bottom: var(--spacing-200);
+  padding: var(--spacing-200) var(--spacing-300);
+  background: var(--color-neutral-100);
+  border-radius: var(--radius-300);
+  display: inline-block;
+}
+
+.branchPaths {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+  padding-left: var(--spacing-400);
+}
+
+.branchPath {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  font-size: var(--font-size-600);
+}
+
+.branchLabel {
+  color: var(--color-neutral-700);
+  font-weight: var(--font-weight-500);
+}
+
+.branchArrow {
+  color: var(--color-neutral-500);
+  font-family: var(--font-family-mono, monospace);
+  font-size: var(--font-size-500);
+}

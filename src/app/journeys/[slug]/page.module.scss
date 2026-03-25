@@ -1,0 +1,194 @@
+@use '@/styles/mixins/breakpoints' as *;
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--spacing-500) var(--spacing-page-sm);
+
+  @include breakpoint(md) {
+    padding: var(--spacing-700) var(--spacing-page-md);
+  }
+
+  @include breakpoint(lg) {
+    padding: var(--spacing-900) var(--spacing-page-lg);
+  }
+}
+
+// Breadcrumb
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+  margin-bottom: var(--spacing-600);
+  font-size: var(--font-size-600);
+}
+
+.breadcrumbLink {
+  color: var(--color-primary-500);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.breadcrumbSep {
+  color: var(--color-neutral-400);
+}
+
+.breadcrumbCurrent {
+  color: var(--color-neutral-600);
+}
+
+// Header
+.header {
+  margin-bottom: var(--spacing-600);
+}
+
+.personaBadge {
+  display: inline-block;
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-600);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-400);
+  color: var(--color-primary-600);
+  background: var(--color-primary-100);
+  padding: var(--spacing-50) var(--spacing-300);
+  border-radius: var(--radius-800);
+  margin-bottom: var(--spacing-300);
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: var(--font-size-1400);
+  font-weight: var(--font-weight-400);
+  color: var(--color-neutral-900);
+  margin: 0 0 var(--spacing-200);
+  line-height: var(--line-height-100);
+}
+
+.description {
+  font-size: var(--font-size-800);
+  color: var(--color-neutral-600);
+  margin: 0;
+  line-height: var(--line-height-400);
+}
+
+.issues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-100);
+  margin-top: var(--spacing-300);
+}
+
+.issueBadge {
+  font-size: var(--font-size-400);
+  font-family: var(--font-family-mono, monospace);
+  color: var(--color-neutral-500);
+  background: var(--color-neutral-100);
+  padding: var(--spacing-50) var(--spacing-200);
+  border-radius: var(--radius-200);
+}
+
+// Summary section
+.summary {
+  background: var(--surface-raised);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-500);
+  padding: var(--spacing-500);
+  margin-bottom: var(--spacing-700);
+
+  @include breakpoint(md) {
+    padding: var(--spacing-600);
+  }
+}
+
+.summaryGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-400);
+  margin-bottom: var(--spacing-400);
+}
+
+.summaryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+  flex: 1;
+}
+
+.summaryValue {
+  font-size: var(--font-size-1100);
+  font-weight: var(--font-weight-700);
+  color: var(--color-primary-500);
+  line-height: var(--line-height-100);
+}
+
+.summaryLabel {
+  font-size: var(--font-size-400);
+  color: var(--color-neutral-600);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-400);
+  margin-top: var(--spacing-50);
+}
+
+.layerLegend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-200);
+  padding-top: var(--spacing-400);
+  border-top: 1px solid var(--color-neutral-300);
+
+  @include breakpoint(md) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-300);
+  }
+}
+
+.legendTitle {
+  font-size: var(--font-size-600);
+  color: var(--color-neutral-600);
+  font-weight: var(--font-weight-500);
+  white-space: nowrap;
+}
+
+.legendBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-200);
+}
+
+.plannedNotice {
+  margin-top: var(--spacing-300);
+  font-size: var(--font-size-600);
+  color: var(--color-warning-700);
+  background: var(--color-warning-100);
+  padding: var(--spacing-200) var(--spacing-300);
+  border-radius: var(--radius-300);
+}
+
+// Flows
+.flows {
+  display: flex;
+  flex-direction: column;
+}
+
+// Footer
+.footer {
+  margin-top: var(--spacing-800);
+  padding-top: var(--spacing-500);
+  border-top: 1px solid var(--color-neutral-300);
+}
+
+.backLink {
+  font-size: var(--font-size-700);
+  color: var(--color-primary-500);
+  text-decoration: none;
+  font-weight: var(--font-weight-500);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

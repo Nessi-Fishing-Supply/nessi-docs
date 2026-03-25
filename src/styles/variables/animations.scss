@@ -1,0 +1,44 @@
+////////////////////
+/// Motion — Design System v1
+////////////////////
+:root {
+  // Durations
+  --duration-100: 100ms;
+  --duration-200: 180ms;
+  --duration-300: 300ms;
+  --duration-400: 450ms;
+  --duration-500: 600ms;
+
+  // Easings
+  --easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-in: cubic-bezier(0.4, 0, 1, 1);
+  --easing-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --easing-linear: linear;
+
+  // Composite aliases (convenience)
+  --transition-basic: all var(--duration-200) var(--easing-out);
+  --transition-smooth: all var(--duration-300) var(--easing-out);
+  --transition-bounce: all var(--duration-400) var(--easing-spring);
+  --transition-color:
+    color var(--duration-200) var(--easing-out),
+    background-color var(--duration-200) var(--easing-out),
+    border-color var(--duration-200) var(--easing-out);
+}
+
+////////////////////
+/// Keyframe Animations
+////////////////////
+
+/* Progress bar fill — width grows from 0 */
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+}
+
+/* Spinner rotation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
