@@ -1,0 +1,83 @@
+<h2>App Shell Layout</h2>
+<p class="subtitle">The persistent layout that wraps every page. This matches what we prototyped in the playground.</p>
+
+<div class="cards">
+  <div class="card" data-choice="layout-a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#090b0e;border-radius:8px;overflow:hidden;font-family:system-ui;font-size:11px;color:#9a9790;border:1px solid rgba(255,255,255,.1)">
+        <!-- Topbar -->
+        <div style="display:flex;align-items:center;padding:8px 12px;background:#0f1319;border-bottom:1px solid rgba(255,255,255,.06);gap:8px">
+          <div style="width:18px;height:18px;background:linear-gradient(135deg,#3d8c75,#163831);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#090b0e">N</div>
+          <span style="font-size:13px;color:#e8e6e1;font-weight:600">Nessi</span>
+          <span style="font-size:8px;color:#4a4840;letter-spacing:.08em;text-transform:uppercase">DOCS</span>
+          <span style="margin-left:auto;font-size:9px;font-family:monospace;color:#4a4840">docs.nessifishingsupply.com</span>
+        </div>
+        <!-- Body -->
+        <div style="display:flex;height:180px">
+          <!-- Sidebar -->
+          <div style="width:140px;background:#0f1319;border-right:1px solid rgba(255,255,255,.06);padding:8px 6px;flex-shrink:0">
+            <div style="padding:4px 6px;margin-bottom:2px;border-radius:4px;background:#161c26;color:#e8e6e1;font-size:9px;border-left:2px solid #3d8c75">&#9701; Journeys</div>
+            <div style="padding:4px 6px;margin-bottom:2px;font-size:9px;color:#6a6860">&#9651; API Map</div>
+            <div style="padding:4px 6px;margin-bottom:2px;font-size:9px;color:#6a6860">&#9632; Data Model</div>
+            <div style="padding:4px 6px;margin-bottom:2px;font-size:9px;color:#6a6860">&#8635; Lifecycles</div>
+            <div style="padding:4px 6px;margin-bottom:2px;font-size:9px;color:#6a6860">&#9678; Coverage</div>
+            <div style="height:1px;background:rgba(255,255,255,.06);margin:6px 4px"></div>
+            <div style="font-size:7px;color:#4a4840;padding:2px 6px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px">JOURNEYS</div>
+            <div style="padding:3px 6px;border-radius:3px;background:#161c26;font-size:8px;color:#e8e6e1;border-left:2px solid #3d8c75;margin-bottom:1px">Signup (OTP)</div>
+            <div style="padding:3px 6px;font-size:8px;color:#6a6860;margin-bottom:1px">Guest Cart</div>
+            <div style="padding:3px 6px;font-size:8px;color:#6a6860;margin-bottom:1px">Shop Invite</div>
+            <div style="padding:3px 6px;font-size:8px;color:#6a6860">Onboarding</div>
+          </div>
+          <!-- Canvas -->
+          <div style="flex:1;position:relative;background:radial-gradient(ellipse 60% 50% at 20% 20%,rgba(61,140,117,.04),transparent)">
+            <!-- Fake nodes -->
+            <div style="position:absolute;left:20px;top:40px;width:80px;height:26px;border-radius:13px;background:rgba(61,140,117,.12);border:1px solid rgba(61,140,117,.3);display:flex;align-items:center;padding:0 8px;font-size:7px;color:#e8e6e1">&#9654; Entry</div>
+            <div style="position:absolute;left:120px;top:40px;width:80px;height:26px;border-radius:6px;background:rgba(61,140,117,.1);border:1px solid rgba(61,140,117,.25);font-size:7px;color:#e8e6e1;display:flex;align-items:center;padding:0 8px;border-left:2px solid #3d8c75">Step 1</div>
+            <div style="position:absolute;left:220px;top:40px;width:80px;height:26px;border-radius:6px;background:rgba(226,119,57,.1);border:1px solid rgba(226,119,57,.25);font-size:7px;color:#e8e6e1;display:flex;align-items:center;padding:0 8px;border-left:2px solid #e27739">Step 2</div>
+            <div style="position:absolute;left:320px;top:30px;width:22px;height:22px;transform:rotate(45deg);background:rgba(232,144,72,.12);border:1px solid rgba(232,144,72,.35)"></div>
+            <div style="position:absolute;left:360px;top:20px;width:70px;height:20px;border-radius:10px;background:rgba(232,144,72,.08);border:1px solid rgba(232,144,72,.2);font-size:6px;color:#e8e6e1;display:flex;align-items:center;justify-content:center">Option A</div>
+            <div style="position:absolute;left:360px;top:55px;width:70px;height:20px;border-radius:10px;background:rgba(232,144,72,.08);border:1px solid rgba(232,144,72,.2);font-size:6px;color:#6a6860;display:flex;align-items:center;justify-content:center">Option B</div>
+            <!-- Zoom controls -->
+            <div style="position:absolute;bottom:6px;left:6px;display:flex;background:#0f1319;border:1px solid rgba(255,255,255,.09);border-radius:4px;overflow:hidden">
+              <div style="width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#9a9790">-</div>
+              <div style="width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:7px;color:#9a9790;border-left:1px solid rgba(255,255,255,.06)">o</div>
+              <div style="width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#9a9790;border-left:1px solid rgba(255,255,255,.06)">+</div>
+            </div>
+          </div>
+          <!-- Detail Panel -->
+          <div style="width:160px;background:#0f1319;border-left:1px solid rgba(255,255,255,.06);padding:8px;flex-shrink:0">
+            <div style="font-size:11px;color:#e8e6e1;font-weight:600;margin-bottom:4px">Step 2</div>
+            <div style="display:flex;gap:3px;margin-bottom:6px">
+              <span style="font-size:7px;padding:2px 5px;border-radius:8px;background:rgba(226,119,57,.12);color:#e27739">Server</span>
+              <span style="font-size:7px;padding:2px 5px;border-radius:8px;background:rgba(61,140,117,.12);color:#3d8c75">Built</span>
+            </div>
+            <div style="font-size:7px;color:#4a4840;letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">WHY THIS EXISTS</div>
+            <div style="font-size:8px;color:#9a9790;line-height:1.4;padding:4px 6px;background:rgba(61,140,117,.05);border-left:2px solid #3d8c75;border-radius:3px">Admin client creates user to bypass email confirm flow...</div>
+            <div style="font-size:7px;color:#4a4840;letter-spacing:.06em;text-transform:uppercase;margin:6px 0 3px">API ROUTE</div>
+            <div style="font-size:8px;color:#e27739;font-family:monospace;background:#090b0e;padding:3px 5px;border-radius:3px;border:1px solid rgba(255,255,255,.06)">POST /api/auth/register</div>
+            <div style="font-size:7px;color:#4a4840;letter-spacing:.06em;text-transform:uppercase;margin:6px 0 3px">ERRORS (1)</div>
+            <div style="font-size:8px;padding:3px 5px;background:rgba(184,64,64,.06);border:1px solid rgba(184,64,64,.1);border-radius:3px">
+              <div style="color:#b84040;font-size:7px">Email registered</div>
+              <div style="color:#6a6860;font-size:7px">409</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Three-column: Sidebar + Canvas + Detail Panel</h3>
+      <p>Matches the playground exactly. Sidebar has main nav + contextual sub-nav. Canvas is the main visualization area (pan/zoom SVG). Detail panel shows contextual info for whatever's selected. Works for all 5 page types.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>Layout Details</h3>
+  <ul>
+    <li><strong>Topbar (48px):</strong> Logo + site URL. Minimal — no tabs (those moved to sidebar).</li>
+    <li><strong>Sidebar (220px):</strong> 5 page links at top. Contextual sub-nav appears below separator when on Journeys or Lifecycles pages. Scrollable.</li>
+    <li><strong>Canvas (flex):</strong> SVG with pan/zoom for Journeys and Lifecycles. Scrollable list for API Map, Data Model, Coverage.</li>
+    <li><strong>Detail Panel (280px):</strong> Always visible. Shows contextual details for the selected item on any page. Empty state when nothing selected.</li>
+  </ul>
+  <p style="margin-top:12px;color:#8a8780">This is the layout we already have in the playground. The question is just: does this translate directly to the Next.js app, or do you want any structural changes?</p>
+</div>
