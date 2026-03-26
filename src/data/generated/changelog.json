@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(reports): #200 ReportBottomSheet component and useSubmitReport hook",
+      "number": 286,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/286",
+      "mergedAt": "2026-03-26T21:41:59Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "feat(reports): #199 feature scaffold, services, API routes, and validation",
       "number": 285,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/285",
