@@ -1,5 +1,5 @@
 {
-  "extractedAt": "2026-03-26T02:52:31.769Z",
+  "extractedAt": "2026-03-26T16:12:17.479Z",
   "sourceCommit": "local",
   "sourceRepo": "nessi-fishing-supply/Nessi-Web-App",
   "scriptVersion": "1.0.0",
@@ -10,10 +10,28 @@
     "permissionFeatures": 6,
     "configs": 6,
     "features": 14,
-    "lifecycles": 1,
-    "journeys": 3,
+    "lifecycles": 4,
+    "journeys": 29,
     "onboardingSteps": 4,
-    "roadmapItems": 191,
-    "changelogEntries": 79
-  }
+    "roadmapItems": 0,
+    "changelogEntries": 0,
+    "enums": 5
+  },
+  "gaps": [
+    {
+      "type": "lifecycle",
+      "slug": "subscription",
+      "reason": "No transitions defined"
+    },
+    {
+      "type": "feature",
+      "slug": "shared",
+      "reason": "No CLAUDE.md description"
+    },
+    {
+      "type": "api-summary",
+      "slug": "api-contracts",
+      "reason": "60 endpoint(s) missing description"
+    }
+  ]
 }

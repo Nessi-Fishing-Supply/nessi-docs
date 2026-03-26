@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import type { Lifecycle, LifecycleTransition } from '@/types/lifecycle';
 import { useDocsContext } from '@/providers/docs-provider';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { StateNode } from '@/features/canvas/components/state-node';
 import { LabelPill } from '@/features/canvas/components/label-pill';
+import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import {
   LIFECYCLE_NODE_WIDTH,
   LIFECYCLE_NODE_HEIGHT,
@@ -61,6 +63,7 @@ function getTransitionPath(
 }
 
 export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
+  const [minimapVisible, setMinimapVisible] = useState(false);
   const { selectedItem, setSelectedItem } = useDocsContext();
   const stateMap = new Map(lifecycle.states.map((s) => [s.id, s]));
 
@@ -78,28 +81,23 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
   const padding = 80;
   const viewBox = {
     minX: minX - padding,
-    minY: minY - padding - 40, // extra room for title
+    minY: minY - padding,
     width: maxX - minX + padding * 2,
-    height: maxY - minY + padding * 2 + 40,
+    height: maxY - minY + padding * 2,
   };
 
   return (
-    <CanvasProvider viewBox={viewBox}>
-      {/* Title */}
-      <text
-        x={minX}
-        y={minY - padding + 10}
-        fill="#e8e6e1"
-        fontSize={16}
-        fontWeight={600}
-        fontFamily="var(--font-dm-serif)"
-      >
-        {lifecycle.name}
-      </text>
-      <text x={minX} y={minY - padding + 28} fill="#6a6860" fontSize={10}>
-        {lifecycle.badge ? `${lifecycle.badge} · ` : ''}{lifecycle.description.slice(0, 80)}...
-      </text>
-
+    <CanvasProvider
+      viewBox={viewBox}
+      viewKey={`lifecycle-${lifecycle.slug}`}
+      renderToolbar={(zoomControls) => (
+        <CanvasToolbar
+          zoomControls={zoomControls}
+          minimapVisible={minimapVisible}
+          onToggleMinimap={() => setMinimapVisible((p) => !p)}
+        />
+      )}
+    >
       {/* Transitions (edges) */}
       {lifecycle.transitions.map((t, i) => {
         const path = getTransitionPath(t, stateMap);

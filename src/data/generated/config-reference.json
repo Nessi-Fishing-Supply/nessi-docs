@@ -59,54 +59,6 @@
       ]
     },
     {
-      "slug": "listings-category",
-      "name": "Listings Category",
-      "description": "Listings Category configuration with 10 defined values",
-      "source": "src/features/listings/constants/category.ts",
-      "values": [
-        {
-          "value": "rods",
-          "label": "Rods"
-        },
-        {
-          "value": "reels",
-          "label": "Reels"
-        },
-        {
-          "value": "lures",
-          "label": "Lures"
-        },
-        {
-          "value": "flies",
-          "label": "Flies"
-        },
-        {
-          "value": "tackle",
-          "label": "Tackle"
-        },
-        {
-          "value": "line",
-          "label": "Line"
-        },
-        {
-          "value": "apparel",
-          "label": "Apparel"
-        },
-        {
-          "value": "electronics",
-          "label": "Electronics"
-        },
-        {
-          "value": "watercraft",
-          "label": "Watercraft"
-        },
-        {
-          "value": "other",
-          "label": "Other"
-        }
-      ]
-    },
-    {
       "slug": "listings-condition",
       "name": "Listings Condition",
       "description": "Listings Condition configuration with 6 defined values",
@@ -453,6 +405,26 @@
         {
           "value": "WY",
           "label": "Wyoming"
+        }
+      ]
+    },
+    {
+      "slug": "shipping-paid-by",
+      "name": "Shipping Paid By",
+      "description": "Database enum Shipping Paid By with 3 values",
+      "source": "supabase/migrations/20260321100000_listings_schema.sql",
+      "values": [
+        {
+          "value": "seller",
+          "label": "Seller"
+        },
+        {
+          "value": "buyer",
+          "label": "Buyer"
+        },
+        {
+          "value": "split",
+          "label": "Split"
         }
       ]
     }

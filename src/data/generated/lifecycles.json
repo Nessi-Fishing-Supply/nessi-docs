@@ -60,8 +60,117 @@
           "from": "reserved",
           "to": "sold",
           "label": "Complete sale"
+        },
+        {
+          "from": "reserved",
+          "to": "active",
+          "label": "Release reservation"
+        },
+        {
+          "from": "archived",
+          "to": "active",
+          "label": "Reactivate"
         }
-      ]
+      ],
+      "source": "enum"
+    },
+    {
+      "slug": "invite",
+      "name": "Invite Lifecycle",
+      "description": "Status lifecycle for invite entities",
+      "states": [
+        {
+          "id": "pending",
+          "label": "Pending"
+        },
+        {
+          "id": "accepted",
+          "label": "Accepted"
+        },
+        {
+          "id": "expired",
+          "label": "Expired"
+        },
+        {
+          "id": "revoked",
+          "label": "Revoked"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "pending",
+          "to": "accepted",
+          "label": "Accept invite"
+        },
+        {
+          "from": "pending",
+          "to": "expired",
+          "label": "Expire"
+        },
+        {
+          "from": "pending",
+          "to": "revoked",
+          "label": "Revoke"
+        }
+      ],
+      "source": "enum"
+    },
+    {
+      "slug": "subscription",
+      "name": "Subscription Lifecycle",
+      "description": "Status lifecycle for subscription entities",
+      "states": [
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "past_due",
+          "label": "Past Due"
+        },
+        {
+          "id": "cancelled",
+          "label": "Cancelled"
+        },
+        {
+          "id": "trialing",
+          "label": "Trialing"
+        }
+      ],
+      "transitions": [],
+      "source": "check_constraint"
+    },
+    {
+      "slug": "ownership_transfers",
+      "name": "Ownership Transfers Lifecycle",
+      "description": "Status lifecycle for ownership transfers entities",
+      "states": [
+        {
+          "id": "pending",
+          "label": "Pending"
+        },
+        {
+          "id": "accepted",
+          "label": "Accepted"
+        },
+        {
+          "id": "cancelled",
+          "label": "Cancelled"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "pending",
+          "to": "accepted",
+          "label": "Accept transfer"
+        },
+        {
+          "from": "pending",
+          "to": "cancelled",
+          "label": "Cancel"
+        }
+      ],
+      "source": "check_constraint"
     }
   ]
 }

@@ -13,7 +13,7 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const lc = getLifecycle(slug);
-  return { title: lc ? `${lc.name} Lifecycle` : 'Lifecycle' };
+  return { title: lc ? lc.name : 'Lifecycle' };
 }
 
 export default async function LifecyclePage({

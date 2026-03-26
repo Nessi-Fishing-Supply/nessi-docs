@@ -12,7 +12,10 @@
             401,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "PUT",
@@ -24,7 +27,10 @@
             401,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "DELETE",
@@ -36,7 +42,10 @@
             401,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -48,7 +57,10 @@
             401,
             422,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -60,7 +72,10 @@
             401,
             422,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         }
       ]
     },
@@ -72,7 +87,10 @@
           "path": "/api/auth/callback",
           "label": "List Callback",
           "auth": "user",
-          "errorCodes": []
+          "errorCodes": [],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -84,6 +102,17 @@
             401,
             409,
             500
+          ],
+          "requestFields": [
+            {
+              "name": "email",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "",
+          "tags": [
+            "admin-only"
           ]
         },
         {
@@ -95,6 +124,11 @@
             401,
             409,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ]
         },
         {
@@ -106,6 +140,37 @@
             400,
             409,
             500
+          ],
+          "requestFields": [
+            {
+              "name": "firstName",
+              "type": "unknown",
+              "required": true
+            },
+            {
+              "name": "lastName",
+              "type": "unknown",
+              "required": true
+            },
+            {
+              "name": "email",
+              "type": "unknown",
+              "required": true
+            },
+            {
+              "name": "password",
+              "type": "unknown",
+              "required": true
+            },
+            {
+              "name": "terms",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "",
+          "tags": [
+            "admin-only"
           ]
         }
       ]
@@ -122,7 +187,10 @@
             401,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "DELETE",
@@ -133,7 +201,10 @@
             401,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -143,7 +214,10 @@
           "errorCodes": [
             401,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -154,7 +228,16 @@
             400,
             401,
             500
-          ]
+          ],
+          "requestFields": [
+            {
+              "name": "items",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -169,7 +252,10 @@
             409,
             422,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -184,7 +270,21 @@
             409,
             422,
             500
-          ]
+          ],
+          "requestFields": [
+            {
+              "name": "listingId",
+              "type": "unknown",
+              "required": true
+            },
+            {
+              "name": "addedFrom",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "",
+          "tags": []
         },
         {
           "method": "DELETE",
@@ -199,7 +299,10 @@
             409,
             422,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -209,7 +312,10 @@
           "errorCodes": [
             401,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         }
       ]
     },
@@ -227,6 +333,11 @@
             404,
             409,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ]
         }
       ]
@@ -245,7 +356,10 @@
             403,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -258,7 +372,10 @@
             403,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "PUT",
@@ -271,7 +388,10 @@
             403,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "DELETE",
@@ -284,7 +404,10 @@
             403,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "PATCH",
@@ -297,7 +420,21 @@
             403,
             404,
             500
-          ]
+          ],
+          "requestFields": [
+            {
+              "name": "status",
+              "type": "unknown",
+              "required": true
+            },
+            {
+              "name": "sold_price_cents",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -307,7 +444,10 @@
           "errorCodes": [
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -317,7 +457,10 @@
           "errorCodes": [
             400,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -330,7 +473,10 @@
             403,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -343,7 +489,10 @@
             403,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "DELETE",
@@ -356,7 +505,10 @@
             403,
             404,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -367,7 +519,10 @@
             400,
             403,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -379,7 +534,10 @@
             401,
             403,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -391,7 +549,10 @@
             401,
             403,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -401,7 +562,10 @@
           "errorCodes": [
             400,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -411,7 +575,10 @@
           "errorCodes": [
             400,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -423,7 +590,10 @@
             401,
             403,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "DELETE",
@@ -435,7 +605,21 @@
             401,
             403,
             500
-          ]
+          ],
+          "requestFields": [
+            {
+              "name": "imageUrl",
+              "type": "unknown",
+              "required": true
+            },
+            {
+              "name": "thumbnailUrl",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -447,6 +631,11 @@
             401,
             403,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "file-upload"
           ]
         }
       ]
@@ -463,6 +652,11 @@
             400,
             401,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "file-upload"
           ]
         },
         {
@@ -473,7 +667,10 @@
           "errorCodes": [
             401,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "POST",
@@ -484,7 +681,16 @@
             400,
             401,
             500
-          ]
+          ],
+          "requestFields": [
+            {
+              "name": "is_seller",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "",
+          "tags": []
         }
       ]
     },
@@ -500,7 +706,16 @@
             400,
             401,
             500
-          ]
+          ],
+          "requestFields": [
+            {
+              "name": "items",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "",
+          "tags": []
         },
         {
           "method": "GET",
@@ -510,7 +725,10 @@
           "errorCodes": [
             401,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         },
         {
           "method": "DELETE",
@@ -520,7 +738,10 @@
           "errorCodes": [
             401,
             500
-          ]
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": []
         }
       ]
     },
@@ -537,6 +758,11 @@
             404,
             500
           ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -551,6 +777,11 @@
             400,
             404,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ],
           "permissions": {
             "feature": "members",
@@ -567,6 +798,11 @@
             409,
             500
           ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -581,6 +817,11 @@
             400,
             409,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ],
           "permissions": {
             "feature": "members",
@@ -597,6 +838,11 @@
             404,
             500
           ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -610,6 +856,11 @@
           "errorCodes": [
             500
           ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -622,6 +873,11 @@
           "auth": "admin",
           "errorCodes": [
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ],
           "permissions": {
             "feature": "members",
@@ -637,6 +893,11 @@
             404,
             500
           ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "view"
@@ -650,6 +911,11 @@
           "errorCodes": [
             404,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ],
           "permissions": {
             "feature": "members",
@@ -666,6 +932,11 @@
             409,
             500
           ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -678,6 +949,11 @@
           "auth": "admin",
           "errorCodes": [
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ],
           "permissions": {
             "feature": "members",
@@ -692,6 +968,11 @@
           "errorCodes": [
             404,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ],
           "permissions": {
             "feature": "shop_settings",
@@ -708,6 +989,12 @@
             403,
             500
           ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "file-upload",
+            "admin-only"
+          ],
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
@@ -722,6 +1009,12 @@
             400,
             403,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "file-upload",
+            "admin-only"
           ],
           "permissions": {
             "feature": "shop_settings",
@@ -739,6 +1032,11 @@
             404,
             410,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ]
         },
         {
@@ -752,6 +1050,11 @@
             404,
             410,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ]
         },
         {
@@ -765,6 +1068,11 @@
             403,
             409,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ]
         },
         {
@@ -777,6 +1085,11 @@
             403,
             409,
             500
+          ],
+          "requestFields": [],
+          "description": "",
+          "tags": [
+            "admin-only"
           ],
           "permissions": {
             "feature": "shop_settings",

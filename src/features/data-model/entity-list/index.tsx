@@ -58,9 +58,13 @@ export function EntityList({ entities }: EntityListProps) {
 
   return (
     <div className={styles.container}>
-      <Link href="/data-model/erd" className={styles.erdLink}>
-        View Entity Relationships →
-      </Link>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Data Model</h2>
+        <p className={styles.subtitle}>{entities.length} tables</p>
+        <Link href="/data-model/erd" className={styles.erdLink}>
+          View Entity Relationships →
+        </Link>
+      </div>
       {grouped.map(({ category, label, entities: groupEntities }) => (
         <div key={category} className={styles.group}>
           <div className={styles.groupHeader}>
@@ -72,7 +76,7 @@ export function EntityList({ entities }: EntityListProps) {
               const isOpen = openEntities.has(entity.name);
               return (
                 <div key={entity.name} className={`${styles.card} ${isSelected(entity) ? styles.active : ''}`}>
-                  <button className={styles.header} onClick={() => handleClick(entity)}>
+                  <button className={styles.cardHeader} onClick={() => handleClick(entity)}>
                     <span className={styles.name}>{entity.name}</span>
                     <span className={styles.count}>{entity.fields.length} fields</span>
                     <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>

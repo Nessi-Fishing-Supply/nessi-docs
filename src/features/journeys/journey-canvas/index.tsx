@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Journey, JourneyNode } from '@/types/journey';
+import type { Journey, JourneyNode, StepLayer, StepStatus } from '@/types/journey';
 import { useDocsContext } from '@/providers/docs-provider';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { useViewport } from '@/features/canvas/hooks/use-viewport';
@@ -14,22 +14,23 @@ import { DecisionNode } from '@/features/canvas/components/decision-node';
 import { Edge } from '@/features/canvas/components/edge';
 import { AnimatedEdge } from '@/features/canvas/components/animated-edge';
 import { NodeTooltip } from '@/features/canvas/components/node-tooltip';
-import { usePlayMode } from '@/features/journeys/journey-play/use-play-mode';
-import { PlayButton } from '@/features/journeys/journey-play/play-button';
-import { PlayBar } from '@/features/journeys/journey-play/play-bar';
 import { Minimap } from '@/features/canvas/components/minimap';
+import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 
 interface JourneyCanvasProps {
   journey: Journey;
   visibleLayers: Set<string>;
   visibleStatuses: Set<string>;
+  onToggleLayer: (layer: StepLayer) => void;
+  onToggleStatus: (status: StepStatus) => void;
 }
 
-export function JourneyCanvas({ journey, visibleLayers, visibleStatuses }: JourneyCanvasProps) {
+export function JourneyCanvas({ journey, visibleLayers, visibleStatuses, onToggleLayer, onToggleStatus }: JourneyCanvasProps) {
   const { selectedItem, setSelectedItem, clearSelection } = useDocsContext();
   const { chosenPath, choosePath, resetPath, litNodes, litEdges, hasPath } = usePathTrace(journey.nodes, journey.edges);
   const viewBox = useViewport(journey.nodes);
-  const play = usePlayMode(journey.nodes, journey.edges);
+
+  const [minimapVisible, setMinimapVisible] = useState(true);
 
   const entered = useStaggerEntry(
     journey.nodes.map((n) => ({ id: n.id, x: n.x }))
@@ -59,43 +60,40 @@ export function JourneyCanvas({ journey, visibleLayers, visibleStatuses }: Journ
   const nodeMap = new Map(journey.nodes.map((n) => [n.id, n]));
 
   const handleNodeClick = (node: JourneyNode) => {
-    if (play.isActive) {
-      play.advanceTo(node.id);
-    }
     if (node.type === 'step') {
       setSelectedItem({ type: 'step', node, journey });
     }
   };
 
   const handleDecisionChoose = (decisionId: string, opt: string, targetId: string) => {
-    if (play.isActive) {
-      play.chooseOption(decisionId, opt, targetId);
-    } else {
-      choosePath(decisionId, opt, targetId);
-    }
+    choosePath(decisionId, opt, targetId);
   };
-
-  const playOverlay = play.isActive ? (
-    <PlayBar
-      stepCount={play.stepCount}
-      atDecision={play.atDecision}
-      onUndo={play.undo}
-      onStop={play.stop}
-    />
-  ) : (
-    <PlayButton onClick={play.start} />
-  );
 
   return (
     <CanvasProvider
       viewBox={viewBox}
-      overlay={playOverlay}
+      viewKey={`journey-${journey.slug}`}
       renderMinimap={(vbs, panTo) => (
         <Minimap
           nodes={journey.nodes}
           bounds={viewBox}
           viewBoxString={vbs}
           onPan={panTo}
+          visible={minimapVisible}
+        />
+      )}
+      renderToolbar={(zoomControls) => (
+        <CanvasToolbar
+          zoomControls={zoomControls}
+          minimapVisible={minimapVisible}
+          onToggleMinimap={() => setMinimapVisible((p) => !p)}
+          filterControls={{
+            visibleLayers,
+            visibleStatuses,
+            onToggleLayer,
+            onToggleStatus,
+          }}
+          pathControls={{ hasPath, resetPath }}
         />
       )}
     >
@@ -106,8 +104,8 @@ export function JourneyCanvas({ journey, visibleLayers, visibleStatuses }: Journ
         if (!fromNode || !toNode) return null;
         if (!isNodeVisible(fromNode) || !isNodeVisible(toNode)) return null;
 
-        const isLit = play.isActive ? play.visitedEdges.has(i) : litEdges.has(i);
-        const isDimmed = play.isActive ? !play.visitedEdges.has(i) : hasPath && !isLit;
+        const isLit = litEdges.has(i);
+        const isDimmed = hasPath && !isLit;
 
         return (
           <g
@@ -126,7 +124,7 @@ export function JourneyCanvas({ journey, visibleLayers, visibleStatuses }: Journ
               to={toNode}
               isLit={isLit}
               isDimmed={isDimmed}
-              hasActivePath={play.isActive || hasPath}
+              hasActivePath={hasPath}
             />
           </g>
         );
@@ -135,12 +133,9 @@ export function JourneyCanvas({ journey, visibleLayers, visibleStatuses }: Journ
       {/* Nodes */}
       {journey.nodes.map((node) => {
         if (!isNodeVisible(node)) return null;
-        const isLit = play.isActive ? play.visitedNodes.has(node.id) : litNodes.has(node.id);
-        const isDimmed = play.isActive ? !play.visitedNodes.has(node.id) && !play.reachableNodes.has(node.id) : hasPath && !isLit;
-        const isReachable = play.isActive && play.reachableNodes.has(node.id);
-        const isCurrent = play.currentNodeId === node.id;
-        const isSelected =
-          (selectedItem?.type === 'step' && selectedItem.node.id === node.id) || isCurrent;
+        const isLit = litNodes.has(node.id);
+        const isDimmed = hasPath && !isLit;
+        const isSelected = selectedItem?.type === 'step' && selectedItem.node.id === node.id;
 
         const nodeEntered = entered.has(node.id);
 
@@ -166,9 +161,7 @@ export function JourneyCanvas({ journey, visibleLayers, visibleStatuses }: Journ
         }
 
         if (node.type === 'decision') {
-          const chosenOpt = play.isActive
-            ? undefined
-            : chosenPath.find((c) => c.decId === node.id)?.opt;
+          const chosenOpt = chosenPath.find((c) => c.decId === node.id)?.opt;
 
           return (
             <g
@@ -196,10 +189,9 @@ export function JourneyCanvas({ journey, visibleLayers, visibleStatuses }: Journ
           <g
             key={node.id}
             style={{
-              opacity: nodeEntered ? (isReachable ? 0.7 : 1) : 0,
+              opacity: nodeEntered ? 1 : 0,
               transform: nodeEntered ? 'translateY(0)' : 'translateY(8px)',
               transition: 'opacity 300ms ease-out, transform 300ms ease-out',
-              cursor: isReachable ? 'pointer' : undefined,
             }}
           >
             <NodeTooltip node={node}>
@@ -210,44 +202,10 @@ export function JourneyCanvas({ journey, visibleLayers, visibleStatuses }: Journ
                 onClick={() => handleNodeClick(node)}
               />
             </NodeTooltip>
-            {/* Reachable pulse ring */}
-            {isReachable && (
-              <circle
-                cx={node.x + 80}
-                cy={node.y + 22}
-                r={50}
-                fill="none"
-                stroke="rgba(61,140,117,0.3)"
-                strokeWidth={1.5}
-                style={{ animation: 'glowPulse 2s ease-in-out infinite' }}
-              />
-            )}
           </g>
         );
       })}
 
-      {/* Path bar */}
-      {hasPath && !play.isActive && (
-        <g>
-          <foreignObject x={viewBox.minX + viewBox.width - 200} y={viewBox.minY + 10} width={190} height={30}>
-            <button
-              onClick={resetPath}
-              style={{
-                background: 'rgba(15,19,25,0.9)',
-                border: '1px solid rgba(255,255,255,0.09)',
-                borderRadius: '6px',
-                color: '#9a9790',
-                fontSize: '10px',
-                padding: '6px 12px',
-                cursor: 'pointer',
-                width: '100%',
-              }}
-            >
-              Clear path trace
-            </button>
-          </foreignObject>
-        </g>
-      )}
     </CanvasProvider>
   );
 }

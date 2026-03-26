@@ -1,0 +1,58 @@
+{
+  "enums": [
+    {
+      "name": "listing_category",
+      "values": [
+        "rods",
+        "reels",
+        "lures",
+        "flies",
+        "tackle",
+        "line",
+        "apparel",
+        "electronics",
+        "watercraft",
+        "other"
+      ]
+    },
+    {
+      "name": "listing_condition",
+      "values": [
+        "new_with_tags",
+        "new_without_tags",
+        "like_new",
+        "good",
+        "fair",
+        "poor"
+      ]
+    },
+    {
+      "name": "listing_status",
+      "values": [
+        "draft",
+        "active",
+        "reserved",
+        "sold",
+        "archived",
+        "deleted"
+      ]
+    },
+    {
+      "name": "shipping_paid_by",
+      "values": [
+        "seller",
+        "buyer",
+        "split"
+      ]
+    },
+    {
+      "name": "invite_status",
+      "values": [
+        "pending",
+        "accepted",
+        "expired",
+        "revoked"
+      ]
+    }
+  ]
+}

@@ -189,7 +189,7 @@ export function ApiList({ groups }: ApiListProps) {
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerTitle}>
-          <h1 className={styles.title}>Nessi API</h1>
+          <h2 className={styles.title}>Nessi API</h2>
           <span className={styles.version}>v1</span>
         </div>
         <p className={styles.subtitle}>

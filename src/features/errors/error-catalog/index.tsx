@@ -150,7 +150,7 @@ export function ErrorCatalog({ groups }: ErrorCatalogProps) {
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
-        <h1 className={styles.title}>Error Catalog</h1>
+        <h2 className={styles.title}>Error Catalog</h2>
         <p className={styles.subtitle}>
           Error cases surfaced from journey data, grouped by API endpoint
         </p>

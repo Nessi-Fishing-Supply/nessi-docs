@@ -39,37 +39,3 @@
   z-index: 2;
 }
 
-.controls {
-  position: absolute;
-  bottom: 12px;
-  left: 12px;
-  display: flex;
-  background: var(--bg-panel);
-  border: 1px solid var(--border-medium);
-  border-radius: 6px;
-  overflow: hidden;
-  z-index: 5;
-}
-
-.controlBtn {
-  width: 32px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-family: var(--font-family-mono);
-  cursor: pointer;
-  transition: background var(--transition-fast);
-
-  &:hover {
-    background: var(--bg-hover);
-  }
-
-  & + & {
-    border-left: 1px solid var(--border-subtle);
-  }
-}

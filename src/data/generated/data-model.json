@@ -12,17 +12,21 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "now()"
         },
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
         },
         {
           "name": "is_default",
           "type": "boolean",
-          "nullable": false
+          "nullable": false,
+          "default": "false"
         },
         {
           "name": "label",
@@ -47,12 +51,18 @@
         {
           "name": "updated_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "now()"
         },
         {
           "name": "user_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "zip",
@@ -63,6 +73,58 @@
       "badges": [
         "RLS",
         "Triggers"
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Users can view own addresses",
+          "operation": "SELECT",
+          "using": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can insert own addresses",
+          "operation": "INSERT",
+          "withCheck": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can update own addresses",
+          "operation": "UPDATE",
+          "using": "user_id = (SELECT auth.uid())",
+          "withCheck": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can delete own addresses",
+          "operation": "DELETE",
+          "using": "user_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "addresses_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "on_address_insert_limit",
+          "event": "INSERT",
+          "timing": "BEFORE",
+          "function": "public.enforce_max_addresses"
+        },
+        {
+          "name": "on_address_ensure_single_default",
+          "event": "INSERT OR UPDATE",
+          "timing": "BEFORE",
+          "function": "public.ensure_single_default"
+        },
+        {
+          "name": "on_address_updated_at",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "public.handle_updated_at"
+        }
       ]
     },
     {
@@ -72,7 +134,8 @@
         {
           "name": "added_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "now()"
         },
         {
           "name": "added_from",
@@ -82,17 +145,25 @@
         {
           "name": "expires_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "now() + INTERVAL '30 days'"
         },
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
         },
         {
           "name": "listing_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "listings",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "price_at_add",
@@ -102,12 +173,57 @@
         {
           "name": "user_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         }
       ],
       "badges": [
         "RLS"
-      ]
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Users can view own cart items",
+          "operation": "SELECT",
+          "using": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can insert own cart items",
+          "operation": "INSERT",
+          "withCheck": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can update own cart items",
+          "operation": "UPDATE",
+          "using": "user_id = (SELECT auth.uid())",
+          "withCheck": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can delete own cart items",
+          "operation": "DELETE",
+          "using": "user_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "cart_items_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "cart_items_listing_id_idx",
+          "columns": [
+            "listing_id"
+          ],
+          "unique": false
+        }
+      ],
+      "triggers": []
     },
     {
       "name": "listing_photos",
@@ -131,7 +247,12 @@
         {
           "name": "listing_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "listings",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "position",
@@ -146,7 +267,71 @@
       ],
       "badges": [
         "RLS"
-      ]
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Product images are viewable by everyone",
+          "operation": "SELECT",
+          "using": "true"
+        },
+        {
+          "name": "Users can insert images for own products",
+          "operation": "INSERT",
+          "withCheck": "EXISTS (\n      SELECT 1 FROM products\n      WHERE products.id = product_id\n      AND products.user_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Users can update images for own products",
+          "operation": "UPDATE",
+          "using": "EXISTS (\n      SELECT 1 FROM products\n      WHERE products.id = product_id\n      AND products.user_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Users can delete images for own products",
+          "operation": "DELETE",
+          "using": "EXISTS (\n      SELECT 1 FROM products\n      WHERE products.id = product_id\n      AND products.user_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Product images are viewable by everyone",
+          "operation": "SELECT",
+          "using": "EXISTS (\n      SELECT 1 FROM public.products p\n      WHERE p.id = product_images.product_id\n        AND (\n          p.is_visible = TRUE\n          OR p.member_id = (SELECT auth.uid())\n          OR EXISTS (\n            SELECT 1 FROM public.shop_members sm\n            WHERE sm.shop_id = p.shop_id\n              AND sm.member_id = (SELECT auth.uid())\n          )\n        )\n    )"
+        },
+        {
+          "name": "Users can insert images for own products",
+          "operation": "INSERT",
+          "withCheck": "EXISTS (\n      SELECT 1 FROM public.products p\n      WHERE p.id = product_images.product_id\n        AND (\n          p.member_id = (SELECT auth.uid())\n          OR EXISTS (\n            SELECT 1 FROM public.shop_members sm\n            WHERE sm.shop_id = p.shop_id\n              AND sm.member_id = (SELECT auth.uid())\n          )\n        )\n    )"
+        },
+        {
+          "name": "Users can update images for own products",
+          "operation": "UPDATE",
+          "using": "EXISTS (\n      SELECT 1 FROM public.products p\n      WHERE p.id = product_images.product_id\n        AND (\n          p.member_id = (SELECT auth.uid())\n          OR EXISTS (\n            SELECT 1 FROM public.shop_members sm\n            WHERE sm.shop_id = p.shop_id\n              AND sm.member_id = (SELECT auth.uid())\n          )\n        )\n    )"
+        },
+        {
+          "name": "Users can delete images for own products",
+          "operation": "DELETE",
+          "using": "EXISTS (\n      SELECT 1 FROM public.products p\n      WHERE p.id = product_images.product_id\n        AND (\n          p.member_id = (SELECT auth.uid())\n          OR EXISTS (\n            SELECT 1 FROM public.shop_members sm\n            WHERE sm.shop_id = p.shop_id\n              AND sm.member_id = (SELECT auth.uid())\n          )\n        )\n    )"
+        },
+        {
+          "name": "Listing photos are viewable with their listing",
+          "operation": "SELECT",
+          "using": "EXISTS (\n      SELECT 1 FROM public.listings l\n      WHERE l.id = listing_photos.listing_id\n        AND (\n          (l.status IN ('active', 'reserved') AND l.deleted_at IS NULL)\n          OR l.seller_id = (SELECT auth.uid())\n          OR l.member_id = (SELECT auth.uid())\n          OR EXISTS (\n            SELECT 1 FROM public.shop_members sm\n            WHERE sm.shop_id = l.shop_id\n              AND sm.member_id = (SELECT auth.uid())\n          )\n        )\n    )"
+        },
+        {
+          "name": "Users can insert photos for own listings",
+          "operation": "INSERT",
+          "withCheck": "EXISTS (\n      SELECT 1 FROM public.listings l\n      WHERE l.id = listing_photos.listing_id\n        AND (\n          l.seller_id = (SELECT auth.uid())\n          OR EXISTS (\n            SELECT 1 FROM public.shop_members sm\n            WHERE sm.shop_id = l.shop_id\n              AND sm.member_id = (SELECT auth.uid())\n          )\n        )\n    )"
+        },
+        {
+          "name": "Users can update photos for own listings",
+          "operation": "UPDATE",
+          "using": "EXISTS (\n      SELECT 1 FROM public.listings l\n      WHERE l.id = listing_photos.listing_id\n        AND (\n          l.seller_id = (SELECT auth.uid())\n          OR EXISTS (\n            SELECT 1 FROM public.shop_members sm\n            WHERE sm.shop_id = l.shop_id\n              AND sm.member_id = (SELECT auth.uid())\n          )\n        )\n    )"
+        },
+        {
+          "name": "Users can delete photos for own listings",
+          "operation": "DELETE",
+          "using": "EXISTS (\n      SELECT 1 FROM public.listings l\n      WHERE l.id = listing_photos.listing_id\n        AND (\n          l.seller_id = (SELECT auth.uid())\n          OR EXISTS (\n            SELECT 1 FROM public.shop_members sm\n            WHERE sm.shop_id = l.shop_id\n              AND sm.member_id = (SELECT auth.uid())\n          )\n        )\n    )"
+        }
+      ],
+      "indexes": [],
+      "triggers": []
     },
     {
       "name": "listings",
@@ -220,7 +405,12 @@
         {
           "name": "member_id",
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "SET NULL"
+          }
         },
         {
           "name": "model",
@@ -250,7 +440,12 @@
         {
           "name": "seller_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "SET NULL"
+          }
         },
         {
           "name": "shipping_paid_by",
@@ -265,7 +460,11 @@
         {
           "name": "shop_id",
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "references": {
+            "table": "shops",
+            "column": "id"
+          }
         },
         {
           "name": "sold_at",
@@ -306,6 +505,186 @@
       "badges": [
         "RLS",
         "Triggers"
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Products are viewable by everyone",
+          "operation": "SELECT",
+          "using": "true"
+        },
+        {
+          "name": "Users can insert own products",
+          "operation": "INSERT",
+          "withCheck": "(SELECT auth.uid()) = user_id"
+        },
+        {
+          "name": "Users can update own products",
+          "operation": "UPDATE",
+          "using": "(SELECT auth.uid()) = user_id",
+          "withCheck": "(SELECT auth.uid()) = user_id"
+        },
+        {
+          "name": "Users can delete own products",
+          "operation": "DELETE",
+          "using": "(SELECT auth.uid()) = user_id"
+        },
+        {
+          "name": "Products are viewable by everyone",
+          "operation": "SELECT",
+          "using": "is_visible = TRUE\n    OR member_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members\n      WHERE shop_id = products.shop_id\n        AND member_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Users can insert own products",
+          "operation": "INSERT",
+          "withCheck": "member_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members\n      WHERE shop_id = products.shop_id\n        AND member_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Users can update own products",
+          "operation": "UPDATE",
+          "using": "member_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members\n      WHERE shop_id = products.shop_id\n        AND member_id = (SELECT auth.uid())\n    )",
+          "withCheck": "member_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members\n      WHERE shop_id = products.shop_id\n        AND member_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Users can delete own products",
+          "operation": "DELETE",
+          "using": "member_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members\n      WHERE shop_id = products.shop_id\n        AND member_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Listings are viewable when active or by owner",
+          "operation": "SELECT",
+          "using": "(\n      status IN ('active', 'reserved')\n      AND deleted_at IS NULL\n    )\n    OR seller_id = (SELECT auth.uid())\n    OR member_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members sm\n      WHERE sm.shop_id = listings.shop_id\n        AND sm.member_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Users can insert own listings",
+          "operation": "INSERT",
+          "withCheck": "seller_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members sm\n      WHERE sm.shop_id = listings.shop_id\n        AND sm.member_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Users can update own listings",
+          "operation": "UPDATE",
+          "using": "seller_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members sm\n      WHERE sm.shop_id = listings.shop_id\n        AND sm.member_id = (SELECT auth.uid())\n    )",
+          "withCheck": "seller_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members sm\n      WHERE sm.shop_id = listings.shop_id\n        AND sm.member_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Users can delete own listings",
+          "operation": "DELETE",
+          "using": "seller_id = (SELECT auth.uid())\n    OR EXISTS (\n      SELECT 1 FROM public.shop_members sm\n      WHERE sm.shop_id = listings.shop_id\n        AND sm.member_id = (SELECT auth.uid())\n    )"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "products_member_id_idx",
+          "columns": [
+            "member_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "products_shop_id_idx",
+          "columns": [
+            "shop_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_search_vector_idx",
+          "columns": [
+            "search_vector"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_title_trgm_idx",
+          "columns": [
+            "title"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_seller_id_idx",
+          "columns": [
+            "seller_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_shop_id_idx",
+          "columns": [
+            "shop_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_member_id_idx",
+          "columns": [
+            "member_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_status_idx",
+          "columns": [
+            "status"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_category_idx",
+          "columns": [
+            "category"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_condition_idx",
+          "columns": [
+            "condition"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_price_cents_idx",
+          "columns": [
+            "price_cents"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_active_feed_idx",
+          "columns": [
+            "status",
+            "published_at"
+          ],
+          "unique": false
+        },
+        {
+          "name": "listings_active_partial_idx",
+          "columns": [
+            "published_at"
+          ],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "set_listings_updated_at",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "handle_updated_at"
+        },
+        {
+          "name": "on_listing_status_change",
+          "event": "UPDATE OF STATUS",
+          "timing": "AFTER",
+          "function": "public.handle_listing_status_change"
+        }
       ]
     },
     {
@@ -330,7 +709,8 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "NOW()"
         },
         {
           "name": "deleted_at",
@@ -350,17 +730,20 @@
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true
         },
         {
           "name": "is_seller",
           "type": "boolean",
-          "nullable": false
+          "nullable": false,
+          "default": "FALSE"
         },
         {
           "name": "is_stripe_connected",
           "type": "boolean",
-          "nullable": false
+          "nullable": false,
+          "default": "FALSE"
         },
         {
           "name": "last_name",
@@ -375,7 +758,8 @@
         {
           "name": "notification_preferences",
           "type": "Json",
-          "nullable": false
+          "nullable": false,
+          "default": "'{\"email\":{\"orders\":true,\"messages\":true,\"price_drops\":true,\"marketing\":false}}'"
         },
         {
           "name": "onboarding_completed_at",
@@ -385,12 +769,14 @@
         {
           "name": "primary_species",
           "type": "string[]",
-          "nullable": false
+          "nullable": false,
+          "default": "'{}'"
         },
         {
           "name": "primary_technique",
           "type": "string[]",
-          "nullable": false
+          "nullable": false,
+          "default": "'{}'"
         },
         {
           "name": "response_time_hours",
@@ -400,12 +786,14 @@
         {
           "name": "review_count",
           "type": "number",
-          "nullable": false
+          "nullable": false,
+          "default": "0"
         },
         {
           "name": "slug",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isUnique": true
         },
         {
           "name": "stripe_account_id",
@@ -415,17 +803,20 @@
         {
           "name": "stripe_onboarding_status",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "'not_started'"
         },
         {
           "name": "total_transactions",
           "type": "number",
-          "nullable": false
+          "nullable": false,
+          "default": "0"
         },
         {
           "name": "updated_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "NOW()"
         },
         {
           "name": "years_fishing",
@@ -436,6 +827,109 @@
       "badges": [
         "RLS",
         "Triggers"
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Profiles are viewable by everyone",
+          "operation": "SELECT",
+          "using": "true"
+        },
+        {
+          "name": "Users can insert own profile",
+          "operation": "INSERT",
+          "withCheck": "(SELECT auth.uid()) = id"
+        },
+        {
+          "name": "Users can update own profile",
+          "operation": "UPDATE",
+          "using": "(SELECT auth.uid()) = id",
+          "withCheck": "(SELECT auth.uid()) = id"
+        },
+        {
+          "name": "Members are viewable by everyone",
+          "operation": "SELECT",
+          "using": "true"
+        },
+        {
+          "name": "Users can insert own member row",
+          "operation": "INSERT",
+          "withCheck": "(SELECT auth.uid()) = id"
+        },
+        {
+          "name": "Users can update own member row",
+          "operation": "UPDATE",
+          "using": "(SELECT auth.uid()) = id",
+          "withCheck": "(SELECT auth.uid()) = id"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "profiles_display_name_unique",
+          "columns": [
+            "LOWERdisplay_name"
+          ],
+          "unique": true
+        },
+        {
+          "name": "profiles_slug_unique",
+          "columns": [
+            "slug"
+          ],
+          "unique": true
+        },
+        {
+          "name": "profiles_home_state_idx",
+          "columns": [
+            "home_state"
+          ],
+          "unique": false
+        },
+        {
+          "name": "profiles_is_seller_idx",
+          "columns": [
+            "is_seller"
+          ],
+          "unique": false
+        },
+        {
+          "name": "profiles_shop_name_unique",
+          "columns": [
+            "LOWERshop_name"
+          ],
+          "unique": true
+        }
+      ],
+      "triggers": [
+        {
+          "name": "on_profiles_updated_at",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "public.handle_updated_at"
+        },
+        {
+          "name": "on_profiles_system_fields",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "public.handle_profiles_system_fields"
+        },
+        {
+          "name": "on_members_updated_at",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "public.handle_updated_at"
+        },
+        {
+          "name": "on_members_system_fields",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "public.handle_members_system_fields"
+        },
+        {
+          "name": "on_member_before_delete",
+          "event": "DELETE",
+          "timing": "BEFORE",
+          "function": "public.handle_member_deletion"
+        }
       ]
     },
     {
@@ -445,27 +939,95 @@
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
         },
         {
           "name": "listing_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "listings",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "user_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "viewed_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "now()"
         }
       ],
       "badges": [
         "RLS",
         "Triggers"
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Users can view own recently viewed",
+          "operation": "SELECT",
+          "using": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can insert own recently viewed",
+          "operation": "INSERT",
+          "withCheck": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can update own recently viewed",
+          "operation": "UPDATE",
+          "using": "user_id = (SELECT auth.uid())",
+          "withCheck": "user_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can delete own recently viewed",
+          "operation": "DELETE",
+          "using": "user_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_recently_viewed_user_id",
+          "columns": [
+            "user_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "idx_recently_viewed_user_viewed",
+          "columns": [
+            "user_id",
+            "viewed_at"
+          ],
+          "unique": false
+        },
+        {
+          "name": "idx_recently_viewed_listing_id",
+          "columns": [
+            "listing_id"
+          ],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "on_recently_viewed_insert",
+          "event": "INSERT",
+          "timing": "AFTER",
+          "function": "public.enforce_recently_viewed_cap"
+        }
       ]
     },
     {
@@ -480,27 +1042,49 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "now()"
         },
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
         },
         {
           "name": "popularity",
           "type": "number",
-          "nullable": false
+          "nullable": false,
+          "default": "0"
         },
         {
           "name": "term",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isUnique": true
         }
       ],
       "badges": [
         "RLS"
-      ]
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Search suggestions are publicly readable",
+          "operation": "SELECT",
+          "using": "true"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "search_suggestions_term_trgm_idx",
+          "columns": [
+            "term"
+          ],
+          "unique": false
+        }
+      ],
+      "triggers": []
     },
     {
       "name": "shop_invites",
@@ -509,7 +1093,8 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "NOW()"
         },
         {
           "name": "email",
@@ -519,42 +1104,95 @@
         {
           "name": "expires_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "(NOW() + INTERVAL '7 days')"
         },
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
         },
         {
           "name": "invited_by",
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "SET NULL"
+          }
         },
         {
           "name": "role_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "shop_roles",
+            "column": "id",
+            "onDelete": "RESTRICT"
+          }
         },
         {
           "name": "shop_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "shops",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "status",
           "type": "enum:invite_status",
-          "nullable": false
+          "nullable": false,
+          "default": "'pending'"
         },
         {
           "name": "token",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isUnique": true,
+          "default": "gen_random_uuid()"
         }
       ],
       "badges": [
         "RLS"
-      ]
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Shop members can view their shop invites",
+          "operation": "SELECT",
+          "using": "shop_id IN (\n      SELECT sm.shop_id FROM public.shop_members sm\n      WHERE sm.member_id = (SELECT auth.uid())\n    )"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "shop_invites_shop_id_idx",
+          "columns": [
+            "shop_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "shop_invites_email_idx",
+          "columns": [
+            "email"
+          ],
+          "unique": false
+        },
+        {
+          "name": "shop_invites_pending_unique",
+          "columns": [
+            "shop_id",
+            "email"
+          ],
+          "unique": true
+        }
+      ],
+      "triggers": []
     },
     {
       "name": "shop_members",
@@ -563,32 +1201,118 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "NOW()"
         },
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
         },
         {
           "name": "member_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "role_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "shop_roles",
+            "column": "id"
+          }
         },
         {
           "name": "shop_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isUnique": true,
+          "references": {
+            "table": "shops",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         }
       ],
       "badges": [
         "RLS"
-      ]
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Shop members can view co-members",
+          "operation": "SELECT",
+          "using": "EXISTS (\n      SELECT 1 FROM public.shop_members sm\n      WHERE sm.shop_id = shop_members.shop_id\n        AND sm.member_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Only shop owner can add members",
+          "operation": "INSERT",
+          "withCheck": "EXISTS (\n      SELECT 1 FROM public.shops\n      WHERE id = shop_id\n        AND owner_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Only shop owner can update member roles",
+          "operation": "UPDATE",
+          "using": "EXISTS (\n      SELECT 1 FROM public.shops\n      WHERE id = shop_members.shop_id\n        AND owner_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Only shop owner can remove members",
+          "operation": "DELETE",
+          "using": "EXISTS (\n      SELECT 1 FROM public.shops\n      WHERE id = shop_members.shop_id\n        AND owner_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Members can view own memberships",
+          "operation": "SELECT",
+          "using": "member_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Shop owners can view all shop members",
+          "operation": "SELECT",
+          "using": "EXISTS (\n      SELECT 1 FROM public.shops\n      WHERE id = shop_members.shop_id\n        AND owner_id = (SELECT auth.uid())\n    )"
+        },
+        {
+          "name": "Shop owner or self can remove members",
+          "operation": "DELETE",
+          "using": "-- Owner can remove anyone\n    EXISTS (\n      SELECT 1 FROM public.shops\n      WHERE id = shop_members.shop_id\n        AND owner_id = (SELECT auth.uid())\n    )\n    OR\n    -- Members can remove themselves\n    member_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "shop_members_one_owner_per_shop",
+          "columns": [
+            "shop_id"
+          ],
+          "unique": true
+        },
+        {
+          "name": "shop_members_member_id_idx",
+          "columns": [
+            "member_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "shop_members_one_owner_per_shop",
+          "columns": [
+            "shop_id"
+          ],
+          "unique": true
+        },
+        {
+          "name": "shop_members_role_id_idx",
+          "columns": [
+            "role_id"
+          ],
+          "unique": false
+        }
+      ],
+      "triggers": []
     },
     {
       "name": "shop_ownership_transfers",
@@ -597,7 +1321,8 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "default": "NOW()"
         },
         {
           "name": "expires_at",
@@ -607,37 +1332,96 @@
         {
           "name": "from_member_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
         },
         {
           "name": "shop_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isUnique": true,
+          "references": {
+            "table": "shops",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "status",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "'pending' CHECK (status IN ('pending', 'accepted', 'cancelled'))"
         },
         {
           "name": "to_member_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "token",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isUnique": true,
+          "default": "gen_random_uuid()"
         }
       ],
       "badges": [
         "RLS"
-      ]
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Transfer participants can view their transfers",
+          "operation": "SELECT",
+          "using": "from_member_id = (SELECT auth.uid())\n    OR to_member_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "shop_ownership_transfers_shop_id_idx",
+          "columns": [
+            "shop_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "shop_ownership_transfers_from_member_id_idx",
+          "columns": [
+            "from_member_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "shop_ownership_transfers_to_member_id_idx",
+          "columns": [
+            "to_member_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "shop_ownership_transfers_pending_unique",
+          "columns": [
+            "shop_id"
+          ],
+          "unique": true
+        }
+      ],
+      "triggers": []
     },
     {
       "name": "shop_roles",
@@ -646,17 +1430,20 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "NOW()"
         },
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true
         },
         {
           "name": "is_system",
           "type": "boolean",
-          "nullable": false
+          "nullable": false,
+          "default": "FALSE"
         },
         {
           "name": "name",
@@ -671,22 +1458,66 @@
         {
           "name": "shop_id",
           "type": "string",
-          "nullable": true
+          "nullable": true,
+          "references": {
+            "table": "shops",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "slug",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isUnique": true
         },
         {
           "name": "sort_order",
           "type": "number",
-          "nullable": false
+          "nullable": false,
+          "default": "0"
         }
       ],
       "badges": [
         "RLS"
-      ]
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Authenticated users can view system roles",
+          "operation": "SELECT",
+          "using": "shop_id IS NULL"
+        },
+        {
+          "name": "Shop members can view their shop roles",
+          "operation": "SELECT",
+          "using": "shop_id IN (\n      SELECT sm.shop_id FROM public.shop_members sm\n      WHERE sm.member_id = (SELECT auth.uid())\n    )"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "shop_roles_shop_slug_unique",
+          "columns": [
+            "shop_id",
+            "slug"
+          ],
+          "unique": true
+        },
+        {
+          "name": "shop_roles_system_slug_unique",
+          "columns": [
+            "slug"
+          ],
+          "unique": true
+        },
+        {
+          "name": "shop_roles_shop_id_idx",
+          "columns": [
+            "shop_id"
+          ],
+          "unique": false
+        }
+      ],
+      "triggers": []
     },
     {
       "name": "shops",
@@ -710,7 +1541,8 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "NOW()"
         },
         {
           "name": "deleted_at",
@@ -730,27 +1562,37 @@
         {
           "name": "id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
         },
         {
           "name": "is_stripe_connected",
           "type": "boolean",
-          "nullable": false
+          "nullable": false,
+          "default": "FALSE"
         },
         {
           "name": "is_verified",
           "type": "boolean",
-          "nullable": false
+          "nullable": false,
+          "default": "FALSE"
         },
         {
           "name": "owner_id",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
         {
           "name": "review_count",
           "type": "number",
-          "nullable": false
+          "nullable": false,
+          "default": "0"
         },
         {
           "name": "shop_name",
@@ -760,7 +1602,8 @@
         {
           "name": "slug",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isUnique": true
         },
         {
           "name": "stripe_account_id",
@@ -770,7 +1613,8 @@
         {
           "name": "stripe_onboarding_status",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "'not_started'"
         },
         {
           "name": "stripe_subscription_id",
@@ -780,27 +1624,89 @@
         {
           "name": "subscription_status",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "'active'"
         },
         {
           "name": "subscription_tier",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "'basic'"
         },
         {
           "name": "total_transactions",
           "type": "number",
-          "nullable": false
+          "nullable": false,
+          "default": "0"
         },
         {
           "name": "updated_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "NOW()"
         }
       ],
       "badges": [
         "RLS",
         "Triggers"
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Shops are viewable by everyone",
+          "operation": "SELECT",
+          "using": "true"
+        },
+        {
+          "name": "Users can create own shops",
+          "operation": "INSERT",
+          "withCheck": "owner_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Shop owner or admin can update shop",
+          "operation": "UPDATE",
+          "using": "EXISTS (\n      SELECT 1 FROM public.shop_members\n      WHERE shop_id = shops.id\n        AND member_id = (SELECT auth.uid())\n        AND role IN ('owner', 'admin')\n    )"
+        },
+        {
+          "name": "Only shop owner can delete shop",
+          "operation": "DELETE",
+          "using": "owner_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Shop owner or manager can update shop",
+          "operation": "UPDATE",
+          "using": "EXISTS (\n      SELECT 1 FROM public.shop_members\n      WHERE shop_id = shops.id\n        AND member_id = (SELECT auth.uid())\n        AND role_id IN (\n          '11111111-1111-1111-1111-111111111101',\n          '11111111-1111-1111-1111-111111111102'\n        )\n    )"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "shops_owner_id_idx",
+          "columns": [
+            "owner_id"
+          ],
+          "unique": false
+        },
+        {
+          "name": "shops_is_verified_idx",
+          "columns": [
+            "is_verified"
+          ],
+          "unique": false
+        },
+        {
+          "name": "shops_subscription_tier_idx",
+          "columns": [
+            "subscription_tier"
+          ],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "on_shops_updated_at",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "public.handle_updated_at"
+        }
       ]
     },
     {
@@ -810,7 +1716,8 @@
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "default": "NOW()"
         },
         {
           "name": "entity_id",
@@ -825,12 +1732,31 @@
         {
           "name": "slug",
           "type": "string",
-          "nullable": false
+          "nullable": false,
+          "isPrimaryKey": true
         }
       ],
       "badges": [
         "RLS"
-      ]
+      ],
+      "rlsPolicies": [
+        {
+          "name": "Slugs are viewable by everyone",
+          "operation": "SELECT",
+          "using": "true"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "slugs_entity_lookup",
+          "columns": [
+            "entity_type",
+            "entity_id"
+          ],
+          "unique": true
+        }
+      ],
+      "triggers": []
     }
   ]
 }

@@ -12,9 +12,22 @@ interface CoverageListProps {
 export function CoverageList({ journeys }: CoverageListProps) {
   const { selectedItem, setSelectedItem } = useDocsContext();
 
+  const layerEntries = Object.entries(LAYER_CONFIG) as [keyof typeof LAYER_CONFIG, typeof LAYER_CONFIG[keyof typeof LAYER_CONFIG]][];
+
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Journey Coverage</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>Journey Coverage</h2>
+        <p className={styles.subtitle}>{journeys.length} journeys</p>
+      </div>
+      <div className={styles.legend}>
+        {layerEntries.map(([key, cfg]) => (
+          <span key={key} className={styles.legendItem} style={{ color: cfg.color }}>
+            <span className={styles.legendKey}>{cfg.label.charAt(0)}</span>
+            {cfg.label}
+          </span>
+        ))}
+      </div>
       <div className={styles.grid}>
         {journeys.map((journey) => {
           const steps = journey.nodes.filter((n) => n.type === 'step');

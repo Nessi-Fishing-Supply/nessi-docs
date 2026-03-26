@@ -1,97 +1,122 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useSyncExternalStore } from 'react';
 
-/**
- * ViewBox-based pan/zoom — adjusts the SVG viewBox instead of CSS transforms.
- * This keeps SVG content vector-crisp at any zoom level (no bitmap scaling).
- */
-
-const ZOOM_FACTOR = 1.06;
+const ZOOM_FACTOR = 1.12;
 const MIN_ZOOM = 0.1;
-const MAX_ZOOM = 6;
+const MAX_ZOOM = 20;
+const LEFT_PADDING_SVG = 60;
+const INITIAL_ZOOM = 1.25;
 
 interface PanZoomState {
   zoom: number;
-  // viewBox offset in SVG coordinates
   vx: number;
   vy: number;
+  // Cached viewport dimensions in SVG units (computed from container size / zoom)
+  vbW: number;
+  vbH: number;
 }
 
-// External store for zero-lag updates (no React setState in hot path)
-let state: PanZoomState = { zoom: 1, vx: 0, vy: 0 };
-let listeners = new Set<() => void>();
+let state: PanZoomState = { zoom: INITIAL_ZOOM, vx: 0, vy: 0, vbW: 640, vbH: 480 };
+const listeners = new Set<() => void>();
+const savedViews = new Map<string, PanZoomState>();
 
-function getState() {
-  return state;
-}
+function getSnapshot() { return state; }
+function subscribe(cb: () => void) { listeners.add(cb); return () => listeners.delete(cb); }
+function emit(next: PanZoomState) { state = next; listeners.forEach((cb) => cb()); }
 
-function subscribe(cb: () => void) {
-  listeners.add(cb);
-  return () => listeners.delete(cb);
-}
-
-function emit(next: PanZoomState) {
-  state = next;
-  listeners.forEach((cb) => cb());
-}
-
-export function usePanZoom(baseViewBox: { minX: number; minY: number; width: number; height: number }) {
-  const s = useSyncExternalStore(subscribe, getState, getState);
+export function usePanZoom(
+  baseViewBox: { minX: number; minY: number; width: number; height: number },
+  viewKey?: string,
+) {
+  const s = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
   const isPanning = useRef(false);
   const lastMouse = useRef({ x: 0, y: 0 });
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const currentKey = useRef<string | undefined>(undefined);
+  const initialized = useRef(false);
 
-  // Reset state when baseViewBox changes (new journey)
-  const prevBase = useRef(baseViewBox);
-  if (prevBase.current !== baseViewBox) {
-    prevBase.current = baseViewBox;
-    emit({ zoom: 1, vx: baseViewBox.minX, vy: baseViewBox.minY });
-  }
-
-  // Compute the actual viewBox from zoom + pan
-  const getViewBox = useCallback(() => {
-    const w = baseViewBox.width / s.zoom;
-    const h = baseViewBox.height / s.zoom;
-    return { x: s.vx, y: s.vy, w, h };
-  }, [s.vx, s.vy, s.zoom, baseViewBox.width, baseViewBox.height]);
-
-  const vb = getViewBox();
-
-  // Convert screen px to SVG coordinate delta
-  const screenToSvgDelta = useCallback((dxPx: number, dyPx: number) => {
+  // Helper: get container pixel dimensions
+  const getContainer = useCallback(() => {
     const el = wrapperRef.current;
-    if (!el) return { dx: 0, dy: 0 };
-    const rect = el.getBoundingClientRect();
-    const currentVb = getViewBox();
+    if (!el) return { w: 800, h: 600 };
+    const r = el.getBoundingClientRect();
+    return { w: r.width || 800, h: r.height || 600 };
+  }, []);
+
+  // Helper: build full state with viewport dimensions
+  const buildState = useCallback((zoom: number, vx: number, vy: number): PanZoomState => {
+    const c = getContainer();
+    return { zoom, vx, vy, vbW: c.w / zoom, vbH: c.h / zoom };
+  }, [getContainer]);
+
+  const saveCurrentView = useCallback(() => {
+    if (currentKey.current) savedViews.set(currentKey.current, { ...state });
+  }, []);
+
+  const computeInitialView = useCallback((): PanZoomState => {
+    const c = getContainer();
+    const vbH = c.h / INITIAL_ZOOM;
+    const centerY = baseViewBox.minY + baseViewBox.height / 2;
     return {
-      dx: (dxPx / rect.width) * currentVb.w,
-      dy: (dyPx / rect.height) * currentVb.h,
+      zoom: INITIAL_ZOOM,
+      vx: baseViewBox.minX - LEFT_PADDING_SVG,
+      vy: centerY - vbH / 2,
+      vbW: c.w / INITIAL_ZOOM,
+      vbH,
     };
-  }, [getViewBox]);
+  }, [baseViewBox, getContainer]);
+
+  // Handle view key changes
+  const prevKey = useRef(viewKey);
+  useEffect(() => {
+    const keyChanged = prevKey.current !== viewKey;
+    const firstMount = !initialized.current;
+
+    if (keyChanged || firstMount) {
+      if (keyChanged) saveCurrentView();
+      prevKey.current = viewKey;
+      currentKey.current = viewKey;
+      initialized.current = true;
+
+      const saved = viewKey ? savedViews.get(viewKey) : undefined;
+      if (saved) {
+        emit(saved);
+      } else {
+        emit(computeInitialView());
+        requestAnimationFrame(() => emit(computeInitialView()));
+      }
+    }
+  }, [viewKey, saveCurrentView, computeInitialView]);
+
+  useEffect(() => {
+    return () => { if (currentKey.current) savedViews.set(currentKey.current, { ...state }); };
+  }, []);
+
+  // Render-safe: vb comes from the store, no ref access
+  const vb = { x: s.vx, y: s.vy, w: s.vbW, h: s.vbH };
 
   const zoomIn = useCallback(() => {
-    emit({ ...state, zoom: Math.min(state.zoom * ZOOM_FACTOR, MAX_ZOOM) });
-  }, []);
+    const newZoom = Math.min(state.zoom * ZOOM_FACTOR, MAX_ZOOM);
+    emit(buildState(newZoom, state.vx, state.vy));
+  }, [buildState]);
 
   const zoomOut = useCallback(() => {
-    emit({ ...state, zoom: Math.max(state.zoom / ZOOM_FACTOR, MIN_ZOOM) });
-  }, []);
+    const newZoom = Math.max(state.zoom / ZOOM_FACTOR, MIN_ZOOM);
+    emit(buildState(newZoom, state.vx, state.vy));
+  }, [buildState]);
 
   const resetView = useCallback(() => {
-    emit({ zoom: 1, vx: baseViewBox.minX, vy: baseViewBox.minY });
-  }, [baseViewBox.minX, baseViewBox.minY]);
+    emit(computeInitialView());
+    if (currentKey.current) savedViews.delete(currentKey.current);
+  }, [computeInitialView]);
 
-  const panTo = useCallback(
-    (svgCenterX: number, svgCenterY: number) => {
-      const s = getState();
-      const vbW = baseViewBox.width / s.zoom;
-      const vbH = baseViewBox.height / s.zoom;
-      emit({ ...s, vx: svgCenterX - vbW / 2, vy: svgCenterY - vbH / 2 });
-    },
-    [baseViewBox.width, baseViewBox.height],
-  );
+  const panTo = useCallback((svgCenterX: number, svgCenterY: number) => {
+    const c = getContainer();
+    const z = state.zoom;
+    emit({ zoom: z, vx: svgCenterX - c.w / z / 2, vy: svgCenterY - c.h / z / 2, vbW: c.w / z, vbH: c.h / z });
+  }, [getContainer]);
 
   const handlers = {
     onMouseDown: useCallback((e: React.MouseEvent) => {
@@ -102,70 +127,37 @@ export function usePanZoom(baseViewBox: { minX: number; minY: number; width: num
 
     onMouseMove: useCallback((e: React.MouseEvent) => {
       if (!isPanning.current) return;
-      const dxPx = e.clientX - lastMouse.current.x;
-      const dyPx = e.clientY - lastMouse.current.y;
+      const dx = e.clientX - lastMouse.current.x;
+      const dy = e.clientY - lastMouse.current.y;
       lastMouse.current = { x: e.clientX, y: e.clientY };
-
-      const el = wrapperRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const s = getState();
-      const vbW = baseViewBox.width / s.zoom;
-      const vbH = baseViewBox.height / s.zoom;
-
-      // Pan: move viewBox opposite to mouse direction
-      emit({
-        ...s,
-        vx: s.vx - (dxPx / rect.width) * vbW,
-        vy: s.vy - (dyPx / rect.height) * vbH,
-      });
-    }, [baseViewBox.width, baseViewBox.height]),
-
-    onMouseUp: useCallback(() => {
-      isPanning.current = false;
+      const z = state.zoom;
+      emit({ ...state, vx: state.vx - dx / z, vy: state.vy - dy / z });
     }, []),
 
-    onMouseLeave: useCallback(() => {
-      isPanning.current = false;
-    }, []),
+    onMouseUp: useCallback(() => { isPanning.current = false; }, []),
+    onMouseLeave: useCallback(() => { isPanning.current = false; }, []),
 
     onWheel: useCallback((e: React.WheelEvent) => {
       e.preventDefault();
       const el = wrapperRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
-      const s = getState();
-
-      // Cursor position as fraction of the wrapper
+      const z = state.zoom;
       const fx = (e.clientX - rect.left) / rect.width;
       const fy = (e.clientY - rect.top) / rect.height;
-
-      const oldW = baseViewBox.width / s.zoom;
-      const oldH = baseViewBox.height / s.zoom;
-
-      const direction = e.deltaY > 0 ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
-      const newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, s.zoom * direction));
-
-      const newW = baseViewBox.width / newZoom;
-      const newH = baseViewBox.height / newZoom;
-
-      // Adjust origin so the point under cursor stays fixed
-      emit({
-        zoom: newZoom,
-        vx: s.vx + (oldW - newW) * fx,
-        vy: s.vy + (oldH - newH) * fy,
-      });
-    }, [baseViewBox.width, baseViewBox.height]),
+      const oldW = rect.width / z;
+      const oldH = rect.height / z;
+      const dir = e.deltaY > 0 ? 1 / ZOOM_FACTOR : ZOOM_FACTOR;
+      const nz = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z * dir));
+      const newW = rect.width / nz;
+      const newH = rect.height / nz;
+      emit({ zoom: nz, vx: state.vx + (oldW - newW) * fx, vy: state.vy + (oldH - newH) * fy, vbW: newW, vbH: newH });
+    }, []),
   };
 
   return {
-    zoom: s.zoom,
+    zoom: Math.round((s.zoom / INITIAL_ZOOM) * 100),
     viewBoxString: `${vb.x} ${vb.y} ${vb.w} ${vb.h}`,
-    zoomIn,
-    zoomOut,
-    resetView,
-    panTo,
-    handlers,
-    wrapperRef,
+    zoomIn, zoomOut, resetView, panTo, handlers, wrapperRef,
   };
 }

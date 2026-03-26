@@ -16,7 +16,7 @@ export function PermissionsMatrix({ roles }: PermissionsMatrixProps) {
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
-        <h1 className={styles.title}>Permissions Matrix</h1>
+        <h2 className={styles.title}>Permissions Matrix</h2>
         <p className={styles.subtitle}>
           {roles.length} roles &middot; {PERMISSION_FEATURES.length} features
         </p>

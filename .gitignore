@@ -25,6 +25,9 @@ pnpm-debug.log*
 # superpowers brainstorm state
 .superpowers/
 
+# playwright MCP
+.playwright-mcp/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

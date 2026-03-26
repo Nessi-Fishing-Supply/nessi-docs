@@ -17,7 +17,7 @@ export function EntryNode({ x, y, label, isDimmed, onClick }: EntryNodeProps) {
     <g
       transform={`translate(${x},${y})`}
       onClick={onClick}
-      style={{ cursor: 'pointer', opacity }}
+      style={{ cursor: 'pointer', opacity, transition: 'opacity 400ms ease-out' }}
     >
       <rect
         width={w}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './app-shell.module.scss';
 
@@ -12,8 +12,6 @@ const DETAIL_PANEL_PAGES = [
   '/lifecycles',
   '/coverage',
   '/features',
-  '/permissions',
-  '/config',
 ];
 
 interface AppShellProps {
@@ -25,17 +23,15 @@ interface AppShellProps {
 
 export function AppShell({ topbar, sidebar, detail, children }: AppShellProps) {
   const pathname = usePathname();
-  const [manualOverride, setManualOverride] = useState<boolean | null>(null);
+  const [manualOverride, setManualOverride] = useState<{ path: string; value: boolean } | null>(null);
 
   const pageSupportsDetail = DETAIL_PANEL_PAGES.some((p) => pathname.startsWith(p))
     && !pathname.startsWith('/data-model/erd');
 
-  // Reset manual override when navigating to a different page
-  useEffect(() => {
-    setManualOverride(null);
-  }, [pathname]);
+  // Override only applies to the page it was set on
+  const activeOverride = manualOverride?.path === pathname ? manualOverride.value : null;
 
-  const detailCollapsed = manualOverride !== null ? !manualOverride : !pageSupportsDetail;
+  const detailCollapsed = activeOverride !== null ? !activeOverride : !pageSupportsDetail;
 
   return (
     <div className={`${styles.shell} ${detailCollapsed ? styles.collapsed : ''}`}>
@@ -47,7 +43,11 @@ export function AppShell({ topbar, sidebar, detail, children }: AppShellProps) {
       {/* Toggle sits on the shell grid, not inside main, so overflow:hidden doesn't clip it */}
       <button
         className={styles.detailToggle}
-        onClick={() => setManualOverride((prev) => prev !== null ? !prev : pageSupportsDetail ? false : true)}
+        onClick={() => setManualOverride((prev) => {
+          const current = prev?.path === pathname ? prev.value : null;
+          const next = current !== null ? !current : pageSupportsDetail ? false : true;
+          return { path: pathname, value: next };
+        })}
         aria-label={detailCollapsed ? 'Show detail panel' : 'Hide detail panel'}
       >
         <span className={styles.toggleArrow}>

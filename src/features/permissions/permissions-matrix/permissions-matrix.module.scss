@@ -7,20 +7,21 @@
 // ─── Header ───
 
 .header {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .title {
   font-family: var(--font-family-serif);
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--text-primary);
   margin: 0 0 4px;
 }
 
 .subtitle {
-  font-size: 11px;
-  font-family: var(--font-family-mono);
+  font-size: 12px;
   color: var(--text-muted);
   margin: 0;
 }

@@ -25,7 +25,7 @@ export function DecisionNode({
   const opacity = isDimmed ? 0.15 : 1;
 
   return (
-    <g style={{ opacity }}>
+    <g style={{ opacity, transition: 'opacity 400ms ease-out' }}>
       {/* Diamond */}
       <g
         transform={`translate(${cx},${cy}) rotate(45)`}

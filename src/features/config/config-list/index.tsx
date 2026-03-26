@@ -36,7 +36,7 @@ export function ConfigList({ enums }: ConfigListProps) {
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
-        <h1 className={styles.title}>Config Reference</h1>
+        <h2 className={styles.title}>Config Reference</h2>
         <p className={styles.subtitle}>
           {enums.length} enums &middot; {totalValues} total values
         </p>

@@ -4,12 +4,31 @@
   height: 100%;
 }
 
+.header {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
 .erdLink {
   font-size: 11px;
   color: #3d8c75;
   text-decoration: none;
   display: inline-block;
-  margin-bottom: 16px;
 
   &:hover {
     text-decoration: underline;
@@ -63,7 +82,7 @@
   }
 }
 
-.header {
+.cardHeader {
   display: flex;
   align-items: center;
   gap: 10px;

@@ -8,7 +8,23 @@
       "componentCount": 3,
       "endpointCount": 3,
       "hookCount": 1,
-      "serviceCount": 2
+      "serviceCount": 2,
+      "entities": [
+        "addresses"
+      ],
+      "journeySlugs": [],
+      "links": [
+        {
+          "type": "entity",
+          "label": "addresses",
+          "href": "/data-model"
+        },
+        {
+          "type": "api-group",
+          "label": "Addresses",
+          "href": "/api-map"
+        }
+      ]
     },
     {
       "slug": "auth",
@@ -18,7 +34,30 @@
       "componentCount": 7,
       "endpointCount": 4,
       "hookCount": 0,
-      "serviceCount": 4
+      "serviceCount": 4,
+      "entities": [
+        "members"
+      ],
+      "journeySlugs": [
+        "signup"
+      ],
+      "links": [
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "signup",
+          "href": "/journeys/signup"
+        },
+        {
+          "type": "api-group",
+          "label": "Auth",
+          "href": "/api-map"
+        }
+      ]
     },
     {
       "slug": "cart",
@@ -28,7 +67,60 @@
       "componentCount": 4,
       "endpointCount": 6,
       "hookCount": 3,
-      "serviceCount": 2
+      "serviceCount": 2,
+      "entities": [
+        "cart_items",
+        "listings",
+        "members",
+        "shops"
+      ],
+      "journeySlugs": [
+        "guest-cart",
+        "login",
+        "signup"
+      ],
+      "links": [
+        {
+          "type": "entity",
+          "label": "cart_items",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "listings",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "guest-cart",
+          "href": "/journeys/guest-cart"
+        },
+        {
+          "type": "journey",
+          "label": "login",
+          "href": "/journeys/login"
+        },
+        {
+          "type": "journey",
+          "label": "signup",
+          "href": "/journeys/signup"
+        },
+        {
+          "type": "api-group",
+          "label": "Cart",
+          "href": "/api-map"
+        }
+      ]
     },
     {
       "slug": "context",
@@ -38,7 +130,10 @@
       "componentCount": 1,
       "endpointCount": 0,
       "hookCount": 0,
-      "serviceCount": 0
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
     },
     {
       "slug": "dashboard",
@@ -48,7 +143,10 @@
       "componentCount": 8,
       "endpointCount": 0,
       "hookCount": 0,
-      "serviceCount": 0
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
     },
     {
       "slug": "editorial",
@@ -58,7 +156,10 @@
       "componentCount": 14,
       "endpointCount": 0,
       "hookCount": 0,
-      "serviceCount": 0
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
     },
     {
       "slug": "email",
@@ -68,7 +169,18 @@
       "componentCount": 0,
       "endpointCount": 0,
       "hookCount": 0,
-      "serviceCount": 2
+      "serviceCount": 2,
+      "entities": [],
+      "journeySlugs": [
+        "shop-invite-acceptance"
+      ],
+      "links": [
+        {
+          "type": "journey",
+          "label": "shop-invite-acceptance",
+          "href": "/journeys/shop-invite-acceptance"
+        }
+      ]
     },
     {
       "slug": "listings",
@@ -78,7 +190,35 @@
       "componentCount": 56,
       "endpointCount": 13,
       "hookCount": 10,
-      "serviceCount": 7
+      "serviceCount": 7,
+      "entities": [
+        "listings",
+        "members",
+        "shops"
+      ],
+      "journeySlugs": [],
+      "links": [
+        {
+          "type": "entity",
+          "label": "listings",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "api-group",
+          "label": "Listings",
+          "href": "/api-map"
+        }
+      ]
     },
     {
       "slug": "members",
@@ -88,7 +228,23 @@
       "componentCount": 21,
       "endpointCount": 3,
       "hookCount": 2,
-      "serviceCount": 4
+      "serviceCount": 4,
+      "entities": [
+        "members"
+      ],
+      "journeySlugs": [],
+      "links": [
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "api-group",
+          "label": "Members",
+          "href": "/api-map"
+        }
+      ]
     },
     {
       "slug": "messaging",
@@ -98,7 +254,10 @@
       "componentCount": 4,
       "endpointCount": 0,
       "hookCount": 0,
-      "serviceCount": 0
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
     },
     {
       "slug": "orders",
@@ -108,7 +267,10 @@
       "componentCount": 2,
       "endpointCount": 0,
       "hookCount": 0,
-      "serviceCount": 0
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
     },
     {
       "slug": "recently-viewed",
@@ -118,17 +280,73 @@
       "componentCount": 0,
       "endpointCount": 2,
       "hookCount": 4,
-      "serviceCount": 2
+      "serviceCount": 2,
+      "entities": [
+        "members",
+        "recently_viewed",
+        "shops"
+      ],
+      "journeySlugs": [
+        "buyer-recently-viewed",
+        "guest-recently-viewed",
+        "login",
+        "signup"
+      ],
+      "links": [
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "recently_viewed",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "buyer-recently-viewed",
+          "href": "/journeys/buyer-recently-viewed"
+        },
+        {
+          "type": "journey",
+          "label": "guest-recently-viewed",
+          "href": "/journeys/guest-recently-viewed"
+        },
+        {
+          "type": "journey",
+          "label": "login",
+          "href": "/journeys/login"
+        },
+        {
+          "type": "journey",
+          "label": "signup",
+          "href": "/journeys/signup"
+        },
+        {
+          "type": "api-group",
+          "label": "Recently Viewed",
+          "href": "/api-map"
+        }
+      ]
     },
     {
       "slug": "shared",
       "name": "Shared",
       "description": "Shared feature",
-      "status": "built",
+      "status": "planned",
       "componentCount": 0,
       "endpointCount": 0,
       "hookCount": 3,
-      "serviceCount": 0
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
     },
     {
       "slug": "shops",
@@ -138,7 +356,48 @@
       "componentCount": 18,
       "endpointCount": 16,
       "hookCount": 5,
-      "serviceCount": 5
+      "serviceCount": 5,
+      "entities": [
+        "shop_members",
+        "shops",
+        "slugs"
+      ],
+      "journeySlugs": [
+        "shop-invite-acceptance",
+        "signup"
+      ],
+      "links": [
+        {
+          "type": "entity",
+          "label": "shop_members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "slugs",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "shop-invite-acceptance",
+          "href": "/journeys/shop-invite-acceptance"
+        },
+        {
+          "type": "journey",
+          "label": "signup",
+          "href": "/journeys/signup"
+        },
+        {
+          "type": "api-group",
+          "label": "Shops",
+          "href": "/api-map"
+        }
+      ]
     }
   ]
 }

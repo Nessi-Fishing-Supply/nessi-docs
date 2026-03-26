@@ -32,7 +32,7 @@ export function Edge({ from, to, isDecision, isLit, isDimmed }: EdgeProps) {
       strokeWidth={strokeWidth}
       strokeDasharray={isDecision ? '5 5' : undefined}
       markerEnd={marker}
-      style={{ opacity }}
+      style={{ opacity, transition: 'opacity 400ms ease-out, stroke-width 300ms ease-out' }}
     />
   );
 }

@@ -5,16 +5,25 @@ import { usePanZoom } from '../hooks/use-pan-zoom';
 import { DotGrid } from '../components/dot-grid';
 import styles from './canvas-provider.module.scss';
 
+interface ZoomControls {
+  zoom: number;
+  zoomIn: () => void;
+  zoomOut: () => void;
+  resetView: () => void;
+}
+
 interface CanvasProviderProps {
   viewBox: { minX: number; minY: number; width: number; height: number };
+  viewKey?: string;
   children: ReactNode;
   overlay?: ReactNode;
   renderMinimap?: (viewBoxString: string, panTo: (x: number, y: number) => void) => ReactNode;
+  renderToolbar?: (zoomControls: ZoomControls) => ReactNode;
 }
 
-export function CanvasProvider({ viewBox, children, overlay, renderMinimap }: CanvasProviderProps) {
+export function CanvasProvider({ viewBox, viewKey, children, overlay, renderMinimap, renderToolbar }: CanvasProviderProps) {
   const { zoom, viewBoxString, zoomIn, zoomOut, resetView, panTo, handlers, wrapperRef } =
-    usePanZoom(viewBox);
+    usePanZoom(viewBox, viewKey);
 
   return (
     <div className={styles.wrapper} ref={wrapperRef} {...handlers}>
@@ -23,7 +32,7 @@ export function CanvasProvider({ viewBox, children, overlay, renderMinimap }: Ca
       <svg
         className={styles.svg}
         viewBox={viewBoxString}
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="xMinYMid meet"
       >
         <defs>
           <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
@@ -43,17 +52,7 @@ export function CanvasProvider({ viewBox, children, overlay, renderMinimap }: Ca
 
       {renderMinimap && renderMinimap(viewBoxString, panTo)}
 
-      <div className={styles.controls}>
-        <button className={styles.controlBtn} onClick={zoomOut} aria-label="Zoom out">
-          &minus;
-        </button>
-        <button className={styles.controlBtn} onClick={resetView} aria-label="Reset zoom">
-          {Math.round(zoom * 100)}%
-        </button>
-        <button className={styles.controlBtn} onClick={zoomIn} aria-label="Zoom in">
-          +
-        </button>
-      </div>
+      {renderToolbar && renderToolbar({ zoom, zoomIn, zoomOut, resetView })}
     </div>
   );
 }

@@ -25,6 +25,7 @@ export interface Lifecycle {
   badge?: string;
   description: string;
   why?: string;
+  source?: 'enum' | 'check_constraint' | 'typescript';
   states: LifecycleState[];
   transitions: LifecycleTransition[];
 }

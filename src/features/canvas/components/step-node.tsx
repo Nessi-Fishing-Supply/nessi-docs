@@ -20,7 +20,7 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
     <g
       transform={`translate(${node.x},${node.y})`}
       onClick={onClick}
-      style={{ cursor: 'pointer', opacity }}
+      style={{ cursor: 'pointer', opacity, transition: 'opacity 400ms ease-out' }}
     >
       {/* Selection glow */}
       {isSelected && (

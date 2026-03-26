@@ -2,81 +2,55 @@
   "nodes": [
     {
       "id": "addresses",
-      "label": "Addresses",
-      "x": 0,
-      "y": 0
+      "label": "Addresses"
     },
     {
       "id": "cart_items",
-      "label": "Cart Items",
-      "x": 280,
-      "y": 0
+      "label": "Cart Items"
     },
     {
       "id": "listing_photos",
-      "label": "Listing Photos",
-      "x": 560,
-      "y": 0
+      "label": "Listing Photos"
     },
     {
       "id": "listings",
-      "label": "Listings",
-      "x": 0,
-      "y": 160
+      "label": "Listings"
     },
     {
       "id": "members",
-      "label": "Members",
-      "x": 280,
-      "y": 160
+      "label": "Members"
     },
     {
       "id": "recently_viewed",
-      "label": "Recently Viewed",
-      "x": 560,
-      "y": 160
+      "label": "Recently Viewed"
     },
     {
       "id": "search_suggestions",
-      "label": "Search Suggestions",
-      "x": 0,
-      "y": 320
+      "label": "Search Suggestions"
     },
     {
       "id": "shop_invites",
-      "label": "Shop Invites",
-      "x": 280,
-      "y": 320
+      "label": "Shop Invites"
     },
     {
       "id": "shop_members",
-      "label": "Shop Members",
-      "x": 560,
-      "y": 320
+      "label": "Shop Members"
     },
     {
       "id": "shop_ownership_transfers",
-      "label": "Shop Ownership Transfers",
-      "x": 0,
-      "y": 480
+      "label": "Shop Ownership Transfers"
     },
     {
       "id": "shop_roles",
-      "label": "Shop Roles",
-      "x": 280,
-      "y": 480
+      "label": "Shop Roles"
     },
     {
       "id": "shops",
-      "label": "Shops",
-      "x": 560,
-      "y": 480
+      "label": "Shops"
     },
     {
       "id": "slugs",
-      "label": "Slugs",
-      "x": 0,
-      "y": 640
+      "label": "Slugs"
     }
   ],
   "edges": [
