@@ -7,6 +7,7 @@ import { Sidebar } from '@/components/layout/sidebar';
 import { DetailPanel } from '@/components/layout/detail-panel';
 import { SearchTrigger } from '@/features/search/search-trigger';
 import { DeviceGate } from '@/components/layout/device-gate';
+import { StalenessBanner } from '@/components/layout/staleness-banner';
 import { getAllJourneys } from '@/data';
 import { lifecycles } from '@/data/lifecycles';
 import '@/styles/globals.scss';
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
       <body className={dmSans.className}>
+        <StalenessBanner />
         <DocsProvider>
           <DeviceGate />
           <AppShell
