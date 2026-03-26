@@ -33,7 +33,7 @@ export function StepPanel({ node, journey }: StepPanelProps) {
         </>
       )}
 
-      {node.route && (
+      {node.route && node.layer === 'server' && (
         <>
           <SectionLabel>API Route</SectionLabel>
           <Link
@@ -46,6 +46,20 @@ export function StepPanel({ node, journey }: StepPanelProps) {
           >
             {node.route} →
           </Link>
+        </>
+      )}
+
+      {node.route && node.layer !== 'server' && (
+        <>
+          <SectionLabel>Page</SectionLabel>
+          <a
+            href={`https://nessifishingsupply.com${node.route}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.codeBlockAccent}
+          >
+            {node.route} ↗
+          </a>
         </>
       )}
 

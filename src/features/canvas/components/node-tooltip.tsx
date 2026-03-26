@@ -152,7 +152,30 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                       </svg>
                     </Link>
                   ) : (
-                    <div style={{ ...monoBlock, color: '#e27739' }}>{node.route}</div>
+                    <a
+                      href={`https://nessifishingsupply.com${node.route}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        ...monoBlock,
+                        color: '#e27739',
+                        textDecoration: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                        transition: 'background 150ms ease-out',
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                    >
+                      <span style={{ flex: 1 }}>{node.route}</span>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.5 }}>
+                        <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                        <path d="M7 2.5H9.5V5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M9.5 2.5L5.5 6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                      </svg>
+                    </a>
                   )}
                 </div>
               )}
