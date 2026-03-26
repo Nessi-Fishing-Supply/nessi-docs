@@ -38,7 +38,8 @@ import metaRaw from './generated/_meta.json';
 interface RawJourneyNode {
   id: string;
   type: 'entry' | 'step' | 'decision';
-  label: string;
+  label?: string;
+  title?: string;
   x?: number;
   y?: number;
   layer?: string;
@@ -47,6 +48,9 @@ interface RawJourneyNode {
   codeRef?: string;
   notes?: string;
   why?: string;
+  tooltip?: string;
+  action?: string;
+  method?: string;
   errorCases?: ErrorCase[];
   ux?: JourneyNode['ux'];
   options?: JourneyNode['options'];
@@ -202,13 +206,24 @@ function cleanJourneyTitle(title: string): string {
   return t;
 }
 
+/** Normalize raw nodes: v2 schema uses 'title' instead of 'label', handle both */
+function normalizeNodes(rawNodes: RawJourneyNode[]): RawJourneyNode[] {
+  return rawNodes.map((n) => ({
+    ...n,
+    label: n.label || n.title || n.route || n.id,
+  }));
+}
+
 function transformJourneys(raw: RawJourney[]): Journey[] {
-  return raw.map((j) => ({
-    ...j,
-    title: cleanJourneyTitle(j.title),
-    nodes: layoutJourneyNodes(j.nodes, j.edges),
-    edges: j.edges as JourneyEdge[],
-  })) as Journey[];
+  return raw.map((j) => {
+    const normalizedNodes = normalizeNodes(j.nodes);
+    return {
+      ...j,
+      title: cleanJourneyTitle(j.title),
+      nodes: layoutJourneyNodes(normalizedNodes, j.edges),
+      edges: j.edges as JourneyEdge[],
+    };
+  }) as Journey[];
 }
 
 /* ------------------------------------------------------------------ */
