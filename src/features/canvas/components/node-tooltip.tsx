@@ -82,7 +82,7 @@ export function NodeTooltip({ node, children, suppressTooltip }: NodeTooltipProp
               {/* Header: title + badges */}
               <div>
                 <div style={{ fontSize: '12px', fontWeight: 500, color: '#e8e6e1', lineHeight: '1.4', marginBottom: '5px' }}>
-                  {node.label}
+                  {node.label || node.route || 'Step'}
                 </div>
                 <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
                   {layer && (

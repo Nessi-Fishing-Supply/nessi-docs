@@ -44,7 +44,8 @@ function nounFromPath(path: string): string {
 }
 
 /** Clean up a label for display — handles all the messy patterns */
-function cleanLabel(label: string, route?: string): string {
+function cleanLabel(label: string | undefined, route?: string): string {
+  if (!label) return route ? cleanLabel(route, undefined) : 'Untitled Step';
   let text = label;
 
   // 1. If label exactly matches route, generate friendly name
