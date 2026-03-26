@@ -143,10 +143,12 @@ interface StepNodeProps {
 export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps) {
   const [hovered, setHovered] = useState(false);
   const layer = node.layer ?? 'client';
+  const status = node.status ?? 'planned';
+  const isPlanned = status === 'planned';
   const layerCfg = LAYER_CONFIG[layer];
-  const opacity = isDimmed ? 0.15 : 1;
+  const opacity = isDimmed ? 0.15 : isPlanned ? 0.45 : 1;
   const errorCount = node.errorCases?.length ?? 0;
-  const showGlow = hovered && !isSelected;
+  const showGlow = hovered && !isSelected && !isPlanned;
 
   const displayLabel = cleanLabel(node.label, node.route);
 
@@ -203,9 +205,10 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
         width={NODE_WIDTH}
         height={NODE_HEIGHT}
         rx={6}
-        fill={hexToRgba(layerCfg.color, 0.08)}
-        stroke={isSelected ? layerCfg.color : hovered ? hexToRgba(layerCfg.color, 0.4) : hexToRgba(layerCfg.color, 0.2)}
+        fill={hexToRgba(layerCfg.color, isPlanned ? 0.03 : 0.08)}
+        stroke={isSelected ? layerCfg.color : hovered ? hexToRgba(layerCfg.color, 0.4) : hexToRgba(layerCfg.color, isPlanned ? 0.12 : 0.2)}
         strokeWidth={isSelected ? 1.5 : 1}
+        strokeDasharray={isPlanned ? '4 3' : undefined}
       />
       {/* Left accent */}
       <rect x={0} y={6} width={2.5} height={NODE_HEIGHT - 12} rx={1} fill={layerCfg.color} />

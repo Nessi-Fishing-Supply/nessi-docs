@@ -82,9 +82,26 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                 gap: '8px',
               }}
             >
+              {/* Planned/roadmap banner */}
+              {node.status === 'planned' && (
+                <div style={{
+                  fontSize: '9px',
+                  fontFamily: 'var(--font-family-mono)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  color: '#6a6860',
+                  padding: '4px 8px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '4px',
+                  border: '1px dashed rgba(255,255,255,0.08)',
+                }}>
+                  Roadmap — not yet built
+                </div>
+              )}
+
               {/* Header: title + badges */}
               <div>
-                <div style={{ fontSize: '12px', fontWeight: 500, color: '#e8e6e1', lineHeight: '1.4', marginBottom: '5px' }}>
+                <div style={{ fontSize: '12px', fontWeight: 500, color: node.status === 'planned' ? '#6a6860' : '#e8e6e1', lineHeight: '1.4', marginBottom: '5px' }}>
                   {node.label || node.route || 'Step'}
                 </div>
                 <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
