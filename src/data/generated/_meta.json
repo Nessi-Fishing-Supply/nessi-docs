@@ -1,6 +1,6 @@
 {
-  "extractedAt": "2026-03-26T20:43:56.995Z",
-  "sourceCommit": "506dc04f477a3dceedc097680cfdb658c53794ba",
+  "extractedAt": "2026-03-26T20:45:43.476Z",
+  "sourceCommit": "728f72d1d277a22fa83129c85bbbea9d206c4706",
   "sourceRepo": "nessi-fishing-supply/Nessi-Web-App",
   "scriptVersion": "1.0.0",
   "itemCounts": {
@@ -8,15 +8,20 @@
     "entities": 13,
     "roles": 3,
     "permissionFeatures": 6,
-    "configs": 6,
+    "configs": 8,
     "features": 14,
-    "lifecycles": 4,
+    "lifecycles": 5,
     "journeys": 29,
     "roadmapItems": 191,
     "changelogEntries": 83,
-    "enums": 5
+    "enums": 8
   },
   "gaps": [
+    {
+      "type": "lifecycle",
+      "slug": "report",
+      "reason": "No transitions defined"
+    },
     {
       "type": "lifecycle",
       "slug": "subscription",

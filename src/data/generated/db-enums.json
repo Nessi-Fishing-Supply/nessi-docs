@@ -30,6 +30,26 @@
     {
       "name": "invite_status",
       "values": ["pending", "accepted", "expired", "revoked"]
+    },
+    {
+      "name": "report_reason",
+      "values": [
+        "spam",
+        "prohibited_item",
+        "counterfeit",
+        "inappropriate_content",
+        "off_platform_transaction",
+        "harassment",
+        "other"
+      ]
+    },
+    {
+      "name": "report_target_type",
+      "values": ["listing", "member", "shop", "message"]
+    },
+    {
+      "name": "report_status",
+      "values": ["pending", "reviewed", "resolved", "dismissed"]
     }
   ]
 }

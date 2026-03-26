@@ -116,6 +116,31 @@
       "source": "enum"
     },
     {
+      "slug": "report",
+      "name": "Report Lifecycle",
+      "description": "Status lifecycle for report entities",
+      "states": [
+        {
+          "id": "pending",
+          "label": "Pending"
+        },
+        {
+          "id": "reviewed",
+          "label": "Reviewed"
+        },
+        {
+          "id": "resolved",
+          "label": "Resolved"
+        },
+        {
+          "id": "dismissed",
+          "label": "Dismissed"
+        }
+      ],
+      "transitions": [],
+      "source": "enum"
+    },
+    {
       "slug": "subscription",
       "name": "Subscription Lifecycle",
       "description": "Status lifecycle for subscription entities",

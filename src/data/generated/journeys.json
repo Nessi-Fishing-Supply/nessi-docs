@@ -2273,11 +2273,7 @@
       "title": "Guest Cart → Login → Merge",
       "persona": "guest",
       "description": "Guest adds items to localStorage cart, logs in, and cart silently merges to the database.",
-      "relatedIssues": [
-        128,
-        129,
-        130
-      ],
+      "relatedIssues": [128, 129, 130],
       "nodes": [
         {
           "id": "add-to-cart--entry",
@@ -4677,14 +4673,7 @@
       "title": "Shop Invite → Accept (or Register & Auto-Accept)",
       "persona": "shop-member",
       "description": "A user receives a shop invite email, lands on the invite page, and either accepts directly (if authenticated) or registers a new account with auto-accept.",
-      "relatedIssues": [
-        250,
-        251,
-        252,
-        253,
-        254,
-        255
-      ],
+      "relatedIssues": [250, 251, 252, 253, 254, 255],
       "nodes": [
         {
           "id": "invite-sent--entry",
@@ -6419,10 +6408,7 @@
       "title": "Signup (Email + OTP)",
       "persona": "auth",
       "description": "New user registers with email and password, verifies via 6-digit OTP code, and gets a session. Includes invite auto-accept, cart merge, and recently-viewed merge as background side effects.",
-      "relatedIssues": [
-        159,
-        254
-      ],
+      "relatedIssues": [159, 254],
       "nodes": [
         {
           "id": "register--entry",

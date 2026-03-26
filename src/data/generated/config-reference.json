@@ -409,6 +409,66 @@
       ]
     },
     {
+      "slug": "report-reason",
+      "name": "Report Reason",
+      "description": "Database enum Report Reason with 7 values",
+      "source": "supabase/migrations/20260326000000_create_reports.sql",
+      "values": [
+        {
+          "value": "spam",
+          "label": "Spam"
+        },
+        {
+          "value": "prohibited_item",
+          "label": "Prohibited Item"
+        },
+        {
+          "value": "counterfeit",
+          "label": "Counterfeit"
+        },
+        {
+          "value": "inappropriate_content",
+          "label": "Inappropriate Content"
+        },
+        {
+          "value": "off_platform_transaction",
+          "label": "Off Platform Transaction"
+        },
+        {
+          "value": "harassment",
+          "label": "Harassment"
+        },
+        {
+          "value": "other",
+          "label": "Other"
+        }
+      ]
+    },
+    {
+      "slug": "report-target-type",
+      "name": "Report Target Type",
+      "description": "Database enum Report Target Type with 4 values",
+      "source": "supabase/migrations/20260326000000_create_reports.sql",
+      "values": [
+        {
+          "value": "listing",
+          "label": "Listing"
+        },
+        {
+          "value": "member",
+          "label": "Member"
+        },
+        {
+          "value": "shop",
+          "label": "Shop"
+        },
+        {
+          "value": "message",
+          "label": "Message"
+        }
+      ]
+    },
+    {
       "slug": "shipping-paid-by",
       "name": "Shipping Paid By",
       "description": "Database enum Shipping Paid By with 3 values",
