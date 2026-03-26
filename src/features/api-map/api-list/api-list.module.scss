@@ -304,6 +304,13 @@
   border-radius: 0 0 8px 8px;
 }
 
+.epDescription {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
 .detailCols {
   display: grid;
   grid-template-columns: 1fr 1fr;
