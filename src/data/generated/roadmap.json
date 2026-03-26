@@ -1434,7 +1434,7 @@
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/198",
       "state": "OPEN",
       "labels": ["feature", "P1-high", "database", "conductor"],
-      "status": "Todo",
+      "status": "In Progress",
       "priority": "P1 - high",
       "area": "Database",
       "executor": "Conductor",
