@@ -41,9 +41,6 @@ export function FeatureList({ features }: FeatureListProps) {
   const builtCount = features.filter((f) => f.status === 'built').length;
   const totalComponents = features.reduce((sum, f) => sum + f.componentCount, 0);
   const totalEndpoints = features.reduce((sum, f) => sum + f.endpointCount, 0);
-  const journeyCoverageCount = features.filter((f) =>
-    f.links?.some((l) => l.type === 'journey'),
-  ).length;
   const builtPct = total > 0 ? Math.round((builtCount / total) * 100) : 0;
 
   const grouped = STATUS_ORDER.map((status) => ({

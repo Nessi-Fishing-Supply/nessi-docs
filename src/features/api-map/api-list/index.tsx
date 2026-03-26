@@ -36,7 +36,10 @@ function FilterBar({
         className={`${styles.filterChip} ${allGroupsActive ? styles.filterChipActive : ''}`}
         onClick={onToggleAllGroups}
       >
-        All <span className={styles.chipCount}>{groups.reduce((s, g) => s + g.endpoints.length, 0)}</span>
+        All{' '}
+        <span className={styles.chipCount}>
+          {groups.reduce((s, g) => s + g.endpoints.length, 0)}
+        </span>
       </button>
       {groups.map((g) => (
         <button
@@ -134,7 +137,9 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
           {endpoint.auth && (
             <div className={styles.detailSection}>
               <div className={styles.detailLabel}>Authentication</div>
-              <div className={`${styles.authIndicator} ${endpoint.auth === 'admin' ? styles.authAdmin : ''}`}>
+              <div
+                className={`${styles.authIndicator} ${endpoint.auth === 'admin' ? styles.authAdmin : ''}`}
+              >
                 <span className={styles.authDot} />
                 {endpoint.auth === 'admin' ? 'Admin required' : 'User required'}
               </div>
@@ -178,11 +183,9 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 
 function EndpointRow({
   endpoint,
-  groupName,
   staggerIndex,
 }: {
   endpoint: ApiEndpoint;
-  groupName: string;
   staggerIndex: number;
 }) {
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
@@ -193,11 +196,16 @@ function EndpointRow({
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const errorCount = errors.length;
 
+  // Deep-link: auto-expand and highlight on hash match (one-time mount effect)
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.hash === `#${slug}`) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time mount init for deep-link
       setIsOpen(true);
       setHighlight(true);
-      setTimeout(() => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+      setTimeout(
+        () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+        100,
+      );
       setTimeout(() => setHighlight(false), 2000);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -223,7 +231,9 @@ function EndpointRow({
         <span className={styles.epPath}>
           {pathParts.map((part, i) =>
             part.startsWith(':') ? (
-              <span key={i} className={styles.epParam}>{part}</span>
+              <span key={i} className={styles.epParam}>
+                {part}
+              </span>
             ) : (
               <span key={i}>{part}</span>
             ),
@@ -231,16 +241,18 @@ function EndpointRow({
         </span>
         <span className={styles.epMeta}>
           {endpoint.auth && (
-            <span className={`${styles.epAuth} ${endpoint.auth === 'admin' ? styles.epAuthAdmin : ''}`}>
+            <span
+              className={`${styles.epAuth} ${endpoint.auth === 'admin' ? styles.epAuthAdmin : ''}`}
+            >
               {endpoint.auth}
             </span>
           )}
           {endpoint.tags?.map((tag) => (
-            <span key={tag} className={styles.epTag}>{tag}</span>
+            <span key={tag} className={styles.epTag}>
+              {tag}
+            </span>
           ))}
-          {errorCount > 0 && (
-            <span className={styles.epErrors}>{errorCount}</span>
-          )}
+          {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
           <span className={styles.epChevron}>&#9656;</span>
         </span>
       </button>
@@ -295,9 +307,7 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
   const [activeGroups, setActiveGroups] = useState<Set<string>>(
     () => new Set(groups.map((g) => g.name)),
   );
-  const [activeMethods, setActiveMethods] = useState<Set<string>>(
-    () => new Set(ALL_METHODS),
-  );
+  const [activeMethods, setActiveMethods] = useState<Set<string>>(() => new Set(ALL_METHODS));
 
   const toggleGroup = (name: string) => {
     setActiveGroups((prev) => {
@@ -369,7 +379,6 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
                 <EndpointRow
                   key={`${ep.method}-${ep.path}`}
                   endpoint={ep}
-                  groupName={group.name}
                   staggerIndex={idx}
                 />
               );
@@ -378,9 +387,7 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
         ))}
 
         {filteredGroups.length === 0 && (
-          <div className={styles.emptyState}>
-            No endpoints match the current filters.
-          </div>
+          <div className={styles.emptyState}>No endpoints match the current filters.</div>
         )}
       </div>
     </div>
