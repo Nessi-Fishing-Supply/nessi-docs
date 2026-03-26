@@ -1,6 +1,6 @@
 {
-  "extractedAt": "2026-03-26T22:19:38.718Z",
-  "sourceCommit": "40d8cf5f76009ea488362c2c276b022d0153fab7",
+  "extractedAt": "2026-03-26T22:26:22.761Z",
+  "sourceCommit": "55bad6e84c5047f5e87fa7ed3f9dad66027dbfbd",
   "sourceRepo": "nessi-fishing-supply/Nessi-Web-App",
   "scriptVersion": "1.0.0",
   "itemCounts": {
@@ -31,11 +31,6 @@
       "type": "feature",
       "slug": "shared",
       "reason": "No CLAUDE.md description"
-    },
-    {
-      "type": "api-summary",
-      "slug": "api-contracts",
-      "reason": "63 endpoint(s) missing description"
     }
   ]
 }
