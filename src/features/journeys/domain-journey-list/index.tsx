@@ -6,12 +6,14 @@ import type { Journey } from '@/types/journey';
 import { PERSONA_CONFIG } from '@/types/journey';
 import type { DomainConfig } from '@/constants/domains';
 import { Breadcrumb } from '@/components/ui';
+import type { SwitcherItem } from '@/components/ui/breadcrumb';
 import styles from './domain-journey-list.module.scss';
 
 interface DomainJourneyListProps {
   domain: DomainConfig;
   journeys: Journey[];
   stats: { stepCount: number; builtPercent: number };
+  siblingDomains?: { slug: string; label: string }[];
 }
 
 function coverageColor(percent: number): string {
@@ -26,7 +28,7 @@ function journeyCoverage(journey: Journey): number {
   return steps.length > 0 ? Math.round((built / steps.length) * 100) : 0;
 }
 
-export function DomainJourneyList({ domain, journeys, stats }: DomainJourneyListProps) {
+export function DomainJourneyList({ domain, journeys, stats, siblingDomains }: DomainJourneyListProps) {
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setEntered(true));
@@ -34,10 +36,17 @@ export function DomainJourneyList({ domain, journeys, stats }: DomainJourneyList
 
   return (
     <div className={styles.container}>
-      <Breadcrumb segments={[
-        { label: 'Journeys', href: '/journeys' },
-        { label: domain.label },
-      ]} />
+      <Breadcrumb
+        segments={[
+          { label: 'Journeys', href: '/journeys' },
+          { label: domain.label },
+        ]}
+        switcher={siblingDomains?.map((d) => ({
+          label: d.label,
+          href: `/journeys/${d.slug}`,
+          active: d.slug === domain.slug,
+        }))}
+      />
 
       <div className={styles.domainHeader}>
         <div className={styles.domainTitle}>{domain.label}</div>

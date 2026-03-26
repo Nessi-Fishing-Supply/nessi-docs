@@ -23,11 +23,17 @@ export default async function DomainPage({ params }: { params: Promise<{ domain:
   const built = allSteps.filter((s) => s.status === 'built' || s.status === 'tested').length;
   const builtPercent = allSteps.length > 0 ? Math.round((built / allSteps.length) * 100) : 0;
 
+  const allDomains = getDomains().map((d) => ({
+    slug: d.slug,
+    label: d.label,
+  }));
+
   return (
     <DomainJourneyList
       domain={config}
       journeys={journeys}
       stats={{ stepCount: allSteps.length, builtPercent }}
+      siblingDomains={allDomains}
     />
   );
 }
