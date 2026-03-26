@@ -6,7 +6,6 @@
   cursor: grab;
   background: var(--bg-body);
   user-select: none;
-  -webkit-user-select: none;
 
   &::after {
     content: '';
@@ -14,12 +13,12 @@
     inset: 0;
     background: radial-gradient(
         ellipse 60% 50% at 20% 20%,
-        rgba(61, 140, 117, 0.04),
+        rgb(61 140 117 / 4%),
         transparent
       ),
       radial-gradient(
         ellipse 40% 40% at 80% 80%,
-        rgba(226, 119, 57, 0.02),
+        rgb(226 119 57 / 2%),
         transparent
       );
     pointer-events: none;

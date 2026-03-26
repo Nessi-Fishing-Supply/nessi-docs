@@ -28,7 +28,7 @@ export function AnimatedEdge({ from, to, isLit, isDimmed, hasActivePath }: Anima
       strokeWidth={isLit ? 2 : 1}
       strokeDasharray="4 16"
       style={{
-        animation: 'flowPulse 1.8s linear infinite',
+        animation: 'flow-pulse 1.8s linear infinite',
         opacity,
       }}
     />

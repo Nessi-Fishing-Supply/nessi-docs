@@ -156,7 +156,7 @@
 
   &.open {
     border-color: var(--method-border);
-    background: rgba(255, 255, 255, 0.01);
+    background: rgb(255 255 255 / 1%);
   }
 }
 
@@ -183,7 +183,7 @@
   color: var(--method-color);
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgb(0 0 0 / 30%);
   min-width: 56px;
   text-align: center;
   flex-shrink: 0;
@@ -248,7 +248,7 @@
   color: var(--text-secondary);
   line-height: 1.6;
   padding: 10px 12px;
-  background: rgba(61, 140, 117, 0.04);
+  background: rgb(61 140 117 / 4%);
   border-left: 2px solid #3d8c75;
   border-radius: 4px;
 }
@@ -277,7 +277,7 @@
 }
 
 .successResponse {
-  background: rgba(61, 140, 117, 0.04);
+  background: rgb(61 140 117 / 4%);
 
   .statusCode {
     color: #3d8c75;
@@ -285,7 +285,7 @@
 }
 
 .errorResponse {
-  background: rgba(184, 64, 64, 0.04);
+  background: rgb(184 64 64 / 4%);
 
   .statusCode {
     color: #b84040;
@@ -314,8 +314,8 @@
 
 .errorItem {
   padding: 8px 10px;
-  background: rgba(184, 64, 64, 0.04);
-  border: 1px solid rgba(184, 64, 64, 0.1);
+  background: rgb(184 64 64 / 4%);
+  border: 1px solid rgb(184 64 64 / 10%);
   border-radius: 4px;
 }
 
@@ -335,7 +335,7 @@
   color: #b84040;
   padding: 1px 6px;
   border-radius: 3px;
-  background: rgba(184, 64, 64, 0.12);
+  background: rgb(184 64 64 / 12%);
 }
 
 .errorResult {

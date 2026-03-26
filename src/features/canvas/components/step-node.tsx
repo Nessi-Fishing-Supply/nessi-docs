@@ -37,7 +37,7 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
           cy={NODE_HEIGHT / 2}
           r={NODE_WIDTH * 0.6}
           fill={`url(#glow-${node.id})`}
-          style={{ animation: 'glowPulse 3s ease-in-out infinite' }}
+          style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
         />
       )}
       {/* Background */}

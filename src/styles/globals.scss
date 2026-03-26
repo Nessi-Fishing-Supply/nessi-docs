@@ -55,7 +55,7 @@ body {
 }
 
 ::selection {
-  background: rgba(61, 140, 117, 0.3);
+  background: rgb(61 140 117 / 30%);
 }
 
 ::-webkit-scrollbar {
@@ -71,13 +71,13 @@ body {
   border-radius: 3px;
 }
 
-@keyframes flowPulse {
+@keyframes flow-pulse {
   to {
     stroke-dashoffset: -20;
   }
 }
 
-@keyframes tooltipIn {
+@keyframes tooltip-in {
   from {
     opacity: 0;
     transform: translateY(4px);
@@ -89,7 +89,7 @@ body {
   }
 }
 
-@keyframes glowPulse {
+@keyframes glow-pulse {
   0%,
   100% {
     opacity: 0.6;

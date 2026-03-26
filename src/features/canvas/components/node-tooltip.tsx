@@ -47,7 +47,7 @@ export function NodeTooltip({ node, children }: NodeTooltipProps) {
               borderRadius: '8px',
               backdropFilter: 'blur(12px)',
               boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-              animation: 'tooltipIn 150ms ease-out',
+              animation: 'tooltip-in 150ms ease-out',
             }}
           >
             {node.route && (

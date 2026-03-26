@@ -9,7 +9,7 @@
   justify-content: center;
   padding: 32px;
 
-  @media (max-width: 1023px) {
+  @media (width <= 1023px) {
     display: flex;
   }
 }

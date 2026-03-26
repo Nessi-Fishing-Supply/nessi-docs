@@ -14,13 +14,13 @@
   --text-dim: #4a4840;
 
   // Borders
-  --border-subtle: rgba(255, 255, 255, 0.05);
-  --border-medium: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.15);
+  --border-subtle: rgb(255 255 255 / 5%);
+  --border-medium: rgb(255 255 255 / 9%);
+  --border-strong: rgb(255 255 255 / 15%);
 
   // Glow effects
-  --glow-green: rgba(61, 140, 117, 0.3);
-  --glow-orange: rgba(226, 119, 57, 0.25);
+  --glow-green: rgb(61 140 117 / 30%);
+  --glow-orange: rgb(226 119 57 / 25%);
 
   // Transitions
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
