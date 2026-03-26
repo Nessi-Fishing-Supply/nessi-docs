@@ -2,7 +2,6 @@
 
 import { useDocsContext } from '@/providers/docs-provider';
 import { StepPanel } from './panels/step-panel';
-import { ApiPanel } from './panels/api-panel';
 import { EntityPanel } from './panels/entity-panel';
 import { LifecyclePanel } from './panels/lifecycle-panel';
 import { CoveragePanel } from './panels/coverage-panel';
@@ -28,9 +27,6 @@ export function DetailPanel() {
     <div className={styles.panel}>
       {selectedItem.type === 'step' && (
         <StepPanel node={selectedItem.node} journey={selectedItem.journey} />
-      )}
-      {selectedItem.type === 'api' && (
-        <ApiPanel endpoint={selectedItem.endpoint} group={selectedItem.group} />
       )}
       {selectedItem.type === 'entity' && <EntityPanel entity={selectedItem.entity} />}
       {selectedItem.type === 'lifecycle-state' && (
