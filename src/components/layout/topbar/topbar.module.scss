@@ -49,19 +49,19 @@
 }
 
 .productContext {
-  font-size: 10px;
-  color: var(--text-dim);
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
 .productDomain {
   font-family: var(--font-family-mono);
-  font-size: 11px;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: var(--text-secondary);
   transition: color 150ms var(--ease-out);
 }
 
 .linkIcon {
-  color: var(--text-dim);
-  opacity: 0.4;
+  color: var(--text-muted);
+  opacity: 0.6;
   transition: opacity 150ms var(--ease-out);
 }

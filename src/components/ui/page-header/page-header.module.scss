@@ -72,15 +72,15 @@
 }
 
 .stat {
-  font-size: 11px;
-  color: var(--text-muted);
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 
 .statValue {
   font-family: var(--font-family-mono);
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
   margin-right: 3px;
 }
 
