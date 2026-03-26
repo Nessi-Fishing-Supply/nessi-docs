@@ -1362,7 +1362,7 @@
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/207",
       "state": "OPEN",
       "labels": ["feature", "P1-high", "frontend", "conductor"],
-      "status": "Todo",
+      "status": "Ready for Review",
       "priority": "P1 - high",
       "area": "Frontend",
       "executor": "Conductor",
