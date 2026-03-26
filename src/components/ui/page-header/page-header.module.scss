@@ -1,6 +1,6 @@
 .header {
   position: relative;
-  padding: 20px 20px 16px;
+  padding: 18px 20px;
   border-radius: 10px;
   background: linear-gradient(
     135deg,
@@ -44,8 +44,7 @@
   margin: 0;
   font-weight: 600;
   letter-spacing: -0.02em;
-  text-box-trim: both;
-  text-box-edge: cap alphabetic;
+  line-height: 1;
 }
 
 .badge {
