@@ -12,9 +12,6 @@
   gap: 6px;
   padding: 10px 0;
   margin-bottom: 8px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
   flex-wrap: wrap;
 }
 
@@ -252,19 +249,17 @@
   background: rgb(255 255 255 / 6%);
   padding: 3px 10px;
   border-radius: 5px;
+  text-decoration: none;
+  transition: background 150ms ease-out;
+
+  &:hover {
+    background: rgb(255 255 255 / 10%);
+  }
 }
 
 .epAuthAdmin {
   color: #b8a0f0;
   background: rgb(139 92 246 / 12%);
-}
-
-.epTag {
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: rgb(255 255 255 / 5%);
-  color: var(--text-muted);
 }
 
 .epErrors {
@@ -418,6 +413,12 @@
   gap: 6px;
   font-size: 11px;
   color: var(--text-muted);
+  text-decoration: none;
+  transition: color 150ms ease-out;
+
+  &:hover {
+    color: var(--text-primary);
+  }
 }
 
 .authAdmin {

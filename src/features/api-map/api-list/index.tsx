@@ -136,13 +136,14 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 
           {endpoint.auth && (
             <div className={styles.detailSection}>
-              <div className={styles.detailLabel}>Authentication</div>
-              <div
+              <div className={styles.detailLabel}>Permission</div>
+              <Link
+                href="/permissions"
                 className={`${styles.authIndicator} ${endpoint.auth === 'admin' ? styles.authAdmin : ''}`}
               >
                 <span className={styles.authDot} />
-                {endpoint.auth === 'admin' ? 'Admin required' : 'User required'}
-              </div>
+                {endpoint.auth === 'admin' ? 'Owner' : 'Member'}
+              </Link>
             </div>
           )}
 
@@ -235,19 +236,13 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
         </span>
         <span className={styles.epMeta}>
           {endpoint.auth && (
-            <span
+            <Link
+              href="/permissions"
               className={`${styles.epAuth} ${endpoint.auth === 'admin' ? styles.epAuthAdmin : ''}`}
             >
-              {endpoint.auth}
-            </span>
+              {endpoint.auth === 'admin' ? 'owner' : 'member'}
+            </Link>
           )}
-          {endpoint.tags
-            ?.filter((tag) => tag !== 'admin-only')
-            .map((tag) => (
-              <span key={tag} className={styles.epTag}>
-                {tag}
-              </span>
-            ))}
           {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
           <span className={styles.epChevron}>&#9656;</span>
         </span>
