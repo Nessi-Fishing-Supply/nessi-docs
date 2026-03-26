@@ -41,6 +41,7 @@ export function JourneyCanvas({
 
   const [minimapVisible, setMinimapVisible] = useState(true);
   const [legendVisible, setLegendVisible] = useState(false);
+  const [pinnedNodes, setPinnedNodes] = useState<Set<string>>(new Set());
 
   const entered = useStaggerEntry(journey.nodes.map((n) => ({ id: n.id, x: n.x })));
 
@@ -69,7 +70,15 @@ export function JourneyCanvas({
 
   const handleNodeClick = (node: JourneyNode) => {
     if (node.type === 'step') {
-      setSelectedItem({ type: 'step', node, journey });
+      setPinnedNodes((prev) => {
+        const next = new Set(prev);
+        if (next.has(node.id)) {
+          next.delete(node.id);
+        } else {
+          next.add(node.id);
+        }
+        return next;
+      });
     }
   };
 
@@ -146,7 +155,7 @@ export function JourneyCanvas({
         if (!isNodeVisible(node)) return null;
         const isLit = litNodes.has(node.id);
         const isDimmed = hasPath && !isLit;
-        const isSelected = selectedItem?.type === 'step' && selectedItem.node.id === node.id;
+        const isSelected = pinnedNodes.has(node.id);
 
         const nodeEntered = entered.has(node.id);
 
