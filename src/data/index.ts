@@ -206,11 +206,22 @@ function cleanJourneyTitle(title: string): string {
   return t;
 }
 
+/** Convert a node id slug to a readable label: "delete-account--click-delete" → "Click Delete" */
+function idToLabel(id: string): string {
+  // Take the part after "--" if present (the action), otherwise the whole id
+  const parts = id.split('--');
+  const actionPart = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+  return actionPart
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
 /** Normalize raw nodes: v2 schema uses 'title' instead of 'label', handle both */
 function normalizeNodes(rawNodes: RawJourneyNode[]): RawJourneyNode[] {
   return rawNodes.map((n) => ({
     ...n,
-    label: n.label || n.title || n.route || n.id,
+    label: n.label || n.title || n.route || idToLabel(n.id),
   }));
 }
 
