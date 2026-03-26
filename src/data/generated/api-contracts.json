@@ -17,7 +17,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Marks a specific address as the user's default shipping address.",
           "tags": []
         },
         {
@@ -35,7 +35,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Updates an existing address on the user's account.",
           "tags": []
         },
         {
@@ -53,7 +53,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Removes a saved address from the user's account.",
           "tags": []
         },
         {
@@ -71,7 +71,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns all saved addresses for the currently logged-in user.",
           "tags": []
         },
         {
@@ -89,7 +89,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Saves a new shipping address to the user's account.",
           "tags": []
         }
       ]
@@ -107,7 +107,7 @@
           ],
           "errorCodes": [],
           "requestFields": [],
-          "description": "",
+          "description": "Completes the OAuth or email verification flow and redirects the user.",
           "tags": []
         },
         {
@@ -131,7 +131,7 @@
               "required": true
             }
           ],
-          "description": "",
+          "description": "Checks whether an email address is already registered on the platform.",
           "tags": [
             "admin-only"
           ]
@@ -150,7 +150,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Permanently deletes the user's account, listings, and all associated data.",
           "tags": [
             "admin-only"
           ]
@@ -195,7 +195,7 @@
               "required": true
             }
           ],
-          "description": "",
+          "description": "Creates a new user account and sends a verification email.",
           "tags": [
             "admin-only"
           ]
@@ -219,7 +219,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Extends the hold timer on a cart item to keep it reserved longer.",
           "tags": []
         },
         {
@@ -236,7 +236,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Removes a single item from the user's cart.",
           "tags": []
         },
         {
@@ -252,7 +252,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns the number of items currently in the user's cart.",
           "tags": []
         },
         {
@@ -275,7 +275,7 @@
               "required": true
             }
           ],
-          "description": "",
+          "description": "Merges items browsed as a guest into the user's cart after sign-in.",
           "tags": []
         },
         {
@@ -296,7 +296,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns all items currently in the user's cart.",
           "tags": []
         },
         {
@@ -328,7 +328,7 @@
               "required": true
             }
           ],
-          "description": "",
+          "description": "Adds a listing to the user's cart and places a temporary hold on it.",
           "tags": []
         },
         {
@@ -349,7 +349,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Removes all items from the user's cart at once.",
           "tags": []
         },
         {
@@ -365,7 +365,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Checks that all cart items are still available and valid before checkout.",
           "tags": []
         }
       ]
@@ -389,7 +389,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Accepts a shop invite via token and adds the user as a shop member.",
           "tags": [
             "admin-only"
           ]
@@ -416,7 +416,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Creates a new draft listing copied from an existing one the seller owns.",
           "tags": []
         },
         {
@@ -436,7 +436,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns the full details of a single listing, including photos.",
           "tags": []
         },
         {
@@ -456,7 +456,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Updates the details of an existing listing owned by the seller.",
           "tags": []
         },
         {
@@ -476,7 +476,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Permanently removes a listing and its photos from the seller's account.",
           "tags": []
         },
         {
@@ -507,7 +507,7 @@
               "required": true
             }
           ],
-          "description": "",
+          "description": "Changes a listing's status — such as publishing, archiving, or marking it sold.",
           "tags": []
         },
         {
@@ -524,7 +524,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Records a listing view and updates the user's recently-viewed history.",
           "tags": []
         },
         {
@@ -541,7 +541,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns quick search suggestions combining popular terms, listings, and categories.",
           "tags": []
         },
         {
@@ -558,7 +558,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Fetches multiple listings by ID in a single request, useful for cart and watchlist displays.",
           "tags": []
         },
         {
@@ -578,7 +578,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns all draft listings the seller has not yet published.",
           "tags": []
         },
         {
@@ -598,7 +598,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Creates a new blank draft listing ready for the seller to fill in.",
           "tags": []
         },
         {
@@ -618,7 +618,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Discards a draft listing that was never published.",
           "tags": []
         },
         {
@@ -636,7 +636,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns personalized listing recommendations based on context such as similar items or seller listings.",
           "tags": []
         },
         {
@@ -655,7 +655,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns a paginated list of active listings, with optional filters and sorting.",
           "tags": []
         },
         {
@@ -674,7 +674,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Creates a new listing draft for the seller, in either member or shop context.",
           "tags": []
         },
         {
@@ -691,7 +691,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Records a search term to improve future autocomplete suggestions.",
           "tags": []
         },
         {
@@ -708,7 +708,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Full-text search for listings with filters for category, condition, price, and location.",
           "tags": []
         },
         {
@@ -727,7 +727,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns the seller's own listings, optionally filtered by status.",
           "tags": []
         },
         {
@@ -757,7 +757,7 @@
               "required": true
             }
           ],
-          "description": "",
+          "description": "Removes a previously uploaded listing photo from storage.",
           "tags": []
         },
         {
@@ -776,7 +776,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Uploads a photo for a listing, resizes it, and saves both full and thumbnail versions.",
           "tags": [
             "file-upload"
           ]
@@ -800,7 +800,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Uploads and sets a new profile photo for the member's account.",
           "tags": [
             "file-upload"
           ]
@@ -818,7 +818,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Checks whether the member has any active listings that would block disabling seller mode.",
           "tags": []
         },
         {
@@ -841,7 +841,7 @@
               "required": true
             }
           ],
-          "description": "",
+          "description": "Enables or disables seller mode on the member's account.",
           "tags": []
         }
       ]
@@ -869,7 +869,7 @@
               "required": true
             }
           ],
-          "description": "",
+          "description": "Merges a guest user's browsing history into their account after sign-in.",
           "tags": []
         },
         {
@@ -885,7 +885,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns listings the user has recently viewed, for display on their dashboard.",
           "tags": []
         },
         {
@@ -901,7 +901,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Clears the user's entire recently-viewed browsing history.",
           "tags": []
         }
       ]
@@ -923,7 +923,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Checks whether the current user has already reported a specific item.",
           "tags": []
         },
         {
@@ -941,7 +941,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Submits a report flagging a listing or user for review by the Nessi team.",
           "tags": []
         }
       ]
@@ -963,7 +963,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Resends a shop invite email with a refreshed token and expiry.",
           "tags": [
             "admin-only"
           ],
@@ -986,7 +986,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Revokes a pending shop invite so it can no longer be accepted.",
           "tags": [
             "admin-only"
           ],
@@ -1009,7 +1009,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Sends a shop invite email to a new member with a specified role.",
           "tags": [
             "admin-only"
           ],
@@ -1032,7 +1032,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns all pending and past invites for a shop.",
           "tags": [
             "admin-only"
           ],
@@ -1055,7 +1055,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Changes the role assigned to a shop member.",
           "tags": [
             "admin-only"
           ],
@@ -1076,7 +1076,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Removes a member from a shop, or allows a member to remove themselves.",
           "tags": [
             "admin-only"
           ],
@@ -1097,7 +1097,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Adds a member directly to a shop with a specified role, bypassing the invite flow.",
           "tags": [
             "admin-only"
           ],
@@ -1119,7 +1119,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns the pending ownership transfer request for a shop, if one exists.",
           "tags": [
             "admin-only"
           ],
@@ -1141,7 +1141,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Cancels a pending shop ownership transfer before it is accepted.",
           "tags": [
             "admin-only"
           ],
@@ -1164,7 +1164,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Initiates a shop ownership transfer by sending a confirmation email to the new owner.",
           "tags": [
             "admin-only"
           ],
@@ -1185,7 +1185,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Returns the list of roles available to assign to members of a shop.",
           "tags": [
             "admin-only"
           ],
@@ -1207,7 +1207,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Permanently deletes a shop and all its associated listings and assets.",
           "tags": [
             "admin-only"
           ],
@@ -1230,7 +1230,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Uploads and sets a new avatar image for a shop's profile.",
           "tags": [
             "file-upload",
             "admin-only"
@@ -1254,7 +1254,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Uploads and sets a new hero banner image displayed at the top of a shop's page.",
           "tags": [
             "file-upload",
             "admin-only"
@@ -1280,7 +1280,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Accepts a shop ownership transfer, making the recipient the new owner.",
           "tags": [
             "admin-only"
           ]
@@ -1301,7 +1301,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Looks up the details of a shop ownership transfer by its invite token.",
           "tags": [
             "admin-only"
           ]
@@ -1322,7 +1322,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Creates a new shop and registers the creator as its owner.",
           "tags": [
             "admin-only"
           ]
@@ -1342,7 +1342,7 @@
             500
           ],
           "requestFields": [],
-          "description": "",
+          "description": "Reserves a new URL slug for a shop, replacing the previous one.",
           "tags": [
             "admin-only"
           ],
