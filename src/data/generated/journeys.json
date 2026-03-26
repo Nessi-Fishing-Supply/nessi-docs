@@ -15,22 +15,19 @@
         {
           "id": "delete-account--click-delete",
           "type": "step",
-          "label": "User clicks Delete Account",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "delete-account--call-api",
           "type": "step",
-          "label": "DELETE /api/auth/delete-account",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/auth/delete-account"
+          "route": "/api/auth/delete-account"
         },
         {
           "id": "delete-account--check-shops",
           "type": "step",
-          "label": "Check if user owns active shops",
           "layer": "server",
           "status": "built",
           "errorCases": [
@@ -47,11 +44,11 @@
           "label": "Owns active shops?",
           "options": [
             {
-              "label": "Yes — 409, must resolve first",
+              "label": "Yes",
               "to": "END"
             },
             {
-              "label": "No — begin cleanup",
+              "label": "No",
               "to": "delete-account--delete-member-avatar"
             }
           ]
@@ -59,84 +56,72 @@
         {
           "id": "delete-account--delete-member-avatar",
           "type": "step",
-          "label": "Delete member avatar from profile-assets bucket",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-account--delete-listing-photos",
           "type": "step",
-          "label": "Delete listing photos from listing-images bucket",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-account--delete-shop-avatars",
           "type": "step",
-          "label": "Delete shop avatars from profile-assets bucket",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-account--delete-shop-banners",
           "type": "step",
-          "label": "Delete shop hero banners from profile-assets bucket",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-account--delete-shop-listing-photos",
           "type": "step",
-          "label": "Delete shop listing photos from listing-images bucket",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-account--delete-member-slug",
           "type": "step",
-          "label": "Delete member slug from slugs table",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "delete-account--delete-auth-user",
           "type": "step",
-          "label": "auth.admin.deleteUser() — triggers CASCADE",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-account--cascade-members",
           "type": "step",
-          "label": "CASCADE: members row deleted",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "delete-account--trigger-cleanup",
           "type": "step",
-          "label": "BEFORE DELETE trigger: handle_member_deletion() — release member slug + owned shop slugs",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "delete-account--cascade-fk",
           "type": "step",
-          "label": "CASCADE: cart items, recently viewed, shop memberships deleted",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "delete-account--clear-session",
           "type": "step",
-          "label": "Session cleared",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-account--redirect-home",
           "type": "step",
-          "label": "Redirect to /",
           "layer": "client",
           "status": "built"
         }
@@ -161,7 +146,7 @@
         {
           "from": "delete-account--decision-check-shops",
           "to": "delete-account--delete-member-avatar",
-          "opt": "No — begin cleanup"
+          "opt": "No"
         },
         {
           "from": "delete-account--delete-member-avatar",
@@ -224,7 +209,6 @@
         {
           "id": "settings-sections--visit-account",
           "type": "step",
-          "label": "Navigate to /dashboard/account",
           "layer": "client",
           "status": "built",
           "route": "/dashboard/account"
@@ -232,50 +216,42 @@
         {
           "id": "settings-sections--personal-info",
           "type": "step",
-          "label": "Personal Info: edit display name, bio (280 chars), upload avatar (200x200 WebP)",
           "layer": "client",
-          "status": "built",
-          "notes": "Change email triggers OTP flow — see email-change.json."
+          "status": "built"
         },
         {
           "id": "settings-sections--fishing-identity",
           "type": "step",
-          "label": "Fishing Identity: select species (multi), technique (multi), home state, years fishing",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "settings-sections--notifications",
           "type": "step",
-          "label": "Notifications: email preferences (JSONB)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "settings-sections--seller-settings",
           "type": "step",
-          "label": "Seller Settings: toggle seller on/off — see seller-toggle.json",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "settings-sections--shipping-addresses",
           "type": "step",
-          "label": "Shipping Addresses: view/add/edit/delete (max 5) — see buyer-addresses.json",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "settings-sections--linked-accounts",
           "type": "step",
-          "label": "Linked Accounts: Stripe Connect placeholder",
           "layer": "client",
           "status": "planned"
         },
         {
           "id": "settings-sections--danger-zone",
           "type": "step",
-          "label": "Danger Zone: Delete Account — see account-deletion.json",
           "layer": "client",
           "status": "built"
         },
@@ -287,21 +263,18 @@
         {
           "id": "profile-completeness--check-fields",
           "type": "step",
-          "label": "Check fields: has avatar, has bio, has fishing identity, has display name",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "profile-completeness--calculate-percentage",
           "type": "step",
-          "label": "Calculate % complete",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "profile-completeness--show-progress",
           "type": "step",
-          "label": "Show progress bar",
           "layer": "client",
           "status": "built"
         },
@@ -323,14 +296,12 @@
         {
           "id": "profile-completeness--show-suggestions",
           "type": "step",
-          "label": "Show suggestions for missing fields (if not 100%)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "profile-completeness--complete-badge",
           "type": "step",
-          "label": "Profile complete badge (if 100%)",
           "layer": "client",
           "status": "built"
         }
@@ -415,10 +386,9 @@
         {
           "id": "view-addresses--fetch-addresses",
           "type": "step",
-          "label": "GET /api/addresses",
           "layer": "server",
           "status": "built",
-          "route": "GET /api/addresses"
+          "route": "/api/addresses"
         },
         {
           "id": "view-addresses--decision-fetch-addresses",
@@ -430,7 +400,7 @@
               "to": "view-addresses--show-list"
             },
             {
-              "label": "No — empty state: 'Add your first address'",
+              "label": "No",
               "to": "END"
             }
           ]
@@ -438,7 +408,6 @@
         {
           "id": "view-addresses--show-list",
           "type": "step",
-          "label": "AddressList: cards with label, address, default badge",
           "layer": "client",
           "status": "built"
         },
@@ -450,7 +419,6 @@
         {
           "id": "add-address--check-cap",
           "type": "step",
-          "label": "Check if at 5-address cap",
           "layer": "client",
           "status": "built"
         },
@@ -460,7 +428,7 @@
           "label": "At 5-address cap?",
           "options": [
             {
-              "label": "Yes — button disabled: maximum reached",
+              "label": "Yes",
               "to": "END"
             },
             {
@@ -472,24 +440,21 @@
         {
           "id": "add-address--open-modal",
           "type": "step",
-          "label": "AddressFormModal opens",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "add-address--enter-details",
           "type": "step",
-          "label": "Enter: label, line1, line2, city, state, zip, is_default",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "add-address--save-address",
           "type": "step",
-          "label": "POST /api/addresses",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/addresses",
+          "route": "/api/addresses",
           "errorCases": [
             {
               "condition": "Duplicate label",
@@ -500,7 +465,6 @@
         {
           "id": "add-address--list-updates",
           "type": "step",
-          "label": "Address saved, list updates",
           "layer": "client",
           "status": "built"
         },
@@ -512,32 +476,28 @@
         {
           "id": "manage-addresses--edit-address",
           "type": "step",
-          "label": "Edit → AddressFormModal (pre-populated)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "manage-addresses--delete-address",
           "type": "step",
-          "label": "Delete → confirmation → DELETE /api/addresses/[id]",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/addresses/[id]"
+          "route": "/api/addresses/[id]"
         },
         {
           "id": "manage-addresses--auto-promote-default",
           "type": "step",
-          "label": "If deleted was default, next address auto-promoted to default",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "manage-addresses--set-default",
           "type": "step",
-          "label": "Set default → PATCH /api/addresses/[id]/default",
           "layer": "server",
           "status": "built",
-          "route": "PATCH /api/addresses/[id]/default"
+          "route": "/api/addresses/[id]/default"
         }
       ],
       "edges": [
@@ -612,7 +572,6 @@
         {
           "id": "add-to-cart--click-add",
           "type": "step",
-          "label": "Buyer clicks 'Add to Cart' button",
           "layer": "client",
           "status": "built",
           "errorCases": [
@@ -633,36 +592,31 @@
         {
           "id": "add-to-cart--post-cart",
           "type": "step",
-          "label": "POST /api/cart (listingId, priceCents)",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/cart"
+          "route": "/api/cart"
         },
         {
           "id": "add-to-cart--price-snapshot",
           "type": "step",
-          "label": "Price snapshot saved as price_at_add",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "add-to-cart--set-expiry",
           "type": "step",
-          "label": "30-day expiry TTL set",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "add-to-cart--optimistic-update",
           "type": "step",
-          "label": "Optimistic cache update",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "add-to-cart--show-toast",
           "type": "step",
-          "label": "Toast: Added to cart",
           "layer": "client",
           "status": "built"
         },
@@ -674,29 +628,25 @@
         {
           "id": "view-cart--fetch-cart",
           "type": "step",
-          "label": "GET /api/cart (items + listing data)",
           "layer": "server",
           "status": "built",
-          "route": "GET /api/cart"
+          "route": "/api/cart"
         },
         {
           "id": "view-cart--group-by-seller",
           "type": "step",
-          "label": "Items grouped by seller",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-cart--show-item-states",
           "type": "step",
-          "label": "Show item states: valid, price changed (old vs new), removed/sold (warning)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-cart--cart-actions",
           "type": "step",
-          "label": "Actions: remove item, clear all, refresh expiry",
           "layer": "client",
           "status": "built"
         },
@@ -708,26 +658,23 @@
         {
           "id": "cart-actions--remove-item",
           "type": "step",
-          "label": "Remove item — DELETE /api/cart/[id]",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/cart/[id]"
+          "route": "/api/cart/[id]"
         },
         {
           "id": "cart-actions--clear-all",
           "type": "step",
-          "label": "Clear all — DELETE /api/cart",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/cart"
+          "route": "/api/cart"
         },
         {
           "id": "cart-actions--refresh-expiry",
           "type": "step",
-          "label": "Refresh expiry — PATCH /api/cart/[id]/expiry",
           "layer": "server",
           "status": "built",
-          "route": "PATCH /api/cart/[id]/expiry"
+          "route": "/api/cart/[id]/expiry"
         },
         {
           "id": "pre-checkout-validation--entry",
@@ -737,10 +684,9 @@
         {
           "id": "pre-checkout-validation--validate-cart",
           "type": "step",
-          "label": "POST /api/cart/validate",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/cart/validate"
+          "route": "/api/cart/validate"
         },
         {
           "id": "pre-checkout-validation--decision-validate-cart",
@@ -748,15 +694,15 @@
           "label": "Validation result?",
           "options": [
             {
-              "label": "Valid — proceed to checkout",
+              "label": "Valid",
               "to": "END"
             },
             {
-              "label": "Price changed — acknowledge changes",
+              "label": "Price Changed",
               "to": "END"
             },
             {
-              "label": "Removed — items auto-removed",
+              "label": "Removed",
               "to": "END"
             }
           ]
@@ -764,7 +710,6 @@
         {
           "id": "pre-checkout-validation--handle-result",
           "type": "step",
-          "label": "Handle validation result",
           "layer": "client",
           "status": "built"
         }
@@ -862,14 +807,12 @@
         {
           "id": "checkout--click-checkout",
           "type": "step",
-          "label": "Checkout button (disabled in MVP)",
           "layer": "client",
           "status": "planned"
         },
         {
           "id": "checkout--check-stripe",
           "type": "step",
-          "label": "Check if seller has Stripe Connect onboarded",
           "layer": "server",
           "status": "planned",
           "errorCases": [
@@ -882,49 +825,42 @@
         {
           "id": "checkout--create-payment-intent",
           "type": "step",
-          "label": "Create payment intent via Stripe",
           "layer": "external",
           "status": "planned"
         },
         {
           "id": "checkout--escrow-hold",
           "type": "step",
-          "label": "Escrow hold — funds captured but not transferred",
           "layer": "external",
           "status": "planned"
         },
         {
           "id": "checkout--order-created",
           "type": "step",
-          "label": "Order created in database",
           "layer": "database",
           "status": "planned"
         },
         {
           "id": "checkout--seller-notified",
           "type": "step",
-          "label": "Seller notified of new order",
           "layer": "email",
           "status": "planned"
         },
         {
           "id": "checkout--seller-ships",
           "type": "step",
-          "label": "Seller ships the item",
           "layer": "external",
           "status": "planned"
         },
         {
           "id": "checkout--buyer-confirms",
           "type": "step",
-          "label": "Buyer confirms receipt",
           "layer": "client",
           "status": "planned"
         },
         {
           "id": "checkout--escrow-released",
           "type": "step",
-          "label": "Escrow released to seller",
           "layer": "external",
           "status": "planned"
         }
@@ -983,7 +919,6 @@
         {
           "id": "track-view--view-listing",
           "type": "step",
-          "label": "User views listing detail page",
           "layer": "client",
           "status": "built"
         },
@@ -1005,15 +940,13 @@
         {
           "id": "track-view--track-authenticated",
           "type": "step",
-          "label": "POST /api/recently-viewed (server tracks)",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/recently-viewed"
+          "route": "/api/recently-viewed"
         },
         {
           "id": "track-view--track-guest",
           "type": "step",
-          "label": "addRecentlyViewed() → localStorage",
           "layer": "background",
           "status": "built"
         },
@@ -1025,15 +958,13 @@
         {
           "id": "browse-history--fetch-authenticated",
           "type": "step",
-          "label": "GET /api/recently-viewed (with listing data)",
           "layer": "server",
           "status": "built",
-          "route": "GET /api/recently-viewed"
+          "route": "/api/recently-viewed"
         },
         {
           "id": "browse-history--fetch-guest",
           "type": "step",
-          "label": "getRecentlyViewed() from localStorage",
           "layer": "background",
           "status": "built"
         },
@@ -1045,7 +976,6 @@
         {
           "id": "merge-on-login--detect-login",
           "type": "step",
-          "label": "useRecentlyViewedMerge() detects login",
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts"
@@ -1053,22 +983,19 @@
         {
           "id": "merge-on-login--post-merge",
           "type": "step",
-          "label": "POST /api/recently-viewed/merge",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/recently-viewed/merge"
+          "route": "/api/recently-viewed/merge"
         },
         {
           "id": "merge-on-login--dedup-merge",
           "type": "step",
-          "label": "Dedup + merge to DB",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "merge-on-login--silent-complete",
           "type": "step",
-          "label": "Silent — no toast",
           "layer": "background",
           "status": "built"
         },
@@ -1080,7 +1007,6 @@
         {
           "id": "display-strip--hook-reads-ids",
           "type": "step",
-          "label": "useRecentlyViewedListings() reads IDs from useRecentlyViewed()",
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-listings.ts"
@@ -1088,11 +1014,9 @@
         {
           "id": "display-strip--batch-fetch",
           "type": "step",
-          "label": "GET /api/listings/batch?ids=... fetches full listing data",
           "layer": "server",
           "status": "built",
-          "route": "GET /api/listings/batch",
-          "notes": "Only returns active, non-deleted listings. Stale IDs silently filtered. Max 30 IDs.",
+          "route": "/api/listings/batch",
           "errorCases": [
             {
               "condition": "No IDs provided",
@@ -1116,7 +1040,7 @@
               "to": "display-strip--render-strip"
             },
             {
-              "label": "No (empty/stale)",
+              "label": "No",
               "to": "display-strip--strip-empty"
             }
           ]
@@ -1124,19 +1048,15 @@
         {
           "id": "display-strip--render-strip",
           "type": "step",
-          "label": "RecentlyViewedStrip renders horizontal scroll of ListingCards",
           "layer": "client",
           "status": "built",
-          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx",
-          "notes": "CSS scroll-snap, 160px cards mobile / 220px desktop. Returns null when empty. role=region + aria-label."
+          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx"
         },
         {
           "id": "display-strip--strip-empty",
           "type": "step",
-          "label": "Strip returns null — nothing rendered",
           "layer": "client",
-          "status": "built",
-          "notes": "No recently viewed items or all stale/deleted"
+          "status": "built"
         },
         {
           "id": "clear-history--entry",
@@ -1146,15 +1066,13 @@
         {
           "id": "clear-history--clear-authenticated",
           "type": "step",
-          "label": "DELETE /api/recently-viewed",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/recently-viewed"
+          "route": "/api/recently-viewed"
         },
         {
           "id": "clear-history--clear-guest",
           "type": "step",
-          "label": "clearRecentlyViewed() — clear localStorage",
           "layer": "background",
           "status": "built"
         }
@@ -1226,7 +1144,7 @@
         {
           "from": "display-strip--decision-batch-fetch",
           "to": "display-strip--strip-empty",
-          "opt": "No (empty/stale)"
+          "opt": "No"
         },
         {
           "from": "display-strip--render-strip",
@@ -1257,28 +1175,24 @@
         {
           "id": "search--type-query",
           "type": "step",
-          "label": "Type 3+ chars → autocomplete (200ms debounce)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "search--suggestion-sources",
           "type": "step",
-          "label": "Suggestions from popular search terms, listing titles, category names",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "search--select-or-enter",
           "type": "step",
-          "label": "Select suggestion or press Enter",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "search--search-page",
           "type": "step",
-          "label": "Navigate to /search?q=...",
           "layer": "client",
           "status": "built",
           "route": "/search"
@@ -1286,7 +1200,6 @@
         {
           "id": "search--track-suggestion",
           "type": "step",
-          "label": "trackSearchSuggestion() — fire and forget",
           "layer": "background",
           "status": "built"
         },
@@ -1298,35 +1211,30 @@
         {
           "id": "filter-results--filter-panel",
           "type": "step",
-          "label": "Filter panel with category, condition (6 tiers), price range, state, species, listing type, free shipping",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "filter-results--url-params",
           "type": "step",
-          "label": "All filters stored in URL params (shareable)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "filter-results--infinite-scroll",
           "type": "step",
-          "label": "Infinite scroll results",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "filter-results--click-listing",
           "type": "step",
-          "label": "Click listing card",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "filter-results--listing-detail",
           "type": "step",
-          "label": "View listing detail at /listing/[id]",
           "layer": "client",
           "status": "built",
           "route": "/listing/[id]"
@@ -1334,15 +1242,13 @@
         {
           "id": "filter-results--view-count",
           "type": "step",
-          "label": "View count incremented via POST /api/listings/[id]/view",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/listings/[id]/view"
+          "route": "/api/listings/[id]/view"
         },
         {
           "id": "filter-results--recently-viewed",
           "type": "step",
-          "label": "Recently viewed tracked",
           "layer": "background",
           "status": "built"
         }
@@ -1413,14 +1319,12 @@
         {
           "id": "identity-system--login-default",
           "type": "step",
-          "label": "User logs in — default context: { type: 'member' }",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "identity-system--check-shops",
           "type": "step",
-          "label": "Check if user belongs to shops",
           "layer": "client",
           "status": "built"
         },
@@ -1430,7 +1334,7 @@
           "label": "Belongs to shops?",
           "options": [
             {
-              "label": "No — only member context available",
+              "label": "No",
               "to": "END"
             },
             {
@@ -1442,28 +1346,24 @@
         {
           "id": "identity-system--show-switcher",
           "type": "step",
-          "label": "Navbar shows context switcher dropdown (if shops exist)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "identity-system--switch-to-member",
           "type": "step",
-          "label": "switchToMember() — Zustand: { type: 'member' } — X-Nessi-Context: member",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "identity-system--switch-to-shop",
           "type": "step",
-          "label": "switchToShop(shopId, shopName) — Zustand: { type: 'shop', shopId } — X-Nessi-Context: shop:{shopId}",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "identity-system--persist-localstorage",
           "type": "step",
-          "label": "Persisted to localStorage — survives refresh, tab close, re-open",
           "layer": "background",
           "status": "built"
         },
@@ -1475,56 +1375,48 @@
         {
           "id": "context-effects--create-listing-member",
           "type": "step",
-          "label": "Create listing (member): listing.member_id = user.id, shop_id = null — appears on /member/[slug]",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "context-effects--create-listing-shop",
           "type": "step",
-          "label": "Create listing (shop): listing.shop_id = shopId, member_id = null — appears on /shop/[slug]",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "context-effects--dashboard-member",
           "type": "step",
-          "label": "View dashboard (member): personal dashboard KPIs",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "context-effects--dashboard-shop",
           "type": "step",
-          "label": "View dashboard (shop): shop dashboard KPIs",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "context-effects--settings-member",
           "type": "step",
-          "label": "Shop settings (member): not available",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "context-effects--settings-shop",
           "type": "step",
-          "label": "Shop settings (shop): accessible based on role",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "context-effects--upload-member",
           "type": "step",
-          "label": "Upload assets (member): stored in members/{userId}/",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "context-effects--upload-shop",
           "type": "step",
-          "label": "Upload assets (shop): stored in shops/{shopId}/",
           "layer": "server",
           "status": "built"
         },
@@ -1536,7 +1428,6 @@
         {
           "id": "page-load--rehydrate",
           "type": "step",
-          "label": "Zustand rehydrates from localStorage",
           "layer": "background",
           "status": "built"
         },
@@ -1562,28 +1453,24 @@
         {
           "id": "page-load--set-default",
           "type": "step",
-          "label": "No stored context — default to { type: 'member' }",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "page-load--set-member",
           "type": "step",
-          "label": "Stored member context — set context: member",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "page-load--set-shop",
           "type": "step",
-          "label": "Stored shop context — set context: shop:{id}",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "page-load--validate-membership",
           "type": "step",
-          "label": "First API call validates membership",
           "layer": "server",
           "status": "built"
         },
@@ -1593,11 +1480,11 @@
           "label": "Still a member?",
           "options": [
             {
-              "label": "Yes — continue in shop context",
+              "label": "Yes",
               "to": "END"
             },
             {
-              "label": "No — 403 — revocation flow",
+              "label": "No",
               "to": "END"
             }
           ]
@@ -1610,28 +1497,24 @@
         {
           "id": "edge-cases--shop-deleted",
           "type": "step",
-          "label": "Shop deleted while user in shop context — next API call — 403 — revocation",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "edge-cases--role-changed",
           "type": "step",
-          "label": "Role changed (e.g., owner to contributor) — API checks role per request, UI may show stale permissions until refresh",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "edge-cases--multiple-tabs",
           "type": "step",
-          "label": "Multiple tabs in different contexts — localStorage sync via StorageEvent, both tabs update",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "edge-cases--localstorage-cleared",
           "type": "step",
-          "label": "localStorage cleared or incognito — defaults to member context",
           "layer": "background",
           "status": "built"
         }
@@ -1770,7 +1653,6 @@
         {
           "id": "change-email--click-edit",
           "type": "step",
-          "label": "User clicks edit email in /dashboard/account",
           "layer": "client",
           "status": "built",
           "route": "/dashboard/account"
@@ -1778,14 +1660,12 @@
         {
           "id": "change-email--enter-new-email",
           "type": "step",
-          "label": "Enter new email address",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "change-email--check-availability",
           "type": "step",
-          "label": "checkEmailAvailable(email)",
           "layer": "server",
           "status": "built",
           "errorCases": [
@@ -1805,7 +1685,7 @@
               "to": "change-email--send-change-request"
             },
             {
-              "label": "No — email taken",
+              "label": "No",
               "to": "END"
             }
           ]
@@ -1813,21 +1693,18 @@
         {
           "id": "change-email--send-change-request",
           "type": "step",
-          "label": "changeEmail(newEmail) — OTP sent to NEW email",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "change-email--enter-otp",
           "type": "step",
-          "label": "Enter 6-digit code from new email",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "change-email--verify-otp",
           "type": "step",
-          "label": "verifyEmailChange(type='email_change')",
           "layer": "server",
           "status": "built",
           "errorCases": [
@@ -1847,7 +1724,7 @@
               "to": "change-email--email-updated"
             },
             {
-              "label": "No — show error",
+              "label": "No",
               "to": "change-email--enter-otp"
             }
           ]
@@ -1855,7 +1732,6 @@
         {
           "id": "change-email--email-updated",
           "type": "step",
-          "label": "Email updated, session persists",
           "layer": "server",
           "status": "built"
         }
@@ -1902,7 +1778,7 @@
         {
           "from": "change-email--decision-verify-otp",
           "to": "change-email--enter-otp",
-          "opt": "No — show error"
+          "opt": "No"
         }
       ]
     },
@@ -1921,21 +1797,18 @@
         {
           "id": "browse-by-category--land-homepage",
           "type": "step",
-          "label": "Guest lands on homepage",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "browse-by-category--click-category",
           "type": "step",
-          "label": "Click a category link",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "browse-by-category--category-page",
           "type": "step",
-          "label": "Navigate to /category/[slug]",
           "layer": "client",
           "status": "built",
           "route": "/category/[slug]"
@@ -1943,29 +1816,24 @@
         {
           "id": "browse-by-category--apply-filters",
           "type": "step",
-          "label": "Filter: condition, price, state, species, listing type",
           "layer": "client",
-          "status": "built",
-          "notes": "All filters stored in URL params (shareable)."
+          "status": "built"
         },
         {
           "id": "browse-by-category--infinite-scroll",
           "type": "step",
-          "label": "Infinite scroll results",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "browse-by-category--click-listing",
           "type": "step",
-          "label": "Click listing card",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "browse-by-category--listing-detail",
           "type": "step",
-          "label": "View listing detail at /listing/[id]",
           "layer": "client",
           "status": "built",
           "route": "/listing/[id]"
@@ -1973,7 +1841,6 @@
         {
           "id": "browse-by-category--view-count",
           "type": "step",
-          "label": "View count incremented",
           "layer": "server",
           "status": "built"
         },
@@ -1985,28 +1852,24 @@
         {
           "id": "search-by-keyword--type-search",
           "type": "step",
-          "label": "Type in search bar",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "search-by-keyword--autocomplete",
           "type": "step",
-          "label": "Autocomplete suggestions appear (3+ chars, 200ms debounce)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "search-by-keyword--select-or-enter",
           "type": "step",
-          "label": "Select suggestion or press Enter",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "search-by-keyword--search-results",
           "type": "step",
-          "label": "Navigate to /search?q=...",
           "layer": "client",
           "status": "built",
           "route": "/search"
@@ -2014,14 +1877,12 @@
         {
           "id": "search-by-keyword--filter-results",
           "type": "step",
-          "label": "Apply filters: condition, price, state, species, listing type",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "search-by-keyword--scroll-results",
           "type": "step",
-          "label": "Infinite scroll results",
           "layer": "client",
           "status": "built"
         },
@@ -2033,14 +1894,12 @@
         {
           "id": "view-profiles--click-seller",
           "type": "step",
-          "label": "Click seller profile link on listing detail",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-profiles--member-page",
           "type": "step",
-          "label": "View seller profile at /member/[slug]",
           "layer": "client",
           "status": "built",
           "route": "/member/[slug]"
@@ -2048,21 +1907,18 @@
         {
           "id": "view-profiles--seller-listings",
           "type": "step",
-          "label": "See seller's other listings",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-profiles--click-shop",
           "type": "step",
-          "label": "Click shop page link on listing detail",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-profiles--shop-page",
           "type": "step",
-          "label": "View shop page at /shop/[slug]",
           "layer": "client",
           "status": "built",
           "route": "/shop/[slug]"
@@ -2070,7 +1926,6 @@
         {
           "id": "view-profiles--shop-listings",
           "type": "step",
-          "label": "See shop's listings grid + hero banner",
           "layer": "client",
           "status": "built"
         }
@@ -2173,7 +2028,6 @@
         {
           "id": "add-to-cart--click-add",
           "type": "step",
-          "label": "Guest clicks 'Add to Cart' button",
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/cart/components/add-to-cart-button/index.tsx"
@@ -2181,7 +2035,6 @@
         {
           "id": "add-to-cart--validate-client",
           "type": "step",
-          "label": "Client-side validation (own listing, already in cart, cart full)",
           "layer": "client",
           "status": "built",
           "errorCases": [
@@ -2202,22 +2055,18 @@
         {
           "id": "add-to-cart--write-localstorage",
           "type": "step",
-          "label": "Add item to localStorage cart (listingId + priceCents snapshot)",
           "layer": "background",
-          "status": "built",
-          "notes": "Guest cart is entirely localStorage-backed. No API calls."
+          "status": "built"
         },
         {
           "id": "add-to-cart--update-badge",
           "type": "step",
-          "label": "CartIcon badge count updates via Zustand store",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "add-to-cart--show-toast",
           "type": "step",
-          "label": "Toast: 'Added to cart'",
           "layer": "client",
           "status": "built"
         },
@@ -2229,7 +2078,6 @@
         {
           "id": "view-cart--load-cart",
           "type": "step",
-          "label": "Read cart items from localStorage",
           "layer": "background",
           "status": "built"
         },
@@ -2243,7 +2091,7 @@
               "to": "view-cart--group-by-seller"
             },
             {
-              "label": "No — show empty state + browse CTA",
+              "label": "No",
               "to": "END"
             }
           ]
@@ -2251,7 +2099,6 @@
         {
           "id": "view-cart--group-by-seller",
           "type": "step",
-          "label": "Items grouped by seller for display",
           "layer": "client",
           "status": "built",
           "codeRef": "src/app/(frontend)/cart/page.tsx"
@@ -2259,10 +2106,8 @@
         {
           "id": "view-cart--show-items",
           "type": "step",
-          "label": "Render cart items with remove/clear actions",
           "layer": "client",
-          "status": "built",
-          "notes": "Checkout button is disabled in MVP."
+          "status": "built"
         },
         {
           "id": "merge-on-login--entry",
@@ -2272,50 +2117,40 @@
         {
           "id": "merge-on-login--login-detected",
           "type": "step",
-          "label": "useCartMerge() detects auth state change",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/features/cart/hooks/use-cart-merge.ts",
-          "notes": "This is a background hook — the user sees nothing. It fires on login regardless of what page they're on."
+          "codeRef": "src/features/cart/hooks/use-cart-merge.ts"
         },
         {
           "id": "merge-on-login--read-guest-cart",
           "type": "step",
-          "label": "Read localStorage cart items",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "merge-on-login--post-merge",
           "type": "step",
-          "label": "POST /api/cart/merge with guest items",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/cart/merge",
-          "notes": "Server validates every guest item: checks listing exists, not sold, not own listing, not already in DB cart."
+          "route": "/api/cart/merge"
         },
         {
           "id": "merge-on-login--server-validate",
           "type": "step",
-          "label": "Skip invalid/duplicate/own-listing items",
           "layer": "server",
-          "status": "built",
-          "notes": "No errors surfaced to user — invalid items are silently dropped."
+          "status": "built"
         },
         {
           "id": "merge-on-login--insert-valid",
           "type": "step",
-          "label": "Insert valid items into cart table (DB)",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "merge-on-login--clear-localstorage",
           "type": "step",
-          "label": "Clear localStorage guest cart",
           "layer": "background",
-          "status": "built",
-          "notes": "No toast, no redirect. Entirely silent. User's cart page now shows DB-backed items."
+          "status": "built"
         }
       ],
       "edges": [
@@ -2397,28 +2232,24 @@
         {
           "id": "track-view--view-listing",
           "type": "step",
-          "label": "Guest views listing detail page",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "track-view--add-recently-viewed",
           "type": "step",
-          "label": "addRecentlyViewed(listingId) called",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "track-view--store-localstorage",
           "type": "step",
-          "label": "Stored in localStorage",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "track-view--dedup-reorder",
           "type": "step",
-          "label": "Deduped + reordered, max 30 items",
           "layer": "background",
           "status": "built"
         },
@@ -2430,7 +2261,6 @@
         {
           "id": "display-strip--hook-reads-localstorage",
           "type": "step",
-          "label": "useRecentlyViewedListings() reads IDs from localStorage via useRecentlyViewed()",
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-listings.ts"
@@ -2438,11 +2268,9 @@
         {
           "id": "display-strip--batch-fetch",
           "type": "step",
-          "label": "GET /api/listings/batch?ids=... fetches full listing data",
           "layer": "server",
           "status": "built",
-          "route": "GET /api/listings/batch",
-          "notes": "No auth required. Only returns active, non-deleted listings. Stale IDs silently filtered."
+          "route": "/api/listings/batch"
         },
         {
           "id": "display-strip--decision-batch-fetch",
@@ -2454,7 +2282,7 @@
               "to": "display-strip--render-strip"
             },
             {
-              "label": "No (empty/stale)",
+              "label": "No",
               "to": "display-strip--strip-empty"
             }
           ]
@@ -2462,19 +2290,15 @@
         {
           "id": "display-strip--render-strip",
           "type": "step",
-          "label": "RecentlyViewedStrip renders horizontal scroll of ListingCards",
           "layer": "client",
           "status": "built",
-          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx",
-          "notes": "CSS scroll-snap, 160px cards mobile / 220px desktop. Returns null when empty."
+          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx"
         },
         {
           "id": "display-strip--strip-empty",
           "type": "step",
-          "label": "Strip returns null — nothing rendered",
           "layer": "client",
-          "status": "built",
-          "notes": "No recently viewed items in localStorage or all stale/deleted"
+          "status": "built"
         },
         {
           "id": "merge-on-login--entry",
@@ -2484,7 +2308,6 @@
         {
           "id": "merge-on-login--login-detected",
           "type": "step",
-          "label": "useRecentlyViewedMerge() detects login",
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts"
@@ -2492,22 +2315,19 @@
         {
           "id": "merge-on-login--post-merge",
           "type": "step",
-          "label": "POST /api/recently-viewed/merge",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/recently-viewed/merge"
+          "route": "/api/recently-viewed/merge"
         },
         {
           "id": "merge-on-login--merge-to-db",
           "type": "step",
-          "label": "Guest views merged to DB, deduped on server",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "merge-on-login--silent-complete",
           "type": "step",
-          "label": "No toast — silent merge",
           "layer": "background",
           "status": "built"
         }
@@ -2549,7 +2369,7 @@
         {
           "from": "display-strip--decision-batch-fetch",
           "to": "display-strip--strip-empty",
-          "opt": "No (empty/stale)"
+          "opt": "No"
         },
         {
           "from": "display-strip--render-strip",
@@ -2588,21 +2408,18 @@
         {
           "id": "login--open-modal",
           "type": "step",
-          "label": "User clicks Log In → navbar modal opens",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "login--enter-credentials",
           "type": "step",
-          "label": "Enter email + password",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "login--sign-in",
           "type": "step",
-          "label": "signInWithPassword() called",
           "layer": "server",
           "status": "built",
           "errorCases": [
@@ -2619,14 +2436,14 @@
         {
           "id": "login--decision-sign-in",
           "type": "decision",
-          "label": "Response?",
+          "label": "Auth result?",
           "options": [
             {
-              "label": "email_not_confirmed",
+              "label": "Unconfirmed",
               "to": "END"
             },
             {
-              "label": "Invalid credentials",
+              "label": "Invalid",
               "to": "END"
             },
             {
@@ -2638,21 +2455,18 @@
         {
           "id": "login--session-set",
           "type": "step",
-          "label": "Session cookies set on success",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "login--close-modal",
           "type": "step",
-          "label": "onSuccess callback fires, modal closes",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "login--stay-on-page",
           "type": "step",
-          "label": "User stays on current page",
           "layer": "client",
           "status": "built"
         },
@@ -2664,20 +2478,16 @@
         {
           "id": "post-login-side-effects--cart-merge",
           "type": "step",
-          "label": "useCartMerge() — merge localStorage cart to DB",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/features/cart/hooks/use-cart-merge.ts",
-          "notes": "Silent. No toast. Fires on any auth state change. See guest-cart.json for full flow."
+          "codeRef": "src/features/cart/hooks/use-cart-merge.ts"
         },
         {
           "id": "post-login-side-effects--recently-viewed-merge",
           "type": "step",
-          "label": "useRecentlyViewedMerge() — merge localStorage views to DB",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts",
-          "notes": "Silent. POST /api/recently-viewed/merge. Deduplicates on server."
+          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts"
         },
         {
           "id": "resend-verification--entry",
@@ -2687,21 +2497,18 @@
         {
           "id": "resend-verification--show-resend-button",
           "type": "step",
-          "label": "Show inline resend verification button",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "resend-verification--resend-otp",
           "type": "step",
-          "label": "resendOtp() sends new verification code",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "resend-verification--verify-then-login",
           "type": "step",
-          "label": "User verifies email, then logs in again",
           "layer": "client",
           "status": "built"
         }
@@ -2773,36 +2580,30 @@
         {
           "id": "logout--click-logout",
           "type": "step",
-          "label": "User clicks Logout button",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "logout--sign-out",
           "type": "step",
-          "label": "signOut() called",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "logout--clear-cookies",
           "type": "step",
-          "label": "Session cookies cleared",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "logout--reset-context",
           "type": "step",
-          "label": "Context store reset to member",
           "layer": "background",
-          "status": "built",
-          "notes": "Zustand store reverts to default member context."
+          "status": "built"
         },
         {
           "id": "logout--redirect-home",
           "type": "step",
-          "label": "Redirect to /",
           "layer": "client",
           "status": "built"
         }
@@ -2845,14 +2646,12 @@
         {
           "id": "buyer-path--banner-appears",
           "type": "step",
-          "label": "Onboarding banner appears after signup",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "buyer-path--visit-onboarding",
           "type": "step",
-          "label": "Visit /onboarding",
           "layer": "client",
           "status": "built",
           "route": "/onboarding"
@@ -2860,14 +2659,12 @@
         {
           "id": "buyer-path--step1-display-name",
           "type": "step",
-          "label": "Step 1: Display Name + Avatar",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "buyer-path--step2-intent",
           "type": "step",
-          "label": "Step 2: Intent — How will you use Nessi?",
           "layer": "client",
           "status": "built"
         },
@@ -2881,7 +2678,7 @@
               "to": "buyer-path--step3-fishing-identity"
             },
             {
-              "label": "Seller / Both",
+              "label": "Seller/Both",
               "to": "END"
             }
           ]
@@ -2889,28 +2686,24 @@
         {
           "id": "buyer-path--step3-fishing-identity",
           "type": "step",
-          "label": "Step 3: Fishing Identity (optional)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "buyer-path--step4-bio",
           "type": "step",
-          "label": "Step 4: Bio (280 chars)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "buyer-path--complete-onboarding",
           "type": "step",
-          "label": "completeOnboarding() called",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "buyer-path--redirect-dashboard",
           "type": "step",
-          "label": "Redirect to /dashboard",
           "layer": "client",
           "status": "built"
         },
@@ -2922,14 +2715,12 @@
         {
           "id": "seller-path--step3-fishing-identity-seller",
           "type": "step",
-          "label": "Step 3: Fishing Identity (optional)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "seller-path--step4-seller-type",
           "type": "step",
-          "label": "Step 4: Seller Type — free profile or shop",
           "layer": "client",
           "status": "built"
         },
@@ -2939,7 +2730,7 @@
           "label": "Seller type?",
           "options": [
             {
-              "label": "Free profile",
+              "label": "Free Profile",
               "to": "seller-path--step5-bio"
             },
             {
@@ -2951,21 +2742,18 @@
         {
           "id": "seller-path--step5-bio",
           "type": "step",
-          "label": "Step 5: Bio (280 chars)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "seller-path--complete-onboarding-seller",
           "type": "step",
-          "label": "completeOnboarding() called",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "seller-path--redirect-dashboard-seller",
           "type": "step",
-          "label": "Redirect to /dashboard",
           "layer": "client",
           "status": "built"
         },
@@ -2977,21 +2765,18 @@
         {
           "id": "post-onboarding-seller-optin--show-cta",
           "type": "step",
-          "label": "Dashboard shows 'Start Selling' CTA",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "post-onboarding-seller-optin--click-cta",
           "type": "step",
-          "label": "User clicks CTA → SellerOnboardingModal opens",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "post-onboarding-seller-optin--choose-method",
           "type": "step",
-          "label": "How do you want to sell? Free profile or Create a shop",
           "layer": "client",
           "status": "built"
         },
@@ -3001,11 +2786,11 @@
           "label": "Selling method?",
           "options": [
             {
-              "label": "Free profile → toggleSeller(true) → is_seller = true",
+              "label": "Free Profile",
               "to": "END"
             },
             {
-              "label": "Create a shop → redirect to /dashboard/shop/create",
+              "label": "Create Shop",
               "to": "END"
             }
           ]
@@ -3064,7 +2849,7 @@
         {
           "from": "seller-path--decision-step4-seller-type",
           "to": "seller-path--step5-bio",
-          "opt": "Free profile"
+          "opt": "Free Profile"
         },
         {
           "from": "seller-path--decision-step4-seller-type",
@@ -3112,7 +2897,6 @@
         {
           "id": "reset-password--visit-page",
           "type": "step",
-          "label": "User visits /auth/reset-password",
           "layer": "client",
           "status": "built",
           "route": "/auth/reset-password"
@@ -3120,28 +2904,24 @@
         {
           "id": "reset-password--enter-email",
           "type": "step",
-          "label": "Step 1: Enter email address",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "reset-password--send-otp",
           "type": "step",
-          "label": "forgotPassword(email) — OTP sent to email",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "reset-password--enter-otp",
           "type": "step",
-          "label": "Step 2: Enter 6-digit code from email",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "reset-password--verify-otp",
           "type": "step",
-          "label": "verifyOtp(type='recovery')",
           "layer": "server",
           "status": "built",
           "errorCases": [
@@ -3161,7 +2941,7 @@
               "to": "reset-password--enter-new-password"
             },
             {
-              "label": "No — show error, allow retry",
+              "label": "No",
               "to": "reset-password--enter-otp"
             }
           ]
@@ -3169,28 +2949,24 @@
         {
           "id": "reset-password--enter-new-password",
           "type": "step",
-          "label": "Step 3: Enter new password",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "reset-password--reset-password",
           "type": "step",
-          "label": "resetPassword(newPassword)",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "reset-password--session-established",
           "type": "step",
-          "label": "Session established via cookies",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "reset-password--redirect-home",
           "type": "step",
-          "label": "Redirect to /",
           "layer": "client",
           "status": "built"
         }
@@ -3228,7 +3004,7 @@
         {
           "from": "reset-password--decision-verify-otp",
           "to": "reset-password--enter-otp",
-          "opt": "No — show error, allow retry"
+          "opt": "No"
         },
         {
           "from": "reset-password--enter-new-password",
@@ -3259,7 +3035,6 @@
         {
           "id": "route-protection--receive-request",
           "type": "step",
-          "label": "proxy.ts intercepts incoming request",
           "layer": "server",
           "status": "built",
           "codeRef": "src/proxy.ts"
@@ -3267,7 +3042,6 @@
         {
           "id": "route-protection--check-path",
           "type": "step",
-          "label": "Check request path pattern",
           "layer": "server",
           "status": "built"
         },
@@ -3277,15 +3051,15 @@
           "label": "Path type?",
           "options": [
             {
-              "label": "/api/*, /_next/*, /auth/*",
+              "label": "API/Static",
               "to": "route-protection--skip-auth"
             },
             {
-              "label": "/dashboard/*",
+              "label": "Dashboard",
               "to": "route-protection--verify-jwt"
             },
             {
-              "label": "Public pages",
+              "label": "Public",
               "to": "route-protection--refresh-public"
             }
           ]
@@ -3293,14 +3067,12 @@
         {
           "id": "route-protection--skip-auth",
           "type": "step",
-          "label": "Skip auth check for /api/*, /_next/*, /auth/* — pass through",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "route-protection--verify-jwt",
           "type": "step",
-          "label": "getUser() — verify JWT from cookies for /dashboard/* routes",
           "layer": "server",
           "status": "built"
         },
@@ -3322,28 +3094,26 @@
         {
           "id": "route-protection--redirect-unauthed",
           "type": "step",
-          "label": "Redirect unauthenticated users to /",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "route-protection--check-onboarding",
           "type": "step",
-          "label": "Check if path is /onboarding and onboarding_completed_at is set",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "route-protection--decision-check-onboarding",
           "type": "decision",
-          "label": "Path is /onboarding and already completed?",
+          "label": "Already onboarded?",
           "options": [
             {
-              "label": "Yes — already onboarded",
+              "label": "Yes",
               "to": "route-protection--redirect-onboarded"
             },
             {
-              "label": "No — allow through",
+              "label": "No",
               "to": "route-protection--allow-dashboard"
             }
           ]
@@ -3351,21 +3121,18 @@
         {
           "id": "route-protection--redirect-onboarded",
           "type": "step",
-          "label": "Redirect already-onboarded users away from /onboarding to /",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "route-protection--allow-dashboard",
           "type": "step",
-          "label": "Allow authenticated user through to dashboard",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "route-protection--refresh-public",
           "type": "step",
-          "label": "Refresh session cookies on public pages, allow through",
           "layer": "server",
           "status": "built"
         }
@@ -3386,17 +3153,17 @@
         {
           "from": "route-protection--decision-check-path",
           "to": "route-protection--skip-auth",
-          "opt": "/api/*, /_next/*, /auth/*"
+          "opt": "API/Static"
         },
         {
           "from": "route-protection--decision-check-path",
           "to": "route-protection--verify-jwt",
-          "opt": "/dashboard/*"
+          "opt": "Dashboard"
         },
         {
           "from": "route-protection--decision-check-path",
           "to": "route-protection--refresh-public",
-          "opt": "Public pages"
+          "opt": "Public"
         },
         {
           "from": "route-protection--skip-auth",
@@ -3427,12 +3194,12 @@
         {
           "from": "route-protection--decision-check-onboarding",
           "to": "route-protection--redirect-onboarded",
-          "opt": "Yes — already onboarded"
+          "opt": "Yes"
         },
         {
           "from": "route-protection--decision-check-onboarding",
           "to": "route-protection--allow-dashboard",
-          "opt": "No — allow through"
+          "opt": "No"
         },
         {
           "from": "route-protection--redirect-onboarded",
@@ -3459,7 +3226,6 @@
         {
           "id": "context-assignment--check-context",
           "type": "step",
-          "label": "Check active context from Zustand store",
           "layer": "background",
           "status": "built"
         },
@@ -3469,11 +3235,11 @@
           "label": "Active context?",
           "options": [
             {
-              "label": "Member context",
+              "label": "Member",
               "to": "context-assignment--member-context"
             },
             {
-              "label": "Shop context",
+              "label": "Shop",
               "to": "context-assignment--shop-context"
             }
           ]
@@ -3481,28 +3247,24 @@
         {
           "id": "context-assignment--member-context",
           "type": "step",
-          "label": "Member context: seller_id = user.id, member_id = user.id, shop_id = null",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "context-assignment--shop-context",
           "type": "step",
-          "label": "Shop context: seller_id = user.id, member_id = null, shop_id = activeShopId",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "context-assignment--member-public",
           "type": "step",
-          "label": "Listing appears on member's public profile at /member/[slug]",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "context-assignment--shop-public",
           "type": "step",
-          "label": "Listing appears on shop's public page at /shop/[slug]",
           "layer": "client",
           "status": "built"
         },
@@ -3514,7 +3276,6 @@
         {
           "id": "context-header--send-header",
           "type": "step",
-          "label": "X-Nessi-Context header sent with every fetch",
           "layer": "background",
           "status": "built"
         },
@@ -3524,11 +3285,11 @@
           "label": "Header value?",
           "options": [
             {
-              "label": "member",
+              "label": "Member",
               "to": "context-header--validate-member"
             },
             {
-              "label": "shop:{id}",
+              "label": "Shop",
               "to": "context-header--validate-shop"
             }
           ]
@@ -3536,14 +3297,12 @@
         {
           "id": "context-header--validate-member",
           "type": "step",
-          "label": "member — API validates: user owns listing",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "context-header--validate-shop",
           "type": "step",
-          "label": "shop:{id} — API validates: user is member of shop",
           "layer": "server",
           "status": "built"
         }
@@ -3560,12 +3319,12 @@
         {
           "from": "context-assignment--decision-check-context",
           "to": "context-assignment--member-context",
-          "opt": "Member context"
+          "opt": "Member"
         },
         {
           "from": "context-assignment--decision-check-context",
           "to": "context-assignment--shop-context",
-          "opt": "Shop context"
+          "opt": "Shop"
         },
         {
           "from": "context-assignment--member-context",
@@ -3598,12 +3357,12 @@
         {
           "from": "context-header--decision-send-header",
           "to": "context-header--validate-member",
-          "opt": "member"
+          "opt": "Member"
         },
         {
           "from": "context-header--decision-send-header",
           "to": "context-header--validate-shop",
-          "opt": "shop:{id}"
+          "opt": "Shop"
         },
         {
           "from": "context-header--validate-member",
@@ -3626,56 +3385,46 @@
         {
           "id": "lifecycle--create-draft",
           "type": "step",
-          "label": "POST /api/listings — create empty draft",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/listings"
+          "route": "/api/listings"
         },
         {
           "id": "lifecycle--draft-state",
           "type": "step",
-          "label": "Listing in draft state — requires 2+ photos to publish",
           "layer": "database",
-          "status": "built",
-          "notes": "localStorage persistence for create wizard."
+          "status": "built"
         },
         {
           "id": "lifecycle--publish",
           "type": "step",
-          "label": "PATCH status=active — publish, sets published_at",
           "layer": "server",
-          "status": "built",
-          "notes": "Visible in search, browse, shop page. Editable until sold."
+          "status": "built"
         },
         {
           "id": "lifecycle--mark-sold",
           "type": "step",
-          "label": "PATCH status=sold — sets sold_at (final state)",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "lifecycle--archive",
           "type": "step",
-          "label": "PATCH status=archived — hide from search",
           "layer": "server",
-          "status": "built",
-          "notes": "Hidden from search. Kept for history. Can be reactivated."
+          "status": "built"
         },
         {
           "id": "lifecycle--unarchive",
           "type": "step",
-          "label": "PATCH status=active — reactivate archived listing",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "lifecycle--delete-draft",
           "type": "step",
-          "label": "DELETE /api/listings/drafts — hard delete (draft only)",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/listings/drafts"
+          "route": "/api/listings/drafts"
         },
         {
           "id": "create-wizard--entry",
@@ -3685,22 +3434,19 @@
         {
           "id": "create-wizard--click-new",
           "type": "step",
-          "label": "Seller clicks 'New Listing'",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "create-wizard--create-draft",
           "type": "step",
-          "label": "POST /api/listings/drafts → empty draft created",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/listings/drafts"
+          "route": "/api/listings/drafts"
         },
         {
           "id": "create-wizard--redirect-wizard",
           "type": "step",
-          "label": "Redirect to /dashboard/listings/new",
           "layer": "client",
           "status": "built",
           "route": "/dashboard/listings/new"
@@ -3708,11 +3454,9 @@
         {
           "id": "create-wizard--step1-photos",
           "type": "step",
-          "label": "Step 1: Photos — upload via POST /api/listings/upload",
           "layer": "client",
           "status": "built",
-          "route": "POST /api/listings/upload",
-          "notes": "Sharp: resize 1200x1200 max + 400x400 thumb. Stored as WebP in listing-images bucket."
+          "route": "/api/listings/upload"
         },
         {
           "id": "create-wizard--decision-step1-photos",
@@ -3724,7 +3468,7 @@
               "to": "create-wizard--step2-category"
             },
             {
-              "label": "No — cannot proceed",
+              "label": "No",
               "to": "END"
             }
           ]
@@ -3732,28 +3476,24 @@
         {
           "id": "create-wizard--step2-category",
           "type": "step",
-          "label": "Step 2: Category (10 options) + Condition (6 tiers)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "create-wizard--step3-details",
           "type": "step",
-          "label": "Step 3: Details — title, brand, description, species, state, listing type",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "create-wizard--step4-pricing",
           "type": "step",
-          "label": "Step 4: Pricing (dollars → stored as cents) + Shipping options",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "create-wizard--step5-review",
           "type": "step",
-          "label": "Step 5: Review — preview all fields",
           "layer": "client",
           "status": "built"
         },
@@ -3763,11 +3503,11 @@
           "label": "Action?",
           "options": [
             {
-              "label": "Save as draft — PUT /api/listings/[id]",
+              "label": "Save Draft",
               "to": "END"
             },
             {
-              "label": "Publish — PUT + PATCH status=active, published_at set",
+              "label": "Publish",
               "to": "END"
             }
           ]
@@ -3780,14 +3520,12 @@
         {
           "id": "edit-wizard--click-edit",
           "type": "step",
-          "label": "Seller clicks Edit on listing",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "edit-wizard--navigate-edit",
           "type": "step",
-          "label": "Navigate to /dashboard/listings/[id]/edit",
           "layer": "client",
           "status": "built",
           "route": "/dashboard/listings/[id]/edit"
@@ -3795,34 +3533,28 @@
         {
           "id": "edit-wizard--prefill-wizard",
           "type": "step",
-          "label": "GET /api/listings/[id] → pre-populate wizard",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "edit-wizard--edit-steps",
           "type": "step",
-          "label": "Same 5-step wizard as create, tracks changedFields for partial save",
           "layer": "client",
-          "status": "built",
-          "notes": "No localStorage persistence for edit mode."
+          "status": "built"
         },
         {
           "id": "edit-wizard--save-changes",
           "type": "step",
-          "label": "PUT /api/listings/[id] with only changed fields",
           "layer": "server",
           "status": "built",
-          "route": "PUT /api/listings/[id]"
+          "route": "/api/listings/[id]"
         },
         {
           "id": "edit-wizard--photo-management",
           "type": "step",
-          "label": "Add new photos or delete existing (DELETE /api/listings/upload/delete)",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/listings/upload/delete",
-          "notes": "Remaining photos re-sequenced after deletion."
+          "route": "/api/listings/upload/delete"
         },
         {
           "id": "dashboard-management--entry",
@@ -3832,45 +3564,38 @@
         {
           "id": "dashboard-management--fetch-listings",
           "type": "step",
-          "label": "GET /api/listings/seller — all listings, all statuses",
           "layer": "server",
           "status": "built",
-          "route": "GET /api/listings/seller"
+          "route": "/api/listings/seller"
         },
         {
           "id": "dashboard-management--filter-tabs",
           "type": "step",
-          "label": "Filter by tab: Active, Drafts, Sold, Archived",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "dashboard-management--active-actions",
           "type": "step",
-          "label": "Active listing actions: Edit, Mark Sold, Archive, Quick Edit Price, Duplicate",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "dashboard-management--duplicate-listing",
           "type": "step",
-          "label": "Duplicate → POST /api/listings/[id]/duplicate → new draft with copied fields",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/listings/[id]/duplicate",
-          "notes": "Opens at Step 1 — needs photos."
+          "route": "/api/listings/[id]/duplicate"
         },
         {
           "id": "dashboard-management--draft-actions",
           "type": "step",
-          "label": "Draft actions: Continue editing, Delete draft (hard delete)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "dashboard-management--archived-actions",
           "type": "step",
-          "label": "Archived actions: Reactivate → PATCH status=active",
           "layer": "client",
           "status": "built"
         }
@@ -4010,28 +3735,26 @@
         {
           "id": "share-listing--click-share",
           "type": "step",
-          "label": "Click ShareButton in action bar on listing detail page",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "share-listing--check-api",
           "type": "step",
-          "label": "Check if Web Share API is available",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "share-listing--decision-check-api",
           "type": "decision",
-          "label": "Web Share API available?",
+          "label": "Share API available?",
           "options": [
             {
-              "label": "Yes (mobile)",
+              "label": "Yes",
               "to": "share-listing--native-share"
             },
             {
-              "label": "No (desktop)",
+              "label": "No",
               "to": "share-listing--clipboard-copy"
             }
           ]
@@ -4039,15 +3762,12 @@
         {
           "id": "share-listing--native-share",
           "type": "step",
-          "label": "navigator.share({ title, url }) — native share sheet opens (mobile)",
           "layer": "client",
-          "status": "built",
-          "notes": "AbortError from user cancellation is silently ignored."
+          "status": "built"
         },
         {
           "id": "share-listing--clipboard-copy",
           "type": "step",
-          "label": "navigator.clipboard.writeText(url) — copy link (desktop)",
           "layer": "client",
           "status": "built"
         },
@@ -4069,14 +3789,12 @@
         {
           "id": "share-listing--copy-success",
           "type": "step",
-          "label": "Toast: 'Link copied!'",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "share-listing--copy-denied",
           "type": "step",
-          "label": "Toast: 'Unable to copy link' (clipboard access denied)",
           "layer": "client",
           "status": "built"
         }
@@ -4097,12 +3815,12 @@
         {
           "from": "share-listing--decision-check-api",
           "to": "share-listing--native-share",
-          "opt": "Yes (mobile)"
+          "opt": "Yes"
         },
         {
           "from": "share-listing--decision-check-api",
           "to": "share-listing--clipboard-copy",
-          "opt": "No (desktop)"
+          "opt": "No"
         },
         {
           "from": "share-listing--native-share",
@@ -4143,22 +3861,19 @@
         {
           "id": "toggle-on--click-toggle-on",
           "type": "step",
-          "label": "Toggle ON in Seller Settings",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "toggle-on--post-toggle-on",
           "type": "step",
-          "label": "POST /api/members/toggle-seller (is_seller=true)",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/members/toggle-seller"
+          "route": "/api/members/toggle-seller"
         },
         {
           "id": "toggle-on--show-seller-features",
           "type": "step",
-          "label": "Dashboard shows seller features",
           "layer": "client",
           "status": "built"
         },
@@ -4170,29 +3885,27 @@
         {
           "id": "toggle-off--click-toggle-off",
           "type": "step",
-          "label": "Click toggle OFF in Seller Settings",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "toggle-off--check-preconditions",
           "type": "step",
-          "label": "GET /api/members/seller-preconditions",
           "layer": "server",
           "status": "built",
-          "route": "GET /api/members/seller-preconditions"
+          "route": "/api/members/seller-preconditions"
         },
         {
           "id": "toggle-off--decision-check-preconditions",
           "type": "decision",
-          "label": "Has active listings or orders?",
+          "label": "Has active items?",
           "options": [
             {
-              "label": "Yes — must resolve first",
+              "label": "Yes",
               "to": "toggle-off--show-warning"
             },
             {
-              "label": "No — proceed",
+              "label": "No",
               "to": "toggle-off--post-toggle-off"
             }
           ]
@@ -4200,29 +3913,25 @@
         {
           "id": "toggle-off--show-warning",
           "type": "step",
-          "label": "Show warning: X active listings, Y orders — must resolve first",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "toggle-off--post-toggle-off",
           "type": "step",
-          "label": "POST /api/members/toggle-seller (is_seller=false)",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/members/toggle-seller"
+          "route": "/api/members/toggle-seller"
         },
         {
           "id": "toggle-off--hide-listings",
           "type": "step",
-          "label": "All listings hidden from search",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "toggle-off--hide-seller-features",
           "type": "step",
-          "label": "Seller features hidden in dashboard",
           "layer": "client",
           "status": "built"
         }
@@ -4255,12 +3964,12 @@
         {
           "from": "toggle-off--decision-check-preconditions",
           "to": "toggle-off--show-warning",
-          "opt": "Yes — must resolve first"
+          "opt": "Yes"
         },
         {
           "from": "toggle-off--decision-check-preconditions",
           "to": "toggle-off--post-toggle-off",
-          "opt": "No — proceed"
+          "opt": "No"
         },
         {
           "from": "toggle-off--show-warning",
@@ -4291,7 +4000,6 @@
         {
           "id": "create-shop--entry-point",
           "type": "step",
-          "label": "User reaches shop creation form via onboarding, /dashboard/shop/create, or seller opt-in modal",
           "layer": "client",
           "status": "built",
           "route": "/dashboard/shop/create"
@@ -4299,21 +4007,18 @@
         {
           "id": "create-shop--enter-name",
           "type": "step",
-          "label": "Enter shop name",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "create-shop--auto-slug",
           "type": "step",
-          "label": "Auto-generate slug from name",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "create-shop--check-slug",
           "type": "step",
-          "label": "checkShopSlugAvailable(slug)",
           "layer": "server",
           "status": "built",
           "errorCases": [
@@ -4333,7 +4038,7 @@
               "to": "create-shop--enter-description"
             },
             {
-              "label": "No — show error",
+              "label": "No",
               "to": "END"
             }
           ]
@@ -4341,17 +4046,15 @@
         {
           "id": "create-shop--enter-description",
           "type": "step",
-          "label": "Enter description",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "create-shop--post-shop",
           "type": "step",
-          "label": "POST /api/shops",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/shops",
+          "route": "/api/shops",
           "errorCases": [
             {
               "condition": "Member at 5-shop limit",
@@ -4363,35 +4066,30 @@
         {
           "id": "create-shop--reserve-slug",
           "type": "step",
-          "label": "Reserve slug in slugs table (atomic)",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "create-shop--create-shop-row",
           "type": "step",
-          "label": "Create shop row (owner_id = user)",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "create-shop--add-owner-membership",
           "type": "step",
-          "label": "Add owner to shop_members with owner role",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "create-shop--set-seller-flag",
           "type": "step",
-          "label": "Set is_seller = true on member",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "create-shop--redirect-settings",
           "type": "step",
-          "label": "Redirect to /dashboard/shop/settings",
           "layer": "client",
           "status": "built"
         }
@@ -4463,7 +4161,6 @@
         {
           "id": "invite-sent--open-modal",
           "type": "step",
-          "label": "Owner clicks Invite button",
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/shops/components/invite-member-modal/index.tsx"
@@ -4471,20 +4168,16 @@
         {
           "id": "invite-sent--enter-details",
           "type": "step",
-          "label": "Enter recipient email + select role",
           "layer": "client",
-          "status": "built",
-          "notes": "RoleSelect dropdown filters out Owner role. Validates via validateInviteInput()."
+          "status": "built"
         },
         {
           "id": "invite-sent--create-invite",
           "type": "step",
-          "label": "POST /api/shops/[id]/invites",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/shops/[id]/invites",
+          "route": "/api/shops/[id]/invites",
           "codeRef": "src/app/api/shops/[id]/invites/route.ts",
-          "notes": "Requires requireShopPermission('members', 'full'). Enforces 5-member cap (members + pending invites).",
           "errorCases": [
             {
               "condition": "Members + pending invites >= 5",
@@ -4506,18 +4199,15 @@
         {
           "id": "invite-sent--insert-row",
           "type": "step",
-          "label": "Insert shop_invites row with 7-day expiry token",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "invite-sent--send-email",
           "type": "step",
-          "label": "Send invite email via Resend with /invite/{token} link",
           "layer": "email",
           "status": "built",
-          "codeRef": "src/features/email/templates/shop-invite.tsx",
-          "notes": "Email failure is logged but does NOT block the 201 response. Invite is still created."
+          "codeRef": "src/features/email/templates/shop-invite.tsx"
         },
         {
           "id": "accept-authenticated--entry",
@@ -4527,20 +4217,18 @@
         {
           "id": "accept-authenticated--land-on-page",
           "type": "step",
-          "label": "User lands on /invite/[token]",
           "layer": "client",
           "status": "built",
           "route": "/invite/[token]",
-          "codeRef": "src/app/(frontend)/invite/[token]/page.tsx",
-          "notes": "Server component fetches invite data via admin client. Invalid token → 404."
+          "codeRef": "src/app/(frontend)/invite/[token]/page.tsx"
         },
         {
           "id": "accept-authenticated--decision-land-on-page",
           "type": "decision",
-          "label": "Invite still valid?",
+          "label": "Invite valid?",
           "options": [
             {
-              "label": "Pending + not expired",
+              "label": "Pending",
               "to": "accept-authenticated--check-auth"
             },
             {
@@ -4552,7 +4240,7 @@
               "to": "END"
             },
             {
-              "label": "Already accepted",
+              "label": "Accepted",
               "to": "END"
             }
           ]
@@ -4560,7 +4248,6 @@
         {
           "id": "accept-authenticated--check-auth",
           "type": "step",
-          "label": "InviteAccept checks useAuth() session",
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/shops/components/invite-accept/index.tsx"
@@ -4568,27 +4255,22 @@
         {
           "id": "accept-authenticated--show-accept-button",
           "type": "step",
-          "label": "Show invite details + 'Accept Invitation' button",
           "layer": "client",
-          "status": "built",
-          "notes": "Shows shop name, avatar, inviter name, assigned role."
+          "status": "built"
         },
         {
           "id": "accept-authenticated--click-accept",
           "type": "step",
-          "label": "User clicks Accept Invitation",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "accept-authenticated--accept-api",
           "type": "step",
-          "label": "POST /api/invites/[token]/accept",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/invites/[token]/accept",
+          "route": "/api/invites/[token]/accept",
           "codeRef": "src/app/api/invites/[token]/accept/route.ts",
-          "notes": "Uses cookie session auth (no X-Nessi-Context header). Looks up invite by token via admin client.",
           "errorCases": [
             {
               "condition": "Already a shop member",
@@ -4601,7 +4283,7 @@
               "httpStatus": 409
             },
             {
-              "condition": "Member belongs to 5 shops already",
+              "condition": "Member belongs to 5 shops",
               "result": "SHOP_LIMIT_REACHED",
               "httpStatus": 409
             },
@@ -4620,24 +4302,20 @@
         {
           "id": "accept-authenticated--insert-membership",
           "type": "step",
-          "label": "Insert shop_members row with invite's role_id",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "accept-authenticated--mark-accepted",
           "type": "step",
-          "label": "Update shop_invites status = 'accepted'",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "accept-authenticated--redirect-success",
           "type": "step",
-          "label": "Redirect to /dashboard + success toast",
           "layer": "client",
-          "status": "built",
-          "notes": "Member now sees shop in navbar context switcher dropdown."
+          "status": "built"
         },
         {
           "id": "accept-new-user--entry",
@@ -4647,7 +4325,6 @@
         {
           "id": "accept-new-user--land-unauthenticated",
           "type": "step",
-          "label": "User lands on /invite/[token] without session",
           "layer": "client",
           "status": "built",
           "route": "/invite/[token]"
@@ -4655,58 +4332,47 @@
         {
           "id": "accept-new-user--show-auth-options",
           "type": "step",
-          "label": "Show 'Sign Up' and 'Sign In' buttons (no Accept yet)",
           "layer": "client",
-          "status": "built",
-          "notes": "Sign Up navigates to ?register=true&invite={token}"
+          "status": "built"
         },
         {
           "id": "accept-new-user--click-signup",
           "type": "step",
-          "label": "User clicks 'Sign Up'",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "accept-new-user--navbar-detects-params",
           "type": "step",
-          "label": "Navbar useEffect detects ?register=true&invite={token}",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/components/navigation/navbar/index.tsx",
-          "notes": "Stores inviteToken in component state, opens register modal, cleans URL params."
+          "codeRef": "src/components/navigation/navbar/index.tsx"
         },
         {
           "id": "accept-new-user--register",
           "type": "step",
-          "label": "User enters email + password → POST /api/auth/register",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/auth/register"
+          "route": "/api/auth/register"
         },
         {
           "id": "accept-new-user--otp-verify",
           "type": "step",
-          "label": "User enters 6-digit OTP code → verifyOtp(type='signup')",
           "layer": "client",
-          "status": "built",
-          "notes": "inviteToken is threaded: Navbar → RegisterForm → OtpInput via props."
+          "status": "built"
         },
         {
           "id": "accept-new-user--session-established",
           "type": "step",
-          "label": "Session established via cookies",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "accept-new-user--auto-accept",
           "type": "step",
-          "label": "acceptShopInvite(token) called automatically",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/features/shops/services/shop-invites.ts",
-          "notes": "Called inside OtpInput after verifyOtp succeeds. Failure is NEVER blocking — account creation always completes. Error → toast suggesting manual acceptance."
+          "codeRef": "src/features/shops/services/shop-invites.ts"
         },
         {
           "id": "accept-new-user--decision-auto-accept",
@@ -4726,10 +4392,8 @@
         {
           "id": "accept-new-user--auto-accept-success",
           "type": "step",
-          "label": "Toast: 'You've joined {shopName}!' + redirect to /dashboard",
           "layer": "client",
-          "status": "built",
-          "notes": "onInviteAccepted callback fires in Navbar, shows toast, navigates."
+          "status": "built"
         }
       ],
       "edges": [
@@ -4764,7 +4428,7 @@
         {
           "from": "accept-authenticated--decision-land-on-page",
           "to": "accept-authenticated--check-auth",
-          "opt": "Pending + not expired"
+          "opt": "Pending"
         },
         {
           "from": "accept-authenticated--check-auth",
@@ -4848,14 +4512,12 @@
         {
           "id": "work-in-shop--switch-to-shop",
           "type": "step",
-          "label": "Member clicks shop name → switchToShop(shopId)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "work-in-shop--set-context-header",
           "type": "step",
-          "label": "X-Nessi-Context: shop:{shopId} set on all requests",
           "layer": "background",
           "status": "built"
         },
@@ -4865,11 +4527,11 @@
           "label": "Role?",
           "options": [
             {
-              "label": "Owner/Manager — access shop settings, manage members, edit any listing",
+              "label": "Owner/Manager",
               "to": "work-in-shop--create-listing"
             },
             {
-              "label": "Contributor — edit own listings only, no settings/members access",
+              "label": "Contributor",
               "to": "work-in-shop--create-listing"
             }
           ]
@@ -4877,21 +4539,18 @@
         {
           "id": "work-in-shop--create-listing",
           "type": "step",
-          "label": "Create listing in shop context — shop_id set, visible on shop page",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "work-in-shop--role-based-access",
           "type": "step",
-          "label": "Access based on role: Owner/Manager get settings + members, Contributor gets own listings only",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "work-in-shop--switch-back",
           "type": "step",
-          "label": "Switch back to personal: switchToMember() → X-Nessi-Context: member",
           "layer": "client",
           "status": "built"
         },
@@ -4903,22 +4562,18 @@
         {
           "id": "leave-shop--click-leave",
           "type": "step",
-          "label": "Non-owner sees and clicks 'Leave Shop' button",
           "layer": "client",
-          "status": "built",
-          "notes": "Leave button NOT shown for owners — must transfer ownership first."
+          "status": "built"
         },
         {
           "id": "leave-shop--confirm-modal",
           "type": "step",
-          "label": "Confirmation modal opens",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "leave-shop--type-phrase",
           "type": "step",
-          "label": "Type confirmation phrase: 'I {name} want to leave {shopName}'",
           "layer": "client",
           "status": "built"
         },
@@ -4932,7 +4587,7 @@
               "to": "leave-shop--remove-self"
             },
             {
-              "label": "No — submit button disabled",
+              "label": "No",
               "to": "END"
             }
           ]
@@ -4940,35 +4595,30 @@
         {
           "id": "leave-shop--remove-self",
           "type": "step",
-          "label": "removeShopMember(shopId, myMemberId)",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "leave-shop--switch-to-member",
           "type": "step",
-          "label": "switchToMember() — revert to personal context",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "leave-shop--invalidate-queries",
           "type": "step",
-          "label": "Invalidate shop queries",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "leave-shop--show-toast",
           "type": "step",
-          "label": "Toast: 'You left {shopName}'",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "leave-shop--close-modal",
           "type": "step",
-          "label": "Modal closes, user in member context",
           "layer": "client",
           "status": "built"
         },
@@ -4980,63 +4630,54 @@
         {
           "id": "context-revocation--owner-removes",
           "type": "step",
-          "label": "Owner removes member from shop via API",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "context-revocation--next-api-call",
           "type": "step",
-          "label": "Member's next API call includes shop context",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "context-revocation--receive-403",
           "type": "step",
-          "label": "API returns 403 Forbidden",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "context-revocation--handle-revocation",
           "type": "step",
-          "label": "handleContextRevocation() fires (with 2s dedup check)",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "context-revocation--switch-to-member",
           "type": "step",
-          "label": "switchToMember() — revert to personal context",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "context-revocation--cancel-queries",
           "type": "step",
-          "label": "Cancel all queries + invalidate cache",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "context-revocation--dispatch-event",
           "type": "step",
-          "label": "Dispatch 'nessi:context-revoked' event",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "context-revocation--show-toast",
           "type": "step",
-          "label": "ContextRevocationListener → Toast: 'You have been removed from shop'",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "context-revocation--navigate-dashboard",
           "type": "step",
-          "label": "Navigate to /dashboard",
           "layer": "client",
           "status": "built"
         },
@@ -5048,35 +4689,30 @@
         {
           "id": "multi-shop--fetch-shops",
           "type": "step",
-          "label": "getShopsByMember(memberId) — fetch all shops",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "multi-shop--navbar-dropdown",
           "type": "step",
-          "label": "Navbar dropdown lists all shops + personal profile",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "multi-shop--select-identity",
           "type": "step",
-          "label": "Select identity: personal, or any shop (with role)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "multi-shop--set-context",
           "type": "step",
-          "label": "Set context in Zustand store",
           "layer": "background",
           "status": "built"
         },
         {
           "id": "multi-shop--persist-context",
           "type": "step",
-          "label": "Persisted to localStorage — survives page refresh",
           "layer": "background",
           "status": "built"
         }
@@ -5097,12 +4733,12 @@
         {
           "from": "work-in-shop--decision-set-context-header",
           "to": "work-in-shop--create-listing",
-          "opt": "Owner/Manager — access shop settings, manage members, edit any listing"
+          "opt": "Owner/Manager"
         },
         {
           "from": "work-in-shop--decision-set-context-header",
           "to": "work-in-shop--create-listing",
-          "opt": "Contributor — edit own listings only, no settings/members access"
+          "opt": "Contributor"
         },
         {
           "from": "work-in-shop--create-listing",
@@ -5222,14 +4858,12 @@
         {
           "id": "invite-member--enter-invite",
           "type": "step",
-          "label": "Enter email + select role",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "invite-member--validate-invite",
           "type": "step",
-          "label": "Validate email and role",
           "layer": "client",
           "status": "built",
           "errorCases": [
@@ -5243,7 +4877,6 @@
         {
           "id": "invite-member--server-checks",
           "type": "step",
-          "label": "Server-side checks: member cap, existing member, duplicate invite",
           "layer": "server",
           "status": "built",
           "errorCases": [
@@ -5267,22 +4900,19 @@
         {
           "id": "invite-member--create-invite",
           "type": "step",
-          "label": "POST /api/shops/[id]/invites",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/shops/[id]/invites"
+          "route": "/api/shops/[id]/invites"
         },
         {
           "id": "invite-member--insert-invite-row",
           "type": "step",
-          "label": "Insert shop_invites row with 7-day expiry",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "invite-member--send-email",
           "type": "step",
-          "label": "Send invite email via Resend with /invite/{token} link",
           "layer": "email",
           "status": "built"
         },
@@ -5294,22 +4924,19 @@
         {
           "id": "resend-invite--click-resend",
           "type": "step",
-          "label": "POST /api/shops/[id]/invites/[inviteId]/resend",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/shops/[id]/invites/[inviteId]/resend"
+          "route": "/api/shops/[id]/invites/[inviteId]/resend"
         },
         {
           "id": "resend-invite--regenerate-token",
           "type": "step",
-          "label": "Regenerate token + reset expiry to 7 days",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "resend-invite--resend-email",
           "type": "step",
-          "label": "Resend invite email with new token",
           "layer": "email",
           "status": "built"
         },
@@ -5321,15 +4948,13 @@
         {
           "id": "revoke-invite--delete-invite",
           "type": "step",
-          "label": "DELETE /api/shops/[id]/invites/[inviteId]",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/shops/[id]/invites/[inviteId]"
+          "route": "/api/shops/[id]/invites/[inviteId]"
         },
         {
           "id": "revoke-invite--set-revoked",
           "type": "step",
-          "label": "Set status = 'revoked'",
           "layer": "database",
           "status": "built"
         },
@@ -5341,25 +4966,21 @@
         {
           "id": "remove-member--delete-member",
           "type": "step",
-          "label": "DELETE /api/shops/[id]/members/[memberId]",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/shops/[id]/members/[memberId]"
+          "route": "/api/shops/[id]/members/[memberId]"
         },
         {
           "id": "remove-member--member-removed",
           "type": "step",
-          "label": "Member removed from shop_members",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "remove-member--context-revocation",
           "type": "step",
-          "label": "If member was in shop context: 403 on next API call → context revocation",
           "layer": "background",
-          "status": "built",
-          "notes": "See context-switching.json for revocation safety net."
+          "status": "built"
         },
         {
           "id": "assign-role--entry",
@@ -5369,24 +4990,21 @@
         {
           "id": "assign-role--show-dropdown",
           "type": "step",
-          "label": "Each member row has RoleSelect dropdown (disabled for owner)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "assign-role--select-role",
           "type": "step",
-          "label": "Select new role from dropdown",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "assign-role--patch-role",
           "type": "step",
-          "label": "PATCH /api/shops/[id]/members/[memberId]/role",
           "layer": "server",
           "status": "built",
-          "route": "PATCH /api/shops/[id]/members/[memberId]/role",
+          "route": "/api/shops/[id]/members/[memberId]/role",
           "errorCases": [
             {
               "condition": "Cannot assign Owner role",
@@ -5398,21 +5016,18 @@
         {
           "id": "assign-role--optimistic-update",
           "type": "step",
-          "label": "Optimistic cache update",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "assign-role--show-toast",
           "type": "step",
-          "label": "Toast: 'Role updated to {roleName}'",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "assign-role--permissions-change",
           "type": "step",
-          "label": "Member's permissions change immediately",
           "layer": "server",
           "status": "built"
         }
@@ -5515,24 +5130,21 @@
         {
           "id": "initiate-transfer--select-member",
           "type": "step",
-          "label": "Select new owner from current members",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "initiate-transfer--confirm-modal",
           "type": "step",
-          "label": "Two-step confirmation modal",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "initiate-transfer--post-transfer",
           "type": "step",
-          "label": "POST /api/shops/[id]/ownership",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/shops/[id]/ownership",
+          "route": "/api/shops/[id]/ownership",
           "errorCases": [
             {
               "condition": "Pending transfer already exists",
@@ -5544,21 +5156,18 @@
         {
           "id": "initiate-transfer--insert-transfer",
           "type": "step",
-          "label": "Insert shop_ownership_transfers row (status: pending, 7-day expiry)",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "initiate-transfer--send-email",
           "type": "step",
-          "label": "Send ownership transfer email with /shop/transfer/{token} link",
           "layer": "email",
           "status": "built"
         },
         {
           "id": "initiate-transfer--show-pending",
           "type": "step",
-          "label": "Pending status card shown with transferee name + expiry",
           "layer": "client",
           "status": "built"
         },
@@ -5570,7 +5179,6 @@
         {
           "id": "accept-transfer--land-on-page",
           "type": "step",
-          "label": "Transferee lands on /shop/transfer/{token}",
           "layer": "client",
           "status": "built",
           "route": "/shop/transfer/[token]"
@@ -5578,7 +5186,6 @@
         {
           "id": "accept-transfer--check-auth",
           "type": "step",
-          "label": "proxy.ts: check authentication",
           "layer": "server",
           "status": "built"
         },
@@ -5588,7 +5195,7 @@
           "label": "Authenticated?",
           "options": [
             {
-              "label": "No — redirect to /",
+              "label": "No",
               "to": "END"
             },
             {
@@ -5600,7 +5207,6 @@
         {
           "id": "accept-transfer--validate-transfer",
           "type": "step",
-          "label": "Server component fetches transfer via admin client — validate status, user, expiry",
           "layer": "server",
           "status": "built",
           "errorCases": [
@@ -5621,36 +5227,31 @@
         {
           "id": "accept-transfer--show-accept",
           "type": "step",
-          "label": "Show TransferAccept component",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "accept-transfer--click-accept",
           "type": "step",
-          "label": "Transferee clicks Accept",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "accept-transfer--accept-api",
           "type": "step",
-          "label": "POST /api/shops/ownership-transfer/[token]/accept",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/shops/ownership-transfer/[token]/accept"
+          "route": "/api/shops/ownership-transfer/[token]/accept"
         },
         {
           "id": "accept-transfer--atomic-swap",
           "type": "step",
-          "label": "Atomic swap: shops.owner_id → new owner, new owner role → OWNER, old owner role → MANAGER, transfer status → accepted",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "accept-transfer--transfer-complete",
           "type": "step",
-          "label": "Ownership transferred successfully",
           "layer": "client",
           "status": "built"
         },
@@ -5662,29 +5263,25 @@
         {
           "id": "cancel-transfer--click-cancel",
           "type": "step",
-          "label": "Owner clicks Cancel Transfer",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "cancel-transfer--confirm-cancel",
           "type": "step",
-          "label": "Confirmation modal",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "cancel-transfer--delete-transfer",
           "type": "step",
-          "label": "DELETE /api/shops/[id]/ownership-transfer",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/shops/[id]/ownership-transfer"
+          "route": "/api/shops/[id]/ownership-transfer"
         },
         {
           "id": "cancel-transfer--set-cancelled",
           "type": "step",
-          "label": "Set transfer status → cancelled",
           "layer": "database",
           "status": "built"
         }
@@ -5784,7 +5381,6 @@
         {
           "id": "view-roles--navigate-roles",
           "type": "step",
-          "label": "Navigate to /dashboard/shop/roles",
           "layer": "client",
           "status": "built",
           "route": "/dashboard/shop/roles"
@@ -5792,10 +5388,8 @@
         {
           "id": "view-roles--route-guard",
           "type": "step",
-          "label": "ShopRouteGuard checks user role",
           "layer": "client",
-          "status": "built",
-          "notes": "Contributors are redirected to /dashboard."
+          "status": "built"
         },
         {
           "id": "view-roles--decision-route-guard",
@@ -5803,11 +5397,11 @@
           "label": "User's role?",
           "options": [
             {
-              "label": "Owner or Manager",
+              "label": "Owner/Manager",
               "to": "view-roles--show-system-roles"
             },
             {
-              "label": "Contributor — redirect to /dashboard",
+              "label": "Contributor",
               "to": "END"
             }
           ]
@@ -5815,35 +5409,30 @@
         {
           "id": "view-roles--show-system-roles",
           "type": "step",
-          "label": "System Roles section with RoleCards",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-roles--owner-role",
           "type": "step",
-          "label": "RoleCard: Owner — all 6 domains at 'full'",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-roles--manager-role",
           "type": "step",
-          "label": "RoleCard: Manager — listings/pricing/orders/messaging 'full', shop_settings 'view', members 'none'",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-roles--contributor-role",
           "type": "step",
-          "label": "RoleCard: Contributor — listings 'full' only",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "view-roles--permission-matrix",
           "type": "step",
-          "label": "Each card shows PermissionMatrix grid",
           "layer": "client",
           "status": "built"
         },
@@ -5855,14 +5444,12 @@
         {
           "id": "custom-roles--click-add-custom",
           "type": "step",
-          "label": "Owner clicks 'Add Custom Role' button",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "custom-roles--upsell-modal",
           "type": "step",
-          "label": "CustomRoleUpsellModal opens — premium plan gate (not yet available)",
           "layer": "client",
           "status": "planned"
         }
@@ -5883,7 +5470,7 @@
         {
           "from": "view-roles--decision-route-guard",
           "to": "view-roles--show-system-roles",
-          "opt": "Owner or Manager"
+          "opt": "Owner/Manager"
         },
         {
           "from": "view-roles--show-system-roles",
@@ -5926,7 +5513,6 @@
         {
           "id": "shop-details--visit-settings",
           "type": "step",
-          "label": "Navigate to /dashboard/shop/settings",
           "layer": "client",
           "status": "built",
           "route": "/dashboard/shop/settings"
@@ -5934,31 +5520,27 @@
         {
           "id": "shop-details--edit-name",
           "type": "step",
-          "label": "Inline-edit shop name",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "shop-details--edit-slug",
           "type": "step",
-          "label": "Edit slug (availability check)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "shop-details--edit-description",
           "type": "step",
-          "label": "Edit description",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "shop-details--upload-avatar",
           "type": "step",
-          "label": "Upload avatar (200x200 WebP)",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/shops/avatar"
+          "route": "/api/shops/avatar"
         },
         {
           "id": "hero-banner--entry",
@@ -5968,22 +5550,19 @@
         {
           "id": "hero-banner--upload-banner",
           "type": "step",
-          "label": "Upload hero banner image",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "hero-banner--process-banner",
           "type": "step",
-          "label": "Sharp: max 1200x400, convert to WebP",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/shops/hero-banner"
+          "route": "/api/shops/hero-banner"
         },
         {
           "id": "hero-banner--store-banner",
           "type": "step",
-          "label": "Stored in profile-assets bucket",
           "layer": "server",
           "status": "built"
         },
@@ -5995,50 +5574,43 @@
         {
           "id": "delete-shop--type-confirmation",
           "type": "step",
-          "label": "Type shop name to confirm deletion",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "delete-shop--delete-api",
           "type": "step",
-          "label": "DELETE /api/shops/[id]",
           "layer": "server",
           "status": "built",
-          "route": "DELETE /api/shops/[id]"
+          "route": "/api/shops/[id]"
         },
         {
           "id": "delete-shop--delete-avatar",
           "type": "step",
-          "label": "Delete avatar from storage",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-shop--delete-hero",
           "type": "step",
-          "label": "Delete hero banner from storage",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-shop--delete-listing-photos",
           "type": "step",
-          "label": "Delete all shop listing photos",
           "layer": "server",
           "status": "built"
         },
         {
           "id": "delete-shop--soft-delete-shop",
           "type": "step",
-          "label": "Soft-delete shop row",
           "layer": "database",
           "status": "built"
         },
         {
           "id": "delete-shop--release-slug",
           "type": "step",
-          "label": "Release slug",
           "layer": "database",
           "status": "built"
         }
@@ -6121,7 +5693,6 @@
         {
           "id": "register--open-modal",
           "type": "step",
-          "label": "User clicks Sign Up → navbar modal opens",
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/auth/components/register-form/index.tsx"
@@ -6129,20 +5700,16 @@
         {
           "id": "register--enter-credentials",
           "type": "step",
-          "label": "Enter email + password",
           "layer": "client",
-          "status": "built",
-          "notes": "Client-side validation: email format, password min 8 chars."
+          "status": "built"
         },
         {
           "id": "register--submit-register",
           "type": "step",
-          "label": "POST /api/auth/register (admin client creates user)",
           "layer": "server",
           "status": "built",
-          "route": "POST /api/auth/register",
+          "route": "/api/auth/register",
           "codeRef": "src/app/api/auth/register/route.ts",
-          "notes": "Uses admin client to create user, bypassing email confirmation flow. Triggers Supabase to send OTP email.",
           "errorCases": [
             {
               "condition": "Email already registered",
@@ -6154,14 +5721,12 @@
         {
           "id": "register--transition-to-otp",
           "type": "step",
-          "label": "Form transitions to OTP input (same modal, no page change)",
           "layer": "client",
           "status": "built"
         },
         {
           "id": "register--enter-otp",
           "type": "step",
-          "label": "User enters 6-digit code from email",
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/auth/components/otp-input/index.tsx"
@@ -6172,7 +5737,7 @@
           "label": "Code not received?",
           "options": [
             {
-              "label": "Resend OTP (60s cooldown)",
+              "label": "Resend",
               "to": "register--transition-to-otp"
             }
           ]
@@ -6180,10 +5745,8 @@
         {
           "id": "register--verify-otp",
           "type": "step",
-          "label": "verifyOtp(type='signup') → session established",
           "layer": "server",
           "status": "built",
-          "notes": "On success, Supabase sets session cookies.",
           "errorCases": [
             {
               "condition": "Invalid/expired code",
@@ -6199,45 +5762,35 @@
         {
           "id": "post-auth-side-effects--invite-check",
           "type": "step",
-          "label": "Check if invite token was present in URL params",
           "layer": "background",
-          "status": "built",
-          "notes": "Token was stored in Navbar state from ?register=true&invite={token}. Threaded to OtpInput via props."
+          "status": "built"
         },
         {
           "id": "post-auth-side-effects--auto-accept-invite",
           "type": "step",
-          "label": "acceptShopInvite(token) — join shop automatically",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/features/shops/services/shop-invites.ts",
-          "notes": "Only fires if invite token present. Failure never blocks — account is always created. See shop-invite-acceptance.json for full flow."
+          "codeRef": "src/features/shops/services/shop-invites.ts"
         },
         {
           "id": "post-auth-side-effects--cart-merge",
           "type": "step",
-          "label": "useCartMerge() — merge localStorage cart to DB",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/features/cart/hooks/use-cart-merge.ts",
-          "notes": "Silent. No toast. Fires on any auth state change. See guest-cart.json for full flow."
+          "codeRef": "src/features/cart/hooks/use-cart-merge.ts"
         },
         {
           "id": "post-auth-side-effects--recently-viewed-merge",
           "type": "step",
-          "label": "useRecentlyViewedMerge() — merge localStorage views to DB",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts",
-          "notes": "Silent. POST /api/recently-viewed/merge. Deduplicates on server."
+          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts"
         },
         {
           "id": "post-auth-side-effects--onboarding-check",
           "type": "step",
-          "label": "Check onboarding_completed_at on member record",
           "layer": "client",
-          "status": "built",
-          "notes": "If null → onboarding banner appears. If set → user stays on current page."
+          "status": "built"
         }
       ],
       "edges": [
@@ -6268,7 +5821,7 @@
         {
           "from": "register--decision-enter-otp",
           "to": "register--transition-to-otp",
-          "opt": "Resend OTP (60s cooldown)"
+          "opt": "Resend"
         },
         {
           "from": "post-auth-side-effects--entry",
