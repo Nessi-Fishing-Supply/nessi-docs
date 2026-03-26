@@ -2,6 +2,7 @@
   "journeys": [
     {
       "slug": "account-deletion",
+      "domain": "account",
       "title": "Account Deletion (Full Cascade)",
       "persona": "account",
       "description": "Full account deletion cascade: shop ownership gate, storage cleanup (avatars, listing photos, hero banners), slug cleanup, auth user deletion with FK cascades and DB triggers.",
@@ -196,6 +197,7 @@
     },
     {
       "slug": "account-settings",
+      "domain": "account",
       "title": "Account Settings & Profile Completeness",
       "persona": "account",
       "description": "Account settings page with sections for personal info, fishing identity, notifications, seller settings, shipping addresses, linked accounts, and profile completeness tracking.",
@@ -373,6 +375,7 @@
     },
     {
       "slug": "buyer-addresses",
+      "domain": "account",
       "title": "Saved Shipping Addresses",
       "persona": "buyer",
       "description": "Buyer manages up to 5 saved shipping addresses with CRUD operations, default address management, and auto-promotion on delete.",
@@ -559,6 +562,7 @@
     },
     {
       "slug": "buyer-cart",
+      "domain": "cart",
       "title": "Authenticated Cart (DB-Backed)",
       "persona": "buyer",
       "description": "Authenticated buyer adds items to DB-backed cart with price snapshots, 30-day expiry, seller grouping, and pre-checkout validation.",
@@ -794,6 +798,7 @@
     },
     {
       "slug": "buyer-checkout",
+      "domain": "cart",
       "title": "Checkout (Escrow via Stripe Connect)",
       "persona": "buyer",
       "description": "Buyer checkout with Stripe Connect escrow payments. Funds held until buyer confirms receipt. NOT BUILT — planned for post-MVP.",
@@ -906,6 +911,7 @@
     },
     {
       "slug": "buyer-recently-viewed",
+      "domain": "shopping",
       "title": "Recently Viewed (Dual-Source)",
       "persona": "buyer",
       "description": "Recently viewed listings use dual-source storage: localStorage for guests, DB-backed API for authenticated users. Includes merge on login and clear history.",
@@ -1162,6 +1168,7 @@
     },
     {
       "slug": "buyer-search",
+      "domain": "shopping",
       "title": "Buyer Search & Discovery",
       "persona": "buyer",
       "description": "Authenticated buyer discovers listings via search with autocomplete, category browsing, or homepage featured. Includes filters, infinite scroll, view tracking, and recently viewed.",
@@ -1306,6 +1313,7 @@
     },
     {
       "slug": "context-switching",
+      "domain": "identity",
       "title": "Context Switching (Member / Shop Identity)",
       "persona": "context",
       "description": "Identity system overview: member/shop context switching via Zustand store, X-Nessi-Context header on every request, localStorage persistence, page load rehydration, and edge case handling.",
@@ -1640,6 +1648,7 @@
     },
     {
       "slug": "email-change",
+      "domain": "auth",
       "title": "Email Change (Authenticated + OTP)",
       "persona": "account",
       "description": "Authenticated user changes their email address from account settings. Requires OTP verification sent to the new email.",
@@ -1784,6 +1793,7 @@
     },
     {
       "slug": "guest-browse",
+      "domain": "shopping",
       "title": "Guest Browse & Discover",
       "persona": "guest",
       "description": "Unauthenticated user browses the marketplace by category, keyword search, or featured listings. Views listing details, seller profiles, and shop pages.",
@@ -2015,10 +2025,15 @@
     },
     {
       "slug": "guest-cart",
+      "domain": "cart",
       "title": "Guest Cart → Login → Merge",
       "persona": "guest",
       "description": "Guest adds items to localStorage cart, logs in, and cart silently merges to the database.",
-      "relatedIssues": [128, 129, 130],
+      "relatedIssues": [
+        128,
+        129,
+        130
+      ],
       "nodes": [
         {
           "id": "add-to-cart--entry",
@@ -2219,6 +2234,7 @@
     },
     {
       "slug": "guest-recently-viewed",
+      "domain": "shopping",
       "title": "Guest Recently Viewed",
       "persona": "guest",
       "description": "Guest's listing views are tracked in localStorage, deduped and capped at 30 items. On login, views silently merge to the database.",
@@ -2395,6 +2411,7 @@
     },
     {
       "slug": "login",
+      "domain": "auth",
       "title": "Login (Email + Password)",
       "persona": "auth",
       "description": "Existing user logs in with email and password. Triggers background cart merge and recently-viewed merge as side effects.",
@@ -2567,6 +2584,7 @@
     },
     {
       "slug": "logout",
+      "domain": "auth",
       "title": "Logout",
       "persona": "auth",
       "description": "User logs out, clearing session cookies, resetting context store, and redirecting to homepage.",
@@ -2633,6 +2651,7 @@
     },
     {
       "slug": "onboarding",
+      "domain": "account",
       "title": "Onboarding Wizard (Buyer vs Seller Path)",
       "persona": "onboarding",
       "description": "Branching wizard after first signup. Buyer path (4 steps) vs Seller path (5 steps). Includes post-onboarding seller opt-in for users who initially chose buyer.",
@@ -2884,6 +2903,7 @@
     },
     {
       "slug": "password-reset",
+      "domain": "auth",
       "title": "Password Reset (3-Step OTP)",
       "persona": "auth",
       "description": "User resets forgotten password via a 3-step flow: enter email, verify OTP code, set new password.",
@@ -3022,6 +3042,7 @@
     },
     {
       "slug": "route-protection",
+      "domain": "auth",
       "title": "Route Protection (proxy.ts)",
       "persona": "auth",
       "description": "proxy.ts intercepts every request to enforce auth on /dashboard/* routes, redirect completed onboarding users, and refresh session cookies on public pages.",
@@ -3213,6 +3234,7 @@
     },
     {
       "slug": "seller-context",
+      "domain": "identity",
       "title": "Seller Context (Member vs Shop)",
       "persona": "seller",
       "description": "Listings are created under either member or shop context, controlled by the X-Nessi-Context header. Determines where the listing appears publicly.",
@@ -3372,6 +3394,7 @@
     },
     {
       "slug": "seller-listings",
+      "domain": "listings",
       "title": "Listing Lifecycle (Create, Edit, Manage)",
       "persona": "seller",
       "description": "Full listing lifecycle: 5-step create wizard with photo upload, edit wizard with partial saves, dashboard management with status tabs, and listing actions (publish, sold, archive, duplicate, delete).",
@@ -3722,6 +3745,7 @@
     },
     {
       "slug": "seller-social-sharing",
+      "domain": "listings",
       "title": "Listing Social Sharing",
       "persona": "seller",
       "description": "Share listing via Web Share API (mobile) or clipboard copy (desktop). Handles API availability, cancellation, and clipboard permission gracefully.",
@@ -3848,6 +3872,7 @@
     },
     {
       "slug": "seller-toggle",
+      "domain": "account",
       "title": "Seller Toggle (On/Off)",
       "persona": "seller",
       "description": "User toggles seller status on or off from account settings. Toggling off requires no active listings or orders, and hides all listings from search.",
@@ -3987,6 +4012,7 @@
     },
     {
       "slug": "shop-create",
+      "domain": "shops",
       "title": "Create Shop",
       "persona": "shop-owner",
       "description": "User creates a new shop via onboarding, dashboard, or seller opt-in modal. Includes slug generation, availability check, and atomic server-side setup (slug reservation, shop row, owner membership, seller flag).",
@@ -4148,10 +4174,18 @@
     },
     {
       "slug": "shop-invite-acceptance",
+      "domain": "shops",
       "title": "Shop Invite → Accept (or Register & Auto-Accept)",
       "persona": "shop-member",
       "description": "A user receives a shop invite email, lands on the invite page, and either accepts directly (if authenticated) or registers a new account with auto-accept.",
-      "relatedIssues": [250, 251, 252, 253, 254, 255],
+      "relatedIssues": [
+        250,
+        251,
+        252,
+        253,
+        254,
+        255
+      ],
       "nodes": [
         {
           "id": "invite-sent--entry",
@@ -4499,6 +4533,7 @@
     },
     {
       "slug": "shop-member-journey",
+      "domain": "shops",
       "title": "Shop Member Journey (Join, Work, Leave)",
       "persona": "shop-member",
       "description": "Shop member lifecycle: switch to shop context, work within role-based permissions, leave shop with confirmation, and handle context revocation when removed by owner.",
@@ -4845,6 +4880,7 @@
     },
     {
       "slug": "shop-member-management",
+      "domain": "shops",
       "title": "Shop Member Management (Invite, Remove, Roles)",
       "persona": "shop-owner",
       "description": "Owner manages shop members: invite via email, resend/revoke invites, remove members, and assign roles with permission enforcement.",
@@ -5117,6 +5153,7 @@
     },
     {
       "slug": "shop-ownership-transfer",
+      "domain": "shops",
       "title": "Shop Ownership Transfer (Request → Accept → Cancel)",
       "persona": "shop-owner",
       "description": "Owner initiates ownership transfer to another member. Transferee receives email link, accepts on a dedicated page. Includes atomic role swap and cancellation flow.",
@@ -5368,6 +5405,7 @@
     },
     {
       "slug": "shop-roles",
+      "domain": "shops",
       "title": "Shop Roles & Permissions",
       "persona": "shop-owner",
       "description": "Roles & Permissions page showing system role cards (Owner, Manager, Contributor) with permission matrix. Custom roles gated behind premium plan.",
@@ -5500,6 +5538,7 @@
     },
     {
       "slug": "shop-settings",
+      "domain": "shops",
       "title": "Shop Settings & Deletion",
       "persona": "shop-owner",
       "description": "Shop settings page with sections for details, hero banner, subscription (planned), and shop deletion with full storage cleanup.",
@@ -5680,10 +5719,14 @@
     },
     {
       "slug": "signup",
+      "domain": "auth",
       "title": "Signup (Email + OTP)",
       "persona": "auth",
       "description": "New user registers with email and password, verifies via 6-digit OTP code, and gets a session. Includes invite auto-accept, cart merge, and recently-viewed merge as background side effects.",
-      "relatedIssues": [159, 254],
+      "relatedIssues": [
+        159,
+        254
+      ],
       "nodes": [
         {
           "id": "register--entry",

@@ -58,6 +58,7 @@ interface RawJourneyEdge {
 
 interface RawJourney {
   slug: string;
+  domain: string;
   title: string;
   persona: string;
   description: string;

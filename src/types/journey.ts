@@ -98,8 +98,11 @@ export interface JourneyEdge {
   opt?: string;
 }
 
+export type JourneyDomain = 'auth' | 'shopping' | 'cart' | 'account' | 'shops' | 'listings' | 'identity';
+
 export interface Journey {
   slug: string;
+  domain: JourneyDomain;
   title: string;
   persona: Persona;
   description: string;
