@@ -17,42 +17,19 @@
     },
     {
       "name": "listing_condition",
-      "values": [
-        "new_with_tags",
-        "new_without_tags",
-        "like_new",
-        "good",
-        "fair",
-        "poor"
-      ]
+      "values": ["new_with_tags", "new_without_tags", "like_new", "good", "fair", "poor"]
     },
     {
       "name": "listing_status",
-      "values": [
-        "draft",
-        "active",
-        "reserved",
-        "sold",
-        "archived",
-        "deleted"
-      ]
+      "values": ["draft", "active", "reserved", "sold", "archived", "deleted"]
     },
     {
       "name": "shipping_paid_by",
-      "values": [
-        "seller",
-        "buyer",
-        "split"
-      ]
+      "values": ["seller", "buyer", "split"]
     },
     {
       "name": "invite_status",
-      "values": [
-        "pending",
-        "accepted",
-        "expired",
-        "revoked"
-      ]
+      "values": ["pending", "accepted", "expired", "revoked"]
     }
   ]
 }

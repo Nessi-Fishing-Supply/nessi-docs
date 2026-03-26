@@ -9,9 +9,7 @@
       "endpointCount": 3,
       "hookCount": 1,
       "serviceCount": 2,
-      "entities": [
-        "addresses"
-      ],
+      "entities": ["addresses"],
       "journeySlugs": [],
       "links": [
         {
@@ -35,12 +33,8 @@
       "endpointCount": 4,
       "hookCount": 0,
       "serviceCount": 4,
-      "entities": [
-        "members"
-      ],
-      "journeySlugs": [
-        "signup"
-      ],
+      "entities": ["members"],
+      "journeySlugs": ["signup"],
       "links": [
         {
           "type": "entity",
@@ -68,17 +62,8 @@
       "endpointCount": 6,
       "hookCount": 3,
       "serviceCount": 2,
-      "entities": [
-        "cart_items",
-        "listings",
-        "members",
-        "shops"
-      ],
-      "journeySlugs": [
-        "guest-cart",
-        "login",
-        "signup"
-      ],
+      "entities": ["cart_items", "listings", "members", "shops"],
+      "journeySlugs": ["guest-cart", "login", "signup"],
       "links": [
         {
           "type": "entity",
@@ -171,9 +156,7 @@
       "hookCount": 0,
       "serviceCount": 2,
       "entities": [],
-      "journeySlugs": [
-        "shop-invite-acceptance"
-      ],
+      "journeySlugs": ["shop-invite-acceptance"],
       "links": [
         {
           "type": "journey",
@@ -191,11 +174,7 @@
       "endpointCount": 13,
       "hookCount": 10,
       "serviceCount": 7,
-      "entities": [
-        "listings",
-        "members",
-        "shops"
-      ],
+      "entities": ["listings", "members", "shops"],
       "journeySlugs": [],
       "links": [
         {
@@ -229,9 +208,7 @@
       "endpointCount": 3,
       "hookCount": 2,
       "serviceCount": 4,
-      "entities": [
-        "members"
-      ],
+      "entities": ["members"],
       "journeySlugs": [],
       "links": [
         {
@@ -281,17 +258,8 @@
       "endpointCount": 2,
       "hookCount": 4,
       "serviceCount": 2,
-      "entities": [
-        "members",
-        "recently_viewed",
-        "shops"
-      ],
-      "journeySlugs": [
-        "buyer-recently-viewed",
-        "guest-recently-viewed",
-        "login",
-        "signup"
-      ],
+      "entities": ["members", "recently_viewed", "shops"],
+      "journeySlugs": ["buyer-recently-viewed", "guest-recently-viewed", "login", "signup"],
       "links": [
         {
           "type": "entity",
@@ -357,15 +325,8 @@
       "endpointCount": 16,
       "hookCount": 5,
       "serviceCount": 5,
-      "entities": [
-        "shop_members",
-        "shops",
-        "slugs"
-      ],
-      "journeySlugs": [
-        "shop-invite-acceptance",
-        "signup"
-      ],
+      "entities": ["shop_members", "shops", "slugs"],
+      "journeySlugs": ["shop-invite-acceptance", "signup"],
       "links": [
         {
           "type": "entity",

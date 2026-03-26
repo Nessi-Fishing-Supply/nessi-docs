@@ -5,11 +5,7 @@
       "number": 273,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/273",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "backend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Backend",
@@ -21,11 +17,7 @@
       "number": 272,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/272",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "database", "conductor"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "Database",
@@ -37,11 +29,7 @@
       "number": 274,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/274",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "backend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -53,11 +41,7 @@
       "number": 275,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/275",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -69,11 +53,7 @@
       "number": 276,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/276",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P3 - low",
       "area": "Full-stack",
@@ -85,11 +65,7 @@
       "number": 277,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/277",
       "state": "OPEN",
-      "labels": [
-        "spike",
-        "P3-low",
-        "infra"
-      ],
+      "labels": ["spike", "P3-low", "infra"],
       "status": "Pre-Launch",
       "priority": "P3 - low",
       "area": "Infra",
@@ -101,12 +77,7 @@
       "number": 260,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/260",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -118,12 +89,7 @@
       "number": 251,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/251",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "backend", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -135,12 +101,7 @@
       "number": 250,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/250",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "database", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Database",
@@ -152,12 +113,7 @@
       "number": 236,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/236",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Database",
@@ -169,12 +125,7 @@
       "number": 237,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/237",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -186,12 +137,7 @@
       "number": 238,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/238",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -203,12 +149,7 @@
       "number": 239,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/239",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -220,12 +161,7 @@
       "number": 240,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/240",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -237,12 +173,7 @@
       "number": 241,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/241",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -254,12 +185,7 @@
       "number": 242,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/242",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -271,12 +197,7 @@
       "number": 233,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/233",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Database",
@@ -288,12 +209,7 @@
       "number": 234,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/234",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -305,12 +221,7 @@
       "number": 54,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/54",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -322,12 +233,7 @@
       "number": 162,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/162",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -339,12 +245,7 @@
       "number": 165,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/165",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -356,11 +257,7 @@
       "number": 177,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/177",
       "state": "OPEN",
-      "labels": [
-        "chore",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["chore", "P1-high", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Infra",
@@ -372,12 +269,7 @@
       "number": 48,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/48",
       "state": "OPEN",
-      "labels": [
-        "chore",
-        "P2-medium",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["chore", "P2-medium", "backend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Infra",
@@ -389,11 +281,7 @@
       "number": 49,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/49",
       "state": "OPEN",
-      "labels": [
-        "chore",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["chore", "P1-high", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Infra",
@@ -405,12 +293,7 @@
       "number": 171,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/171",
       "state": "OPEN",
-      "labels": [
-        "chore",
-        "P2-medium",
-        "database",
-        "conductor"
-      ],
+      "labels": ["chore", "P2-medium", "database", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Database",
@@ -422,12 +305,7 @@
       "number": 167,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/167",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -439,12 +317,7 @@
       "number": 182,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/182",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Backend",
@@ -456,12 +329,7 @@
       "number": 183,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/183",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -473,12 +341,7 @@
       "number": 184,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/184",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -490,12 +353,7 @@
       "number": 185,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/185",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -507,12 +365,7 @@
       "number": 160,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/160",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -524,12 +377,7 @@
       "number": 161,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/161",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -541,12 +389,7 @@
       "number": 169,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/169",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "",
@@ -558,12 +401,7 @@
       "number": 170,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/170",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -575,12 +413,7 @@
       "number": 168,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/168",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -592,13 +425,7 @@
       "number": 85,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/85",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor", "shops-architecture"],
       "status": "Pre-Launch",
       "priority": "P3 - low",
       "area": "Full-stack",
@@ -610,13 +437,7 @@
       "number": 86,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/86",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor", "shops-architecture"],
       "status": "Pre-Launch",
       "priority": "P3 - low",
       "area": "Full-stack",
@@ -628,12 +449,7 @@
       "number": 151,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/151",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -645,12 +461,7 @@
       "number": 153,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/153",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -662,12 +473,7 @@
       "number": 157,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/157",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -679,12 +485,7 @@
       "number": 158,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/158",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -696,12 +497,7 @@
       "number": 159,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/159",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -713,12 +509,7 @@
       "number": 164,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/164",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -730,12 +521,7 @@
       "number": 134,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/134",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -747,12 +533,7 @@
       "number": 135,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/135",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -764,12 +545,7 @@
       "number": 136,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/136",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -781,12 +557,7 @@
       "number": 137,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/137",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -798,12 +569,7 @@
       "number": 205,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/205",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -815,12 +581,7 @@
       "number": 166,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/166",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -832,10 +593,7 @@
       "number": 97,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/97",
       "state": "CLOSED",
-      "labels": [
-        "bug",
-        "conductor"
-      ],
+      "labels": ["bug", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -847,10 +605,7 @@
       "number": 96,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/96",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "conductor"
-      ],
+      "labels": ["feature", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -862,10 +617,7 @@
       "number": 98,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/98",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "conductor"
-      ],
+      "labels": ["feature", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -877,13 +629,7 @@
       "number": 76,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/76",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -895,13 +641,7 @@
       "number": 94,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/94",
       "state": "CLOSED",
-      "labels": [
-        "chore",
-        "P2-medium",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["chore", "P2-medium", "full-stack", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -913,13 +653,7 @@
       "number": 74,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/74",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -931,13 +665,7 @@
       "number": 75,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/75",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -949,13 +677,7 @@
       "number": 89,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/89",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -967,13 +689,7 @@
       "number": 90,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/90",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -985,13 +701,7 @@
       "number": 91,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/91",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -1003,12 +713,7 @@
       "number": 20,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/20",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Database",
@@ -1020,12 +725,7 @@
       "number": 21,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/21",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1037,12 +737,7 @@
       "number": 22,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/22",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1054,12 +749,7 @@
       "number": 23,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/23",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1071,12 +761,7 @@
       "number": 24,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/24",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1088,12 +773,7 @@
       "number": 25,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/25",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1105,12 +785,7 @@
       "number": 26,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/26",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -1122,12 +797,7 @@
       "number": 27,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/27",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1139,12 +809,7 @@
       "number": 28,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/28",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1156,12 +821,7 @@
       "number": 50,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/50",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1173,12 +833,7 @@
       "number": 17,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/17",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1238,12 +893,7 @@
       "number": 11,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/11",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1255,12 +905,7 @@
       "number": 12,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/12",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -1272,12 +917,7 @@
       "number": 13,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/13",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -1289,12 +929,7 @@
       "number": 14,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/14",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -1306,12 +941,7 @@
       "number": 15,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/15",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Database",
@@ -1323,12 +953,7 @@
       "number": 16,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/16",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1340,12 +965,7 @@
       "number": 18,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/18",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -1357,12 +977,7 @@
       "number": 19,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/19",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -1374,13 +989,7 @@
       "number": 65,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/65",
       "state": "CLOSED",
-      "labels": [
-        "chore",
-        "P1-high",
-        "database",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["chore", "P1-high", "database", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Database",
@@ -1392,13 +1001,7 @@
       "number": 66,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/66",
       "state": "CLOSED",
-      "labels": [
-        "P1-high",
-        "full-stack",
-        "conductor",
-        "shops-architecture",
-        "refactor"
-      ],
+      "labels": ["P1-high", "full-stack", "conductor", "shops-architecture", "refactor"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1410,13 +1013,7 @@
       "number": 67,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/67",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1428,13 +1025,7 @@
       "number": 68,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/68",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1446,13 +1037,7 @@
       "number": 69,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/69",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1464,13 +1049,7 @@
       "number": 70,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/70",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1482,13 +1061,7 @@
       "number": 71,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/71",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1500,13 +1073,7 @@
       "number": 72,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/72",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1518,13 +1085,7 @@
       "number": 73,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/73",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1536,11 +1097,7 @@
       "number": 123,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/123",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Database",
@@ -1552,11 +1109,7 @@
       "number": 124,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/124",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -1568,11 +1121,7 @@
       "number": 125,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/125",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -1584,11 +1133,7 @@
       "number": 126,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/126",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1600,11 +1145,7 @@
       "number": 127,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/127",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1616,11 +1157,7 @@
       "number": 128,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/128",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1632,12 +1169,7 @@
       "number": 129,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/129",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1649,11 +1181,7 @@
       "number": 130,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/130",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1665,12 +1193,7 @@
       "number": 35,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/35",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "",
       "area": "",
@@ -1682,12 +1205,7 @@
       "number": 152,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/152",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1699,12 +1217,7 @@
       "number": 154,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/154",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -1716,12 +1229,7 @@
       "number": 155,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/155",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -1733,12 +1241,7 @@
       "number": 156,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/156",
       "state": "CLOSED",
-      "labels": [
-        "chore",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["chore", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -1750,12 +1253,7 @@
       "number": 256,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/256",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "backend", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -1767,12 +1265,7 @@
       "number": 252,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/252",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "backend", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -1784,12 +1277,7 @@
       "number": 253,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/253",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -1801,12 +1289,7 @@
       "number": 255,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/255",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -1818,12 +1301,7 @@
       "number": 254,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/254",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "backend", "conductor"],
       "status": "Done",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -1835,12 +1313,7 @@
       "number": 257,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/257",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -1852,12 +1325,7 @@
       "number": 259,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/259",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1869,13 +1337,7 @@
       "number": 88,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/88",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor", "shops-architecture"],
       "status": "Done",
       "priority": "P3 - low",
       "area": "Frontend",
@@ -1887,12 +1349,7 @@
       "number": 206,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/206",
       "state": "CLOSED",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Done",
       "priority": "P1 - high",
       "area": "Backend",
@@ -1904,12 +1361,7 @@
       "number": 207,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/207",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -1921,12 +1373,7 @@
       "number": 208,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/208",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -1938,12 +1385,7 @@
       "number": 209,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/209",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -1955,12 +1397,7 @@
       "number": 210,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/210",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -1972,12 +1409,7 @@
       "number": 231,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/231",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "",
       "area": "",
@@ -1989,12 +1421,7 @@
       "number": 232,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/232",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "",
       "area": "",
@@ -2006,12 +1433,7 @@
       "number": 198,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/198",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Database",
@@ -2023,12 +1445,7 @@
       "number": 199,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/199",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Backend",
@@ -2040,12 +1457,7 @@
       "number": 200,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/200",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -2057,12 +1469,7 @@
       "number": 201,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/201",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Full-stack",
@@ -2074,12 +1481,7 @@
       "number": 211,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/211",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Database",
@@ -2091,12 +1493,7 @@
       "number": 212,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/212",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Backend",
@@ -2108,12 +1505,7 @@
       "number": 213,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/213",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -2125,12 +1517,7 @@
       "number": 214,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/214",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "",
@@ -2142,12 +1529,7 @@
       "number": 215,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/215",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -2159,11 +1541,7 @@
       "number": 216,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/216",
       "state": "OPEN",
-      "labels": [
-        "chore",
-        "P3-low",
-        "backend"
-      ],
+      "labels": ["chore", "P3-low", "backend"],
       "status": "Todo",
       "priority": "P3 - low",
       "area": "Backend",
@@ -2175,12 +1553,7 @@
       "number": 202,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/202",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2192,12 +1565,7 @@
       "number": 203,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/203",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2209,12 +1577,7 @@
       "number": 204,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/204",
       "state": "OPEN",
-      "labels": [
-        "chore",
-        "P2-medium",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["chore", "P2-medium", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2226,12 +1589,7 @@
       "number": 33,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/33",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2243,12 +1601,7 @@
       "number": 56,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/56",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2260,12 +1613,7 @@
       "number": 51,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/51",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2277,12 +1625,7 @@
       "number": 34,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/34",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2294,12 +1637,7 @@
       "number": 144,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/144",
       "state": "OPEN",
-      "labels": [
-        "enhancement",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["enhancement", "P1-high", "database", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Database",
@@ -2311,12 +1649,7 @@
       "number": 145,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/145",
       "state": "OPEN",
-      "labels": [
-        "enhancement",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["enhancement", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2328,12 +1661,7 @@
       "number": 146,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/146",
       "state": "OPEN",
-      "labels": [
-        "enhancement",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["enhancement", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2345,12 +1673,7 @@
       "number": 147,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/147",
       "state": "OPEN",
-      "labels": [
-        "enhancement",
-        "P2-medium",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["enhancement", "P2-medium", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2362,12 +1685,7 @@
       "number": 148,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/148",
       "state": "OPEN",
-      "labels": [
-        "enhancement",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["enhancement", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -2379,12 +1697,7 @@
       "number": 149,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/149",
       "state": "OPEN",
-      "labels": [
-        "enhancement",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["enhancement", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -2396,12 +1709,7 @@
       "number": 150,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/150",
       "state": "OPEN",
-      "labels": [
-        "enhancement",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["enhancement", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2413,12 +1721,7 @@
       "number": 186,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/186",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Database",
@@ -2430,12 +1733,7 @@
       "number": 187,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/187",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2447,12 +1745,7 @@
       "number": 188,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/188",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2464,12 +1757,7 @@
       "number": 189,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/189",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -2481,12 +1769,7 @@
       "number": 190,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/190",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2498,12 +1781,7 @@
       "number": 191,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/191",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -2515,12 +1793,7 @@
       "number": 192,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/192",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Database",
@@ -2532,12 +1805,7 @@
       "number": 193,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/193",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -2549,12 +1817,7 @@
       "number": 194,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/194",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2566,12 +1829,7 @@
       "number": 195,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/195",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -2583,12 +1841,7 @@
       "number": 196,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/196",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2600,12 +1853,7 @@
       "number": 197,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/197",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -2617,12 +1865,7 @@
       "number": 36,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/36",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2634,12 +1877,7 @@
       "number": 39,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/39",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2651,12 +1889,7 @@
       "number": 40,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/40",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2668,12 +1901,7 @@
       "number": 173,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/173",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2685,12 +1913,7 @@
       "number": 174,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/174",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2702,12 +1925,7 @@
       "number": 172,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/172",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2719,12 +1937,7 @@
       "number": 163,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/163",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P3-low",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P3-low", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P3 - low",
       "area": "Full-stack",
@@ -2736,12 +1949,7 @@
       "number": 41,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/41",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2753,12 +1961,7 @@
       "number": 43,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/43",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2770,12 +1973,7 @@
       "number": 45,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/45",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P3-low",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P3-low", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P3 - low",
       "area": "Frontend",
@@ -2787,12 +1985,7 @@
       "number": 44,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/44",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -2804,12 +1997,7 @@
       "number": 55,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/55",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2821,12 +2009,7 @@
       "number": 42,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/42",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P3-low",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P3-low", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P3 - low",
       "area": "Full-stack",
@@ -2838,13 +2021,7 @@
       "number": 93,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/93",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P3-low",
-        "frontend",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P3-low", "frontend", "conductor", "shops-architecture"],
       "status": "Todo",
       "priority": "P3 - low",
       "area": "Frontend",
@@ -2856,12 +2033,7 @@
       "number": 175,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/175",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P3-low",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P3-low", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P3 - low",
       "area": "Full-stack",
@@ -2873,12 +2045,7 @@
       "number": 53,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/53",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P3 - low",
       "area": "Full-stack",
@@ -2890,13 +2057,7 @@
       "number": 87,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/87",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor",
-        "shops-architecture"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor", "shops-architecture"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2908,12 +2069,7 @@
       "number": 217,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/217",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -2925,12 +2081,7 @@
       "number": 218,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/218",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -2942,12 +2093,7 @@
       "number": 219,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/219",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -2959,12 +2105,7 @@
       "number": 220,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/220",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P1 - high",
       "area": "Frontend",
@@ -2976,12 +2117,7 @@
       "number": 52,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/52",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -2993,12 +2129,7 @@
       "number": 46,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/46",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -3010,12 +2141,7 @@
       "number": 47,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/47",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -3027,12 +2153,7 @@
       "number": 178,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/178",
       "state": "OPEN",
-      "labels": [
-        "chore",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["chore", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -3044,12 +2165,7 @@
       "number": 179,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/179",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "database",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "database", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Database",
@@ -3061,12 +2177,7 @@
       "number": 180,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/180",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -3078,12 +2189,7 @@
       "number": 181,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/181",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "backend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "backend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Backend",
@@ -3095,12 +2201,7 @@
       "number": 29,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/29",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -3112,12 +2213,7 @@
       "number": 30,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/30",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -3129,12 +2225,7 @@
       "number": 31,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/31",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P1-high",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P1-high", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -3146,12 +2237,7 @@
       "number": 32,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/32",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -3163,12 +2249,7 @@
       "number": 176,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/176",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P3-low",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P3-low", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P3 - low",
       "area": "Full-stack",
@@ -3180,12 +2261,7 @@
       "number": 37,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/37",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "full-stack",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Full-stack",
@@ -3197,12 +2273,7 @@
       "number": 38,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/38",
       "state": "OPEN",
-      "labels": [
-        "feature",
-        "P2-medium",
-        "frontend",
-        "conductor"
-      ],
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
       "status": "Todo",
       "priority": "P2 - medium",
       "area": "Frontend",
@@ -3214,11 +2285,7 @@
       "number": 262,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/262",
       "state": "OPEN",
-      "labels": [
-        "chore",
-        "P2-medium",
-        "database"
-      ],
+      "labels": ["chore", "P2-medium", "database"],
       "status": "Pre-Launch",
       "priority": "P2 - medium",
       "area": "Infra",

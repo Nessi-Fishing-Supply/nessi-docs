@@ -1,12 +1,5 @@
 {
-  "features": [
-    "listings",
-    "pricing",
-    "orders",
-    "messaging",
-    "shop_settings",
-    "members"
-  ],
+  "features": ["listings", "pricing", "orders", "messaging", "shop_settings", "members"],
   "roles": [
     {
       "slug": "owner",
