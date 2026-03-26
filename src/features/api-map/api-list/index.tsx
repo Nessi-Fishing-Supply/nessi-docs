@@ -303,26 +303,42 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
   );
   const [activeMethods, setActiveMethods] = useState<Set<string>>(() => new Set(ALL_METHODS));
 
+  const allGroupNames = useMemo(() => new Set(groups.map((g) => g.name)), [groups]);
+
   const toggleGroup = (name: string) => {
     setActiveGroups((prev) => {
+      const allSelected = prev.size === allGroupNames.size;
+      if (allSelected) {
+        // From "all" state, clicking one shows only that one
+        return new Set([name]);
+      }
       const next = new Set(prev);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
+      if (next.has(name)) {
+        next.delete(name);
+        // If nothing left, go back to all
+        return next.size === 0 ? new Set(allGroupNames) : next;
+      }
+      next.add(name);
       return next;
     });
   };
 
   const toggleAllGroups = () => {
-    setActiveGroups((prev) =>
-      prev.size === groups.length ? new Set<string>() : new Set(groups.map((g) => g.name)),
-    );
+    setActiveGroups(new Set(allGroupNames));
   };
 
   const toggleMethod = (method: string) => {
     setActiveMethods((prev) => {
+      const allSelected = prev.size === ALL_METHODS.length;
+      if (allSelected) {
+        return new Set([method]);
+      }
       const next = new Set(prev);
-      if (next.has(method)) next.delete(method);
-      else next.add(method);
+      if (next.has(method)) {
+        next.delete(method);
+        return next.size === 0 ? new Set(ALL_METHODS) : next;
+      }
+      next.add(method);
       return next;
     });
   };
