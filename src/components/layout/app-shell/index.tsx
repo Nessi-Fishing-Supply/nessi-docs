@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import styles from './app-shell.module.scss';
 
 // Pages that support detail panel selection (journeys excluded — uses tooltips instead)
-const DETAIL_PANEL_PAGES = ['/api-map', '/data-model', '/lifecycles', '/coverage', '/features'];
+const DETAIL_PANEL_PAGES = ['/data-model', '/lifecycles', '/coverage', '/features'];
 
 interface AppShellProps {
   topbar: ReactNode;
