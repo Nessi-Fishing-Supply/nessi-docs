@@ -1,6 +1,7 @@
-import { redirect } from 'next/navigation';
-import { getJourneySlugs } from '@/data';
+import { getDomains } from '@/data';
+import { DomainGrid } from '@/features/journeys/domain-grid';
 
 export default function JourneysIndex() {
-  redirect(`/journeys/${getJourneySlugs()[0]}`);
+  const domains = getDomains();
+  return <DomainGrid domains={domains} />;
 }
