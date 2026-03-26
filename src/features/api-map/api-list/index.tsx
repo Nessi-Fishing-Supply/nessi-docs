@@ -241,11 +241,13 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
               {endpoint.auth}
             </span>
           )}
-          {endpoint.tags?.map((tag) => (
-            <span key={tag} className={styles.epTag}>
-              {tag}
-            </span>
-          ))}
+          {endpoint.tags
+            ?.filter((tag) => tag !== 'admin-only')
+            .map((tag) => (
+              <span key={tag} className={styles.epTag}>
+                {tag}
+              </span>
+            ))}
           {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
           <span className={styles.epChevron}>&#9656;</span>
         </span>
