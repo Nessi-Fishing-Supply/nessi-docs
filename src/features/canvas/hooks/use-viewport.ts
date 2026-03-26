@@ -15,8 +15,7 @@ interface NodeLike {
 
 export function useViewport(nodes: NodeLike[]) {
   return useMemo(() => {
-    if (nodes.length === 0)
-      return { minX: 0, minY: 0, width: 800, height: 600 };
+    if (nodes.length === 0) return { minX: 0, minY: 0, width: 800, height: 600 };
 
     let minX = Infinity;
     let minY = Infinity;

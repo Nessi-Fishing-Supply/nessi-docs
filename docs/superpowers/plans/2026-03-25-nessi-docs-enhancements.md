@@ -6,7 +6,7 @@
 
 **Architecture:** Each feature follows the established pattern — a data file in `src/data/`, a type in `src/types/`, a page in `src/app/`, a feature component in `src/features/`, a sidebar nav entry, and search index entries. All data is static (build-time). All list pages are `'use client'` components using `useDocsContext` for detail panel selection. Styles use SCSS Modules with the existing dark theme CSS custom properties.
 
-**Tech Stack:** Next.js 16 (App Router, SSG), TypeScript, SCSS Modules, react-icons (HiOutline* icon set)
+**Tech Stack:** Next.js 16 (App Router, SSG), TypeScript, SCSS Modules, react-icons (HiOutline\* icon set)
 
 ---
 
@@ -15,6 +15,7 @@
 ### New Files (by task)
 
 **Task 1 — Feature Readiness:**
+
 - `src/types/feature.ts` — `Feature`, `FeatureStatus` types
 - `src/data/features.ts` — All 16 feature domains with status, counts, links
 - `src/app/features/page.tsx` — Page route
@@ -22,6 +23,7 @@
 - `src/features/feature-readiness/feature-list/feature-list.module.scss` — Styles
 
 **Task 2 — Permissions Matrix:**
+
 - `src/types/permission.ts` — `Role`, `Permission`, `PermissionLevel` types
 - `src/data/permissions.ts` — 3 system roles with permission data
 - `src/app/permissions/page.tsx` — Page route
@@ -29,17 +31,20 @@
 - `src/features/permissions/permissions-matrix/permissions-matrix.module.scss` — Styles
 
 **Task 3 — Entity Relationship Diagram:**
+
 - `src/data/entity-relationships.ts` — FK relationships between entities
 - `src/app/data-model/erd/page.tsx` — Page route (nested under data-model)
 - `src/features/data-model/erd-canvas/index.tsx` — Canvas component
 - `src/features/data-model/erd-canvas/erd-canvas.module.scss` — Styles
 
 **Task 4 — Error Catalog:**
+
 - `src/app/errors/page.tsx` — Page route
 - `src/features/errors/error-catalog/index.tsx` — Catalog component
 - `src/features/errors/error-catalog/error-catalog.module.scss` — Styles
 
 **Task 5 — Config Reference:**
+
 - `src/types/config-ref.ts` — `ConfigEnum` type
 - `src/data/config-reference.ts` — All enums/options
 - `src/app/config/page.tsx` — Page route
@@ -47,18 +52,21 @@
 - `src/features/config/config-list/config-list.module.scss` — Styles
 
 **Task 6 — Onboarding Tracker:**
+
 - `src/data/onboarding.ts` — Onboarding steps data
 - `src/app/onboarding/page.tsx` — Page route
 - `src/features/onboarding/onboarding-tracker/index.tsx` — Tracker component
 - `src/features/onboarding/onboarding-tracker/onboarding-tracker.module.scss` — Styles
 
 **Task 7 — Changelog:**
+
 - `src/data/changelog.ts` — Changelog entries
 - `src/app/changelog/page.tsx` — Page route
 - `src/features/changelog/changelog-feed/index.tsx` — Feed component
 - `src/features/changelog/changelog-feed/changelog-feed.module.scss` — Styles
 
 **Task 8 — Search Enhancement + Sidebar Update:**
+
 - Modify: `src/features/search/search-index.ts` — Add new data types
 - Modify: `src/components/layout/sidebar/index.tsx` — Add nav items
 - Modify: `src/types/docs-context.ts` — Add new SelectedItem variants
@@ -68,6 +76,7 @@
 - `src/components/layout/detail-panel/panels/error-panel.tsx` — Error detail
 
 ### Modified Files
+
 - `src/components/layout/sidebar/index.tsx` — Add 6 new nav items
 - `src/features/search/search-index.ts` — Index new data types
 - `src/types/docs-context.ts` — Add SelectedItem variants
@@ -79,6 +88,7 @@
 ## Task 1: Feature Readiness Dashboard
 
 **Files:**
+
 - Create: `src/types/feature.ts`
 - Create: `src/data/features.ts`
 - Create: `src/app/features/page.tsx`
@@ -127,7 +137,8 @@ export const features: Feature[] = [
     slug: 'auth',
     name: 'Authentication',
     status: 'built',
-    description: 'Email/OTP signup, login, password reset, account deletion, session management via Supabase Auth with cookie sessions.',
+    description:
+      'Email/OTP signup, login, password reset, account deletion, session management via Supabase Auth with cookie sessions.',
     componentCount: 8,
     endpointCount: 4,
     journeyCoverage: true,
@@ -141,7 +152,8 @@ export const features: Feature[] = [
     slug: 'members',
     name: 'Members & Profiles',
     status: 'built',
-    description: 'User profiles with avatar upload, bio, species/technique tags, home state, seller toggle, and onboarding wizard.',
+    description:
+      'User profiles with avatar upload, bio, species/technique tags, home state, seller toggle, and onboarding wizard.',
     componentCount: 12,
     endpointCount: 3,
     journeyCoverage: true,
@@ -155,14 +167,19 @@ export const features: Feature[] = [
     slug: 'listings',
     name: 'Listings',
     status: 'built',
-    description: 'Full listing lifecycle: create, edit, draft management, photo upload (WebP), search, autocomplete, recommendations.',
+    description:
+      'Full listing lifecycle: create, edit, draft management, photo upload (WebP), search, autocomplete, recommendations.',
     componentCount: 44,
     endpointCount: 13,
     journeyCoverage: true,
     links: [
       { type: 'journey', label: 'Create Listing Journey', href: '/journeys/create-listing' },
       { type: 'api-group', label: 'Listings CRUD', href: '/api-map#listings---crud' },
-      { type: 'api-group', label: 'Search & Discovery', href: '/api-map#listings---search---discovery' },
+      {
+        type: 'api-group',
+        label: 'Search & Discovery',
+        href: '/api-map#listings---search---discovery',
+      },
       { type: 'lifecycle', label: 'Listing Lifecycle', href: '/lifecycles/listing' },
       { type: 'entity', label: 'listings table', href: '/data-model' },
     ],
@@ -171,7 +188,8 @@ export const features: Feature[] = [
     slug: 'cart',
     name: 'Shopping Cart',
     status: 'built',
-    description: 'Guest and authenticated cart with merge-on-login, 30-day expiry, price tracking at add time, validation.',
+    description:
+      'Guest and authenticated cart with merge-on-login, 30-day expiry, price tracking at add time, validation.',
     componentCount: 6,
     endpointCount: 8,
     journeyCoverage: true,
@@ -186,7 +204,8 @@ export const features: Feature[] = [
     slug: 'shops',
     name: 'Shops',
     status: 'built',
-    description: 'Shop creation, member management with RBAC, invites with token-based acceptance, ownership transfer, slug management.',
+    description:
+      'Shop creation, member management with RBAC, invites with token-based acceptance, ownership transfer, slug management.',
     componentCount: 18,
     endpointCount: 19,
     journeyCoverage: true,
@@ -203,7 +222,8 @@ export const features: Feature[] = [
     slug: 'context',
     name: 'Context Switching',
     status: 'built',
-    description: 'Identity switching between member and shop context via Zustand store. Controls which entity the user acts as.',
+    description:
+      'Identity switching between member and shop context via Zustand store. Controls which entity the user acts as.',
     componentCount: 3,
     endpointCount: 0,
     journeyCoverage: false,
@@ -239,7 +259,8 @@ export const features: Feature[] = [
     slug: 'search',
     name: 'Search & Discovery',
     status: 'built',
-    description: 'Full-text search with trigram fallback, autocomplete from 3 sources, popularity tracking.',
+    description:
+      'Full-text search with trigram fallback, autocomplete from 3 sources, popularity tracking.',
     componentCount: 5,
     endpointCount: 4,
     journeyCoverage: false,
@@ -252,7 +273,8 @@ export const features: Feature[] = [
     slug: 'email',
     name: 'Email',
     status: 'built',
-    description: 'Resend client integration with branded email templates for invites, transfers, and notifications.',
+    description:
+      'Resend client integration with branded email templates for invites, transfers, and notifications.',
     componentCount: 2,
     endpointCount: 0,
     journeyCoverage: false,
@@ -262,7 +284,8 @@ export const features: Feature[] = [
     slug: 'shared',
     name: 'Shared Utilities',
     status: 'built',
-    description: 'Shared hooks (use-form, use-form-state), utilities (format price, calculate fees), and types.',
+    description:
+      'Shared hooks (use-form, use-form-state), utilities (format price, calculate fees), and types.',
     componentCount: 6,
     endpointCount: 0,
     journeyCoverage: false,
@@ -292,7 +315,8 @@ export const features: Feature[] = [
     slug: 'editorial',
     name: 'Editorial',
     status: 'planned',
-    description: 'Content management for fishing guides, tips, and editorial content. Not yet implemented.',
+    description:
+      'Content management for fishing guides, tips, and editorial content. Not yet implemented.',
     componentCount: 0,
     endpointCount: 0,
     journeyCoverage: false,
@@ -312,7 +336,8 @@ export const features: Feature[] = [
     slug: 'payments',
     name: 'Payments (Stripe)',
     status: 'planned',
-    description: 'Stripe Connect for sellers, payment processing, fee calculation. Preconditions check exists.',
+    description:
+      'Stripe Connect for sellers, payment processing, fee calculation. Preconditions check exists.',
     componentCount: 0,
     endpointCount: 0,
     journeyCoverage: false,
@@ -364,7 +389,16 @@ export function FeatureList({ features }: FeatureListProps) {
     const totalComponents = features.reduce((s, f) => s + f.componentCount, 0);
     const totalEndpoints = features.reduce((s, f) => s + f.endpointCount, 0);
     const withJourneys = features.filter((f) => f.journeyCoverage).length;
-    return { total, built, inProgress, stubbed, planned, totalComponents, totalEndpoints, withJourneys };
+    return {
+      total,
+      built,
+      inProgress,
+      stubbed,
+      planned,
+      totalComponents,
+      totalEndpoints,
+      withJourneys,
+    };
   }, [features]);
 
   const grouped = useMemo(() => {
@@ -392,7 +426,8 @@ export function FeatureList({ features }: FeatureListProps) {
       <div className={styles.header}>
         <h1 className={styles.title}>Feature Readiness</h1>
         <p className={styles.subtitle}>
-          {stats.total} features · {stats.totalComponents} components · {stats.totalEndpoints} endpoints
+          {stats.total} features · {stats.totalComponents} components · {stats.totalEndpoints}{' '}
+          endpoints
         </p>
       </div>
 
@@ -456,12 +491,8 @@ export function FeatureList({ features }: FeatureListProps) {
                 </div>
                 <p className={styles.cardDesc}>{feature.description}</p>
                 <div className={styles.cardMeta}>
-                  {feature.componentCount > 0 && (
-                    <span>{feature.componentCount} components</span>
-                  )}
-                  {feature.endpointCount > 0 && (
-                    <span>{feature.endpointCount} endpoints</span>
-                  )}
+                  {feature.componentCount > 0 && <span>{feature.componentCount} components</span>}
+                  {feature.endpointCount > 0 && <span>{feature.endpointCount} endpoints</span>}
                   {feature.journeyCoverage && (
                     <span className={styles.hasJourney}>has journey</span>
                   )}
@@ -701,6 +732,7 @@ git commit -m "feat: add feature readiness dashboard page"
 ## Task 2: Permissions Matrix
 
 **Files:**
+
 - Create: `src/types/permission.ts`
 - Create: `src/data/permissions.ts`
 - Create: `src/app/permissions/page.tsx`
@@ -712,7 +744,13 @@ git commit -m "feat: add feature readiness dashboard page"
 ```typescript
 // src/types/permission.ts
 export type PermissionLevel = 'full' | 'view' | 'none';
-export type PermissionFeature = 'listings' | 'pricing' | 'orders' | 'messaging' | 'shop_settings' | 'members';
+export type PermissionFeature =
+  | 'listings'
+  | 'pricing'
+  | 'orders'
+  | 'messaging'
+  | 'shop_settings'
+  | 'members';
 
 export interface Role {
   slug: string;
@@ -722,14 +760,23 @@ export interface Role {
   permissions: Record<PermissionFeature, PermissionLevel>;
 }
 
-export const PERMISSION_FEATURES: { key: PermissionFeature; label: string; description: string }[] = [
-  { key: 'listings', label: 'Listings', description: 'Create, edit, and manage product listings' },
-  { key: 'pricing', label: 'Pricing', description: 'Set and modify listing prices' },
-  { key: 'orders', label: 'Orders', description: 'View and manage orders' },
-  { key: 'messaging', label: 'Messaging', description: 'Send and receive messages' },
-  { key: 'shop_settings', label: 'Shop Settings', description: 'Edit shop name, avatar, banner, slug' },
-  { key: 'members', label: 'Members', description: 'Invite, remove, and change member roles' },
-];
+export const PERMISSION_FEATURES: { key: PermissionFeature; label: string; description: string }[] =
+  [
+    {
+      key: 'listings',
+      label: 'Listings',
+      description: 'Create, edit, and manage product listings',
+    },
+    { key: 'pricing', label: 'Pricing', description: 'Set and modify listing prices' },
+    { key: 'orders', label: 'Orders', description: 'View and manage orders' },
+    { key: 'messaging', label: 'Messaging', description: 'Send and receive messages' },
+    {
+      key: 'shop_settings',
+      label: 'Shop Settings',
+      description: 'Edit shop name, avatar, banner, slug',
+    },
+    { key: 'members', label: 'Members', description: 'Invite, remove, and change member roles' },
+  ];
 
 export const LEVEL_CONFIG: Record<PermissionLevel, { label: string; color: string }> = {
   full: { label: 'Full', color: '#3d8c75' },
@@ -762,7 +809,8 @@ export const roles: Role[] = [
   {
     slug: 'manager',
     name: 'Manager',
-    description: 'Operational access to listings, pricing, orders, and messaging. Can view but not change shop settings. Cannot manage members.',
+    description:
+      'Operational access to listings, pricing, orders, and messaging. Can view but not change shop settings. Cannot manage members.',
     color: '#b86e0a',
     permissions: {
       listings: 'full',
@@ -776,7 +824,8 @@ export const roles: Role[] = [
   {
     slug: 'contributor',
     name: 'Contributor',
-    description: 'Can create and edit listings only. No access to pricing, orders, messaging, settings, or member management.',
+    description:
+      'Can create and edit listings only. No access to pricing, orders, messaging, settings, or member management.',
     color: '#78756f',
     permissions: {
       listings: 'full',
@@ -861,7 +910,10 @@ export function PermissionsMatrix({ roles }: PermissionsMatrixProps) {
               const cfg = LEVEL_CONFIG[level];
               return (
                 <div key={role.slug} className={styles.roleCol}>
-                  <span className={styles.levelBadge} style={{ color: cfg.color, borderColor: cfg.color }}>
+                  <span
+                    className={styles.levelBadge}
+                    style={{ color: cfg.color, borderColor: cfg.color }}
+                  >
                     {cfg.label}
                   </span>
                 </div>
@@ -877,7 +929,9 @@ export function PermissionsMatrix({ roles }: PermissionsMatrixProps) {
         <ul className={styles.notesList}>
           <li>System roles use deterministic UUIDs (…101, …102, …103) and are immutable</li>
           <li>Custom roles per shop are supported in the schema but not yet in the UI</li>
-          <li>Permission checks use <code>requireShopPermission()</code> server-side</li>
+          <li>
+            Permission checks use <code>requireShopPermission()</code> server-side
+          </li>
           <li>Owner role cannot be assigned via role change — only via ownership transfer</li>
           <li>Members can always leave a shop (self-removal), regardless of permissions</li>
         </ul>
@@ -1068,6 +1122,7 @@ git commit -m "feat: add permissions matrix page"
 ## Task 3: Entity Relationship Diagram
 
 **Files:**
+
 - Create: `src/data/entity-relationships.ts`
 - Create: `src/app/data-model/erd/page.tsx`
 - Create: `src/features/data-model/erd-canvas/index.tsx`
@@ -1102,32 +1157,83 @@ export const erdNodes: ErdNode[] = [
   { id: 'shop_members', label: 'shop_members', badge: 'junction', fieldCount: 5, x: 400, y: 180 },
   { id: 'shop_roles', label: 'shop_roles', badge: 'config', fieldCount: 7, x: 650, y: 180 },
   { id: 'shop_invites', label: 'shop_invites', badge: 'lifecycle', fieldCount: 8, x: 650, y: 300 },
-  { id: 'shop_ownership_transfers', label: 'shop_ownership_transfers', badge: 'lifecycle', fieldCount: 8, x: 650, y: 420 },
+  {
+    id: 'shop_ownership_transfers',
+    label: 'shop_ownership_transfers',
+    badge: 'lifecycle',
+    fieldCount: 8,
+    x: 650,
+    y: 420,
+  },
   { id: 'listing_photos', label: 'listing_photos', badge: 'media', fieldCount: 5, x: 60, y: 340 },
   { id: 'cart_items', label: 'cart_items', badge: 'lifecycle', fieldCount: 7, x: 200, y: 420 },
-  { id: 'recently_viewed', label: 'recently_viewed', badge: 'tracking', fieldCount: 4, x: 60, y: 60 },
+  {
+    id: 'recently_viewed',
+    label: 'recently_viewed',
+    badge: 'tracking',
+    fieldCount: 4,
+    x: 60,
+    y: 60,
+  },
   { id: 'addresses', label: 'addresses', badge: 'user', fieldCount: 10, x: 200, y: 60 },
-  { id: 'search_suggestions', label: 'search_suggestions', badge: 'discovery', fieldCount: 4, x: 60, y: 480 },
+  {
+    id: 'search_suggestions',
+    label: 'search_suggestions',
+    badge: 'discovery',
+    fieldCount: 4,
+    x: 60,
+    y: 480,
+  },
   { id: 'slugs', label: 'slugs', badge: 'system', fieldCount: 4, x: 400, y: 420 },
 ];
 
 export const erdEdges: ErdEdge[] = [
   { from: 'listings', to: 'members', label: 'seller_id', cardinality: '1:N', fk: 'seller_id' },
   { from: 'listings', to: 'shops', label: 'shop_id', cardinality: '1:N', fk: 'shop_id' },
-  { from: 'listing_photos', to: 'listings', label: 'listing_id', cardinality: '1:N', fk: 'listing_id' },
+  {
+    from: 'listing_photos',
+    to: 'listings',
+    label: 'listing_id',
+    cardinality: '1:N',
+    fk: 'listing_id',
+  },
   { from: 'shop_members', to: 'shops', label: 'shop_id', cardinality: '1:N', fk: 'shop_id' },
   { from: 'shop_members', to: 'members', label: 'member_id', cardinality: '1:N', fk: 'member_id' },
   { from: 'shop_members', to: 'shop_roles', label: 'role_id', cardinality: '1:N', fk: 'role_id' },
   { from: 'shops', to: 'members', label: 'owner_id', cardinality: '1:N', fk: 'owner_id' },
   { from: 'shop_invites', to: 'shops', label: 'shop_id', cardinality: '1:N', fk: 'shop_id' },
   { from: 'shop_invites', to: 'shop_roles', label: 'role_id', cardinality: '1:N', fk: 'role_id' },
-  { from: 'shop_invites', to: 'members', label: 'invited_by', cardinality: '1:N', fk: 'invited_by' },
-  { from: 'shop_ownership_transfers', to: 'shops', label: 'shop_id', cardinality: '1:N', fk: 'shop_id' },
-  { from: 'shop_ownership_transfers', to: 'members', label: 'from_member_id', cardinality: '1:N', fk: 'from_member_id' },
+  {
+    from: 'shop_invites',
+    to: 'members',
+    label: 'invited_by',
+    cardinality: '1:N',
+    fk: 'invited_by',
+  },
+  {
+    from: 'shop_ownership_transfers',
+    to: 'shops',
+    label: 'shop_id',
+    cardinality: '1:N',
+    fk: 'shop_id',
+  },
+  {
+    from: 'shop_ownership_transfers',
+    to: 'members',
+    label: 'from_member_id',
+    cardinality: '1:N',
+    fk: 'from_member_id',
+  },
   { from: 'cart_items', to: 'members', label: 'user_id', cardinality: '1:N', fk: 'user_id' },
   { from: 'cart_items', to: 'listings', label: 'listing_id', cardinality: '1:N', fk: 'listing_id' },
   { from: 'recently_viewed', to: 'members', label: 'user_id', cardinality: '1:N', fk: 'user_id' },
-  { from: 'recently_viewed', to: 'listings', label: 'listing_id', cardinality: '1:N', fk: 'listing_id' },
+  {
+    from: 'recently_viewed',
+    to: 'listings',
+    label: 'listing_id',
+    cardinality: '1:N',
+    fk: 'listing_id',
+  },
   { from: 'addresses', to: 'members', label: 'user_id', cardinality: '1:N', fk: 'user_id' },
 ];
 ```
@@ -1216,7 +1322,9 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
       <div className={styles.header}>
         <div className={styles.headerTop}>
           <h1 className={styles.title}>Entity Relationships</h1>
-          <Link href="/data-model" className={styles.backLink}>← Data Model</Link>
+          <Link href="/data-model" className={styles.backLink}>
+            ← Data Model
+          </Link>
         </div>
         <p className={styles.subtitle}>
           {nodes.length} tables · {edges.length} foreign keys
@@ -1247,12 +1355,7 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
                   stroke="rgba(255,255,255,0.08)"
                   strokeWidth={1}
                 />
-                <text
-                  x={mid.x}
-                  y={mid.y - 4}
-                  className={styles.edgeLabel}
-                  textAnchor="middle"
-                >
+                <text x={mid.x} y={mid.y - 4} className={styles.edgeLabel} textAnchor="middle">
                   {edge.fk}
                 </text>
                 <text
@@ -1283,18 +1386,10 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
                   strokeWidth={1}
                   opacity={0.9}
                 />
-                <text
-                  x={node.x + 12}
-                  y={node.y + 22}
-                  className={styles.nodeLabel}
-                >
+                <text x={node.x + 12} y={node.y + 22} className={styles.nodeLabel}>
                   {node.label}
                 </text>
-                <text
-                  x={node.x + 12}
-                  y={node.y + 38}
-                  className={styles.nodeMeta}
-                >
+                <text x={node.x + 12} y={node.y + 38} className={styles.nodeMeta}>
                   {node.badge} · {node.fieldCount} fields
                 </text>
               </g>
@@ -1438,6 +1533,7 @@ git commit -m "feat: add entity relationship diagram page"
 ## Task 4: Error Catalog
 
 **Files:**
+
 - Create: `src/app/errors/page.tsx`
 - Create: `src/features/errors/error-catalog/index.tsx`
 - Create: `src/features/errors/error-catalog/error-catalog.module.scss`
@@ -1549,7 +1645,9 @@ export function ErrorCatalog({ groups }: ErrorCatalogProps) {
           <span className={styles.statLabel}>With errors</span>
         </div>
         <div className={styles.stat}>
-          <span className={styles.statValue} style={{ color: '#b86e0a' }}>{stats.withoutErrors}</span>
+          <span className={styles.statValue} style={{ color: '#b86e0a' }}>
+            {stats.withoutErrors}
+          </span>
           <span className={styles.statLabel}>No errors documented</span>
         </div>
         <div className={styles.stat}>
@@ -1560,7 +1658,9 @@ export function ErrorCatalog({ groups }: ErrorCatalogProps) {
           .sort(([a], [b]) => a - b)
           .map(([code, count]) => (
             <div key={code} className={styles.stat}>
-              <span className={styles.statValue} style={{ color: '#b84040' }}>{count}</span>
+              <span className={styles.statValue} style={{ color: '#b84040' }}>
+                {count}
+              </span>
               <span className={styles.statLabel}>{code} errors</span>
             </div>
           ))}
@@ -1587,7 +1687,9 @@ export function ErrorCatalog({ groups }: ErrorCatalogProps) {
                       <span className={styles.noErrors}>no errors documented</span>
                     )}
                     {ep.journeyCount > 0 && (
-                      <span className={styles.journeyBadge}>{ep.journeyCount} journey{ep.journeyCount > 1 ? 's' : ''}</span>
+                      <span className={styles.journeyBadge}>
+                        {ep.journeyCount} journey{ep.journeyCount > 1 ? 's' : ''}
+                      </span>
                     )}
                   </div>
                   {ep.errors.length > 0 && (
@@ -1740,11 +1842,26 @@ export function ErrorCatalog({ groups }: ErrorCatalogProps) {
   flex-shrink: 0;
 }
 
-.get { color: #3d8c75; background: rgba(61, 140, 117, 0.1); }
-.post { color: #e27739; background: rgba(226, 119, 57, 0.1); }
-.put { color: #b86e0a; background: rgba(184, 110, 10, 0.1); }
-.patch { color: #e89048; background: rgba(232, 144, 72, 0.1); }
-.delete { color: #b84040; background: rgba(184, 64, 64, 0.1); }
+.get {
+  color: #3d8c75;
+  background: rgba(61, 140, 117, 0.1);
+}
+.post {
+  color: #e27739;
+  background: rgba(226, 119, 57, 0.1);
+}
+.put {
+  color: #b86e0a;
+  background: rgba(184, 110, 10, 0.1);
+}
+.patch {
+  color: #e89048;
+  background: rgba(232, 144, 72, 0.1);
+}
+.delete {
+  color: #b84040;
+  background: rgba(184, 64, 64, 0.1);
+}
 
 .path {
   font-size: 11px;
@@ -1824,6 +1941,7 @@ git commit -m "feat: add error catalog page"
 ## Task 5: Config Reference
 
 **Files:**
+
 - Create: `src/types/config-ref.ts`
 - Create: `src/data/config-reference.ts`
 - Create: `src/app/config/page.tsx`
@@ -1859,7 +1977,8 @@ export const configEnums: ConfigEnum[] = [
   {
     slug: 'listing-category',
     name: 'Listing Categories',
-    description: 'Product categories for marketplace listings. Used in search filters, listing forms, and autocomplete.',
+    description:
+      'Product categories for marketplace listings. Used in search filters, listing forms, and autocomplete.',
     source: 'listing_category enum (Postgres) + src/features/listings/config/categories.ts',
     values: [
       { value: 'rods', label: 'Rods', description: 'Fishing rods and poles' },
@@ -1877,11 +1996,20 @@ export const configEnums: ConfigEnum[] = [
   {
     slug: 'listing-condition',
     name: 'Listing Conditions',
-    description: 'Item condition grades from best to worst. Displayed on listing cards and detail pages.',
+    description:
+      'Item condition grades from best to worst. Displayed on listing cards and detail pages.',
     source: 'listing_condition enum (Postgres)',
     values: [
-      { value: 'new_with_tags', label: 'New with Tags', description: 'Brand new, original tags still attached' },
-      { value: 'new_without_tags', label: 'New without Tags', description: 'Never used, tags removed' },
+      {
+        value: 'new_with_tags',
+        label: 'New with Tags',
+        description: 'Brand new, original tags still attached',
+      },
+      {
+        value: 'new_without_tags',
+        label: 'New without Tags',
+        description: 'Never used, tags removed',
+      },
       { value: 'like_new', label: 'Like New', description: 'Used once or twice, no visible wear' },
       { value: 'good', label: 'Good', description: 'Normal wear, fully functional' },
       { value: 'fair', label: 'Fair', description: 'Visible wear, still works' },
@@ -1891,7 +2019,8 @@ export const configEnums: ConfigEnum[] = [
   {
     slug: 'listing-status',
     name: 'Listing Status',
-    description: 'Listing lifecycle status. Transitions enforced by VALID_TRANSITIONS in the status API.',
+    description:
+      'Listing lifecycle status. Transitions enforced by VALID_TRANSITIONS in the status API.',
     source: 'listing_status enum (Postgres)',
     values: [
       { value: 'draft', label: 'Draft', description: 'Not published, only visible to owner' },
@@ -1951,12 +2080,26 @@ export const configEnums: ConfigEnum[] = [
   {
     slug: 'shop-role',
     name: 'Shop Roles',
-    description: 'System roles with RBAC permissions. Custom roles per shop are supported but not yet in the UI.',
+    description:
+      'System roles with RBAC permissions. Custom roles per shop are supported but not yet in the UI.',
     source: 'shop_roles table (Postgres) + src/features/shops/constants/roles.ts',
     values: [
-      { value: 'owner', label: 'Owner', description: 'Full control. One per shop. Transfer via ownership-transfer flow.' },
-      { value: 'manager', label: 'Manager', description: 'Operational access: listings, pricing, orders, messaging. View-only settings.' },
-      { value: 'contributor', label: 'Contributor', description: 'Listings only. No pricing, orders, messaging, settings, or member access.' },
+      {
+        value: 'owner',
+        label: 'Owner',
+        description: 'Full control. One per shop. Transfer via ownership-transfer flow.',
+      },
+      {
+        value: 'manager',
+        label: 'Manager',
+        description:
+          'Operational access: listings, pricing, orders, messaging. View-only settings.',
+      },
+      {
+        value: 'contributor',
+        label: 'Contributor',
+        description: 'Listings only. No pricing, orders, messaging, settings, or member access.',
+      },
     ],
   },
   {
@@ -2019,7 +2162,8 @@ export function ConfigList({ enums }: ConfigListProps) {
   const toggle = (slug: string) => {
     setOpenSlugs((prev) => {
       const next = new Set(prev);
-      if (next.has(slug)) next.delete(slug); else next.add(slug);
+      if (next.has(slug)) next.delete(slug);
+      else next.add(slug);
       return next;
     });
   };
@@ -2298,6 +2442,7 @@ git commit -m "feat: add config reference page"
 ## Task 6: Onboarding Tracker
 
 **Files:**
+
 - Create: `src/data/onboarding.ts`
 - Create: `src/app/onboarding/page.tsx`
 - Create: `src/features/onboarding/onboarding-tracker/index.tsx`
@@ -2323,7 +2468,8 @@ export const onboardingSteps: OnboardingStep[] = [
   {
     id: 'avatar',
     label: 'Upload Avatar',
-    description: 'Profile photo cropped to 200x200 WebP. Stored in profile-assets/members/{id}/avatar.webp.',
+    description:
+      'Profile photo cropped to 200x200 WebP. Stored in profile-assets/members/{id}/avatar.webp.',
     required: false,
     field: 'members.avatar_url',
     relatedApi: { label: 'POST /api/members/avatar', href: '/api-map#members' },
@@ -2345,7 +2491,8 @@ export const onboardingSteps: OnboardingStep[] = [
   {
     id: 'species',
     label: 'Primary Species',
-    description: 'Array of fish species tags (e.g., bass, trout, walleye). Used for recommendations.',
+    description:
+      'Array of fish species tags (e.g., bass, trout, walleye). Used for recommendations.',
     required: false,
     field: 'members.primary_species[]',
   },
@@ -2373,10 +2520,12 @@ export const onboardingSteps: OnboardingStep[] = [
   {
     id: 'complete',
     label: 'Complete Onboarding',
-    description: 'Sets onboarding_completed_at timestamp. proxy.ts stops redirecting to /onboarding.',
+    description:
+      'Sets onboarding_completed_at timestamp. proxy.ts stops redirecting to /onboarding.',
     required: true,
     field: 'members.onboarding_completed_at',
-    gates: 'Access to dashboard, listings, shops, cart — proxy.ts enforces completion before any authenticated page',
+    gates:
+      'Access to dashboard, listings, shops, cart — proxy.ts enforces completion before any authenticated page',
     relatedJourney: { label: 'Onboarding Journey', href: '/journeys/onboarding' },
   },
 ];
@@ -2404,7 +2553,8 @@ export const sellerPreconditions: SellerPrecondition[] = [
   {
     id: 'stripe',
     label: 'Stripe Connected (planned)',
-    description: 'is_stripe_connected must be true. Checked by GET /api/members/seller-preconditions.',
+    description:
+      'is_stripe_connected must be true. Checked by GET /api/members/seller-preconditions.',
     field: 'members.is_stripe_connected',
   },
 ];
@@ -2448,7 +2598,8 @@ export function OnboardingTracker({ steps, sellerPreconditions }: OnboardingTrac
       <div className={styles.header}>
         <h1 className={styles.title}>Onboarding Flow</h1>
         <p className={styles.subtitle}>
-          {steps.length} steps ({requiredSteps.length} required, {optionalSteps.length} optional) · {sellerPreconditions.length} seller preconditions
+          {steps.length} steps ({requiredSteps.length} required, {optionalSteps.length} optional) ·{' '}
+          {sellerPreconditions.length} seller preconditions
         </p>
       </div>
 
@@ -2459,7 +2610,9 @@ export function OnboardingTracker({ steps, sellerPreconditions }: OnboardingTrac
           {steps.map((step, i) => (
             <div key={step.id} className={styles.flowStep}>
               <div className={styles.stepConnector}>
-                <div className={`${styles.stepDot} ${step.required ? styles.required : styles.optional}`} />
+                <div
+                  className={`${styles.stepDot} ${step.required ? styles.required : styles.optional}`}
+                />
                 {i < steps.length - 1 && <div className={styles.stepLine} />}
               </div>
               <div className={styles.stepContent}>
@@ -2501,7 +2654,8 @@ export function OnboardingTracker({ steps, sellerPreconditions }: OnboardingTrac
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Seller Preconditions</h2>
         <p className={styles.sectionDesc}>
-          Requirements that must be met before a member can create listings. Checked by GET /api/members/seller-preconditions.
+          Requirements that must be met before a member can create listings. Checked by GET
+          /api/members/seller-preconditions.
         </p>
         <div className={styles.preconditions}>
           {sellerPreconditions.map((p, i) => (
@@ -2788,6 +2942,7 @@ git commit -m "feat: add onboarding tracker page"
 ## Task 7: Changelog
 
 **Files:**
+
 - Create: `src/data/changelog.ts`
 - Create: `src/app/changelog/page.tsx`
 - Create: `src/features/changelog/changelog-feed/index.tsx`
@@ -2823,24 +2978,70 @@ export const changelog: ChangelogEntry[] = [
       { type: 'added', description: 'Feature readiness dashboard', area: 'features' },
       { type: 'added', description: 'Permissions matrix page', area: 'permissions' },
       { type: 'added', description: 'Entity relationship diagram', area: 'data-model' },
-      { type: 'added', description: 'Error catalog aggregating all documented error cases', area: 'errors' },
+      {
+        type: 'added',
+        description: 'Error catalog aggregating all documented error cases',
+        area: 'errors',
+      },
       { type: 'added', description: 'Config reference with all enums and options', area: 'config' },
-      { type: 'added', description: 'Onboarding tracker with seller preconditions', area: 'onboarding' },
+      {
+        type: 'added',
+        description: 'Onboarding tracker with seller preconditions',
+        area: 'onboarding',
+      },
       { type: 'added', description: 'Changelog page', area: 'changelog' },
-      { type: 'changed', description: 'Search now indexes features, config enums, and errors', area: 'search' },
-      { type: 'changed', description: 'Sidebar updated with new navigation sections', area: 'layout' },
+      {
+        type: 'changed',
+        description: 'Search now indexes features, config enums, and errors',
+        area: 'search',
+      },
+      {
+        type: 'changed',
+        description: 'Sidebar updated with new navigation sections',
+        area: 'layout',
+      },
     ],
   },
   {
     date: '2026-03-24',
     changes: [
-      { type: 'added', description: 'Canvas-based journey visualizations (signup, guest-cart, shop-invite, onboarding, create-listing, shop-creation)', area: 'journeys' },
-      { type: 'added', description: 'API map with 100+ endpoints across 11 groups', area: 'api-map' },
-      { type: 'added', description: 'Data model documentation with 15 entities', area: 'data-model' },
-      { type: 'added', description: 'Lifecycle state machines (listing, shop-invite, cart-item, member, ownership-transfer)', area: 'lifecycles' },
-      { type: 'added', description: 'Coverage matrix showing journey-to-API mapping', area: 'coverage' },
-      { type: 'added', description: 'Global search (⌘K) across journeys, endpoints, entities, and lifecycles', area: 'search' },
-      { type: 'added', description: 'Cross-linking between journeys, APIs, and entities', area: 'cross-links' },
+      {
+        type: 'added',
+        description:
+          'Canvas-based journey visualizations (signup, guest-cart, shop-invite, onboarding, create-listing, shop-creation)',
+        area: 'journeys',
+      },
+      {
+        type: 'added',
+        description: 'API map with 100+ endpoints across 11 groups',
+        area: 'api-map',
+      },
+      {
+        type: 'added',
+        description: 'Data model documentation with 15 entities',
+        area: 'data-model',
+      },
+      {
+        type: 'added',
+        description:
+          'Lifecycle state machines (listing, shop-invite, cart-item, member, ownership-transfer)',
+        area: 'lifecycles',
+      },
+      {
+        type: 'added',
+        description: 'Coverage matrix showing journey-to-API mapping',
+        area: 'coverage',
+      },
+      {
+        type: 'added',
+        description: 'Global search (⌘K) across journeys, endpoints, entities, and lifecycles',
+        area: 'search',
+      },
+      {
+        type: 'added',
+        description: 'Cross-linking between journeys, APIs, and entities',
+        area: 'cross-links',
+      },
     ],
   },
 ];
@@ -2899,13 +3100,14 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
                 const cfg = CHANGE_TYPE_CONFIG[change.type];
                 return (
                   <div key={i} className={styles.change}>
-                    <span className={styles.changeBadge} style={{ color: cfg.color, borderColor: cfg.color }}>
+                    <span
+                      className={styles.changeBadge}
+                      style={{ color: cfg.color, borderColor: cfg.color }}
+                    >
                       {cfg.label}
                     </span>
                     <span className={styles.changeDesc}>{change.description}</span>
-                    {change.area && (
-                      <span className={styles.changeArea}>{change.area}</span>
-                    )}
+                    {change.area && <span className={styles.changeArea}>{change.area}</span>}
                   </div>
                 );
               })}
@@ -3056,6 +3258,7 @@ git commit -m "feat: add changelog page"
 ## Task 8: Sidebar Navigation + Search Enhancement + Data Barrel Updates
 
 **Files:**
+
 - Modify: `src/components/layout/sidebar/index.tsx`
 - Modify: `src/features/search/search-index.ts`
 - Modify: `src/data/index.ts`
@@ -3141,23 +3344,59 @@ import { STATUS_COLORS } from '@/types/feature';
 export function FeaturePanel({ feature }: { feature: Feature }) {
   return (
     <div style={{ padding: '16px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-        <h3 style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>{feature.name}</h3>
-        <span style={{ fontSize: '9px', fontFamily: 'var(--font-family-mono)', color: STATUS_COLORS[feature.status], textTransform: 'uppercase' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '8px',
+        }}
+      >
+        <h3 style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>
+          {feature.name}
+        </h3>
+        <span
+          style={{
+            fontSize: '9px',
+            fontFamily: 'var(--font-family-mono)',
+            color: STATUS_COLORS[feature.status],
+            textTransform: 'uppercase',
+          }}
+        >
           {feature.status}
         </span>
       </div>
-      <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.5, margin: '0 0 12px' }}>
+      <p
+        style={{
+          fontSize: '11px',
+          color: 'var(--text-muted)',
+          lineHeight: 1.5,
+          margin: '0 0 12px',
+        }}
+      >
         {feature.description}
       </p>
-      <div style={{ display: 'flex', gap: '12px', fontSize: '10px', color: 'var(--text-dim)', fontFamily: 'var(--font-family-mono)', marginBottom: '12px' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '12px',
+          fontSize: '10px',
+          color: 'var(--text-dim)',
+          fontFamily: 'var(--font-family-mono)',
+          marginBottom: '12px',
+        }}
+      >
         {feature.componentCount > 0 && <span>{feature.componentCount} components</span>}
         {feature.endpointCount > 0 && <span>{feature.endpointCount} endpoints</span>}
       </div>
       {feature.links.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {feature.links.map((link, i) => (
-            <Link key={i} href={link.href} style={{ fontSize: '11px', color: '#3d8c75', textDecoration: 'none' }}>
+            <Link
+              key={i}
+              href={link.href}
+              style={{ fontSize: '11px', color: '#3d8c75', textDecoration: 'none' }}
+            >
               {link.label}
             </Link>
           ))}
@@ -3179,7 +3418,14 @@ export function PermissionPanel({ role }: { role: Role }) {
   return (
     <div style={{ padding: '16px' }}>
       <h3 style={{ fontSize: '14px', color: role.color, margin: '0 0 4px' }}>{role.name}</h3>
-      <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.5, margin: '0 0 12px' }}>
+      <p
+        style={{
+          fontSize: '11px',
+          color: 'var(--text-muted)',
+          lineHeight: 1.5,
+          margin: '0 0 12px',
+        }}
+      >
         {role.description}
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -3187,9 +3433,24 @@ export function PermissionPanel({ role }: { role: Role }) {
           const level = role.permissions[f.key];
           const cfg = LEVEL_CONFIG[level];
           return (
-            <div key={f.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 0' }}>
+            <div
+              key={f.key}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '4px 0',
+              }}
+            >
               <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{f.label}</span>
-              <span style={{ fontSize: '9px', fontFamily: 'var(--font-family-mono)', color: cfg.color, fontWeight: 600 }}>
+              <span
+                style={{
+                  fontSize: '9px',
+                  fontFamily: 'var(--font-family-mono)',
+                  color: cfg.color,
+                  fontWeight: 600,
+                }}
+              >
                 {cfg.label}
               </span>
             </div>
@@ -3206,8 +3467,12 @@ export function PermissionPanel({ role }: { role: Role }) {
 Add to `src/components/layout/detail-panel/index.tsx` the new cases in the switch/conditional that renders panels. Add imports for `FeaturePanel` and `PermissionPanel`, then add:
 
 ```tsx
-{selectedItem?.type === 'feature' && <FeaturePanel feature={selectedItem.feature} />}
-{selectedItem?.type === 'role' && <PermissionPanel role={selectedItem.role} />}
+{
+  selectedItem?.type === 'feature' && <FeaturePanel feature={selectedItem.feature} />;
+}
+{
+  selectedItem?.type === 'role' && <PermissionPanel role={selectedItem.role} />;
+}
 ```
 
 - [ ] **Step 7: Update search index**
@@ -3284,6 +3549,7 @@ git commit -m "feat: update sidebar, search index, and detail panels for new pag
 ## Task 9: Final Integration + ERD link from Data Model
 
 **Files:**
+
 - Modify: `src/features/data-model/entity-list/index.tsx` — Add link to ERD
 
 - [ ] **Step 1: Add ERD link to data model page**
@@ -3296,7 +3562,7 @@ import Link from 'next/link';
 // Inside the return, after the title or group header area:
 <Link href="/data-model/erd" className={styles.erdLink}>
   View Entity Relationships →
-</Link>
+</Link>;
 ```
 
 Add to `entity-list.module.scss`:

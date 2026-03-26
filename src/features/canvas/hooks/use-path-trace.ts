@@ -15,20 +15,17 @@ export function usePathTrace(nodes: JourneyNode[], edges: JourneyEdge[]) {
   // Track which node set these choices belong to — stale choices are filtered in the memo
   const nodeIds = useMemo(() => new Set(nodes.map((n) => n.id)), [nodes]);
 
-  const choosePath = useCallback(
-    (decId: string, opt: string, targetId: string) => {
-      setChosenPath((prev) => {
-        const existing = prev.find((c) => c.decId === decId);
-        // Toggle off if clicking the already-selected option
-        if (existing && existing.opt === opt) {
-          return prev.filter((c) => c.decId !== decId);
-        }
-        const filtered = prev.filter((c) => c.decId !== decId);
-        return [...filtered, { decId, opt, targetId }];
-      });
-    },
-    [],
-  );
+  const choosePath = useCallback((decId: string, opt: string, targetId: string) => {
+    setChosenPath((prev) => {
+      const existing = prev.find((c) => c.decId === decId);
+      // Toggle off if clicking the already-selected option
+      if (existing && existing.opt === opt) {
+        return prev.filter((c) => c.decId !== decId);
+      }
+      const filtered = prev.filter((c) => c.decId !== decId);
+      return [...filtered, { decId, opt, targetId }];
+    });
+  }, []);
 
   const resetPath = useCallback(() => setChosenPath([]), []);
 
@@ -53,9 +50,7 @@ export function usePathTrace(nodes: JourneyNode[], edges: JourneyEdge[]) {
     }
 
     // Decision nodes: any node that has outgoing edges with opt
-    const decisionNodeIds = new Set(
-      edges.filter((e) => e.opt).map((e) => e.from),
-    );
+    const decisionNodeIds = new Set(edges.filter((e) => e.opt).map((e) => e.from));
 
     // Chosen decisions as a lookup: decId → chosen opt label
     const chosenMap = new Map(validChoices.map((c) => [c.decId, c.opt]));

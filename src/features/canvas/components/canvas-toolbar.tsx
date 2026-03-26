@@ -54,7 +54,15 @@ function MinimapIcon() {
 function ZoomOutIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <line x1="4" y1="8" x2="12" y2="8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <line
+        x1="4"
+        y1="8"
+        x2="12"
+        y2="8"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -62,8 +70,24 @@ function ZoomOutIcon() {
 function ZoomInIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <line x1="4" y1="8" x2="12" y2="8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <line x1="8" y1="4" x2="8" y2="12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <line
+        x1="4"
+        y1="8"
+        x2="12"
+        y2="8"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="8"
+        y1="4"
+        x2="8"
+        y2="12"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -71,8 +95,13 @@ function ZoomInIcon() {
 function FitViewIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M2 6V3a1 1 0 011-1h3M10 2h3a1 1 0 011 1v3M14 10v3a1 1 0 01-1 1h-3M6 14H3a1 1 0 01-1-1v-3"
-        stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M2 6V3a1 1 0 011-1h3M10 2h3a1 1 0 011 1v3M14 10v3a1 1 0 01-1 1h-3M6 14H3a1 1 0 01-1-1v-3"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -80,7 +109,12 @@ function FitViewIcon() {
 function FilterIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+      <path
+        d="M2 4h12M4 8h8M6 12h4"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -88,8 +122,24 @@ function FilterIcon() {
 function ClearIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      <line x1="4" y1="4" x2="12" y2="12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <line x1="12" y1="4" x2="4" y2="12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <line
+        x1="4"
+        y1="4"
+        x2="12"
+        y2="12"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="12"
+        y1="4"
+        x2="4"
+        y2="12"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -176,56 +226,76 @@ function FiltersDropup({ controls }: { controls: FilterControls }) {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-        <span style={{ fontSize: 9, color: '#6a6860', textTransform: 'uppercase', letterSpacing: '0.08em', marginRight: 4 }}>
+        <span
+          style={{
+            fontSize: 9,
+            color: '#6a6860',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            marginRight: 4,
+          }}
+        >
           Layers
         </span>
-        {(Object.entries(LAYER_CONFIG) as [StepLayer, (typeof LAYER_CONFIG)[StepLayer]][]).map(([key, cfg]) => {
-          const active = controls.visibleLayers.has(key);
-          return (
-            <button
-              key={key}
-              onClick={() => controls.onToggleLayer(key)}
-              style={{
-                padding: '3px 10px',
-                borderRadius: 12,
-                fontSize: 10,
-                border: active ? `1px solid ${cfg.color}` : '1px solid transparent',
-                background: hexToRgba(cfg.color, active ? 0.15 : 0.05),
-                color: active ? cfg.color : '#9a9790',
-                opacity: active ? 1 : 0.5,
-                cursor: 'pointer',
-              }}
-            >
-              {cfg.label}
-            </button>
-          );
-        })}
+        {(Object.entries(LAYER_CONFIG) as [StepLayer, (typeof LAYER_CONFIG)[StepLayer]][]).map(
+          ([key, cfg]) => {
+            const active = controls.visibleLayers.has(key);
+            return (
+              <button
+                key={key}
+                onClick={() => controls.onToggleLayer(key)}
+                style={{
+                  padding: '3px 10px',
+                  borderRadius: 12,
+                  fontSize: 10,
+                  border: active ? `1px solid ${cfg.color}` : '1px solid transparent',
+                  background: hexToRgba(cfg.color, active ? 0.15 : 0.05),
+                  color: active ? cfg.color : '#9a9790',
+                  opacity: active ? 1 : 0.5,
+                  cursor: 'pointer',
+                }}
+              >
+                {cfg.label}
+              </button>
+            );
+          },
+        )}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-        <span style={{ fontSize: 9, color: '#6a6860', textTransform: 'uppercase', letterSpacing: '0.08em', marginRight: 4 }}>
+        <span
+          style={{
+            fontSize: 9,
+            color: '#6a6860',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            marginRight: 4,
+          }}
+        >
           Status
         </span>
-        {(Object.entries(STATUS_CONFIG) as [StepStatus, (typeof STATUS_CONFIG)[StepStatus]][]).map(([key, cfg]) => {
-          const active = controls.visibleStatuses.has(key);
-          return (
-            <button
-              key={key}
-              onClick={() => controls.onToggleStatus(key)}
-              style={{
-                padding: '3px 10px',
-                borderRadius: 12,
-                fontSize: 10,
-                border: active ? `1px solid ${cfg.color}` : '1px solid transparent',
-                background: hexToRgba(cfg.color, active ? 0.15 : 0.05),
-                color: active ? cfg.color : '#9a9790',
-                opacity: active ? 1 : 0.5,
-                cursor: 'pointer',
-              }}
-            >
-              {cfg.label}
-            </button>
-          );
-        })}
+        {(Object.entries(STATUS_CONFIG) as [StepStatus, (typeof STATUS_CONFIG)[StepStatus]][]).map(
+          ([key, cfg]) => {
+            const active = controls.visibleStatuses.has(key);
+            return (
+              <button
+                key={key}
+                onClick={() => controls.onToggleStatus(key)}
+                style={{
+                  padding: '3px 10px',
+                  borderRadius: 12,
+                  fontSize: 10,
+                  border: active ? `1px solid ${cfg.color}` : '1px solid transparent',
+                  background: hexToRgba(cfg.color, active ? 0.15 : 0.05),
+                  color: active ? cfg.color : '#9a9790',
+                  opacity: active ? 1 : 0.5,
+                  cursor: 'pointer',
+                }}
+              >
+                {cfg.label}
+              </button>
+            );
+          },
+        )}
       </div>
     </div>
   );
@@ -294,7 +364,17 @@ export function CanvasToolbar({
   }, [filtersOpen, handleClickOutside]);
 
   return (
-    <div ref={dropupRef} style={{ position: 'absolute', bottom: 0, left: 0, right: 0, pointerEvents: 'none', zIndex: 10 }}>
+    <div
+      ref={dropupRef}
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        pointerEvents: 'none',
+        zIndex: 10,
+      }}
+    >
       {/* Filters dropup */}
       {filtersOpen && filterControls && (
         <div style={{ pointerEvents: 'auto' }}>
@@ -318,7 +398,11 @@ export function CanvasToolbar({
         </ToolbarBtn>
 
         {/* Zoom percentage — click to reset */}
-        <ToolbarBtn label="Reset zoom to 100%" onClick={zoomControls.resetView} style={ZOOM_TEXT_STYLE}>
+        <ToolbarBtn
+          label="Reset zoom to 100%"
+          onClick={zoomControls.resetView}
+          style={ZOOM_TEXT_STYLE}
+        >
           {zoomControls.zoom}%
         </ToolbarBtn>
 
@@ -339,7 +423,11 @@ export function CanvasToolbar({
         {filterControls && (
           <>
             <div style={SEP_STYLE} />
-            <ToolbarBtn label="Toggle filters" isActive={filtersOpen} onClick={() => setFiltersOpen((p) => !p)}>
+            <ToolbarBtn
+              label="Toggle filters"
+              isActive={filtersOpen}
+              onClick={() => setFiltersOpen((p) => !p)}
+            >
               <FilterIcon />
             </ToolbarBtn>
           </>

@@ -40,8 +40,8 @@ export function FeatureList({ features }: FeatureListProps) {
   const builtCount = features.filter((f) => f.status === 'built').length;
   const totalComponents = features.reduce((sum, f) => sum + f.componentCount, 0);
   const totalEndpoints = features.reduce((sum, f) => sum + f.endpointCount, 0);
-  const journeyCoverageCount = features.filter(
-    (f) => f.links?.some((l) => l.type === 'journey'),
+  const journeyCoverageCount = features.filter((f) =>
+    f.links?.some((l) => l.type === 'journey'),
   ).length;
   const builtPct = total > 0 ? Math.round((builtCount / total) * 100) : 0;
 
@@ -56,7 +56,8 @@ export function FeatureList({ features }: FeatureListProps) {
       <div className={styles.header}>
         <h2 className={styles.title}>Feature Readiness</h2>
         <p className={styles.subtitle}>
-          {total} features &middot; {totalComponents} components &middot; {totalEndpoints} endpoints &middot; {journeyCoverageCount} with journey coverage
+          {total} features &middot; {totalComponents} components &middot; {totalEndpoints} endpoints
+          &middot; {journeyCoverageCount} with journey coverage
         </p>
       </div>
 
@@ -130,14 +131,10 @@ export function FeatureList({ features }: FeatureListProps) {
                 {/* Meta row */}
                 <div className={styles.metaRow}>
                   {feature.componentCount > 0 && (
-                    <span className={styles.metaBadge}>
-                      {feature.componentCount} components
-                    </span>
+                    <span className={styles.metaBadge}>{feature.componentCount} components</span>
                   )}
                   {feature.endpointCount > 0 && (
-                    <span className={styles.metaBadge}>
-                      {feature.endpointCount} endpoints
-                    </span>
+                    <span className={styles.metaBadge}>{feature.endpointCount} endpoints</span>
                   )}
                   {feature.journeyCoverage && (
                     <span className={styles.journeyBadge}>has journey</span>

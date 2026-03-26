@@ -61,17 +61,19 @@ function EndpointRow({ ep }: { ep: EndpointData }) {
         <span className={styles.epPath}>{ep.path}</span>
         <span className={styles.epMeta}>
           {hasErrors ? (
-            <span className={styles.errorCount}>{ep.errors.length} error{ep.errors.length !== 1 ? 's' : ''}</span>
+            <span className={styles.errorCount}>
+              {ep.errors.length} error{ep.errors.length !== 1 ? 's' : ''}
+            </span>
           ) : (
             <span className={styles.noErrors}>no errors documented</span>
           )}
           {ep.journeyCount > 0 && (
-            <span className={styles.journeyCount}>{ep.journeyCount} journey{ep.journeyCount !== 1 ? 's' : ''}</span>
+            <span className={styles.journeyCount}>
+              {ep.journeyCount} journey{ep.journeyCount !== 1 ? 's' : ''}
+            </span>
           )}
         </span>
-        {hasErrors && (
-          <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
-        )}
+        {hasErrors && <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>}
       </button>
 
       {isOpen && hasErrors && (
@@ -159,20 +161,28 @@ export function ErrorCatalog({ groups }: ErrorCatalogProps) {
       {/* Stats */}
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
-          <span className={styles.statValue} style={{ color: '#3d8c75' }}>{stats.withErrors}</span>
+          <span className={styles.statValue} style={{ color: '#3d8c75' }}>
+            {stats.withErrors}
+          </span>
           <span className={styles.statLabel}>endpoints with errors</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statValue} style={{ color: '#78756f' }}>{stats.withoutErrors}</span>
+          <span className={styles.statValue} style={{ color: '#78756f' }}>
+            {stats.withoutErrors}
+          </span>
           <span className={styles.statLabel}>endpoints without errors</span>
         </div>
         <div className={styles.statCard}>
-          <span className={styles.statValue} style={{ color: '#e27739' }}>{stats.totalErrors}</span>
+          <span className={styles.statValue} style={{ color: '#e27739' }}>
+            {stats.totalErrors}
+          </span>
           <span className={styles.statLabel}>total error cases</span>
         </div>
         {stats.sortedStatuses.map(([status, count]) => (
           <div key={status} className={styles.statCard}>
-            <span className={styles.statValue} style={{ color: getStatusColor(status) }}>{count}</span>
+            <span className={styles.statValue} style={{ color: getStatusColor(status) }}>
+              {count}
+            </span>
             <span className={styles.statLabel}>HTTP {status}</span>
           </div>
         ))}
@@ -185,9 +195,7 @@ export function ErrorCatalog({ groups }: ErrorCatalogProps) {
           <div key={group.name} className={styles.group}>
             <div className={styles.groupHeader}>
               <h2 className={styles.groupName}>{group.name}</h2>
-              {!groupHasErrors && (
-                <span className={styles.noErrorsWarning}>no error docs</span>
-              )}
+              {!groupHasErrors && <span className={styles.noErrorsWarning}>no error docs</span>}
               <span className={styles.groupCount}>{group.endpoints.length} endpoints</span>
             </div>
             <div className={styles.endpoints}>

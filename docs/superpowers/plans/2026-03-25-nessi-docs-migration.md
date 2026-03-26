@@ -17,6 +17,7 @@
 ## Task 1: Cleanup — Remove Old Components & Prepare
 
 **Files:**
+
 - Delete: `src/features/journeys/components/flow-visualizer/`
 - Delete: `src/features/journeys/components/step-card/`
 - Delete: `src/features/journeys/components/layer-badge/`
@@ -69,6 +70,7 @@ Types, data, and styles preserved for reuse."
 ## Task 2: Data Types — Expand Journey Types & Add New Types
 
 **Files:**
+
 - Modify: `src/types/journey.ts`
 - Create: `src/types/api-contract.ts`
 - Create: `src/types/data-model.ts`
@@ -87,8 +89,15 @@ Replace `src/types/journey.ts` with the expanded types. Keep existing LAYER_CONF
 export type StepLayer = 'client' | 'server' | 'database' | 'background' | 'email' | 'external';
 export type StepStatus = 'planned' | 'built' | 'tested';
 export type Persona =
-  | 'guest' | 'auth' | 'onboarding' | 'buyer' | 'seller'
-  | 'shop-owner' | 'shop-member' | 'account' | 'context';
+  | 'guest'
+  | 'auth'
+  | 'onboarding'
+  | 'buyer'
+  | 'seller'
+  | 'shop-owner'
+  | 'shop-member'
+  | 'account'
+  | 'context';
 
 export interface LayerConfig {
   label: string;
@@ -108,30 +117,30 @@ export interface PersonaConfig {
 }
 
 export const LAYER_CONFIG: Record<StepLayer, LayerConfig> = {
-  client:     { label: 'Client',     color: '#3d8c75', icon: 'HiOutlineDesktopComputer' },
-  server:     { label: 'Server',     color: '#e27739', icon: 'HiOutlineServer' },
-  database:   { label: 'Database',   color: '#1e4a40', icon: 'HiOutlineDatabase' },
+  client: { label: 'Client', color: '#3d8c75', icon: 'HiOutlineDesktopComputer' },
+  server: { label: 'Server', color: '#e27739', icon: 'HiOutlineServer' },
+  database: { label: 'Database', color: '#1e4a40', icon: 'HiOutlineDatabase' },
   background: { label: 'Background', color: '#b86e0a', icon: 'HiOutlineLightningBolt' },
-  email:      { label: 'Email',      color: '#b84040', icon: 'HiOutlineMail' },
-  external:   { label: 'External',   color: '#78756f', icon: 'HiOutlineGlobe' },
+  email: { label: 'Email', color: '#b84040', icon: 'HiOutlineMail' },
+  external: { label: 'External', color: '#78756f', icon: 'HiOutlineGlobe' },
 };
 
 export const STATUS_CONFIG: Record<StepStatus, StatusConfig> = {
   planned: { label: 'Planned', color: '#5c5a55' },
-  built:   { label: 'Built',   color: '#3d8c75' },
-  tested:  { label: 'Tested',  color: '#1a6b43' },
+  built: { label: 'Built', color: '#3d8c75' },
+  tested: { label: 'Tested', color: '#1a6b43' },
 };
 
 export const PERSONA_CONFIG: Record<Persona, PersonaConfig> = {
-  guest:         { label: 'Guest',        description: 'Unauthenticated visitor', color: '#78756f' },
-  auth:          { label: 'Auth',         description: 'Authentication flows',    color: '#3d8c75' },
-  onboarding:    { label: 'Onboarding',   description: 'New user setup',          color: '#b86e0a' },
-  buyer:         { label: 'Buyer',        description: 'Authenticated buyer',     color: '#1e4a40' },
-  seller:        { label: 'Seller',       description: 'Listing creator',         color: '#e27739' },
-  'shop-owner':  { label: 'Shop Owner',   description: 'Shop administrator',      color: '#e89048' },
-  'shop-member': { label: 'Shop Member',  description: 'Shop participant',        color: '#b84040' },
-  account:       { label: 'Account',      description: 'Profile management',      color: '#681a19' },
-  context:       { label: 'Context',      description: 'Identity switching',      color: '#5c5a55' },
+  guest: { label: 'Guest', description: 'Unauthenticated visitor', color: '#78756f' },
+  auth: { label: 'Auth', description: 'Authentication flows', color: '#3d8c75' },
+  onboarding: { label: 'Onboarding', description: 'New user setup', color: '#b86e0a' },
+  buyer: { label: 'Buyer', description: 'Authenticated buyer', color: '#1e4a40' },
+  seller: { label: 'Seller', description: 'Listing creator', color: '#e27739' },
+  'shop-owner': { label: 'Shop Owner', description: 'Shop administrator', color: '#e89048' },
+  'shop-member': { label: 'Shop Member', description: 'Shop participant', color: '#b84040' },
+  account: { label: 'Account', description: 'Profile management', color: '#681a19' },
+  context: { label: 'Context', description: 'Identity switching', color: '#5c5a55' },
 };
 
 // --- UX behavior annotations ---
@@ -182,7 +191,7 @@ export interface JourneyNode {
 export interface JourneyEdge {
   from: string;
   to: string;
-  opt?: string;  // Decision option label
+  opt?: string; // Decision option label
 }
 
 // --- Top-level journey (canvas format) ---
@@ -319,6 +328,7 @@ New types for ApiContract, DataModel, Lifecycle, and DocsContext."
 ## Task 3: Data Files — Migrate Playground Data to Typed Files
 
 **Files:**
+
 - Modify: `src/data/journeys/index.ts`
 - Create: `src/data/journeys/canvas/signup.ts`
 - Create: `src/data/journeys/canvas/guest-cart.ts`
@@ -372,7 +382,12 @@ import { createListing } from './create-listing';
 import { shopCreation } from './shop-creation';
 
 export const journeys: Journey[] = [
-  signup, guestCart, shopInvite, onboarding, createListing, shopCreation,
+  signup,
+  guestCart,
+  shopInvite,
+  onboarding,
+  createListing,
+  shopCreation,
 ];
 
 export function getAllJourneys(): Journey[] {
@@ -493,6 +508,7 @@ Cross-link index builder for inter-page navigation."
 ## Task 4: Dark Theme & Global Styles
 
 **Files:**
+
 - Create: `src/styles/variables/dark-theme.scss`
 - Modify: `src/styles/globals.scss`
 
@@ -552,6 +568,7 @@ glow effects, and transition variables."
 ## Task 5: App Shell — Layout, Topbar, Sidebar, Detail Panel
 
 **Files:**
+
 - Rewrite: `src/app/layout.tsx`
 - Create: `src/components/layout/app-shell/index.tsx`
 - Create: `src/components/layout/app-shell/app-shell.module.scss`
@@ -646,7 +663,9 @@ import '@/styles/globals.scss';
 
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans' });
 const dmSerif = DM_Serif_Display({
-  weight: '400', subsets: ['latin'], variable: '--font-dm-serif',
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-dm-serif',
 });
 
 export const metadata: Metadata = {
@@ -713,6 +732,7 @@ Detail panel with empty state. Homepage redirects to first journey."
 ## Task 6: Canvas Engine — Pan/Zoom, Viewport, SVG Wrapper
 
 **Files:**
+
 - Create: `src/features/canvas/hooks/use-pan-zoom.ts`
 - Create: `src/features/canvas/hooks/use-viewport.ts`
 - Create: `src/features/canvas/canvas-provider/index.tsx`
@@ -723,6 +743,7 @@ Detail panel with empty state. Homepage redirects to first journey."
 Port pan/zoom logic from playground. Standard drag direction (drag right = content moves right). Returns `{ zoom, panX, panY, zoomIn, zoomOut, resetView, handlers }` where `handlers` is `{ onMouseDown, onMouseMove, onMouseUp, onMouseLeave, onWheel }`.
 
 Key math (from the playground's corrected version):
+
 - mousedown: `startX = e.clientX - panX`, `startY = e.clientY - panY`
 - mousemove: `panX = e.clientX - startX`, `panY = e.clientY - startY`
 - wheel: `zoom = clamp(zoom + (deltaY > 0 ? -0.06 : 0.06), 0.25, 3)`
@@ -734,6 +755,7 @@ Takes array of `{x, y, type}` node objects. Returns SVG viewBox string. Uses nod
 - [ ] **Step 3: Create CanvasProvider component + styles**
 
 Client component wrapping `<svg>` with:
+
 - Grid pattern background (`<pattern>` in `<defs>`)
 - Arrow markers in `<defs>` (green for flow, orange for decisions)
 - Pan/zoom handlers on the SVG element
@@ -758,6 +780,7 @@ CanvasProvider component with grid pattern and arrow markers."
 ## Task 7: Canvas Engine — SVG Node Components
 
 **Files:**
+
 - Create: `src/features/canvas/components/step-node.tsx`
 - Create: `src/features/canvas/components/entry-node.tsx`
 - Create: `src/features/canvas/components/decision-node.tsx`
@@ -782,14 +805,12 @@ export const LIFECYCLE_NODE_HEIGHT = 48;
 // Get connection port for a node
 export function getPort(
   node: { x: number; y: number; type: string },
-  side: 'left' | 'right'
+  side: 'left' | 'right',
 ): { x: number; y: number } {
   if (node.type === 'decision') {
     const cx = node.x + DECISION_SIZE / 2;
     const cy = node.y + DECISION_SIZE / 2;
-    return side === 'right'
-      ? { x: node.x + DECISION_SIZE, y: cy }
-      : { x: node.x, y: cy };
+    return side === 'right' ? { x: node.x + DECISION_SIZE, y: cy } : { x: node.x, y: cy };
   }
   return side === 'right'
     ? { x: node.x + NODE_WIDTH, y: node.y + NODE_HEIGHT / 2 }
@@ -856,6 +877,7 @@ LabelPill for lifecycle transition labels. Geometry utilities."
 ## Task 8: Canvas Engine — Path Tracing Hook
 
 **Files:**
+
 - Create: `src/features/canvas/hooks/use-path-trace.ts`
 
 - [ ] **Step 1: Create usePathTrace hook**
@@ -955,6 +977,7 @@ Clicking a different option at the same decision auto-switches the path."
 ## Task 9: Journey Page — Canvas + Filters + Route
 
 **Files:**
+
 - Create: `src/features/journeys/journey-canvas/index.tsx`
 - Create: `src/features/journeys/journey-filters/index.tsx`
 - Create: `src/features/journeys/journey-filters/journey-filters.module.scss`
@@ -1034,6 +1057,7 @@ Static generation via generateStaticParams."
 ## Task 10: Detail Panel Variants
 
 **Files:**
+
 - Create: `src/components/layout/detail-panel/panels/step-panel.tsx`
 - Create: `src/components/layout/detail-panel/panels/api-panel.tsx`
 - Create: `src/components/layout/detail-panel/panels/entity-panel.tsx`
@@ -1083,6 +1107,7 @@ CoveragePanel with built/tested breakdown."
 ## Task 11: API Map, Data Model, Coverage Pages
 
 **Files:**
+
 - Create: `src/features/api-map/api-list/index.tsx`
 - Create: `src/features/api-map/api-list/api-list.module.scss`
 - Create: `src/app/api-map/page.tsx`
@@ -1171,6 +1196,7 @@ CoverageList: build/test coverage per journey with progress bars."
 ## Task 12: Lifecycles Page — Canvas + Route
 
 **Files:**
+
 - Create: `src/features/lifecycles/lifecycle-canvas/index.tsx`
 - Create: `src/app/lifecycles/[slug]/page.tsx`
 - Create: `src/app/lifecycles/page.tsx` (index redirect)
@@ -1240,6 +1266,7 @@ LifecycleCanvas renders states and transitions with bezier edges.
 ## Task 13: Extraction Scripts (in nessi-web-app)
 
 **Files (in nessi-web-app repo):**
+
 - Create: `scripts/docs-extract/extract-api-routes.ts`
 - Create: `scripts/docs-extract/extract-data-model.ts`
 - Create: `scripts/docs-extract/extract-lifecycles.ts`
@@ -1319,6 +1346,7 @@ Copies journey JSON files. Output to docs/generated/ for CI sync."
 ## Task 14: CI Pipeline — GitHub Action
 
 **Files (in nessi-web-app):**
+
 - Create: `.github/workflows/sync-docs.yml`
 
 - [ ] **Step 1: Create GitHub Action workflow**
@@ -1391,6 +1419,7 @@ or journey files change. Runs extraction and pushes to nessi-docs."
 ## Task 15: Final Cleanup & Verification
 
 **Files:**
+
 - Delete: `nessi-docs-playground.html`
 - Modify: `.gitignore`
 
@@ -1419,6 +1448,7 @@ pnpm dev
 ```
 
 Walk through every page:
+
 - `/journeys/signup` — canvas renders, decisions clickable, path tracing works, detail panel shows step info with cross-links
 - `/journeys/onboarding` — 3-way decision branch works
 - `/api-map` — all 10 endpoint groups, clicking shows detail with journey cross-links
@@ -1443,20 +1473,20 @@ and automated extraction pipeline."
 
 ## Summary
 
-| Task | What it builds | Depends on |
-|------|---------------|------------|
-| 1 | Cleanup old components | — |
-| 2 | Type definitions | 1 |
-| 3 | Data files (from playground) | 2 |
-| 4 | Dark theme + globals | 1 |
-| 5 | App shell (layout, topbar, sidebar, detail, provider) | 2, 3, 4 |
-| 6 | Canvas engine (pan/zoom, viewport, SVG wrapper) | 4 |
-| 7 | SVG node components (step, entry, decision, state, edges) | 6 |
-| 8 | Path tracing hook | 2 |
-| 9 | Journey page (canvas + filters + route) | 5, 7, 8 |
-| 10 | Detail panel variants | 5, 3 |
-| 11 | API Map, Data Model, Coverage pages | 5, 3, 10 |
-| 12 | Lifecycles page (canvas + route) | 5, 7 |
-| 13 | Extraction scripts (in nessi-web-app) | — (independent) |
-| 14 | CI pipeline (GitHub Action) | 13 |
-| 15 | Final cleanup + verification | All above |
+| Task | What it builds                                            | Depends on      |
+| ---- | --------------------------------------------------------- | --------------- |
+| 1    | Cleanup old components                                    | —               |
+| 2    | Type definitions                                          | 1               |
+| 3    | Data files (from playground)                              | 2               |
+| 4    | Dark theme + globals                                      | 1               |
+| 5    | App shell (layout, topbar, sidebar, detail, provider)     | 2, 3, 4         |
+| 6    | Canvas engine (pan/zoom, viewport, SVG wrapper)           | 4               |
+| 7    | SVG node components (step, entry, decision, state, edges) | 6               |
+| 8    | Path tracing hook                                         | 2               |
+| 9    | Journey page (canvas + filters + route)                   | 5, 7, 8         |
+| 10   | Detail panel variants                                     | 5, 3            |
+| 11   | API Map, Data Model, Coverage pages                       | 5, 3, 10        |
+| 12   | Lifecycles page (canvas + route)                          | 5, 7            |
+| 13   | Extraction scripts (in nessi-web-app)                     | — (independent) |
+| 14   | CI pipeline (GitHub Action)                               | 13              |
+| 15   | Final cleanup + verification                              | All above       |

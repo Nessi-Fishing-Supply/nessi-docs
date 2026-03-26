@@ -106,10 +106,7 @@ const NODE_H = 80;
 const H_GAP = 100;
 const V_GAP = 100;
 
-function layoutJourneyNodes(
-  rawNodes: RawJourneyNode[],
-  rawEdges: RawJourneyEdge[],
-): JourneyNode[] {
+function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge[]): JourneyNode[] {
   // If all nodes already have x/y, use them as-is (backwards compat)
   const allHavePositions = rawNodes.every(
     (n) => typeof n.x === 'number' && typeof n.y === 'number',
@@ -349,10 +346,7 @@ const ERD_COLS = 3;
 const ERD_X_SPACING = 280;
 const ERD_Y_SPACING = 160;
 
-function transformErdNodes(
-  rawNodes: RawErdNode[],
-  rawEntities: RawEntity[],
-): ErdNode[] {
+function transformErdNodes(rawNodes: RawErdNode[], rawEntities: RawEntity[]): ErdNode[] {
   const entityMap = new Map(rawEntities.map((e) => [e.name, e]));
 
   // If all nodes already have x/y, just enrich with badge/fieldCount
@@ -400,7 +394,10 @@ function transformChangelog(
 
     // Strip conventional commit prefix for cleaner description
     const description = (entry.title ?? '')
-      .replace(/^(feat|fix|chore|refactor|docs|style|test|perf|ci|build|revert)(\([^)]*\))?:\s*/i, '')
+      .replace(
+        /^(feat|fix|chore|refactor|docs|style|test|perf|ci|build|revert)(\([^)]*\))?:\s*/i,
+        '',
+      )
       .replace(/^#\d+\s*/, '');
 
     byDate.get(date)!.push({
@@ -422,9 +419,7 @@ function transformChangelog(
 
 export const apiGroups = apiContractsRaw.groups as unknown as ApiGroup[];
 
-export const entities = transformEntities(
-  dataModelRaw.entities as RawEntity[],
-);
+export const entities = transformEntities(dataModelRaw.entities as RawEntity[]);
 
 export const erdNodes = transformErdNodes(
   entityRelationshipsRaw.nodes as RawErdNode[],
@@ -438,14 +433,9 @@ export const configEnums = configReferenceRaw.configs as unknown as ConfigEnum[]
 
 export const features = featuresRaw.features as unknown as Feature[];
 
-export const lifecycles = transformLifecycles(
-  lifecyclesRaw.lifecycles as RawLifecycle[],
-);
+export const lifecycles = transformLifecycles(lifecyclesRaw.lifecycles as RawLifecycle[]);
 
-const journeys: Journey[] = transformJourneys(
-  journeysRaw.journeys as unknown as RawJourney[],
-);
-
+const journeys: Journey[] = transformJourneys(journeysRaw.journeys as unknown as RawJourney[]);
 
 export const changelog = transformChangelog(
   changelogRaw.entries as { title?: string; mergedAt?: string; type?: string; area?: string }[],
@@ -497,7 +487,11 @@ export function getLinksForRoute(route: string): CrossLink[] {
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/(^-|-$)/g, '');
-        links.push({ label: `${ep.method} ${ep.path}`, href: `/api-map#${anchor}`, highlight: route });
+        links.push({
+          label: `${ep.method} ${ep.path}`,
+          href: `/api-map#${anchor}`,
+          highlight: route,
+        });
       }
     }
   }

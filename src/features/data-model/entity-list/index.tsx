@@ -6,7 +6,17 @@ import type { Entity } from '@/types/data-model';
 import { useDocsContext } from '@/providers/docs-provider';
 import styles from './entity-list.module.scss';
 
-const CATEGORY_ORDER = ['core', 'lifecycle', 'junction', 'config', 'media', 'tracking', 'discovery', 'user', 'system'];
+const CATEGORY_ORDER = [
+  'core',
+  'lifecycle',
+  'junction',
+  'config',
+  'media',
+  'tracking',
+  'discovery',
+  'user',
+  'system',
+];
 
 const CATEGORY_LABELS: Record<string, string> = {
   core: 'Core Entities',
@@ -36,16 +46,19 @@ export function EntityList({ entities }: EntityListProps) {
       map.get(cat)!.push(e);
     }
     // Sort by defined order
-    return CATEGORY_ORDER
-      .filter((cat) => map.has(cat))
-      .map((cat) => ({ category: cat, label: CATEGORY_LABELS[cat] ?? cat, entities: map.get(cat)! }));
+    return CATEGORY_ORDER.filter((cat) => map.has(cat)).map((cat) => ({
+      category: cat,
+      label: CATEGORY_LABELS[cat] ?? cat,
+      entities: map.get(cat)!,
+    }));
   }, [entities]);
 
   const handleClick = (entity: Entity) => {
     const isOpen = openEntities.has(entity.name);
     setOpenEntities((prev) => {
       const next = new Set(prev);
-      if (next.has(entity.name)) next.delete(entity.name); else next.add(entity.name);
+      if (next.has(entity.name)) next.delete(entity.name);
+      else next.add(entity.name);
       return next;
     });
     if (!isOpen) {
@@ -69,13 +82,18 @@ export function EntityList({ entities }: EntityListProps) {
         <div key={category} className={styles.group}>
           <div className={styles.groupHeader}>
             <h2 className={styles.groupName}>{label}</h2>
-            <span className={styles.groupCount}>{groupEntities.length} {groupEntities.length === 1 ? 'table' : 'tables'}</span>
+            <span className={styles.groupCount}>
+              {groupEntities.length} {groupEntities.length === 1 ? 'table' : 'tables'}
+            </span>
           </div>
           <div className={styles.cards}>
             {groupEntities.map((entity) => {
               const isOpen = openEntities.has(entity.name);
               return (
-                <div key={entity.name} className={`${styles.card} ${isSelected(entity) ? styles.active : ''}`}>
+                <div
+                  key={entity.name}
+                  className={`${styles.card} ${isSelected(entity) ? styles.active : ''}`}
+                >
                   <button className={styles.cardHeader} onClick={() => handleClick(entity)}>
                     <span className={styles.name}>{entity.name}</span>
                     <span className={styles.count}>{entity.fields.length} fields</span>

@@ -22,12 +22,7 @@ function getTransitionPath(
   stateMap: Map<string, { x: number; y: number }>,
 ) {
   // If explicit coords provided, use them
-  if (
-    t.fx !== undefined &&
-    t.fy !== undefined &&
-    t.tx !== undefined &&
-    t.ty !== undefined
-  ) {
+  if (t.fx !== undefined && t.fy !== undefined && t.tx !== undefined && t.ty !== undefined) {
     return {
       d: bezier(t.fx, t.fy, t.tx, t.ty),
       mx: (t.fx + t.tx) / 2,
@@ -119,16 +114,13 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
       {/* State nodes */}
       {lifecycle.states.map((state) => {
         const isSelected =
-          selectedItem?.type === 'lifecycle-state' &&
-          selectedItem.state.id === state.id;
+          selectedItem?.type === 'lifecycle-state' && selectedItem.state.id === state.id;
         return (
           <StateNode
             key={state.id}
             state={state}
             isSelected={isSelected}
-            onClick={() =>
-              setSelectedItem({ type: 'lifecycle-state', state, lifecycle })
-            }
+            onClick={() => setSelectedItem({ type: 'lifecycle-state', state, lifecycle })}
           />
         );
       })}

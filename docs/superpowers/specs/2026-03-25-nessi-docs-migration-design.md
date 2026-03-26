@@ -23,15 +23,15 @@ The app must stay 100% accurate to the nessi-web-app codebase automatically. Whe
 
 ## 2. Design Decisions (from brainstorming)
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Theme | Dark mode only | Internal dev tool. Matches the prototyped playground. Techy SaaS feel. |
-| Existing timeline components | Remove | The 2D SVG canvas replaces them. Dead code creates confusion. |
-| Data sourcing | Automated extraction + CI sync | "Set and forget" — accuracy is non-negotiable. |
-| Journey authoring | Expanded JSON schema in nessi-web-app | Lives next to the code it describes. Claude assists during feature work. |
-| Layout | Three-column: sidebar + canvas + detail panel | Proven in playground prototype. |
-| Logo | Pull real Nessi SVG logo from nessi-web-app + "docs" suffix | Brand continuity. |
-| Cross-linking | Deep links between journeys, API, data model, lifecycles | Click an API route in a journey step → navigate to that endpoint in API Map. |
+| Decision                     | Choice                                                      | Rationale                                                                    |
+| ---------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Theme                        | Dark mode only                                              | Internal dev tool. Matches the prototyped playground. Techy SaaS feel.       |
+| Existing timeline components | Remove                                                      | The 2D SVG canvas replaces them. Dead code creates confusion.                |
+| Data sourcing                | Automated extraction + CI sync                              | "Set and forget" — accuracy is non-negotiable.                               |
+| Journey authoring            | Expanded JSON schema in nessi-web-app                       | Lives next to the code it describes. Claude assists during feature work.     |
+| Layout                       | Three-column: sidebar + canvas + detail panel               | Proven in playground prototype.                                              |
+| Logo                         | Pull real Nessi SVG logo from nessi-web-app + "docs" suffix | Brand continuity.                                                            |
+| Cross-linking                | Deep links between journeys, API, data model, lifecycles    | Click an API route in a journey step → navigate to that endpoint in API Map. |
 
 ---
 
@@ -87,6 +87,7 @@ Each page is a Server Component that loads data at build time via `generateStati
 ### 3.4 Shared State
 
 A lightweight React context (`DocsContext`) provides:
+
 - `selectedItem: object | null` — what's currently selected (step, endpoint, entity, state, coverage card)
 - `setSelectedItem(item)` — called by canvas node clicks, list item clicks, etc.
 - Cross-link navigation: `navigateTo(page, slug, highlightId?)` — e.g., `navigateTo('api', 'authentication', 'POST /api/auth/register')` navigates to the API page and auto-selects that endpoint. `slug` identifies the page/section, `highlightId` optionally selects an item within it.
@@ -202,21 +203,21 @@ The existing schema supports steps, branches, and error cases. We extend it to c
 interface Step {
   id: string;
   label: string;
-  layer: StepLayer;          // client | server | database | background | email | external
-  status: StepStatus;        // planned | built | tested
-  route?: string;            // API endpoint (e.g., "POST /api/auth/register")
-  codeRef?: string;          // Source file path
-  notes?: string;            // Implementation notes
-  why?: string;              // "Why this exists" explanation
+  layer: StepLayer; // client | server | database | background | email | external
+  status: StepStatus; // planned | built | tested
+  route?: string; // API endpoint (e.g., "POST /api/auth/register")
+  codeRef?: string; // Source file path
+  notes?: string; // Implementation notes
+  why?: string; // "Why this exists" explanation
   errorCases?: ErrorCase[];
   // NEW: UX behavior annotations
   ux?: {
-    toast?: string;          // Toast message shown (e.g., "Added to cart")
-    redirect?: string;       // Redirect destination (e.g., "/dashboard")
-    modal?: string;          // Modal opened (e.g., "OTP input modal")
-    email?: string;          // Email sent (e.g., "Shop invite via Resend")
-    notification?: string;   // In-app notification
-    stateChange?: string;    // Client state mutation (e.g., "Zustand cart badge updates")
+    toast?: string; // Toast message shown (e.g., "Added to cart")
+    redirect?: string; // Redirect destination (e.g., "/dashboard")
+    modal?: string; // Modal opened (e.g., "OTP input modal")
+    email?: string; // Email sent (e.g., "Shop invite via Resend")
+    notification?: string; // In-app notification
+    stateChange?: string; // Client state mutation (e.g., "Zustand cart badge updates")
   };
 }
 ```
@@ -234,13 +235,13 @@ interface JourneyNode {
   x: number;
   y: number;
   // ... step fields when type === 'step'
-  options?: DecisionOption[];  // when type === 'decision'
+  options?: DecisionOption[]; // when type === 'decision'
 }
 
 interface JourneyEdge {
   from: string;
   to: string;
-  opt?: string;  // Decision option label (makes this a decision edge)
+  opt?: string; // Decision option label (makes this a decision edge)
 }
 ```
 
@@ -277,18 +278,21 @@ nessi-web-app/
 ```
 
 **API Route Extractor:**
+
 - Walks `src/app/api/` directory tree
 - For each `route.ts`: reads exported function names (GET, POST, PUT, PATCH, DELETE)
 - Builds the path from directory structure (e.g., `api/shops/[id]/invites/[inviteId]/resend`)
 - Output: `api-contracts.json`
 
 **Data Model Extractor:**
+
 - Parses `src/types/database.ts` (Supabase generated types)
 - Extracts table names, column names, types, nullability
 - Enriches with migration data (constraints, defaults, triggers) where parseable
 - Output: `data-model.json`
 
 **Lifecycle Extractor:**
+
 - Reads listing_status, invite_status, and other enums from database types
 - Reads VALID_TRANSITIONS maps from the status API route
 - Output: `lifecycles.json`
@@ -315,12 +319,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
       - run: pnpm install --frozen-lockfile
-      - run: pnpm run docs:extract    # Runs extraction scripts
+      - run: pnpm run docs:extract # Runs extraction scripts
       - name: Push to nessi-docs
         uses: dmnemec/copy_file_to_another_repo_action@main
         with:
           source_file: 'docs/generated/'
-          destination_repo: 'your-org/nessi-docs'  # Replace with actual GitHub org/user
+          destination_repo: 'your-org/nessi-docs' # Replace with actual GitHub org/user
           destination_folder: 'src/data/'
           destination_branch: 'main'
           user_email: 'github-actions[bot]@users.noreply.github.com'
@@ -438,6 +442,7 @@ What gets built in the initial migration:
 12. **Cleanup** — Remove playground HTML, remove old vertical timeline components
 
 ### Out of scope for Phase 1:
+
 - GitHub project board integration (Phase 2)
 - AI flow review / recommendations (Phase 3)
 - Vitest/Playwright coverage extraction (Phase 4)

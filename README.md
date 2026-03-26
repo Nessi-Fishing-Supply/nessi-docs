@@ -13,15 +13,15 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start development server |
-| `pnpm build` | Production build (static export) |
-| `pnpm lint` | ESLint |
-| `pnpm lint:styles` | Stylelint for SCSS |
-| `pnpm typecheck` | TypeScript type checking |
-| `pnpm format` | Prettier (write) |
-| `pnpm format:check` | Prettier (verify) |
+| Command             | Description                      |
+| ------------------- | -------------------------------- |
+| `pnpm dev`          | Start development server         |
+| `pnpm build`        | Production build (static export) |
+| `pnpm lint`         | ESLint                           |
+| `pnpm lint:styles`  | Stylelint for SCSS               |
+| `pnpm typecheck`    | TypeScript type checking         |
+| `pnpm format`       | Prettier (write)                 |
+| `pnpm format:check` | Prettier (verify)                |
 
 ## Stack
 

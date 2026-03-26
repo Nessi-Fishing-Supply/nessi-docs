@@ -27,10 +27,7 @@ export function DecisionNode({
   return (
     <g style={{ opacity, transition: 'opacity 400ms ease-out' }}>
       {/* Diamond */}
-      <g
-        transform={`translate(${cx},${cy}) rotate(45)`}
-        style={{ cursor: 'default' }}
-      >
+      <g transform={`translate(${cx},${cy}) rotate(45)`} style={{ cursor: 'default' }}>
         <rect
           x={-DECISION_SIZE / 2 + 6}
           y={-DECISION_SIZE / 2 + 6}
@@ -43,14 +40,7 @@ export function DecisionNode({
         />
       </g>
       {/* ? mark */}
-      <text
-        x={cx}
-        y={cy + 4}
-        fill="#e89048"
-        fontSize={14}
-        fontWeight={700}
-        textAnchor="middle"
-      >
+      <text x={cx} y={cy + 4} fill="#e89048" fontSize={14} fontWeight={700} textAnchor="middle">
         ?
       </text>
       {/* Label above */}

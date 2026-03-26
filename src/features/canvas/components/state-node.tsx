@@ -1,8 +1,4 @@
-import {
-  LIFECYCLE_NODE_WIDTH,
-  LIFECYCLE_NODE_HEIGHT,
-  hexToRgba,
-} from '../utils/geometry';
+import { LIFECYCLE_NODE_WIDTH, LIFECYCLE_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
 
@@ -28,14 +24,7 @@ export function StateNode({ state, isSelected, onClick }: StateNodeProps) {
         stroke={isSelected ? color : hexToRgba(color, 0.3)}
         strokeWidth={isSelected ? 1.5 : 1}
       />
-      <rect
-        x={0}
-        y={8}
-        width={3}
-        height={LIFECYCLE_NODE_HEIGHT - 16}
-        rx={1.5}
-        fill={color}
-      />
+      <rect x={0} y={8} width={3} height={LIFECYCLE_NODE_HEIGHT - 16} rx={1.5} fill={color} />
       <text
         x={LIFECYCLE_NODE_WIDTH / 2}
         y={LIFECYCLE_NODE_HEIGHT / 2 + 4}

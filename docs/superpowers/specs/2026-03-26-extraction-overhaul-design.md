@@ -5,6 +5,7 @@
 The nessi-web-app data extraction pipeline produces incomplete data that doesn't match what the nessi-docs UI needs. The extractors capture ~30-40% of available system knowledge, resulting in empty pages, broken layouts, and missing content in production.
 
 Specific failures:
+
 - Changelog shows "0 changes across 79 releases" (flat PR list, no grouped changes)
 - Data Model page is empty (badges[] vs badge mismatch)
 - Lifecycles shows only 1 of 3+ lifecycles (extractor only finds TypeScript constants, not DB enums)
@@ -38,6 +39,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 **Current state:** Finds all routes, captures method/path/auth/errorCodes. Missing request/response schemas, descriptions, and endpoint tags.
 
 **Enhanced output shape:**
+
 ```typescript
 {
   groups: [{
@@ -65,6 +67,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 ```
 
 **Enhancement details:**
+
 - Parse Zod validation schemas (`.parse()`, `.safeParse()`, `z.object({})`) for request field extraction
 - Parse destructured `const { field1, field2 } = await req.json()` for request fields when no Zod
 - Detect `formData()` calls to tag as file-upload
@@ -79,6 +82,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 **Current state:** Gets tables + simplified field types + RLS/trigger presence badges. Missing enum values, constraints, indexes, FK cascade behavior, RLS policy rules.
 
 **Enhanced output shape:**
+
 ```typescript
 {
   entities: [{
@@ -134,6 +138,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 ```
 
 **Enhancement details:**
+
 - Parse `CREATE TYPE ... AS ENUM (...)` from migrations for enum values
 - Parse `CHECK (... IN (...))` constraints for inline enums
 - Parse `CREATE INDEX` statements for index metadata
@@ -151,6 +156,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 **Current state:** Only finds `LISTING_STATUS_LABELS` constant. Misses invite_status, transfer_status, and any future status enums.
 
 **Rewritten approach:**
+
 1. Scan ALL migrations for `CREATE TYPE *_status AS ENUM (...)` patterns
 2. Scan ALL migrations for `CHECK (column IN (...))` on status-like columns
 3. Cross-reference with TypeScript `*_STATUS_LABELS` constants for display labels
@@ -159,6 +165,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 6. If no transitions found, output empty array with gap flag
 
 **Output shape:**
+
 ```typescript
 {
   lifecycles: [{
@@ -183,6 +190,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 **No x/y, no colors.** nessi-docs handles all positioning and styling.
 
 **Gap handling:** If transitions can't be determined:
+
 - Output all states with empty transitions array
 - Add to `_meta.json` gaps: `{ domain: "lifecycles", item: "invite_status", reason: "no transitions defined" }`
 
@@ -193,12 +201,14 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 **Current state:** Reads JSON and adds x/y coordinates. Layout computation is nessi-docs' job.
 
 **Simplified approach:**
+
 - Read each JSON file from `docs/journeys/`
 - Validate against `docs/journeys/schema.json`
 - Pass through raw data with NO coordinate computation
 - Strip any existing x/y if present in source files
 
 **Output shape:**
+
 ```typescript
 {
   journeys: [{
@@ -252,6 +262,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 **Current state:** Gets counts and descriptions. Missing cross-references, real status detection, entity/route mapping.
 
 **Enhanced output shape:**
+
 ```typescript
 {
   features: [{
@@ -276,6 +287,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 ```
 
 **Enhancement details:**
+
 - Detect status from code patterns: `TODO`/`WIP` comments → 'in-progress', empty dirs → 'planned', test files present → 'built'
 - Scan feature code for table name references (e.g., `from('listings')`, `supabase.from('...')`)
 - Map feature slug → API routes by checking `src/app/api/{slug}/` existence
@@ -289,6 +301,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 **Current state:** Finds TypeScript constants with value/label patterns. Misses database enums entirely.
 
 **Enhanced output shape:**
+
 ```typescript
 {
   configs: [{
@@ -307,6 +320,7 @@ All extractors live in `scripts/docs-extract/` and output to `_docs-output/`.
 ```
 
 **Enhancement details:**
+
 - Include ALL database enums from migrations (listing_category, listing_condition, listing_status, invite_status, shipping_paid_by, etc.)
 - For DB enums: value = enum constant, label = titlecase(value), description auto-generated
 - For TS constants: existing extraction logic (4 patterns) unchanged
@@ -336,9 +350,10 @@ Already captures all merged PRs with metadata. nessi-docs handles the grouping i
 
 GitHub Projects integration works as-is.
 
-### 11. _meta.json (ENHANCED)
+### 11. \_meta.json (ENHANCED)
 
 **Enhanced output shape:**
+
 ```typescript
 {
   extractedAt: string,               // ISO timestamp
@@ -395,12 +410,14 @@ Computes horizontal (left-to-right) positions from the node graph:
 ### Entity Categorization
 
 Maps table names → semantic categories for the entity list grouping:
+
 - core, lifecycle, junction, config, media, tracking, discovery, user, system
 - New tables default to 'system' with a "Needs Review" indicator
 
 ### ERD Layout
 
 Grid layout computed from node count:
+
 - 3-4 columns, rows auto-calculated
 - Enriched with badge (from category map) and fieldCount (from entity data)
 
@@ -425,6 +442,7 @@ No changes to the GitHub Action workflow (`sync-docs.yml`):
 ## Scope
 
 ### In scope (this spec)
+
 - Rewrite/enhance all 10 extractors in nessi-web-app
 - Enhanced `_meta.json` with gap tracking
 - Updated adapter transforms in nessi-docs `src/data/index.ts`
@@ -433,6 +451,7 @@ No changes to the GitHub Action workflow (`sync-docs.yml`):
 - Gap badge surfacing in UI
 
 ### Out of scope
+
 - Backfilling journey JSON files (user will do manually)
 - New nessi-docs pages or components (existing UI is sufficient)
 - Changes to the GitHub Action workflow

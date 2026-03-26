@@ -40,9 +40,7 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
                       {config.label}
                     </span>
                     <span className={styles.description}>{change.description}</span>
-                    {change.area && (
-                      <span className={styles.area}>{change.area}</span>
-                    )}
+                    {change.area && <span className={styles.area}>{change.area}</span>}
                   </li>
                 );
               })}

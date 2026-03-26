@@ -25,16 +25,23 @@ interface JourneyCanvasProps {
   onToggleStatus: (status: StepStatus) => void;
 }
 
-export function JourneyCanvas({ journey, visibleLayers, visibleStatuses, onToggleLayer, onToggleStatus }: JourneyCanvasProps) {
+export function JourneyCanvas({
+  journey,
+  visibleLayers,
+  visibleStatuses,
+  onToggleLayer,
+  onToggleStatus,
+}: JourneyCanvasProps) {
   const { selectedItem, setSelectedItem, clearSelection } = useDocsContext();
-  const { chosenPath, choosePath, resetPath, litNodes, litEdges, hasPath } = usePathTrace(journey.nodes, journey.edges);
+  const { chosenPath, choosePath, resetPath, litNodes, litEdges, hasPath } = usePathTrace(
+    journey.nodes,
+    journey.edges,
+  );
   const viewBox = useViewport(journey.nodes);
 
   const [minimapVisible, setMinimapVisible] = useState(true);
 
-  const entered = useStaggerEntry(
-    journey.nodes.map((n) => ({ id: n.id, x: n.x }))
-  );
+  const entered = useStaggerEntry(journey.nodes.map((n) => ({ id: n.id, x: n.x })));
 
   const [edgesVisible, setEdgesVisible] = useState(false);
   useEffect(() => {
@@ -205,7 +212,6 @@ export function JourneyCanvas({ journey, visibleLayers, visibleStatuses, onToggl
           </g>
         );
       })}
-
     </CanvasProvider>
   );
 }

@@ -12,7 +12,10 @@ interface CoverageListProps {
 export function CoverageList({ journeys }: CoverageListProps) {
   const { selectedItem, setSelectedItem } = useDocsContext();
 
-  const layerEntries = Object.entries(LAYER_CONFIG) as [keyof typeof LAYER_CONFIG, typeof LAYER_CONFIG[keyof typeof LAYER_CONFIG]][];
+  const layerEntries = Object.entries(LAYER_CONFIG) as [
+    keyof typeof LAYER_CONFIG,
+    (typeof LAYER_CONFIG)[keyof typeof LAYER_CONFIG],
+  ][];
 
   return (
     <div className={styles.container}>
@@ -37,7 +40,8 @@ export function CoverageList({ journeys }: CoverageListProps) {
           const builtPct = total > 0 ? Math.round((built / total) * 100) : 0;
           const testedPct = total > 0 ? Math.round((tested / total) * 100) : 0;
           const personaCfg = PERSONA_CONFIG[journey.persona];
-          const isSelected = selectedItem?.type === 'coverage' && selectedItem.journey.slug === journey.slug;
+          const isSelected =
+            selectedItem?.type === 'coverage' && selectedItem.journey.slug === journey.slug;
 
           const layerCounts = new Map<string, number>();
           for (const s of steps) {
@@ -64,7 +68,10 @@ export function CoverageList({ journeys }: CoverageListProps) {
                 <span style={{ color: STATUS_CONFIG.tested.color }}>{testedPct}% tested</span>
               </div>
               <div className={styles.bar}>
-                <div className={styles.barFill} style={{ width: `${builtPct}%`, background: STATUS_CONFIG.built.color }} />
+                <div
+                  className={styles.barFill}
+                  style={{ width: `${builtPct}%`, background: STATUS_CONFIG.built.color }}
+                />
               </div>
               <div className={styles.layers}>
                 {Array.from(layerCounts.entries()).map(([layer, count]) => (
@@ -74,7 +81,8 @@ export function CoverageList({ journeys }: CoverageListProps) {
                     style={{ color: LAYER_CONFIG[layer as keyof typeof LAYER_CONFIG]?.color }}
                     title={`${LAYER_CONFIG[layer as keyof typeof LAYER_CONFIG]?.label}: ${count}`}
                   >
-                    {LAYER_CONFIG[layer as keyof typeof LAYER_CONFIG]?.label?.charAt(0)}{count}
+                    {LAYER_CONFIG[layer as keyof typeof LAYER_CONFIG]?.label?.charAt(0)}
+                    {count}
                   </span>
                 ))}
               </div>

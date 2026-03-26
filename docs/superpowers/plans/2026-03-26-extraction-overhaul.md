@@ -9,6 +9,7 @@
 **Tech Stack:** TypeScript, Node.js fs/path, Supabase migrations (SQL parsing), GitHub REST/GraphQL APIs, Next.js static data layer.
 
 **Repos:**
+
 - `nessi-web-app` at `/Users/kyleholloway/Documents/Development/nessi-web-app`
 - `nessi-docs` at `/Users/kyleholloway/Documents/Development/nessi-docs`
 
@@ -18,26 +19,26 @@
 
 ### nessi-web-app (extractors)
 
-| File | Action | Responsibility |
-|------|--------|---------------|
-| `scripts/docs-extract/extract-lifecycles.ts` | **Rewrite** | Parse migrations for all status enums and CHECK constraints |
-| `scripts/docs-extract/extract-journeys.ts` | **Simplify** | Raw passthrough from docs/journeys/*.json, no x/y |
-| `scripts/docs-extract/extract-database.ts` | **Enhance** | Add enum values, constraints, indexes, RLS rules, triggers, FK cascade |
-| `scripts/docs-extract/extract-api-routes.ts` | **Enhance** | Add request fields (Zod), response patterns, descriptions, tags |
-| `scripts/docs-extract/extract-features.ts` | **Enhance** | Add entity mapping, API route mapping, journey cross-refs, real status |
-| `scripts/docs-extract/extract-config.ts` | **Enhance** | Add database enum extraction from migrations |
-| `scripts/docs-extract/run-all.ts` | **Update** | Add gap tracking to _meta.json |
-| `scripts/docs-extract/validate.ts` | **Update** | Validate new fields, regression guards for no x/y |
-| `docs/journeys/_example.json` | **Already created** | Template for authoring new journeys |
+| File                                         | Action              | Responsibility                                                         |
+| -------------------------------------------- | ------------------- | ---------------------------------------------------------------------- |
+| `scripts/docs-extract/extract-lifecycles.ts` | **Rewrite**         | Parse migrations for all status enums and CHECK constraints            |
+| `scripts/docs-extract/extract-journeys.ts`   | **Simplify**        | Raw passthrough from docs/journeys/\*.json, no x/y                     |
+| `scripts/docs-extract/extract-database.ts`   | **Enhance**         | Add enum values, constraints, indexes, RLS rules, triggers, FK cascade |
+| `scripts/docs-extract/extract-api-routes.ts` | **Enhance**         | Add request fields (Zod), response patterns, descriptions, tags        |
+| `scripts/docs-extract/extract-features.ts`   | **Enhance**         | Add entity mapping, API route mapping, journey cross-refs, real status |
+| `scripts/docs-extract/extract-config.ts`     | **Enhance**         | Add database enum extraction from migrations                           |
+| `scripts/docs-extract/run-all.ts`            | **Update**          | Add gap tracking to \_meta.json                                        |
+| `scripts/docs-extract/validate.ts`           | **Update**          | Validate new fields, regression guards for no x/y                      |
+| `docs/journeys/_example.json`                | **Already created** | Template for authoring new journeys                                    |
 
 ### nessi-docs (adapter)
 
-| File | Action | Responsibility |
-|------|--------|---------------|
-| `src/data/index.ts` | **Rewrite** | Full adapter with layout engines, color assignment, gap detection |
-| `src/types/journey.ts` | **Minor update** | Make x/y optional (adapter computes them) |
-| `src/types/lifecycle.ts` | **Minor update** | Make x/y optional, add source field |
-| `src/types/extraction-meta.ts` | **Update** | Add gaps array type |
+| File                           | Action           | Responsibility                                                    |
+| ------------------------------ | ---------------- | ----------------------------------------------------------------- |
+| `src/data/index.ts`            | **Rewrite**      | Full adapter with layout engines, color assignment, gap detection |
+| `src/types/journey.ts`         | **Minor update** | Make x/y optional (adapter computes them)                         |
+| `src/types/lifecycle.ts`       | **Minor update** | Make x/y optional, add source field                               |
+| `src/types/extraction-meta.ts` | **Update**       | Add gaps array type                                               |
 
 ---
 
@@ -46,11 +47,13 @@
 **Context:** Currently only finds `LISTING_STATUS_LABELS` in TypeScript constants. Must parse Supabase migrations for ALL status enums and CHECK constraints.
 
 **Files:**
+
 - Rewrite: `nessi-web-app/scripts/docs-extract/extract-lifecycles.ts`
 
 - [ ] **Step 1: Read all migration files to understand patterns**
 
 Run in nessi-web-app:
+
 ```bash
 grep -rn "CREATE TYPE.*AS ENUM" supabase/migrations/
 grep -rn "CHECK.*IN (" supabase/migrations/
@@ -74,6 +77,7 @@ Replace the entire file. The new extractor:
    - NO x/y coordinates on states
 
 The file should:
+
 - Parse all migration SQL files in order
 - Use regex to find `CREATE TYPE ... AS ENUM (...)` where name contains 'status'
 - Use regex to find `CHECK (col IN (...))` where col contains 'status'
@@ -98,11 +102,13 @@ feat(docs-extract): rewrite lifecycle extractor to parse DB migrations
 **Context:** Currently computes x/y layout coordinates. Must pass through raw graph data and let nessi-docs handle layout.
 
 **Files:**
+
 - Rewrite: `nessi-web-app/scripts/docs-extract/extract-journeys.ts`
 
 - [ ] **Step 1: Rewrite extract-journeys.ts**
 
 Keep the flows-to-nodes/edges transformation logic (converts authoring format into graph). Remove ALL coordinate computation:
+
 - Remove constants: `X_START`, `Y_SPACING`, `DECISION_X_OFFSET`
 - Remove `let y = 0` counter and all `y += Y_SPACING` increments
 - Remove all `x:` and `y:` property assignments on node objects
@@ -128,6 +134,7 @@ feat(docs-extract): simplify journey extractor to raw graph data (no layout)
 **Context:** Currently gets tables + simplified field types + RLS/trigger presence. Must add enum values, constraints, indexes, RLS policy rules, trigger details, FK cascade behavior, and DEFAULT values.
 
 **Files:**
+
 - Enhance: `nessi-web-app/scripts/docs-extract/extract-database.ts`
 
 - [ ] **Step 1: Read the current file and all migrations to understand SQL patterns**
@@ -153,6 +160,7 @@ Parse `CREATE TRIGGER name BEFORE|AFTER INSERT|UPDATE|DELETE ON table EXECUTE FU
 - [ ] **Step 6: Enhance entity field output**
 
 For each entity field, also extract:
+
 - `default` value from migration column definitions
 - `isPrimaryKey` and `isUnique` from constraints
 - `references.onDelete` from FK definitions (CASCADE, RESTRICT, SET NULL)
@@ -178,6 +186,7 @@ feat(docs-extract): enhance database extractor with enums, RLS rules, indexes, t
 **Context:** Must also extract database enums as config values (listing_category, listing_condition, etc.).
 
 **Files:**
+
 - Enhance: `nessi-web-app/scripts/docs-extract/extract-config.ts`
 
 - [ ] **Step 1: Add database enum config extraction**
@@ -205,6 +214,7 @@ feat(docs-extract): add database enum extraction to config extractor
 **Context:** Must add request field extraction from Zod schemas, descriptions, and endpoint tags.
 
 **Files:**
+
 - Enhance: `nessi-web-app/scripts/docs-extract/extract-api-routes.ts`
 
 - [ ] **Step 1: Add Zod schema parsing for request fields**
@@ -218,6 +228,7 @@ Extract from JSDoc comments above handler functions, or single-line comments bef
 - [ ] **Step 3: Add endpoint tagging**
 
 Detect patterns in route code:
+
 - `formData()` calls -> 'file-upload' tag
 - `ReadableStream` / streaming -> 'streaming' tag
 - `createAdminClient` -> 'admin-only' tag
@@ -244,6 +255,7 @@ feat(docs-extract): add request field, description, and tag extraction to API ro
 **Context:** Must add entity mapping, API route cross-refs, journey cross-refs, and smarter status detection.
 
 **Files:**
+
 - Enhance: `nessi-web-app/scripts/docs-extract/extract-features.ts`
 
 - [ ] **Step 1: Add entity mapping**
@@ -276,24 +288,27 @@ feat(docs-extract): add entity mapping, journey cross-refs, status detection to 
 
 ## Task 7: Update run-all.ts and validate.ts
 
-**Context:** Orchestrator needs gap tracking in _meta.json. Validator needs to handle new fields.
+**Context:** Orchestrator needs gap tracking in \_meta.json. Validator needs to handle new fields.
 
 **Files:**
+
 - Update: `nessi-web-app/scripts/docs-extract/run-all.ts`
 - Update: `nessi-web-app/scripts/docs-extract/validate.ts`
 
 - [ ] **Step 1: Add gap tracking to run-all.ts**
 
 After all extractors run, scan outputs for:
+
 - Lifecycles with empty transitions array -> gap
 - Features with missing/default descriptions -> gap
 - API routes with no description -> gap
 
-Build `gaps[]` array and include in _meta.json output.
+Build `gaps[]` array and include in \_meta.json output.
 
 - [ ] **Step 2: Update validate.ts for new fields**
 
 Add validation for:
+
 - `data-model.json` has `enums` array
 - `lifecycles.json` lifecycles have `source` field
 - `_meta.json` has `gaps` array (can be empty)
@@ -302,7 +317,7 @@ Add validation for:
 
 - [ ] **Step 3: Run full pipeline and validate**
 
-Run `run-all.ts` then `validate.ts`. All validations pass. _meta.json should contain a `gaps` array.
+Run `run-all.ts` then `validate.ts`. All validations pass. \_meta.json should contain a `gaps` array.
 
 - [ ] **Step 4: Commit**
 
@@ -317,6 +332,7 @@ feat(docs-extract): add gap tracking to meta, update validator for new fields
 **Context:** Journey nodes and lifecycle states no longer have x/y from the extractor. Types must make these optional.
 
 **Files:**
+
 - Update: `nessi-docs/src/types/journey.ts`
 - Update: `nessi-docs/src/types/lifecycle.ts`
 - Update: `nessi-docs/src/types/extraction-meta.ts`
@@ -354,11 +370,13 @@ chore: make journey/lifecycle coordinates optional, add extraction gap types
 **Context:** The adapter in `src/data/index.ts` must compute all presentation data: journey horizontal layout, lifecycle state positioning + colors, entity categorization, ERD grid layout, changelog grouping, and gap surfacing.
 
 **Files:**
+
 - Rewrite: `nessi-docs/src/data/index.ts`
 
 - [ ] **Step 1: Build the journey horizontal layout engine**
 
 Function `layoutJourneyNodes(rawNodes, rawEdges)` that:
+
 1. BFS from entry nodes to assign columns (x-axis levels)
 2. Steps within same column stacked vertically
 3. Decision nodes handled like regular nodes (positioned by graph level)
@@ -369,6 +387,7 @@ Returns nodes with computed x/y added.
 - [ ] **Step 2: Build the lifecycle layout + color engine**
 
 Reuse the existing topological layout from the current index.ts. Add semantic color assignment:
+
 - Terminal positive (sold, accepted, completed) -> teal/green `#3d8c75`
 - Active states -> green `#4a9e7a`
 - Pending/draft -> gray/amber `#78756f` / `#b8860b`
@@ -380,6 +399,7 @@ Reuse the existing topological layout from the current index.ts. Add semantic co
 - [ ] **Step 3: Update ERD layout for no incoming coordinates**
 
 Compute grid layout from node count:
+
 - 3-4 columns, rows auto-calculated
 - `ERD_GRID_X_SPACING=280`, `ERD_GRID_Y_SPACING=160`
 - Enrich with badge (from ENTITY_CATEGORY_MAP) and fieldCount (from entity data)
@@ -387,6 +407,7 @@ Compute grid layout from node count:
 - [ ] **Step 4: Integrate all transforms into exports**
 
 Wire up:
+
 - `transformJourneys()` calls `layoutJourneyNodes()`
 - `transformLifecycles()` calls topological layout + `assignLifecycleColors()`
 - `transformEntities()` uses existing category mapping
@@ -415,6 +436,7 @@ feat: rewrite adapter with horizontal journey layout, lifecycle colors, and ERD 
 **Context:** Run the full pipeline and verify everything renders correctly.
 
 **Files:**
+
 - No new files — verification only
 
 - [ ] **Step 1: Run full extraction in nessi-web-app**
@@ -432,6 +454,7 @@ Run typecheck, lint, and build. All pass.
 - [ ] **Step 4: Start dev server and visually verify**
 
 Open localhost and verify each page:
+
 - [ ] Journeys render horizontally (left-to-right flow)
 - [ ] At least 3 journeys listed in sidebar
 - [ ] Lifecycles shows 3+ lifecycles (listing, invite, ownership_transfer)

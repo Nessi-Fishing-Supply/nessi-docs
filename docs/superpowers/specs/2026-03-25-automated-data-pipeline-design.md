@@ -66,6 +66,7 @@ If a label is wrong, fix it at the source (rename a constant, update a CLAUDE.md
 A GitHub App (not a PAT) handles the cross-repo push from nessi-web-app to nessi-docs. PATs expire and are tied to a personal account. A GitHub App installation token auto-refreshes and survives team changes.
 
 **Setup (one-time):**
+
 1. Create a GitHub App in the nessi-fishing-supply org (Settings → Developer settings → GitHub Apps)
 2. Name: `nessi-docs-sync`
 3. Permissions: `contents: write` on nessi-docs only
@@ -79,19 +80,19 @@ The `_meta.json` file includes the extraction timestamp. nessi-docs displays a w
 
 ### Language per section
 
-| Section | Audience | Language |
-|---------|----------|----------|
-| API contracts | Engineers | Technical — paths, methods, status codes, auth |
-| Data model | Engineers | Technical — columns, types, constraints, FK relationships |
-| Entity relationships | Engineers | Technical — ERD nodes and edges |
-| Permissions | Cross-functional | Mixed — role names are product, matrix is technical |
-| Config / enums | Cross-functional | Product — uses existing `label` fields from constants |
-| Features | Product / PM | Product — CLAUDE.md descriptions |
-| Lifecycles | Cross-functional | Mixed — state names technical, transitions described in context |
-| Journeys | Product | Product — labels and descriptions from journey JSON |
-| Onboarding | Product | Product — step descriptions from auth CLAUDE.md |
-| Roadmap | PM / Product | Product — kanban titles as written |
-| Changelog | Engineering / PM | Hybrid — PR titles as written |
+| Section              | Audience         | Language                                                        |
+| -------------------- | ---------------- | --------------------------------------------------------------- |
+| API contracts        | Engineers        | Technical — paths, methods, status codes, auth                  |
+| Data model           | Engineers        | Technical — columns, types, constraints, FK relationships       |
+| Entity relationships | Engineers        | Technical — ERD nodes and edges                                 |
+| Permissions          | Cross-functional | Mixed — role names are product, matrix is technical             |
+| Config / enums       | Cross-functional | Product — uses existing `label` fields from constants           |
+| Features             | Product / PM     | Product — CLAUDE.md descriptions                                |
+| Lifecycles           | Cross-functional | Mixed — state names technical, transitions described in context |
+| Journeys             | Product          | Product — labels and descriptions from journey JSON             |
+| Onboarding           | Product          | Product — step descriptions from auth CLAUDE.md                 |
+| Roadmap              | PM / Product     | Product — kanban titles as written                              |
+| Changelog            | Engineering / PM | Hybrid — PR titles as written                                   |
 
 ---
 
@@ -105,6 +106,7 @@ All scripts live in `nessi-web-app/scripts/docs-extract/` and output JSON to a t
 **Method:** File-system walk + regex parsing (not full AST — routes are consistent enough)
 
 Extracts per route:
+
 - **path** — derived from file location (e.g., `src/app/api/listings/[id]/route.ts` → `/api/listings/:id`)
 - **methods** — which HTTP methods are exported (`GET`, `POST`, `PATCH`, `DELETE`)
 - **label** — auto-generated: method verb + path noun (`POST /api/listings` → "Create Listing", `DELETE /api/cart/[id]` → "Remove Cart Item")
@@ -114,6 +116,7 @@ Extracts per route:
 - **group** — derived from first path segment after `/api/` (listings, shops, auth, cart, etc.)
 
 **Label generation rules:**
+
 - `GET` (no param) → "List {resource}" or "Get {resource}"
 - `GET` (with `[id]`) → "Get {resource}"
 - `POST` → "Create {resource}"
@@ -127,12 +130,14 @@ Extracts per route:
 **Method:** Parse the `Tables` type definition — each table has `Row`, `Insert`, `Update` with typed fields.
 
 Extracts per table:
+
 - **name** — table name
 - **label** — title-cased, spaces for underscores (e.g., `cart_items` → "Cart Items")
 - **columns** — array of `{ name, type, nullable, isPrimaryKey }`
 - **badges** — auto-derived: "has RLS" (if referenced in migrations), "has triggers" (if trigger exists)
 
 For entity-relationships.json:
+
 - **nodes** — one per table with `{ id, label, x, y }` (positions auto-calculated in grid layout)
 - **edges** — foreign key relationships parsed from:
   - Column names ending in `_id` cross-referenced with table names
@@ -144,6 +149,7 @@ For entity-relationships.json:
 **Method:** Regex extraction of the `ShopPermissionFeature`, `ShopPermissionLevel` types, and `SYSTEM_ROLES` constant.
 
 Extracts:
+
 - **features** — permission feature names with auto-labels (e.g., `shop_settings` → "Shop Settings")
 - **levels** — full, view, none
 - **roles** — array of `{ name, slug, permissions: Record<feature, level> }`
@@ -154,6 +160,7 @@ Extracts:
 **Method:** Parse files exporting arrays of `{ value, label }` objects or `as const` objects.
 
 Extracts per config:
+
 - **name** — derived from filename + parent feature (e.g., `listings/constants/category.ts` → "Listing Categories")
 - **feature** — parent feature directory
 - **values** — array of `{ value, label, description?, color?, icon? }` — uses existing label fields
@@ -164,6 +171,7 @@ Extracts per config:
 **Method:** Directory scan for feature folders. Parse each CLAUDE.md for description. Count files by type.
 
 Extracts per feature:
+
 - **name** — title-cased from directory name (e.g., `recently-viewed` → "Recently Viewed")
 - **slug** — directory name
 - **description** — first paragraph from CLAUDE.md (strip markdown formatting)
@@ -176,6 +184,7 @@ Extracts per feature:
 **Method:** Scan for exported objects/arrays whose keys or names contain "status" or "state". Parse migration files for trigger functions with transition logic.
 
 Extracts per lifecycle:
+
 - **entity** — what has the lifecycle (listing, shop-invite, cart-item, member, ownership-transfer)
 - **states** — array of `{ value, label }` from the constants (labels already exist in most constants)
 - **transitions** — array of `{ from, to, trigger }` parsed from migration trigger SQL or inferred from constants ordering
@@ -186,6 +195,7 @@ Extracts per lifecycle:
 **Method:** Read JSON files, validate against `docs/journeys/schema.json`, transform from flows/steps format to nodes/edges format for the canvas renderer.
 
 The transformation:
+
 - Each step becomes a **node** with `{ id, type, label, layer, status, x, y }` — x/y coordinates auto-calculated using a top-down flow layout algorithm
 - Each step-to-step sequence becomes an **edge** `{ from, to }`
 - Branch decision points become **decision nodes** with options
@@ -198,6 +208,7 @@ The transformation:
 **Method:** Parse auth CLAUDE.md for onboarding flow section. Scan for onboarding-related page routes.
 
 Extracts:
+
 - **steps** — ordered onboarding actions with labels from CLAUDE.md
 - **sellerPreconditions** — requirements before a user can sell, from CLAUDE.md or auth constants
 
@@ -207,6 +218,7 @@ Extracts:
 **Method:** Paginated fetch of all items (current count: 191). Uses `GITHUB_TOKEN` for the current repo or App token if needed.
 
 Extracts per item:
+
 - **title** — issue/PR title
 - **number** — issue/PR number
 - **url** — GitHub issue/PR URL
@@ -227,6 +239,7 @@ Extracts per item:
 **Method:** Fetch all merged PRs (paginated). Categorize by labels.
 
 Extracts per entry:
+
 - **title** — PR title
 - **number** — PR number
 - **url** — GitHub PR URL
@@ -274,7 +287,7 @@ export const apiGroups: ApiGroup[] = apiContractsRaw.groups;
 // ... same exports as today, backed by JSON instead of hardcoded data
 ```
 
-### _meta.json
+### \_meta.json
 
 ```json
 {
@@ -307,7 +320,7 @@ name: Sync Docs Data
 on:
   push:
     branches: [main]
-  workflow_dispatch:  # manual trigger for ad-hoc runs
+  workflow_dispatch: # manual trigger for ad-hoc runs
 
 jobs:
   extract-and-sync:
@@ -315,7 +328,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # full history for changelog
+          fetch-depth: 0 # full history for changelog
 
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
@@ -408,18 +421,21 @@ Everything else is fully automated. No metadata files to maintain, no manual syn
 ## Rollout Plan
 
 ### Phase 1: Extraction scripts + local validation
+
 - Build all extraction scripts in `nessi-web-app/scripts/docs-extract/`
 - Add `tsx` as a dev dependency for running TypeScript scripts
 - Run locally against the codebase, compare output against current hardcoded data in nessi-docs
 - Fix gaps and tune extraction logic until output matches or improves on current data
 
 ### Phase 2: GitHub Action + cross-repo push
+
 - Create the `nessi-docs-sync` GitHub App (one-time setup, ~5 minutes)
 - Add `sync-docs.yml` workflow to nessi-web-app
 - Store App ID + private key as repo secrets
 - Run via `workflow_dispatch`, verify nessi-docs receives correct JSON
 
 ### Phase 3: nessi-docs migration
+
 - Create `src/data/generated/` directory with `.gitkeep`
 - Update `src/data/index.ts` to import from generated JSON files
 - Add adapter mappings where JSON shape differs from existing TypeScript types
@@ -427,6 +443,7 @@ Everything else is fully automated. No metadata files to maintain, no manual syn
 - Verify UI renders identically by comparing before/after
 
 ### Phase 4: Polish
+
 - Add staleness banner component (reads `_meta.json`, warns if >7 days old)
 - Add "Last synced" indicator to sidebar or footer
 - Add `src/data/generated/` to nessi-docs `.gitignore` exceptions (tracked, not ignored)

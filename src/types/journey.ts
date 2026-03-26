@@ -1,8 +1,15 @@
 export type StepLayer = 'client' | 'server' | 'database' | 'background' | 'email' | 'external';
 export type StepStatus = 'planned' | 'built' | 'tested';
 export type Persona =
-  | 'guest' | 'auth' | 'onboarding' | 'buyer' | 'seller'
-  | 'shop-owner' | 'shop-member' | 'account' | 'context';
+  | 'guest'
+  | 'auth'
+  | 'onboarding'
+  | 'buyer'
+  | 'seller'
+  | 'shop-owner'
+  | 'shop-member'
+  | 'account'
+  | 'context';
 
 export interface LayerConfig {
   label: string;
@@ -22,30 +29,30 @@ export interface PersonaConfig {
 }
 
 export const LAYER_CONFIG: Record<StepLayer, LayerConfig> = {
-  client:     { label: 'Client',     color: '#3d8c75', icon: 'HiOutlineDesktopComputer' },
-  server:     { label: 'Server',     color: '#e27739', icon: 'HiOutlineServer' },
-  database:   { label: 'Database',   color: '#1e4a40', icon: 'HiOutlineDatabase' },
+  client: { label: 'Client', color: '#3d8c75', icon: 'HiOutlineDesktopComputer' },
+  server: { label: 'Server', color: '#e27739', icon: 'HiOutlineServer' },
+  database: { label: 'Database', color: '#1e4a40', icon: 'HiOutlineDatabase' },
   background: { label: 'Background', color: '#b86e0a', icon: 'HiOutlineLightningBolt' },
-  email:      { label: 'Email',      color: '#b84040', icon: 'HiOutlineMail' },
-  external:   { label: 'External',   color: '#78756f', icon: 'HiOutlineGlobe' },
+  email: { label: 'Email', color: '#b84040', icon: 'HiOutlineMail' },
+  external: { label: 'External', color: '#78756f', icon: 'HiOutlineGlobe' },
 };
 
 export const STATUS_CONFIG: Record<StepStatus, StatusConfig> = {
   planned: { label: 'Planned', color: '#5c5a55' },
-  built:   { label: 'Built',   color: '#3d8c75' },
-  tested:  { label: 'Tested',  color: '#1a6b43' },
+  built: { label: 'Built', color: '#3d8c75' },
+  tested: { label: 'Tested', color: '#1a6b43' },
 };
 
 export const PERSONA_CONFIG: Record<Persona, PersonaConfig> = {
-  guest:         { label: 'Guest',        description: 'Unauthenticated visitor', color: '#78756f' },
-  auth:          { label: 'Auth',         description: 'Authentication flows',    color: '#3d8c75' },
-  onboarding:    { label: 'Onboarding',   description: 'New user setup',          color: '#b86e0a' },
-  buyer:         { label: 'Buyer',        description: 'Authenticated buyer',     color: '#1e4a40' },
-  seller:        { label: 'Seller',       description: 'Listing creator',         color: '#e27739' },
-  'shop-owner':  { label: 'Shop Owner',   description: 'Shop administrator',      color: '#e89048' },
-  'shop-member': { label: 'Shop Member',  description: 'Shop participant',        color: '#b84040' },
-  account:       { label: 'Account',      description: 'Profile management',      color: '#681a19' },
-  context:       { label: 'Context',      description: 'Identity switching',      color: '#5c5a55' },
+  guest: { label: 'Guest', description: 'Unauthenticated visitor', color: '#78756f' },
+  auth: { label: 'Auth', description: 'Authentication flows', color: '#3d8c75' },
+  onboarding: { label: 'Onboarding', description: 'New user setup', color: '#b86e0a' },
+  buyer: { label: 'Buyer', description: 'Authenticated buyer', color: '#1e4a40' },
+  seller: { label: 'Seller', description: 'Listing creator', color: '#e27739' },
+  'shop-owner': { label: 'Shop Owner', description: 'Shop administrator', color: '#e89048' },
+  'shop-member': { label: 'Shop Member', description: 'Shop participant', color: '#b84040' },
+  account: { label: 'Account', description: 'Profile management', color: '#681a19' },
+  context: { label: 'Context', description: 'Identity switching', color: '#5c5a55' },
 };
 
 export interface UxBehavior {

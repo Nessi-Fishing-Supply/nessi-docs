@@ -16,13 +16,7 @@ export function LabelPill({ x, y, label }: LabelPillProps) {
         stroke="rgba(255,255,255,0.09)"
         strokeWidth={0.5}
       />
-      <text
-        x={w / 2}
-        y={12}
-        fill="#9a9790"
-        fontSize={9}
-        textAnchor="middle"
-      >
+      <text x={w / 2} y={12} fill="#9a9790" fontSize={9} textAnchor="middle">
         {label}
       </text>
     </g>

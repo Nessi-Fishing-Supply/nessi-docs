@@ -22,7 +22,7 @@ export function useStaggerEntry(nodeIds: { id: string; x: number }[], delay = 30
     });
 
     return () => timers.forEach(clearTimeout);
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally mount-only
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally mount-only
   }, []);
 
   return entered;

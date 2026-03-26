@@ -9,6 +9,7 @@
 **Tech Stack:** TypeScript, Node.js fs/path, GitHub Actions, GitHub GraphQL API (for kanban), GitHub REST API (for changelog)
 
 **Repos:**
+
 - `WEB` = `/Users/kyleholloway/Documents/Development/nessi-web-app`
 - `DOCS` = `/Users/kyleholloway/Documents/Development/nessi-docs`
 
@@ -18,6 +19,7 @@
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/utils/fs.ts`
 - Create: `scripts/docs-extract/utils/labels.ts`
 - Create: `scripts/docs-extract/utils/output.ts`
@@ -256,9 +258,7 @@ Create `scripts/docs-extract/utils/labels.ts`:
 
 ```typescript
 export function titleCase(str: string): string {
-  return str
-    .replace(/[_-]/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  return str.replace(/[_-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 export function singularize(word: string): string {
@@ -270,7 +270,10 @@ export function singularize(word: string): string {
 }
 
 export function endpointLabel(method: string, path: string): string {
-  const segments = path.replace(/^\/api\//, '').split('/').filter(Boolean);
+  const segments = path
+    .replace(/^\/api\//, '')
+    .split('/')
+    .filter(Boolean);
   const hasIdParam = segments.some((s) => s.startsWith('['));
   const resourceSegments = segments.filter((s) => !s.startsWith('['));
   const resource = resourceSegments[resourceSegments.length - 1] || 'Resource';
@@ -280,7 +283,9 @@ export function endpointLabel(method: string, path: string): string {
 
   if (isSubAction && method !== 'GET') {
     const action = titleCase(lastSegment);
-    const parentResource = titleCase(singularize(resourceSegments[resourceSegments.length - 2] || ''));
+    const parentResource = titleCase(
+      singularize(resourceSegments[resourceSegments.length - 2] || ''),
+    );
     return `${action} ${parentResource}`;
   }
 
@@ -342,11 +347,13 @@ git commit -m "feat(docs-extract): add shared utilities and types"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/extract-api-routes.ts`
 
 - [ ] **Step 1: Write the extractor**
 
 Create `scripts/docs-extract/extract-api-routes.ts`. Logic:
+
 - Walk `src/app/api/**/route.ts` files
 - For each file, derive the API path from its filesystem location (`src/app/api/listings/[id]/route.ts` → `/api/listings/:id`)
 - Detect exported HTTP methods via regex: `export (async )?function (GET|POST|PATCH|DELETE)`
@@ -396,7 +403,9 @@ function detectErrorCodes(content: string): number[] {
 
 function detectMethods(content: string): string[] {
   return HTTP_METHODS.filter((m) => {
-    const pattern = new RegExp(`export\\s+(async\\s+)?function\\s+${m}\\b|export\\s+const\\s+${m}\\b`);
+    const pattern = new RegExp(
+      `export\\s+(async\\s+)?function\\s+${m}\\b|export\\s+const\\s+${m}\\b`,
+    );
     return pattern.test(content);
   });
 }
@@ -433,7 +442,9 @@ export function extractApiRoutes(): ApiGroup[] {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([name, endpoints]) => ({
       name: titleCase(name),
-      endpoints: endpoints.sort((a, b) => a.path.localeCompare(b.path) || a.method.localeCompare(b.method)),
+      endpoints: endpoints.sort(
+        (a, b) => a.path.localeCompare(b.path) || a.method.localeCompare(b.method),
+      ),
     }));
 }
 
@@ -466,6 +477,7 @@ git commit -m "feat(docs-extract): add API route extractor"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/extract-database.ts`
 
 - [ ] **Step 1: Write the extractor**
@@ -510,11 +522,17 @@ function detectBadgesFromMigrations(entities: Entity[]): void {
   const allSql = migrationFiles.map((f) => readFile(f)).join('\n');
 
   for (const entity of entities) {
-    if (allSql.includes(`ENABLE ROW LEVEL SECURITY`) &&
-        new RegExp(`ON\\s+(public\\.)?${entity.name}`, 'i').test(allSql)) {
+    if (
+      allSql.includes(`ENABLE ROW LEVEL SECURITY`) &&
+      new RegExp(`ON\\s+(public\\.)?${entity.name}`, 'i').test(allSql)
+    ) {
       entity.badges.push('RLS');
     }
-    if (new RegExp(`CREATE TRIGGER\\s+\\w+[\\s\\S]*?ON\\s+(public\\.)?${entity.name}\\b`, 'i').test(allSql)) {
+    if (
+      new RegExp(`CREATE TRIGGER\\s+\\w+[\\s\\S]*?ON\\s+(public\\.)?${entity.name}\\b`, 'i').test(
+        allSql,
+      )
+    ) {
       entity.badges.push('Triggers');
     }
   }
@@ -583,6 +601,7 @@ git commit -m "feat(docs-extract): add database schema extractor"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/extract-permissions.ts`
 
 - [ ] **Step 1: Write the extractor**
@@ -618,11 +637,29 @@ function parseRoles(features: string[]): Role[] {
 
   const permissionMatrices: Record<string, Record<string, string>> = {
     owner: Object.fromEntries(features.map((f) => [f, 'full'])),
-    manager: { listings: 'full', pricing: 'full', orders: 'full', messaging: 'full', shop_settings: 'view', members: 'none' },
-    contributor: { listings: 'full', pricing: 'none', orders: 'none', messaging: 'none', shop_settings: 'none', members: 'none' },
+    manager: {
+      listings: 'full',
+      pricing: 'full',
+      orders: 'full',
+      messaging: 'full',
+      shop_settings: 'view',
+      members: 'none',
+    },
+    contributor: {
+      listings: 'full',
+      pricing: 'none',
+      orders: 'none',
+      messaging: 'none',
+      shop_settings: 'none',
+      members: 'none',
+    },
   };
 
-  const colors: Record<string, string> = { owner: '#e27739', manager: '#b86e0a', contributor: '#78756f' };
+  const colors: Record<string, string> = {
+    owner: '#e27739',
+    manager: '#b86e0a',
+    contributor: '#78756f',
+  };
   const descs: Record<string, string> = {
     owner: 'Full access to all shop features and settings',
     manager: 'Operational access to listings, pricing, orders, and messaging',
@@ -670,6 +707,7 @@ git commit -m "feat(docs-extract): add permissions extractor"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/extract-config.ts`
 
 - [ ] **Step 1: Write the extractor**
@@ -686,7 +724,8 @@ function extractValuesFromContent(content: string): ConfigValue[] | null {
   const values: ConfigValue[] = [];
 
   // Pattern 1: { value: 'x', label: 'X', ... }
-  const objRegex = /\{\s*value:\s*'([^']+)',\s*label:\s*'([^']+)'(?:,\s*(?:shortLabel|description):\s*'([^']*)')?[^}]*\}/g;
+  const objRegex =
+    /\{\s*value:\s*'([^']+)',\s*label:\s*'([^']+)'(?:,\s*(?:shortLabel|description):\s*'([^']*)')?[^}]*\}/g;
   let match: RegExpExecArray | null;
   while ((match = objRegex.exec(content)) !== null) {
     const val: ConfigValue = { value: match[1], label: match[2] };
@@ -710,8 +749,9 @@ function extractValuesFromContent(content: string): ConfigValue[] | null {
 }
 
 export function extractConfig(): ConfigEnum[] {
-  const files = walkFiles('src/features', /\.ts$/)
-    .filter((f) => (f.includes('/constants/') || f.includes('/config/')) && !f.includes('.test.'));
+  const files = walkFiles('src/features', /\.ts$/).filter(
+    (f) => (f.includes('/constants/') || f.includes('/config/')) && !f.includes('.test.'),
+  );
 
   const configs: ConfigEnum[] = [];
 
@@ -764,6 +804,7 @@ git commit -m "feat(docs-extract): add config/enum extractor"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/extract-features.ts`
 
 - [ ] **Step 1: Write the extractor**
@@ -784,7 +825,11 @@ function getDescription(slug: string): string {
     let foundHeading = false;
     const para: string[] = [];
     for (const line of lines) {
-      if (line.startsWith('#')) { if (foundHeading && para.length > 0) break; foundHeading = true; continue; }
+      if (line.startsWith('#')) {
+        if (foundHeading && para.length > 0) break;
+        foundHeading = true;
+        continue;
+      }
       if (!foundHeading) continue;
       if (line.trim() === '' && para.length > 0) break;
       if (line.trim() === '') continue;
@@ -792,7 +837,9 @@ function getDescription(slug: string): string {
       para.push(line.trim());
     }
     return para.join(' ').replace(/\*\*/g, '').replace(/`/g, '') || `${titleCase(slug)} feature`;
-  } catch { return `${titleCase(slug)} feature`; }
+  } catch {
+    return `${titleCase(slug)} feature`;
+  }
 }
 
 function countFiles(slug: string, subdir: string, pattern: RegExp): number {
@@ -841,6 +888,7 @@ git commit -m "feat(docs-extract): add feature extractor"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/extract-lifecycles.ts`
 
 - [ ] **Step 1: Write the extractor**
@@ -871,7 +919,11 @@ function inferTransitions(states: LifecycleState[], entityName: string): Lifecyc
   }
   const transitions: LifecycleTransition[] = [];
   for (let i = 0; i < states.length - 1; i++) {
-    transitions.push({ from: states[i].id, to: states[i + 1].id, label: `→ ${states[i + 1].label}` });
+    transitions.push({
+      from: states[i].id,
+      to: states[i + 1].id,
+      label: `→ ${states[i + 1].label}`,
+    });
   }
   return transitions;
 }
@@ -937,6 +989,7 @@ git commit -m "feat(docs-extract): add lifecycle extractor"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/extract-journeys.ts`
 
 - [ ] **Step 1: Write the extractor**
@@ -954,15 +1007,31 @@ const FLOW_GAP_Y = 80;
 const NODE_SPACING_X = 240;
 
 interface SourceFlow {
-  id: string; title: string; trigger: string;
-  steps: { id: string; label: string; layer: string; status?: string; route?: string; codeRef?: string; notes?: string; why?: string; errorCases?: { condition: string; result: string; httpStatus?: number }[] }[];
+  id: string;
+  title: string;
+  trigger: string;
+  steps: {
+    id: string;
+    label: string;
+    layer: string;
+    status?: string;
+    route?: string;
+    codeRef?: string;
+    notes?: string;
+    why?: string;
+    errorCases?: { condition: string; result: string; httpStatus?: number }[];
+  }[];
   branches?: { afterStep: string; condition: string; paths: { label: string; goTo: string }[] }[];
   connections?: { from: string; to: string; label?: string }[];
 }
 
 interface SourceJourney {
-  slug: string; title: string; persona: string; description: string;
-  relatedIssues?: number[]; flows: SourceFlow[];
+  slug: string;
+  title: string;
+  persona: string;
+  description: string;
+  relatedIssues?: number[];
+  flows: SourceFlow[];
 }
 
 function transformJourney(source: SourceJourney): Journey {
@@ -979,8 +1048,13 @@ function transformJourney(source: SourceJourney): Journey {
       const step = flow.steps[i];
       const nodeY = currentY + (i + 1) * NODE_SPACING_Y;
       const node: JourneyNode = {
-        id: step.id, type: 'step', label: step.label,
-        x: 40, y: nodeY, layer: step.layer, status: step.status || 'built',
+        id: step.id,
+        type: 'step',
+        label: step.label,
+        x: 40,
+        y: nodeY,
+        layer: step.layer,
+        status: step.status || 'built',
       };
       if (step.route) node.route = step.route;
       if (step.codeRef) node.codeRef = step.codeRef;
@@ -997,23 +1071,36 @@ function transformJourney(source: SourceJourney): Journey {
         const decisionId = `${flow.id}-decision-${branch.afterStep}`;
         const afterNode = nodes.find((n) => n.id === branch.afterStep);
         nodes.push({
-          id: decisionId, type: 'decision', label: branch.condition,
-          x: 40 + NODE_SPACING_X, y: afterNode ? afterNode.y + NODE_SPACING_Y / 2 : currentY,
+          id: decisionId,
+          type: 'decision',
+          label: branch.condition,
+          x: 40 + NODE_SPACING_X,
+          y: afterNode ? afterNode.y + NODE_SPACING_Y / 2 : currentY,
           options: branch.paths.map((p) => ({ label: p.label, to: p.goTo })),
         });
         edges.push({ from: branch.afterStep, to: decisionId });
-        for (const path of branch.paths) edges.push({ from: decisionId, to: path.goTo, opt: path.label });
+        for (const path of branch.paths)
+          edges.push({ from: decisionId, to: path.goTo, opt: path.label });
       }
     }
 
     if (flow.connections) {
-      for (const conn of flow.connections) edges.push({ from: conn.from, to: conn.to, opt: conn.label });
+      for (const conn of flow.connections)
+        edges.push({ from: conn.from, to: conn.to, opt: conn.label });
     }
 
     currentY += (flow.steps.length + 2) * NODE_SPACING_Y + FLOW_GAP_Y;
   }
 
-  return { slug: source.slug, title: source.title, persona: source.persona, description: source.description, relatedIssues: source.relatedIssues, nodes, edges };
+  return {
+    slug: source.slug,
+    title: source.title,
+    persona: source.persona,
+    description: source.description,
+    relatedIssues: source.relatedIssues,
+    nodes,
+    edges,
+  };
 }
 
 export function extractJourneys(): Journey[] {
@@ -1050,6 +1137,7 @@ git commit -m "feat(docs-extract): add journey extractor"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/extract-onboarding.ts`
 
 - [ ] **Step 1: Write the extractor**
@@ -1061,9 +1149,16 @@ import { readFile } from './utils/fs.js';
 import { writeJson } from './utils/output.js';
 import type { OnboardingStep, SellerPrecondition } from './types.js';
 
-export function extractOnboarding(): { steps: OnboardingStep[]; sellerPreconditions: SellerPrecondition[] } {
+export function extractOnboarding(): {
+  steps: OnboardingStep[];
+  sellerPreconditions: SellerPrecondition[];
+} {
   let content: string;
-  try { content = readFile('src/features/auth/CLAUDE.md'); } catch { content = ''; }
+  try {
+    content = readFile('src/features/auth/CLAUDE.md');
+  } catch {
+    content = '';
+  }
 
   const steps: OnboardingStep[] = [];
   const sellerPreconditions: SellerPrecondition[] = [];
@@ -1073,9 +1168,21 @@ export function extractOnboarding(): { steps: OnboardingStep[]; sellerPreconditi
 
   for (const line of lines) {
     const lower = line.toLowerCase();
-    if (lower.includes('onboarding') && line.startsWith('#')) { inOnboarding = true; inSeller = false; continue; }
-    if (lower.includes('seller') && lower.includes('precondition') && line.startsWith('#')) { inSeller = true; inOnboarding = false; continue; }
-    if (line.startsWith('#')) { inOnboarding = false; inSeller = false; continue; }
+    if (lower.includes('onboarding') && line.startsWith('#')) {
+      inOnboarding = true;
+      inSeller = false;
+      continue;
+    }
+    if (lower.includes('seller') && lower.includes('precondition') && line.startsWith('#')) {
+      inSeller = true;
+      inOnboarding = false;
+      continue;
+    }
+    if (line.startsWith('#')) {
+      inOnboarding = false;
+      inSeller = false;
+      continue;
+    }
 
     const listMatch = line.match(/^[-*]\s+\*?\*?(.+?)\*?\*?\s*[-–—:]\s*(.+)/);
     if (!listMatch) continue;
@@ -1083,18 +1190,46 @@ export function extractOnboarding(): { steps: OnboardingStep[]; sellerPreconditi
     const description = listMatch[2].trim();
 
     if (inOnboarding) {
-      steps.push({ id: label.toLowerCase().replace(/\s+/g, '-'), label, description, required: description.toLowerCase().includes('required'), field: label.toLowerCase().replace(/\s+/g, '_') });
+      steps.push({
+        id: label.toLowerCase().replace(/\s+/g, '-'),
+        label,
+        description,
+        required: description.toLowerCase().includes('required'),
+        field: label.toLowerCase().replace(/\s+/g, '_'),
+      });
     } else if (inSeller) {
-      sellerPreconditions.push({ id: label.toLowerCase().replace(/\s+/g, '-'), label, description });
+      sellerPreconditions.push({
+        id: label.toLowerCase().replace(/\s+/g, '-'),
+        label,
+        description,
+      });
     }
   }
 
   if (steps.length === 0) {
     steps.push(
-      { id: 'avatar', label: 'Profile Photo', description: 'Upload an avatar image', required: false, field: 'avatar_url' },
-      { id: 'display-name', label: 'Display Name', description: 'Set a public display name', required: true, field: 'display_name' },
+      {
+        id: 'avatar',
+        label: 'Profile Photo',
+        description: 'Upload an avatar image',
+        required: false,
+        field: 'avatar_url',
+      },
+      {
+        id: 'display-name',
+        label: 'Display Name',
+        description: 'Set a public display name',
+        required: true,
+        field: 'display_name',
+      },
       { id: 'bio', label: 'Bio', description: 'Write a short bio', required: false, field: 'bio' },
-      { id: 'favorite-species', label: 'Favorite Species', description: 'Select preferred fishing species', required: false, field: 'favorite_species' },
+      {
+        id: 'favorite-species',
+        label: 'Favorite Species',
+        description: 'Select preferred fishing species',
+        required: false,
+        field: 'favorite_species',
+      },
     );
   }
 
@@ -1105,7 +1240,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   console.log('Extracting onboarding...');
   const data = extractOnboarding();
   writeJson('onboarding.json', data);
-  console.log(`  Found ${data.steps.length} steps, ${data.sellerPreconditions.length} preconditions`);
+  console.log(
+    `  Found ${data.steps.length} steps, ${data.sellerPreconditions.length} preconditions`,
+  );
 }
 ```
 
@@ -1127,6 +1264,7 @@ git commit -m "feat(docs-extract): add onboarding extractor"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/fetch-kanban.ts`
 
 - [ ] **Step 1: Write the fetcher**
@@ -1181,7 +1319,10 @@ export async function fetchKanban(): Promise<RoadmapItem[]> {
     const res = await fetch('https://api.github.com/graphql', {
       method: 'POST',
       headers: { Authorization: `bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query: QUERY, variables: { org: ORG, number: PROJECT_NUMBER, cursor } }),
+      body: JSON.stringify({
+        query: QUERY,
+        variables: { org: ORG, number: PROJECT_NUMBER, cursor },
+      }),
     });
     if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
     const json: any = await res.json();
@@ -1191,10 +1332,15 @@ export async function fetchKanban(): Promise<RoadmapItem[]> {
       const content = node.content;
       if (!content?.title) continue;
       items.push({
-        title: content.title, number: content.number, url: content.url || '',
-        status: getField(node, 'Status'), priority: getField(node, 'Priority'),
-        area: getField(node, 'Area'), executor: getField(node, 'Executor'),
-        feature: getField(node, 'Feature'), labels: (content.labels?.nodes || []).map((l: any) => l.name),
+        title: content.title,
+        number: content.number,
+        url: content.url || '',
+        status: getField(node, 'Status'),
+        priority: getField(node, 'Priority'),
+        area: getField(node, 'Area'),
+        executor: getField(node, 'Executor'),
+        feature: getField(node, 'Feature'),
+        labels: (content.labels?.nodes || []).map((l: any) => l.name),
         state: content.state || 'OPEN',
       });
     }
@@ -1232,6 +1378,7 @@ git commit -m "feat(docs-extract): add kanban board fetcher"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/fetch-changelog.ts`
 
 - [ ] **Step 1: Write the fetcher**
@@ -1247,13 +1394,26 @@ const REPO = 'Nessi-Web-App';
 
 function deriveArea(labels: string[]): string {
   const areas = ['frontend', 'backend', 'database', 'full-stack', 'infra'];
-  for (const l of labels) { if (areas.includes(l.toLowerCase())) return l.toLowerCase(); }
+  for (const l of labels) {
+    if (areas.includes(l.toLowerCase())) return l.toLowerCase();
+  }
   return 'full-stack';
 }
 
 function deriveType(title: string, labels: string[]): string {
-  const map: Record<string, string> = { feature: 'feature', feat: 'feature', enhancement: 'feature', bug: 'fix', fix: 'fix', chore: 'chore', refactor: 'refactor', docs: 'docs' };
-  for (const l of labels) { if (map[l.toLowerCase()]) return map[l.toLowerCase()]; }
+  const map: Record<string, string> = {
+    feature: 'feature',
+    feat: 'feature',
+    enhancement: 'feature',
+    bug: 'fix',
+    fix: 'fix',
+    chore: 'chore',
+    refactor: 'refactor',
+    docs: 'docs',
+  };
+  for (const l of labels) {
+    if (map[l.toLowerCase()]) return map[l.toLowerCase()];
+  }
   const prefix = title.match(/^(feat|fix|chore|refactor|docs|test|ci)\b/i);
   if (prefix) return map[prefix[1].toLowerCase()] || prefix[1].toLowerCase();
   return 'chore';
@@ -1268,7 +1428,9 @@ export async function fetchChangelog(): Promise<ChangelogEntry[]> {
 
   while (true) {
     const url = `https://api.github.com/repos/${OWNER}/${REPO}/pulls?state=closed&sort=updated&direction=desc&per_page=100&page=${page}`;
-    const res = await fetch(url, { headers: { Authorization: `bearer ${token}`, Accept: 'application/vnd.github+json' } });
+    const res = await fetch(url, {
+      headers: { Authorization: `bearer ${token}`, Accept: 'application/vnd.github+json' },
+    });
     if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
     const data: any[] = await res.json();
 
@@ -1276,9 +1438,14 @@ export async function fetchChangelog(): Promise<ChangelogEntry[]> {
       if (!pr.merged_at) continue;
       const labels = pr.labels.map((l: any) => l.name);
       entries.push({
-        title: pr.title, number: pr.number, url: pr.html_url,
-        mergedAt: pr.merged_at, author: pr.user.login, labels,
-        area: deriveArea(labels), type: deriveType(pr.title, labels),
+        title: pr.title,
+        number: pr.number,
+        url: pr.html_url,
+        mergedAt: pr.merged_at,
+        author: pr.user.login,
+        labels,
+        area: deriveArea(labels),
+        type: deriveType(pr.title, labels),
       });
     }
 
@@ -1315,6 +1482,7 @@ git commit -m "feat(docs-extract): add changelog fetcher"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `scripts/docs-extract/run-all.ts`
 - Create: `scripts/docs-extract/validate.ts`
 
@@ -1405,7 +1573,10 @@ async function main() {
   console.log('Counts:', JSON.stringify(counts, null, 2));
 }
 
-main().catch((err) => { console.error('Extraction failed:', err); process.exit(1); });
+main().catch((err) => {
+  console.error('Extraction failed:', err);
+  process.exit(1);
+});
 ```
 
 - [ ] **Step 2: Write the validator**
@@ -1418,10 +1589,18 @@ import { join } from 'path';
 
 const OUTPUT_DIR = join(import.meta.dirname, '..', '..', '_docs-output');
 const EXPECTED = [
-  'api-contracts.json', 'data-model.json', 'entity-relationships.json',
-  'permissions.json', 'config-reference.json', 'features.json',
-  'lifecycles.json', 'journeys.json', 'onboarding.json',
-  'roadmap.json', 'changelog.json', '_meta.json',
+  'api-contracts.json',
+  'data-model.json',
+  'entity-relationships.json',
+  'permissions.json',
+  'config-reference.json',
+  'features.json',
+  'lifecycles.json',
+  'journeys.json',
+  'onboarding.json',
+  'roadmap.json',
+  'changelog.json',
+  '_meta.json',
 ];
 
 let hasErrors = false;
@@ -1429,23 +1608,40 @@ console.log('=== Validation Results ===\n');
 
 for (const file of EXPECTED) {
   const path = join(OUTPUT_DIR, file);
-  if (!existsSync(path)) { console.log(`  ✗ ${file}: MISSING`); hasErrors = true; continue; }
+  if (!existsSync(path)) {
+    console.log(`  ✗ ${file}: MISSING`);
+    hasErrors = true;
+    continue;
+  }
   try {
     const data = JSON.parse(readFileSync(path, 'utf-8'));
     if (file === '_meta.json') {
-      if (!data.extractedAt) { console.log(`  ✗ ${file}: missing extractedAt`); hasErrors = true; continue; }
+      if (!data.extractedAt) {
+        console.log(`  ✗ ${file}: missing extractedAt`);
+        hasErrors = true;
+        continue;
+      }
     } else {
       const arrayKey = Object.keys(data).find((k) => Array.isArray(data[k]));
       if (arrayKey && data[arrayKey].length === 0) {
-        console.log(`  ✗ ${file}: empty array "${arrayKey}"`); hasErrors = true; continue;
+        console.log(`  ✗ ${file}: empty array "${arrayKey}"`);
+        hasErrors = true;
+        continue;
       }
     }
     console.log(`  ✓ ${file}`);
-  } catch (e) { console.log(`  ✗ ${file}: invalid JSON`); hasErrors = true; }
+  } catch (e) {
+    console.log(`  ✗ ${file}: invalid JSON`);
+    hasErrors = true;
+  }
 }
 
-if (hasErrors) { console.log('\n❌ Validation failed'); process.exit(1); }
-else { console.log('\n✅ All files valid'); }
+if (hasErrors) {
+  console.log('\n❌ Validation failed');
+  process.exit(1);
+} else {
+  console.log('\n✅ All files valid');
+}
 ```
 
 - [ ] **Step 3: Run the full pipeline**
@@ -1457,7 +1653,7 @@ pnpm tsx scripts/docs-extract/validate.ts
 
 Expected: All 12 files written, all pass validation.
 
-- [ ] **Step 4: Add _docs-output to .gitignore**
+- [ ] **Step 4: Add \_docs-output to .gitignore**
 
 Append `_docs-output/` to `.gitignore`.
 
@@ -1474,6 +1670,7 @@ git commit -m "feat(docs-extract): add orchestrator and validator"
 
 **Repo:** WEB
 **Files:**
+
 - Create: `.github/workflows/sync-docs.yml`
 
 - [ ] **Step 1: Write the workflow**
@@ -1560,6 +1757,7 @@ User must create `nessi-docs-sync` GitHub App and add secrets. See spec for full
 
 **Repo:** DOCS
 **Files:**
+
 - Create: `src/data/generated/.gitkeep`
 - Modify: `src/data/index.ts`
 - Delete: old hardcoded data files (after build passes)
@@ -1571,6 +1769,7 @@ mkdir -p src/data/generated
 ```
 
 Copy extraction output:
+
 ```bash
 cp /Users/kyleholloway/Documents/Development/nessi-web-app/_docs-output/* src/data/generated/
 ```
@@ -1618,9 +1817,15 @@ export function getLifecycleSlugs(): string[] {
 }
 
 const journeys: Journey[] = journeysRaw.journeys as Journey[];
-export function getAllJourneys(): Journey[] { return journeys; }
-export function getJourney(slug: string): Journey | undefined { return journeys.find((j) => j.slug === slug); }
-export function getJourneySlugs(): string[] { return journeys.map((j) => j.slug); }
+export function getAllJourneys(): Journey[] {
+  return journeys;
+}
+export function getJourney(slug: string): Journey | undefined {
+  return journeys.find((j) => j.slug === slug);
+}
+export function getJourneySlugs(): string[] {
+  return journeys.map((j) => j.slug);
+}
 
 export const onboardingSteps = onboardingRaw.steps;
 export const sellerPreconditions = onboardingRaw.sellerPreconditions;
@@ -1631,7 +1836,8 @@ export function getLinksForRoute(route: string) {
   const links: { label: string; href: string }[] = [];
   for (const group of apiGroups) {
     for (const ep of group.endpoints) {
-      if (ep.path === route) links.push({ label: `${ep.method} ${ep.path}`, href: `/api-map?highlight=${ep.path}` });
+      if (ep.path === route)
+        links.push({ label: `${ep.method} ${ep.path}`, href: `/api-map?highlight=${ep.path}` });
     }
   }
   return links;
@@ -1699,6 +1905,7 @@ git commit -m "feat: migrate data layer to generated JSON from extraction pipeli
 
 **Repo:** DOCS
 **Files:**
+
 - Create: `src/components/layout/staleness-banner/index.tsx`
 - Create: `src/components/layout/staleness-banner/staleness-banner.module.scss`
 - Modify: `src/app/layout.tsx`
@@ -1721,7 +1928,8 @@ export function StalenessBanner() {
   const daysAgo = Math.floor(age / (24 * 60 * 60 * 1000));
   return (
     <div className={styles.banner}>
-      Data last synced {daysAgo} days ago from <code>{extractionMeta.sourceCommit}</code>. Pipeline may need attention.
+      Data last synced {daysAgo} days ago from <code>{extractionMeta.sourceCommit}</code>. Pipeline
+      may need attention.
     </div>
   );
 }

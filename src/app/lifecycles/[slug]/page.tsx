@@ -6,21 +6,13 @@ export function generateStaticParams() {
   return getLifecycleSlugs().map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const lc = getLifecycle(slug);
   return { title: lc ? lc.name : 'Lifecycle' };
 }
 
-export default async function LifecyclePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function LifecyclePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const lifecycle = getLifecycle(slug);
   if (!lifecycle) notFound();

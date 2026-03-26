@@ -20,7 +20,17 @@ const BADGE_COLORS: Record<string, string> = {
   system: '#5c5a55',
 };
 
-const BADGE_ORDER = ['core', 'lifecycle', 'junction', 'config', 'media', 'tracking', 'discovery', 'user', 'system'];
+const BADGE_ORDER = [
+  'core',
+  'lifecycle',
+  'junction',
+  'config',
+  'media',
+  'tracking',
+  'discovery',
+  'user',
+  'system',
+];
 
 interface ErdCanvasProps {
   nodes: ErdNode[];
@@ -168,12 +178,7 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
                   stroke="rgba(255,255,255,0.07)"
                   strokeWidth={1}
                 />
-                <text
-                  x={midX}
-                  y={midY + 4}
-                  className={styles.edgeLabel}
-                  textAnchor="middle"
-                >
+                <text x={midX} y={midY + 4} className={styles.edgeLabel} textAnchor="middle">
                   {edge.fk ?? edge.label}
                 </text>
               </g>
@@ -206,12 +211,7 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
                   fill={color}
                 />
                 {/* Entity label */}
-                <text
-                  x={node.x + 14}
-                  y={node.y + 22}
-                  className={styles.nodeLabel}
-                  fill={color}
-                >
+                <text x={node.x + 14} y={node.y + 22} className={styles.nodeLabel} fill={color}>
                   {node.label}
                 </text>
                 {/* Badge + field count meta */}
@@ -221,7 +221,9 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
                   className={styles.nodeMeta}
                   fill="rgba(255,255,255,0.3)"
                 >
-                  {node.badge ?? ''}{node.badge && node.fieldCount ? ' · ' : ''}{node.fieldCount ? `${node.fieldCount} fields` : ''}
+                  {node.badge ?? ''}
+                  {node.badge && node.fieldCount ? ' · ' : ''}
+                  {node.fieldCount ? `${node.fieldCount} fields` : ''}
                 </text>
               </g>
             );
@@ -233,10 +235,7 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
       <div className={styles.legend}>
         {presentBadges.map((badge) => (
           <div key={badge} className={styles.legendItem}>
-            <span
-              className={styles.legendDot}
-              style={{ background: BADGE_COLORS[badge] }}
-            />
+            <span className={styles.legendDot} style={{ background: BADGE_COLORS[badge] }} />
             <span className={styles.legendLabel}>{badge}</span>
           </div>
         ))}

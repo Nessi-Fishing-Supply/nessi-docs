@@ -18,7 +18,8 @@ export function JourneyPageClient({ journey }: JourneyPageClientProps) {
   const toggleLayer = useCallback((layer: StepLayer) => {
     setVisibleLayers((prev) => {
       const next = new Set(prev);
-      if (next.has(layer)) next.delete(layer); else next.add(layer);
+      if (next.has(layer)) next.delete(layer);
+      else next.add(layer);
       return next;
     });
   }, []);
@@ -26,7 +27,8 @@ export function JourneyPageClient({ journey }: JourneyPageClientProps) {
   const toggleStatus = useCallback((status: StepStatus) => {
     setVisibleStatuses((prev) => {
       const next = new Set(prev);
-      if (next.has(status)) next.delete(status); else next.add(status);
+      if (next.has(status)) next.delete(status);
+      else next.add(status);
       return next;
     });
   }, []);

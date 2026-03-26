@@ -21,10 +21,7 @@ export function NodeTooltip({ node, children }: NodeTooltipProps) {
   const layer = node.layer ? LAYER_CONFIG[node.layer] : null;
 
   return (
-    <g
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
+    <g onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       {children}
       {hovered && (
         <foreignObject
@@ -51,23 +48,27 @@ export function NodeTooltip({ node, children }: NodeTooltipProps) {
             }}
           >
             {node.route && (
-              <div style={{
-                fontSize: '10px',
-                fontFamily: 'var(--font-family-mono)',
-                color: '#e27739',
-                marginBottom: node.why ? '6px' : '0',
-              }}>
+              <div
+                style={{
+                  fontSize: '10px',
+                  fontFamily: 'var(--font-family-mono)',
+                  color: '#e27739',
+                  marginBottom: node.why ? '6px' : '0',
+                }}
+              >
                 {node.route}
               </div>
             )}
             {node.why && (
-              <div style={{
-                fontSize: '11px',
-                color: '#9a9790',
-                lineHeight: '1.5',
-                borderLeft: `2px solid ${layer?.color ?? '#3d8c75'}`,
-                paddingLeft: '8px',
-              }}>
+              <div
+                style={{
+                  fontSize: '11px',
+                  color: '#9a9790',
+                  lineHeight: '1.5',
+                  borderLeft: `2px solid ${layer?.color ?? '#3d8c75'}`,
+                  paddingLeft: '8px',
+                }}
+              >
                 {node.why.length > 150 ? node.why.slice(0, 150) + '...' : node.why}
               </div>
             )}

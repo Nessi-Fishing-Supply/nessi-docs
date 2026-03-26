@@ -94,8 +94,12 @@ export function Minimap({ nodes, bounds, viewBoxString, onPan, visible = true }:
         onMouseMove={(e) => {
           if (dragging.current) handlePointer(e);
         }}
-        onMouseUp={() => { dragging.current = false; }}
-        onMouseLeave={() => { dragging.current = false; }}
+        onMouseUp={() => {
+          dragging.current = false;
+        }}
+        onMouseLeave={() => {
+          dragging.current = false;
+        }}
       >
         <svg width={MINIMAP_W} height={MINIMAP_H}>
           {nodes.map((node) => {

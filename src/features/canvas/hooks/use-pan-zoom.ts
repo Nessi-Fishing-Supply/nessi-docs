@@ -22,9 +22,17 @@ let state: PanZoomState = { zoom: INITIAL_ZOOM, vx: 0, vy: 0, vbW: 640, vbH: 480
 const listeners = new Set<() => void>();
 const savedViews = new Map<string, PanZoomState>();
 
-function getSnapshot() { return state; }
-function subscribe(cb: () => void) { listeners.add(cb); return () => listeners.delete(cb); }
-function emit(next: PanZoomState) { state = next; listeners.forEach((cb) => cb()); }
+function getSnapshot() {
+  return state;
+}
+function subscribe(cb: () => void) {
+  listeners.add(cb);
+  return () => listeners.delete(cb);
+}
+function emit(next: PanZoomState) {
+  state = next;
+  listeners.forEach((cb) => cb());
+}
 
 export function usePanZoom(
   baseViewBox: { minX: number; minY: number; width: number; height: number },
@@ -46,10 +54,13 @@ export function usePanZoom(
   }, []);
 
   // Helper: build full state with viewport dimensions
-  const buildState = useCallback((zoom: number, vx: number, vy: number): PanZoomState => {
-    const c = getContainer();
-    return { zoom, vx, vy, vbW: c.w / zoom, vbH: c.h / zoom };
-  }, [getContainer]);
+  const buildState = useCallback(
+    (zoom: number, vx: number, vy: number): PanZoomState => {
+      const c = getContainer();
+      return { zoom, vx, vy, vbW: c.w / zoom, vbH: c.h / zoom };
+    },
+    [getContainer],
+  );
 
   const saveCurrentView = useCallback(() => {
     if (currentKey.current) savedViews.set(currentKey.current, { ...state });
@@ -91,7 +102,9 @@ export function usePanZoom(
   }, [viewKey, saveCurrentView, computeInitialView]);
 
   useEffect(() => {
-    return () => { if (currentKey.current) savedViews.set(currentKey.current, { ...state }); };
+    return () => {
+      if (currentKey.current) savedViews.set(currentKey.current, { ...state });
+    };
   }, []);
 
   // Render-safe: vb comes from the store, no ref access
@@ -112,11 +125,20 @@ export function usePanZoom(
     if (currentKey.current) savedViews.delete(currentKey.current);
   }, [computeInitialView]);
 
-  const panTo = useCallback((svgCenterX: number, svgCenterY: number) => {
-    const c = getContainer();
-    const z = state.zoom;
-    emit({ zoom: z, vx: svgCenterX - c.w / z / 2, vy: svgCenterY - c.h / z / 2, vbW: c.w / z, vbH: c.h / z });
-  }, [getContainer]);
+  const panTo = useCallback(
+    (svgCenterX: number, svgCenterY: number) => {
+      const c = getContainer();
+      const z = state.zoom;
+      emit({
+        zoom: z,
+        vx: svgCenterX - c.w / z / 2,
+        vy: svgCenterY - c.h / z / 2,
+        vbW: c.w / z,
+        vbH: c.h / z,
+      });
+    },
+    [getContainer],
+  );
 
   const handlers = {
     onMouseDown: useCallback((e: React.MouseEvent) => {
@@ -134,8 +156,12 @@ export function usePanZoom(
       emit({ ...state, vx: state.vx - dx / z, vy: state.vy - dy / z });
     }, []),
 
-    onMouseUp: useCallback(() => { isPanning.current = false; }, []),
-    onMouseLeave: useCallback(() => { isPanning.current = false; }, []),
+    onMouseUp: useCallback(() => {
+      isPanning.current = false;
+    }, []),
+    onMouseLeave: useCallback(() => {
+      isPanning.current = false;
+    }, []),
 
     onWheel: useCallback((e: React.WheelEvent) => {
       e.preventDefault();
@@ -151,13 +177,24 @@ export function usePanZoom(
       const nz = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z * dir));
       const newW = rect.width / nz;
       const newH = rect.height / nz;
-      emit({ zoom: nz, vx: state.vx + (oldW - newW) * fx, vy: state.vy + (oldH - newH) * fy, vbW: newW, vbH: newH });
+      emit({
+        zoom: nz,
+        vx: state.vx + (oldW - newW) * fx,
+        vy: state.vy + (oldH - newH) * fy,
+        vbW: newW,
+        vbH: newH,
+      });
     }, []),
   };
 
   return {
     zoom: Math.round((s.zoom / INITIAL_ZOOM) * 100),
     viewBoxString: `${vb.x} ${vb.y} ${vb.w} ${vb.h}`,
-    zoomIn, zoomOut, resetView, panTo, handlers, wrapperRef,
+    zoomIn,
+    zoomOut,
+    resetView,
+    panTo,
+    handlers,
+    wrapperRef,
   };
 }

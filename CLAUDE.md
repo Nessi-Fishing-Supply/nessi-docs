@@ -62,6 +62,7 @@ Journey JSON files follow the schema in `nessi-web-app/docs/journeys/schema.json
 ### App Shell Architecture
 
 The app uses a three-panel layout managed by `AppShell`:
+
 - **Sidebar** — Navigation across all doc pages and journeys
 - **Main content** — Page-specific visualization (canvas, tables, etc.)
 - **Detail panel** — Context-sensitive inspector that reacts to selection

@@ -10,9 +10,7 @@ export function getPort(
 ): { x: number; y: number } {
   if (node.type === 'decision') {
     const cy = node.y + DECISION_SIZE / 2;
-    return side === 'right'
-      ? { x: node.x + DECISION_SIZE, y: cy }
-      : { x: node.x, y: cy };
+    return side === 'right' ? { x: node.x + DECISION_SIZE, y: cy } : { x: node.x, y: cy };
   }
   return side === 'right'
     ? { x: node.x + NODE_WIDTH, y: node.y + NODE_HEIGHT / 2 }

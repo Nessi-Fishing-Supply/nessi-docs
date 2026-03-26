@@ -54,9 +54,18 @@ function EndpointCard({ endpoint, groupName }: { endpoint: ApiEndpoint; groupNam
 
   return (
     <div
-      id={endpoint.path.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}
+      id={endpoint.path
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')}
       className={`${styles.card} ${isOpen ? styles.open : ''}`}
-      style={{ '--method-color': color, '--method-bg': bg, '--method-border': border } as React.CSSProperties}
+      style={
+        {
+          '--method-color': color,
+          '--method-bg': bg,
+          '--method-border': border,
+        } as React.CSSProperties
+      }
     >
       <button className={styles.cardHeader} onClick={handleClick}>
         <span className={styles.methodBadge}>{endpoint.method}</span>
@@ -86,7 +95,10 @@ function EndpointCard({ endpoint, groupName }: { endpoint: ApiEndpoint; groupNam
               <h4 className={styles.sectionLabel}>Responses</h4>
               <div className={styles.responses}>
                 {statusCodes.map((sc, i) => (
-                  <div key={i} className={`${styles.responseRow} ${sc.isError ? styles.errorResponse : styles.successResponse}`}>
+                  <div
+                    key={i}
+                    className={`${styles.responseRow} ${sc.isError ? styles.errorResponse : styles.successResponse}`}
+                  >
                     <span className={styles.statusCode}>{sc.code}</span>
                     <span className={styles.statusDesc}>{sc.description}</span>
                   </div>
@@ -138,7 +150,10 @@ interface StatusCode {
   isError: boolean;
 }
 
-function extractStatusCodes(why: string | undefined, errors: { httpStatus?: number; condition: string }[]): StatusCode[] {
+function extractStatusCodes(
+  why: string | undefined,
+  errors: { httpStatus?: number; condition: string }[],
+): StatusCode[] {
   const codes: StatusCode[] = [];
   const seen = new Set<string>();
 
@@ -220,11 +235,7 @@ export function ApiList({ groups }: ApiListProps) {
           </div>
           <div className={styles.endpoints}>
             {group.endpoints.map((ep) => (
-              <EndpointCard
-                key={`${ep.method}-${ep.path}`}
-                endpoint={ep}
-                groupName={group.name}
-              />
+              <EndpointCard key={`${ep.method}-${ep.path}`} endpoint={ep} groupName={group.name} />
             ))}
           </div>
         </div>
@@ -234,5 +245,8 @@ export function ApiList({ groups }: ApiListProps) {
 }
 
 function slugify(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 }
