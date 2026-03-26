@@ -1,0 +1,109 @@
+.container {
+  padding: 28px 32px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: 20px;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  font-size: var(--font-size-200);
+  color: var(--text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.card {
+  background: rgba(15, 19, 25, 0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 18px 20px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  text-decoration: none;
+  display: block;
+  transition:
+    border-color 200ms var(--ease-out),
+    transform 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+
+  &:hover {
+    border-color: var(--border-medium);
+    transform: scale(1.01);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.cardName {
+  font-family: var(--font-family-serif);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cardCount {
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  color: var(--text-dim);
+}
+
+.cardDesc {
+  font-size: var(--font-size-200);
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 14px;
+  opacity: 0.7;
+}
+
+.cardStats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statGroup {
+  display: flex;
+  gap: 10px;
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  color: var(--text-dim);
+}
+
+.coveragePercent {
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+}
+
+.progressTrack {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 1px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 600ms var(--ease-out);
+}
