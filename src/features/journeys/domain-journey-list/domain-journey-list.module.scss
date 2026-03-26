@@ -1,0 +1,113 @@
+.container {
+  padding: 28px 32px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.domainHeader {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.domainTitle {
+  font-family: var(--font-family-serif);
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.domainDesc {
+  font-size: var(--font-size-200);
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.domainStats {
+  display: flex;
+  gap: 14px;
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  text-decoration: none;
+  transition:
+    background 150ms var(--ease-out),
+    border-color 150ms var(--ease-out);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.rowContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.rowDesc {
+  font-size: var(--font-size-100);
+  color: var(--text-muted);
+  margin-top: 2px;
+  opacity: 0.7;
+}
+
+.personaBadge {
+  font-size: var(--font-size-100);
+  padding: 2px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.stepCount {
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  color: var(--text-dim);
+  width: 55px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.progressTrack {
+  width: 50px;
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 600ms var(--ease-out);
+}
+
+.chevron {
+  font-size: var(--font-size-100);
+  color: var(--text-dim);
+  opacity: 0.3;
+  flex-shrink: 0;
+}
