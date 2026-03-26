@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(reports): #198 reports table, enums, and RLS policies",
+      "number": 284,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/284",
+      "mergedAt": "2026-03-26T21:01:50Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "feat(recommendations): #210 More From This Seller section on listing detail",
       "number": 283,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/283",

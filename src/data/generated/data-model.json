@@ -435,11 +435,6 @@
           }
         },
         {
-          "name": "shipping_paid_by",
-          "type": "enum:shipping_paid_by",
-          "nullable": true
-        },
-        {
           "name": "shipping_price_cents",
           "type": "number",
           "nullable": true
@@ -961,6 +956,82 @@
           "function": "public.enforce_recently_viewed_cap"
         }
       ]
+    },
+    {
+      "name": "reports",
+      "label": "Reports",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "reason",
+          "type": "enum:report_reason",
+          "nullable": false
+        },
+        {
+          "name": "reporter_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "enum:report_status",
+          "nullable": false,
+          "default": "'pending'"
+        },
+        {
+          "name": "target_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "target_type",
+          "type": "enum:report_target_type",
+          "nullable": false
+        }
+      ],
+      "badges": ["RLS"],
+      "rlsPolicies": [
+        {
+          "name": "Authenticated users can insert own reports",
+          "operation": "INSERT",
+          "withCheck": "reporter_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Authenticated users can view own reports",
+          "operation": "SELECT",
+          "using": "reporter_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "reports_reporter_id_idx",
+          "columns": ["reporter_id"],
+          "unique": false
+        },
+        {
+          "name": "reports_target_type_target_id_idx",
+          "columns": ["target_type", "target_id"],
+          "unique": false
+        }
+      ],
+      "triggers": []
     },
     {
       "name": "search_suggestions",

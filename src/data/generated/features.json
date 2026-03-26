@@ -304,6 +304,19 @@
       ]
     },
     {
+      "slug": "reports",
+      "name": "Reports",
+      "description": "User-generated content and behavior reports. Allows authenticated users to flag listings, members, shops, or messages for review by the platform.",
+      "status": "planned",
+      "componentCount": 0,
+      "endpointCount": 0,
+      "hookCount": 0,
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
+    },
+    {
       "slug": "shared",
       "name": "Shared",
       "description": "Shared feature",
