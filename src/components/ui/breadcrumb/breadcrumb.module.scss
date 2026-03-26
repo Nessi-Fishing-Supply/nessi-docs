@@ -1,0 +1,35 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-200);
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  animation: fadeIn 200ms ease-out;
+}
+
+.link {
+  color: var(--color-primary-400);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.separator {
+  font-size: var(--font-size-100);
+  color: var(--text-dim);
+  opacity: 0.5;
+}
+
+.current {
+  color: var(--text-secondary);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -4,3 +4,4 @@ export { InfoBlock } from './info-block';
 export { KeyValueRow } from './key-value-row';
 export { CrossLink } from './cross-link';
 export { ProgressBar } from './progress-bar';
+export { Breadcrumb } from './breadcrumb';
