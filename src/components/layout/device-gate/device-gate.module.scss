@@ -1,0 +1,51 @@
+// Hidden on desktop (≥1024px), shown on smaller screens
+.gate {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-body);
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+
+  @media (max-width: 1023px) {
+    display: flex;
+  }
+}
+
+.content {
+  max-width: 360px;
+  text-align: center;
+}
+
+.icon {
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0 0 12px;
+}
+
+.message {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.url {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 8px 16px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  display: inline-block;
+}
