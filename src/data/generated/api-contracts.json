@@ -8,7 +8,9 @@
           "path": "/api/addresses/:id/default",
           "label": "Default :Id",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             404,
@@ -23,7 +25,9 @@
           "path": "/api/addresses/:id",
           "label": ":Id Address",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -39,7 +43,9 @@
           "path": "/api/addresses/:id",
           "label": ":Id Address",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -55,7 +61,9 @@
           "path": "/api/addresses",
           "label": "List Address",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -71,7 +79,9 @@
           "path": "/api/addresses",
           "label": "Create Address",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -92,7 +102,9 @@
           "path": "/api/auth/callback",
           "label": "List Callback",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [],
           "requestFields": [],
           "description": "",
@@ -103,7 +115,9 @@
           "path": "/api/auth/check-email",
           "label": "Check Email Auth",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -127,7 +141,9 @@
           "path": "/api/auth/delete-account",
           "label": "Delete Account Auth",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             409,
@@ -144,7 +160,9 @@
           "path": "/api/auth/register",
           "label": "Register Auth",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             409,
@@ -192,7 +210,9 @@
           "path": "/api/cart/:id/expiry",
           "label": "Expiry :Id",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             404,
@@ -207,7 +227,9 @@
           "path": "/api/cart/:id",
           "label": ":Id Cart",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             404,
@@ -222,7 +244,9 @@
           "path": "/api/cart/count",
           "label": "List Count",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             500
@@ -236,7 +260,9 @@
           "path": "/api/cart/merge",
           "label": "Merge Cart",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -257,7 +283,9 @@
           "path": "/api/cart",
           "label": "List Cart",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -276,7 +304,9 @@
           "path": "/api/cart",
           "label": "Create Cart",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -306,7 +336,9 @@
           "path": "/api/cart",
           "label": "Delete Cart",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -325,7 +357,9 @@
           "path": "/api/cart/validate",
           "label": "Validate Cart",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             500
@@ -344,7 +378,9 @@
           "path": "/api/invites/:token/accept",
           "label": "Accept :Token",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -368,7 +404,10 @@
           "path": "/api/listings/:id/duplicate",
           "label": "Duplicate :Id",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -385,7 +424,10 @@
           "path": "/api/listings/:id",
           "label": "List :Id",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -402,7 +444,10 @@
           "path": "/api/listings/:id",
           "label": ":Id Listing",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -419,7 +464,10 @@
           "path": "/api/listings/:id",
           "label": ":Id Listing",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -436,7 +484,10 @@
           "path": "/api/listings/:id/status",
           "label": "Status :Id",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -464,7 +515,10 @@
           "path": "/api/listings/:id/view",
           "label": "View :Id",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             404,
             500
@@ -478,7 +532,10 @@
           "path": "/api/listings/autocomplete",
           "label": "List Autocomplete",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             500
@@ -492,7 +549,10 @@
           "path": "/api/listings/batch",
           "label": "List Batch",
           "auth": "none",
-          "role": "None",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             500
@@ -506,7 +566,10 @@
           "path": "/api/listings/drafts",
           "label": "List Draft",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -523,7 +586,10 @@
           "path": "/api/listings/drafts",
           "label": "Drafts Listing",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -540,7 +606,10 @@
           "path": "/api/listings/drafts",
           "label": "Drafts Listing",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -557,7 +626,10 @@
           "path": "/api/listings/recommendations",
           "label": "List Recommendation",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             403,
@@ -572,7 +644,10 @@
           "path": "/api/listings",
           "label": "List Listing",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -588,7 +663,10 @@
           "path": "/api/listings",
           "label": "Create Listing",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -604,7 +682,10 @@
           "path": "/api/listings/search-suggestions",
           "label": "Search Suggestions Listing",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             500
@@ -618,7 +699,10 @@
           "path": "/api/listings/search",
           "label": "List Search",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             500
@@ -632,7 +716,10 @@
           "path": "/api/listings/seller",
           "label": "List Seller",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -648,7 +735,10 @@
           "path": "/api/listings/upload/delete",
           "label": "Delete Upload",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -675,7 +765,10 @@
           "path": "/api/listings/upload",
           "label": "Upload Listing",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member",
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -698,7 +791,9 @@
           "path": "/api/members/avatar",
           "label": "Avatar Member",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -715,7 +810,9 @@
           "path": "/api/members/seller-preconditions",
           "label": "List Seller Precondition",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             500
@@ -729,7 +826,9 @@
           "path": "/api/members/toggle-seller",
           "label": "Toggle Seller Member",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -755,7 +854,9 @@
           "path": "/api/recently-viewed/merge",
           "label": "Merge Recently Viewed",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -776,7 +877,9 @@
           "path": "/api/recently-viewed",
           "label": "List Recently Viewed",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             500
@@ -790,7 +893,9 @@
           "path": "/api/recently-viewed",
           "label": "Delete Recently Viewed",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             401,
             500
@@ -809,7 +914,9 @@
           "path": "/api/reports/check",
           "label": "List Check",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -824,7 +931,9 @@
           "path": "/api/reports",
           "label": "Create Report",
           "auth": "user",
-          "role": "Member",
+          "access": [
+            "Member"
+          ],
           "errorCodes": [
             400,
             401,
@@ -845,7 +954,9 @@
           "path": "/api/shops/:id/invites/:inviteId/resend",
           "label": "Resend :InviteId",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             404,
@@ -866,7 +977,9 @@
           "path": "/api/shops/:id/invites/:inviteId",
           "label": ":InviteId Invite",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             404,
@@ -887,7 +1000,9 @@
           "path": "/api/shops/:id/invites",
           "label": "Invites :Id",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             409,
@@ -908,7 +1023,9 @@
           "path": "/api/shops/:id/invites",
           "label": "List Invite",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             409,
@@ -929,7 +1046,9 @@
           "path": "/api/shops/:id/members/:memberId/role",
           "label": "Role :MemberId",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             404,
@@ -950,7 +1069,9 @@
           "path": "/api/shops/:id/members/:memberId",
           "label": ":MemberId Member",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             500
           ],
@@ -969,7 +1090,9 @@
           "path": "/api/shops/:id/members",
           "label": "Members :Id",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             500
           ],
@@ -988,7 +1111,9 @@
           "path": "/api/shops/:id/ownership-transfer",
           "label": "List Ownership Transfer",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             404,
             500
@@ -1008,7 +1133,9 @@
           "path": "/api/shops/:id/ownership-transfer",
           "label": "Ownership Transfer :Id",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             404,
             500
@@ -1028,7 +1155,9 @@
           "path": "/api/shops/:id/ownership",
           "label": "Ownership :Id",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             409,
@@ -1049,7 +1178,9 @@
           "path": "/api/shops/:id/roles",
           "label": "List Role",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             500
           ],
@@ -1068,7 +1199,9 @@
           "path": "/api/shops/:id",
           "label": ":Id Shop",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             404,
             500
@@ -1088,7 +1221,9 @@
           "path": "/api/shops/avatar",
           "label": "Avatar Shop",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             403,
@@ -1110,7 +1245,9 @@
           "path": "/api/shops/hero-banner",
           "label": "Hero Banner Shop",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             403,
@@ -1132,7 +1269,9 @@
           "path": "/api/shops/ownership-transfer/:token/accept",
           "label": "Accept :Token",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             401,
             403,
@@ -1151,7 +1290,9 @@
           "path": "/api/shops/ownership-transfer/:token",
           "label": "List :Token",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             401,
             403,
@@ -1170,7 +1311,9 @@
           "path": "/api/shops",
           "label": "Create Shop",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             401,
@@ -1189,7 +1332,9 @@
           "path": "/api/shops/slug",
           "label": "Slug Shop",
           "auth": "admin",
-          "role": "Owner",
+          "access": [
+            "Shop"
+          ],
           "errorCodes": [
             400,
             403,

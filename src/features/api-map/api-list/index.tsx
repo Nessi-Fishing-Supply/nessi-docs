@@ -134,16 +134,21 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
             </div>
           </div>
 
-          {(endpoint.role || endpoint.auth) && (
+          {endpoint.access && endpoint.access.length > 0 && (
             <div className={styles.detailSection}>
-              <div className={styles.detailLabel}>Permission</div>
-              <Link
-                href="/permissions"
-                className={`${styles.authIndicator} ${(endpoint.role === 'Owner' || endpoint.auth === 'admin') ? styles.authAdmin : ''}`}
-              >
-                <span className={styles.authDot} />
-                {endpoint.role ?? (endpoint.auth === 'admin' ? 'Owner' : 'Member')}
-              </Link>
+              <div className={styles.detailLabel}>Access</div>
+              <div className={styles.accessRow}>
+                {endpoint.access.map((ctx) => (
+                  <Link
+                    key={ctx}
+                    href="/permissions"
+                    className={`${styles.accessBadge} ${ctx === 'Shop' ? styles.accessShop : ''}`}
+                  >
+                    <span className={styles.accessDot} />
+                    {ctx}
+                  </Link>
+                ))}
+              </div>
             </div>
           )}
 
@@ -235,14 +240,15 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
           )}
         </span>
         <span className={styles.epMeta}>
-          {(endpoint.role || endpoint.auth) && (
+          {endpoint.access?.map((ctx) => (
             <Link
+              key={ctx}
               href="/permissions"
-              className={`${styles.epAuth} ${(endpoint.role === 'Owner' || endpoint.auth === 'admin') ? styles.epAuthAdmin : ''}`}
+              className={`${styles.epAccess} ${ctx === 'Shop' ? styles.epAccessShop : ''}`}
             >
-              {endpoint.role ?? (endpoint.auth === 'admin' ? 'Owner' : 'Member')}
+              {ctx}
             </Link>
-          )}
+          ))}
           {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
           <span className={styles.epChevron}>&#9656;</span>
         </span>

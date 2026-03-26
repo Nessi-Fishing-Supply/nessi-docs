@@ -4,7 +4,7 @@ export interface RequestField {
   required: boolean;
 }
 
-export type ApiRole = 'Owner' | 'Manager' | 'Contributor' | 'Member' | 'None';
+export type AccessContext = 'Member' | 'Shop';
 
 export interface ApiEndpoint {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
@@ -13,7 +13,7 @@ export interface ApiEndpoint {
   label?: string;
   why?: string;
   auth?: string;
-  role?: ApiRole;
+  access?: AccessContext[];
   errorCodes?: number[];
   permissions?: { feature: string; level: string };
   requestFields?: RequestField[];

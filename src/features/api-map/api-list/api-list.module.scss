@@ -243,23 +243,27 @@
   flex-shrink: 0;
 }
 
-.epAuth {
+.epAccess {
   font-size: 11px;
-  color: var(--text-secondary);
-  background: rgb(255 255 255 / 6%);
+  color: #4aa88e;
+  background: rgb(61 140 117 / 10%);
   padding: 3px 10px;
   border-radius: 5px;
   text-decoration: none;
   transition: background 150ms ease-out;
 
   &:hover {
-    background: rgb(255 255 255 / 10%);
+    background: rgb(61 140 117 / 18%);
   }
 }
 
-.epAuthAdmin {
+.epAccessShop {
   color: #b8a0f0;
-  background: rgb(139 92 246 / 12%);
+  background: rgb(139 92 246 / 10%);
+
+  &:hover {
+    background: rgb(139 92 246 / 18%);
+  }
 }
 
 .epErrors {
@@ -405,34 +409,51 @@
   font-family: var(--font-family-sans);
 }
 
-// ─── Auth Indicator ───
+// ─── Access Badges (detail) ───
 
-.authIndicator {
+.accessRow {
+  display: flex;
+  gap: 6px;
+}
+
+.accessBadge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--text-secondary);
+  gap: 5px;
+  font-size: 12px;
+  color: #4aa88e;
+  padding: 4px 10px;
+  border-radius: 5px;
+  background: rgb(61 140 117 / 8%);
+  border: 1px solid rgb(61 140 117 / 12%);
   text-decoration: none;
-  transition: color 150ms ease-out;
+  transition: all 150ms ease-out;
 
   &:hover {
-    color: var(--text-primary);
+    background: rgb(61 140 117 / 15%);
+    border-color: rgb(61 140 117 / 25%);
   }
 }
 
-.authAdmin {
-  color: #a78bfa;
+.accessShop {
+  color: #b8a0f0;
+  background: rgb(139 92 246 / 8%);
+  border-color: rgb(139 92 246 / 12%);
+
+  &:hover {
+    background: rgb(139 92 246 / 15%);
+    border-color: rgb(139 92 246 / 25%);
+  }
 }
 
-.authDot {
-  width: 6px;
-  height: 6px;
+.accessDot {
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: var(--text-muted);
+  background: #4aa88e;
 
-  .authAdmin & {
-    background: #a78bfa;
+  .accessShop & {
+    background: #b8a0f0;
   }
 }
 
