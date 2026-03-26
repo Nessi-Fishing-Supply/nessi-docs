@@ -34,7 +34,7 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 4px;
 }
 
 .row {
@@ -44,14 +44,16 @@
   border-radius: 6px;
   cursor: pointer;
   gap: 14px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
   text-decoration: none;
   transition:
     background 150ms var(--ease-out),
     border-color 150ms var(--ease-out);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--bg-hover);
+    border-color: var(--border-medium);
   }
 }
 
