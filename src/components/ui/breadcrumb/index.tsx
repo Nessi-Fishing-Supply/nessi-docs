@@ -59,8 +59,8 @@ export function Breadcrumb({ segments, switcher }: BreadcrumbProps) {
         return (
           <span key={seg.label} style={{ display: 'contents' }}>
             {i > 0 && (
-              <svg className={styles.separator} width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M5 3L9 7L5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              <svg className={styles.separator} width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M3.5 2L6.5 5L3.5 8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             )}
             {isLast ? (
