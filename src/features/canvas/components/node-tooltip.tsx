@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { JourneyNode } from '@/types/journey';
+import Link from 'next/link';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { NODE_WIDTH } from '../utils/geometry';
 
@@ -57,7 +58,7 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
           width={320}
           height={1}
           overflow="visible"
-          style={{ pointerEvents: 'none' }}
+          style={{ pointerEvents: isSelected ? 'auto' : 'none' }}
         >
           <div
             style={{
@@ -127,7 +128,32 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
               {node.route && (
                 <div>
                   <div style={sectionLabel}>{node.layer === 'server' ? 'Endpoint' : 'Page'}</div>
-                  <div style={{ ...monoBlock, color: '#e27739' }}>{node.route}</div>
+                  {node.layer === 'server' ? (
+                    <Link
+                      href={`/api-map#${node.route.replace(/^(GET|POST|PUT|PATCH|DELETE)\s+/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                      style={{
+                        ...monoBlock,
+                        color: '#e27739',
+                        textDecoration: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        cursor: 'pointer',
+                        transition: 'background 150ms ease-out',
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                    >
+                      <span style={{ flex: 1 }}>{node.route}</span>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.5 }}>
+                        <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                        <path d="M7 2.5H9.5V5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M9.5 2.5L5.5 6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                      </svg>
+                    </Link>
+                  ) : (
+                    <div style={{ ...monoBlock, color: '#e27739' }}>{node.route}</div>
+                  )}
                 </div>
               )}
 
