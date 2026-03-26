@@ -54,7 +54,10 @@ export function DomainGrid({ domains }: DomainGridProps) {
                 <span>{d.stepCount} steps</span>
                 <span>{d.decisionCount} decisions</span>
               </div>
-              <span className={styles.coveragePercent} style={{ color: coverageColor(d.builtPercent) }}>
+              <span
+                className={styles.coveragePercent}
+                style={{ color: coverageColor(d.builtPercent) }}
+              >
                 {d.builtPercent}%
               </span>
             </div>

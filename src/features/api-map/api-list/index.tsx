@@ -181,13 +181,7 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 
 /* ── Endpoint Row ── */
 
-function EndpointRow({
-  endpoint,
-  staggerIndex,
-}: {
-  endpoint: ApiEndpoint;
-  staggerIndex: number;
-}) {
+function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; staggerIndex: number }) {
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
   const [isOpen, setIsOpen] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -376,11 +370,7 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
             {group.endpoints.map((ep) => {
               const idx = staggerIndex++;
               return (
-                <EndpointRow
-                  key={`${ep.method}-${ep.path}`}
-                  endpoint={ep}
-                  staggerIndex={idx}
-                />
+                <EndpointRow key={`${ep.method}-${ep.path}`} endpoint={ep} staggerIndex={idx} />
               );
             })}
           </div>

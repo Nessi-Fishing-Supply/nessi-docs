@@ -72,11 +72,10 @@ export function EntityList({ entities }: EntityListProps) {
 
   return (
     <div className={styles.container}>
-      <PageHeader
-        title="Data Model"
-        metrics={[{ value: entities.length, label: 'tables' }]}
-      >
-        <Link href="/data-model/erd" className={styles.erdLink}>View Entity Relationships →</Link>
+      <PageHeader title="Data Model" metrics={[{ value: entities.length, label: 'tables' }]}>
+        <Link href="/data-model/erd" className={styles.erdLink}>
+          View Entity Relationships →
+        </Link>
       </PageHeader>
       {grouped.map(({ category, label, entities: groupEntities }) => (
         <div key={category} className={styles.group}>
