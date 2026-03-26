@@ -26,5 +26,10 @@ export default async function JourneyPage({
   const { domain, slug } = await params;
   const journey = getJourney(domain, slug);
   if (!journey) notFound();
-  return <JourneyPageClient journey={journey} domain={domain} />;
+  const siblings = getJourneysByDomain(domain).map((j) => ({
+    slug: j.slug,
+    title: j.title,
+    description: j.description,
+  }));
+  return <JourneyPageClient journey={journey} domain={domain} siblings={siblings} />;
 }

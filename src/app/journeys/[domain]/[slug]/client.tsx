@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import type { Journey, StepLayer, StepStatus } from '@/types/journey';
 import { getDomainConfig } from '@/constants/domains';
 import { Breadcrumb } from '@/components/ui';
+import type { SwitcherItem } from '@/components/ui/breadcrumb';
 import { JourneyCanvas } from '@/features/journeys/journey-canvas';
 
 const ALL_LAYERS: StepLayer[] = ['client', 'server', 'database', 'background', 'email', 'external'];
@@ -12,9 +13,10 @@ const ALL_STATUSES: StepStatus[] = ['planned', 'built', 'tested'];
 interface JourneyPageClientProps {
   journey: Journey;
   domain: string;
+  siblings: { slug: string; title: string; description: string }[];
 }
 
-export function JourneyPageClient({ journey, domain }: JourneyPageClientProps) {
+export function JourneyPageClient({ journey, domain, siblings }: JourneyPageClientProps) {
   const [visibleLayers, setVisibleLayers] = useState<Set<string>>(new Set(ALL_LAYERS));
   const [visibleStatuses, setVisibleStatuses] = useState<Set<string>>(new Set(ALL_STATUSES));
   const domainConfig = getDomainConfig(domain);
@@ -37,6 +39,13 @@ export function JourneyPageClient({ journey, domain }: JourneyPageClientProps) {
     });
   }, []);
 
+  const switcherItems: SwitcherItem[] = siblings.map((s) => ({
+    label: s.title,
+    description: s.description,
+    href: `/journeys/${domain}/${s.slug}`,
+    active: s.slug === journey.slug,
+  }));
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ padding: '12px 16px 0', flexShrink: 0 }}>
@@ -46,6 +55,7 @@ export function JourneyPageClient({ journey, domain }: JourneyPageClientProps) {
             { label: domainConfig?.label ?? domain, href: `/journeys/${domain}` },
             { label: journey.title },
           ]}
+          switcher={switcherItems}
         />
       </div>
       <div style={{ flex: 1, minHeight: 0 }}>

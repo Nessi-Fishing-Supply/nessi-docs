@@ -1,10 +1,10 @@
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: var(--font-size-200);
+  gap: 8px;
+  font-size: var(--font-size-400);
   color: var(--text-dim);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   animation: fadeIn 200ms ease-out;
 }
 
@@ -20,13 +20,92 @@
 }
 
 .separator {
-  font-size: var(--font-size-100);
+  font-size: var(--font-size-200);
   color: var(--text-dim);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .current {
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Switcher */
+.switcherWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.switcherBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0;
+  transition:
+    background 150ms var(--ease-out),
+    border-color 150ms var(--ease-out),
+    color 150ms var(--ease-out);
+
+  &:hover {
+    background: var(--bg-raised);
+    border-color: var(--border-medium);
+    color: var(--text-secondary);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 8px 40px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  padding: 4px;
+  animation: fadeIn 120ms ease-out;
+}
+
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 100ms var(--ease-out);
+
+  &:hover {
+    background: var(--bg-hover);
+  }
+}
+
+.dropdownItemActive {
+  composes: dropdownItem;
+  background: var(--bg-raised);
+}
+
+.dropdownTitle {
+  font-size: var(--font-size-300);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.dropdownDesc {
+  font-size: var(--font-size-100);
+  color: var(--text-muted);
+  margin-top: 1px;
 }
 
 @keyframes fadeIn {
