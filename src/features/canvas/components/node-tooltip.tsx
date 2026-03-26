@@ -103,10 +103,10 @@ export function NodeTooltip({ node, children, suppressTooltip }: NodeTooltipProp
                 </div>
               </div>
 
-              {/* Endpoint */}
+              {/* Route / Endpoint */}
               {node.route && (
                 <div>
-                  <div style={sectionLabel}>Endpoint</div>
+                  <div style={sectionLabel}>{node.layer === 'server' ? 'Endpoint' : 'Page'}</div>
                   <div style={{ ...monoBlock, color: '#e27739' }}>{node.route}</div>
                 </div>
               )}
