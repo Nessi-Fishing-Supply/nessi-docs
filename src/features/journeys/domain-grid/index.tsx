@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { DomainWithStats } from '@/data';
+import { PageHeader } from '@/components/ui/page-header';
 import styles from './domain-grid.module.scss';
 
 interface DomainGridProps {
@@ -23,12 +24,13 @@ export function DomainGrid({ domains }: DomainGridProps) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Journeys</h2>
-        <p className={styles.subtitle}>
-          {domains.length} domains · {domains.reduce((s, d) => s + d.journeyCount, 0)} journeys
-        </p>
-      </div>
+      <PageHeader
+        title="Journeys"
+        metrics={[
+          { value: domains.length, label: 'domains' },
+          { value: domains.reduce((s, d) => s + d.journeyCount, 0), label: 'journeys' },
+        ]}
+      />
 
       <div className={styles.grid}>
         {domains.map((d, i) => (

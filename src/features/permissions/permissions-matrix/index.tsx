@@ -3,6 +3,7 @@
 import type { Role } from '@/types/permission';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
 import { useDocsContext } from '@/providers/docs-provider';
+import { PageHeader } from '@/components/ui/page-header';
 import styles from './permissions-matrix.module.scss';
 
 interface PermissionsMatrixProps {
@@ -15,12 +16,13 @@ export function PermissionsMatrix({ roles }: PermissionsMatrixProps) {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
-        <h2 className={styles.title}>Permissions Matrix</h2>
-        <p className={styles.subtitle}>
-          {roles.length} roles &middot; {PERMISSION_FEATURES.length} features
-        </p>
-      </div>
+      <PageHeader
+        title="Permissions Matrix"
+        metrics={[
+          { value: roles.length, label: 'roles' },
+          { value: PERMISSION_FEATURES.length, label: 'features' },
+        ]}
+      />
 
       {/* Role Cards */}
       <div className={styles.roleCards}>

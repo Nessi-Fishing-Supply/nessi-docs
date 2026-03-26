@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { Entity } from '@/types/data-model';
 import { useDocsContext } from '@/providers/docs-provider';
+import { PageHeader } from '@/components/ui/page-header';
 import styles from './entity-list.module.scss';
 
 const CATEGORY_ORDER = [
@@ -71,13 +72,12 @@ export function EntityList({ entities }: EntityListProps) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Data Model</h2>
-        <p className={styles.subtitle}>{entities.length} tables</p>
-        <Link href="/data-model/erd" className={styles.erdLink}>
-          View Entity Relationships →
-        </Link>
-      </div>
+      <PageHeader
+        title="Data Model"
+        metrics={[{ value: entities.length, label: 'tables' }]}
+      >
+        <Link href="/data-model/erd" className={styles.erdLink}>View Entity Relationships →</Link>
+      </PageHeader>
       {grouped.map(({ category, label, entities: groupEntities }) => (
         <div key={category} className={styles.group}>
           <div className={styles.groupHeader}>

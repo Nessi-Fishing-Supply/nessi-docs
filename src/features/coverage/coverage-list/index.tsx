@@ -3,6 +3,7 @@
 import type { Journey } from '@/types/journey';
 import { PERSONA_CONFIG, LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { useDocsContext } from '@/providers/docs-provider';
+import { PageHeader } from '@/components/ui/page-header';
 import styles from './coverage-list.module.scss';
 
 interface CoverageListProps {
@@ -19,10 +20,10 @@ export function CoverageList({ journeys }: CoverageListProps) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Journey Coverage</h2>
-        <p className={styles.subtitle}>{journeys.length} journeys</p>
-      </div>
+      <PageHeader
+        title="Journey Coverage"
+        metrics={[{ value: journeys.length, label: 'journeys' }]}
+      />
       <div className={styles.legend}>
         {layerEntries.map(([key, cfg]) => (
           <span key={key} className={styles.legendItem} style={{ color: cfg.color }}>

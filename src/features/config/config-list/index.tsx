@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { ConfigEnum } from '@/types/config-ref';
 import { useDocsContext } from '@/providers/docs-provider';
+import { PageHeader } from '@/components/ui/page-header';
 import styles from './config-list.module.scss';
 
 interface ConfigListProps {
@@ -35,12 +36,13 @@ export function ConfigList({ enums }: ConfigListProps) {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
-        <h2 className={styles.title}>Config Reference</h2>
-        <p className={styles.subtitle}>
-          {enums.length} enums &middot; {totalValues} total values
-        </p>
-      </div>
+      <PageHeader
+        title="Config Reference"
+        metrics={[
+          { value: enums.length, label: 'enums' },
+          { value: totalValues, label: 'total values' },
+        ]}
+      />
 
       {/* Table of Contents */}
       <nav className={styles.toc}>

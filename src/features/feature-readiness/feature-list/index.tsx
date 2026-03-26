@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { Feature, FeatureStatus } from '@/types/feature';
 import { STATUS_COLORS } from '@/types/feature';
 import { useDocsContext } from '@/providers/docs-provider';
+import { PageHeader } from '@/components/ui/page-header';
 import styles from './feature-list.module.scss';
 
 const STATUS_LABELS: Record<FeatureStatus, string> = {
@@ -53,13 +54,14 @@ export function FeatureList({ features }: FeatureListProps) {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
-        <h2 className={styles.title}>Feature Readiness</h2>
-        <p className={styles.subtitle}>
-          {total} features &middot; {totalComponents} components &middot; {totalEndpoints} endpoints
-          &middot; {journeyCoverageCount} with journey coverage
-        </p>
-      </div>
+      <PageHeader
+        title="Feature Readiness"
+        metrics={[
+          { value: total, label: 'features' },
+          { value: totalComponents, label: 'components' },
+          { value: totalEndpoints, label: 'endpoints' },
+        ]}
+      />
 
       {/* Summary */}
       <div className={styles.summary}>
