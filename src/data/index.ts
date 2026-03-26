@@ -16,6 +16,8 @@ import type { CrossLink } from '@/types/docs-context';
 import type { ErrorCase } from '@/types/journey';
 import type { RoadmapItem } from '@/types/roadmap';
 import type { ExtractionMeta } from '@/types/extraction-meta';
+import { DOMAINS } from '@/constants/domains';
+import type { DomainConfig } from '@/constants/domains';
 
 import apiContractsRaw from './generated/api-contracts.json';
 import dataModelRaw from './generated/data-model.json';
@@ -470,12 +472,51 @@ export function getAllJourneys(): Journey[] {
   return journeys;
 }
 
-export function getJourney(slug: string): Journey | undefined {
-  return journeys.find((j) => j.slug === slug);
+export function getJourney(slugOrDomain: string, slug?: string): Journey | undefined {
+  if (slug) {
+    return journeys.find((j) => j.domain === slugOrDomain && j.slug === slug);
+  }
+  return journeys.find((j) => j.slug === slugOrDomain);
 }
 
 export function getJourneySlugs(): string[] {
   return journeys.map((j) => j.slug);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Domain helpers                                                     */
+/* ------------------------------------------------------------------ */
+
+export interface DomainWithStats extends DomainConfig {
+  journeyCount: number;
+  stepCount: number;
+  decisionCount: number;
+  builtPercent: number;
+}
+
+export function getDomains(): DomainWithStats[] {
+  return DOMAINS.map((d) => {
+    const dJourneys = journeys.filter((j) => j.domain === d.slug);
+    const allNodes = dJourneys.flatMap((j) => j.nodes);
+    const steps = allNodes.filter((n) => n.type === 'step');
+    const built = steps.filter((s) => s.status === 'built' || s.status === 'tested').length;
+    const total = steps.length;
+    return {
+      ...d,
+      journeyCount: dJourneys.length,
+      stepCount: total,
+      decisionCount: allNodes.filter((n) => n.type === 'decision').length,
+      builtPercent: total > 0 ? Math.round((built / total) * 100) : 0,
+    };
+  }).filter((d) => d.journeyCount > 0);
+}
+
+export function getJourneysByDomain(domain: string): Journey[] {
+  return journeys.filter((j) => j.domain === domain);
+}
+
+export function getDomainSlugs(): string[] {
+  return getDomains().map((d) => d.slug);
 }
 
 /* ------------------------------------------------------------------ */
