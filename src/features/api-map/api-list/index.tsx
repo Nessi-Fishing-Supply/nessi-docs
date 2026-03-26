@@ -134,15 +134,15 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
             </div>
           </div>
 
-          {endpoint.auth && (
+          {(endpoint.role || endpoint.auth) && (
             <div className={styles.detailSection}>
               <div className={styles.detailLabel}>Permission</div>
               <Link
                 href="/permissions"
-                className={`${styles.authIndicator} ${endpoint.auth === 'admin' ? styles.authAdmin : ''}`}
+                className={`${styles.authIndicator} ${(endpoint.role === 'Owner' || endpoint.auth === 'admin') ? styles.authAdmin : ''}`}
               >
                 <span className={styles.authDot} />
-                {endpoint.auth === 'admin' ? 'Owner' : 'Member'}
+                {endpoint.role ?? (endpoint.auth === 'admin' ? 'Owner' : 'Member')}
               </Link>
             </div>
           )}
@@ -235,12 +235,12 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
           )}
         </span>
         <span className={styles.epMeta}>
-          {endpoint.auth && (
+          {(endpoint.role || endpoint.auth) && (
             <Link
               href="/permissions"
-              className={`${styles.epAuth} ${endpoint.auth === 'admin' ? styles.epAuthAdmin : ''}`}
+              className={`${styles.epAuth} ${(endpoint.role === 'Owner' || endpoint.auth === 'admin') ? styles.epAuthAdmin : ''}`}
             >
-              {endpoint.auth === 'admin' ? 'Owner' : 'Member'}
+              {endpoint.role ?? (endpoint.auth === 'admin' ? 'Owner' : 'Member')}
             </Link>
           )}
           {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
