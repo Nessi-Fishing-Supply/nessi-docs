@@ -70,7 +70,10 @@
           "nullable": false
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "rlsPolicies": [
         {
           "name": "Users can view own addresses",
@@ -97,7 +100,9 @@
       "indexes": [
         {
           "name": "addresses_user_id_idx",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "unique": false
         }
       ],
@@ -176,7 +181,9 @@
           }
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Users can view own cart items",
@@ -203,12 +210,16 @@
       "indexes": [
         {
           "name": "cart_items_user_id_idx",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "unique": false
         },
         {
           "name": "cart_items_listing_id_idx",
-          "columns": ["listing_id"],
+          "columns": [
+            "listing_id"
+          ],
           "unique": false
         }
       ],
@@ -254,7 +265,9 @@
           "nullable": true
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Product images are viewable by everyone",
@@ -489,7 +502,10 @@
           "nullable": true
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "rlsPolicies": [
         {
           "name": "Products are viewable by everyone",
@@ -558,72 +574,101 @@
       "indexes": [
         {
           "name": "products_member_id_idx",
-          "columns": ["member_id"],
+          "columns": [
+            "member_id"
+          ],
           "unique": false
         },
         {
           "name": "products_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "listings_search_vector_idx",
-          "columns": ["search_vector"],
+          "columns": [
+            "search_vector"
+          ],
           "unique": false
         },
         {
           "name": "listings_title_trgm_idx",
-          "columns": ["title"],
+          "columns": [
+            "title"
+          ],
           "unique": false
         },
         {
           "name": "listings_seller_id_idx",
-          "columns": ["seller_id"],
+          "columns": [
+            "seller_id"
+          ],
           "unique": false
         },
         {
           "name": "listings_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "listings_member_id_idx",
-          "columns": ["member_id"],
+          "columns": [
+            "member_id"
+          ],
           "unique": false
         },
         {
           "name": "listings_status_idx",
-          "columns": ["status"],
+          "columns": [
+            "status"
+          ],
           "unique": false
         },
         {
           "name": "listings_category_idx",
-          "columns": ["category"],
+          "columns": [
+            "category"
+          ],
           "unique": false
         },
         {
           "name": "listings_condition_idx",
-          "columns": ["condition"],
+          "columns": [
+            "condition"
+          ],
           "unique": false
         },
         {
           "name": "listings_created_at_idx",
-          "columns": ["created_at"],
+          "columns": [
+            "created_at"
+          ],
           "unique": false
         },
         {
           "name": "listings_price_cents_idx",
-          "columns": ["price_cents"],
+          "columns": [
+            "price_cents"
+          ],
           "unique": false
         },
         {
           "name": "listings_active_feed_idx",
-          "columns": ["status", "published_at"],
+          "columns": [
+            "status",
+            "published_at"
+          ],
           "unique": false
         },
         {
           "name": "listings_active_partial_idx",
-          "columns": ["published_at"],
+          "columns": [
+            "published_at"
+          ],
           "unique": false
         }
       ],
@@ -779,7 +824,10 @@
           "nullable": true
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "rlsPolicies": [
         {
           "name": "Profiles are viewable by everyone",
@@ -817,27 +865,37 @@
       "indexes": [
         {
           "name": "profiles_display_name_unique",
-          "columns": ["LOWERdisplay_name"],
+          "columns": [
+            "LOWERdisplay_name"
+          ],
           "unique": true
         },
         {
           "name": "profiles_slug_unique",
-          "columns": ["slug"],
+          "columns": [
+            "slug"
+          ],
           "unique": true
         },
         {
           "name": "profiles_home_state_idx",
-          "columns": ["home_state"],
+          "columns": [
+            "home_state"
+          ],
           "unique": false
         },
         {
           "name": "profiles_is_seller_idx",
-          "columns": ["is_seller"],
+          "columns": [
+            "is_seller"
+          ],
           "unique": false
         },
         {
           "name": "profiles_shop_name_unique",
-          "columns": ["LOWERshop_name"],
+          "columns": [
+            "LOWERshop_name"
+          ],
           "unique": true
         }
       ],
@@ -912,7 +970,10 @@
           "default": "now()"
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "rlsPolicies": [
         {
           "name": "Users can view own recently viewed",
@@ -939,17 +1000,24 @@
       "indexes": [
         {
           "name": "idx_recently_viewed_user_id",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "unique": false
         },
         {
           "name": "idx_recently_viewed_user_viewed",
-          "columns": ["user_id", "viewed_at"],
+          "columns": [
+            "user_id",
+            "viewed_at"
+          ],
           "unique": false
         },
         {
           "name": "idx_recently_viewed_listing_id",
-          "columns": ["listing_id"],
+          "columns": [
+            "listing_id"
+          ],
           "unique": false
         }
       ],
@@ -997,7 +1065,9 @@
           "isUnique": true
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Search suggestions are publicly readable",
@@ -1008,7 +1078,9 @@
       "indexes": [
         {
           "name": "search_suggestions_term_trgm_idx",
-          "columns": ["term"],
+          "columns": [
+            "term"
+          ],
           "unique": false
         }
       ],
@@ -1086,7 +1158,9 @@
           "default": "gen_random_uuid()"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Shop members can view their shop invites",
@@ -1097,17 +1171,24 @@
       "indexes": [
         {
           "name": "shop_invites_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_invites_email_idx",
-          "columns": ["email"],
+          "columns": [
+            "email"
+          ],
           "unique": false
         },
         {
           "name": "shop_invites_pending_unique",
-          "columns": ["shop_id", "email"],
+          "columns": [
+            "shop_id",
+            "email"
+          ],
           "unique": true
         }
       ],
@@ -1161,7 +1242,9 @@
           }
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Shop members can view co-members",
@@ -1202,22 +1285,30 @@
       "indexes": [
         {
           "name": "shop_members_one_owner_per_shop",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": true
         },
         {
           "name": "shop_members_member_id_idx",
-          "columns": ["member_id"],
+          "columns": [
+            "member_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_members_one_owner_per_shop",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": true
         },
         {
           "name": "shop_members_role_id_idx",
-          "columns": ["role_id"],
+          "columns": [
+            "role_id"
+          ],
           "unique": false
         }
       ],
@@ -1290,7 +1381,9 @@
           "default": "gen_random_uuid()"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Transfer participants can view their transfers",
@@ -1301,22 +1394,30 @@
       "indexes": [
         {
           "name": "shop_ownership_transfers_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_ownership_transfers_from_member_id_idx",
-          "columns": ["from_member_id"],
+          "columns": [
+            "from_member_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_ownership_transfers_to_member_id_idx",
-          "columns": ["to_member_id"],
+          "columns": [
+            "to_member_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_ownership_transfers_pending_unique",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": true
         }
       ],
@@ -1377,7 +1478,9 @@
           "default": "0"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Authenticated users can view system roles",
@@ -1393,17 +1496,24 @@
       "indexes": [
         {
           "name": "shop_roles_shop_slug_unique",
-          "columns": ["shop_id", "slug"],
+          "columns": [
+            "shop_id",
+            "slug"
+          ],
           "unique": true
         },
         {
           "name": "shop_roles_system_slug_unique",
-          "columns": ["slug"],
+          "columns": [
+            "slug"
+          ],
           "unique": true
         },
         {
           "name": "shop_roles_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         }
       ],
@@ -1536,7 +1646,10 @@
           "default": "NOW()"
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "rlsPolicies": [
         {
           "name": "Shops are viewable by everyone",
@@ -1567,17 +1680,23 @@
       "indexes": [
         {
           "name": "shops_owner_id_idx",
-          "columns": ["owner_id"],
+          "columns": [
+            "owner_id"
+          ],
           "unique": false
         },
         {
           "name": "shops_is_verified_idx",
-          "columns": ["is_verified"],
+          "columns": [
+            "is_verified"
+          ],
           "unique": false
         },
         {
           "name": "shops_subscription_tier_idx",
-          "columns": ["subscription_tier"],
+          "columns": [
+            "subscription_tier"
+          ],
           "unique": false
         }
       ],
@@ -1617,7 +1736,9 @@
           "isPrimaryKey": true
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Slugs are viewable by everyone",
@@ -1628,7 +1749,10 @@
       "indexes": [
         {
           "name": "slugs_entity_lookup",
-          "columns": ["entity_type", "entity_id"],
+          "columns": [
+            "entity_type",
+            "entity_id"
+          ],
           "unique": true
         }
       ],

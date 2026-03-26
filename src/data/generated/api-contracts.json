@@ -8,7 +8,11 @@
           "path": "/api/addresses/:id/default",
           "label": "Default :Id",
           "auth": "user",
-          "errorCodes": [401, 404, 500],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -18,7 +22,12 @@
           "path": "/api/addresses/:id",
           "label": ":Id Address",
           "auth": "user",
-          "errorCodes": [400, 401, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -28,7 +37,12 @@
           "path": "/api/addresses/:id",
           "label": ":Id Address",
           "auth": "user",
-          "errorCodes": [400, 401, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -38,7 +52,12 @@
           "path": "/api/addresses",
           "label": "List Address",
           "auth": "user",
-          "errorCodes": [400, 401, 422, 500],
+          "errorCodes": [
+            400,
+            401,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -48,7 +67,12 @@
           "path": "/api/addresses",
           "label": "Create Address",
           "auth": "user",
-          "errorCodes": [400, 401, 422, 500],
+          "errorCodes": [
+            400,
+            401,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -73,7 +97,12 @@
           "path": "/api/auth/check-email",
           "label": "Check Email Auth",
           "auth": "admin",
-          "errorCodes": [400, 401, 409, 500],
+          "errorCodes": [
+            400,
+            401,
+            409,
+            500
+          ],
           "requestFields": [
             {
               "name": "email",
@@ -82,24 +111,36 @@
             }
           ],
           "description": "",
-          "tags": ["admin-only"]
+          "tags": [
+            "admin-only"
+          ]
         },
         {
           "method": "DELETE",
           "path": "/api/auth/delete-account",
           "label": "Delete Account Auth",
           "auth": "admin",
-          "errorCodes": [401, 409, 500],
+          "errorCodes": [
+            401,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"]
+          "tags": [
+            "admin-only"
+          ]
         },
         {
           "method": "POST",
           "path": "/api/auth/register",
           "label": "Register Auth",
           "auth": "admin",
-          "errorCodes": [400, 409, 500],
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
           "requestFields": [
             {
               "name": "firstName",
@@ -128,7 +169,9 @@
             }
           ],
           "description": "",
-          "tags": ["admin-only"]
+          "tags": [
+            "admin-only"
+          ]
         }
       ]
     },
@@ -140,7 +183,11 @@
           "path": "/api/cart/:id/expiry",
           "label": "Expiry :Id",
           "auth": "user",
-          "errorCodes": [401, 404, 500],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -150,7 +197,11 @@
           "path": "/api/cart/:id",
           "label": ":Id Cart",
           "auth": "user",
-          "errorCodes": [401, 404, 500],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -160,7 +211,10 @@
           "path": "/api/cart/count",
           "label": "List Count",
           "auth": "user",
-          "errorCodes": [401, 500],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -170,7 +224,11 @@
           "path": "/api/cart/merge",
           "label": "Merge Cart",
           "auth": "user",
-          "errorCodes": [400, 401, 500],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [
             {
               "name": "items",
@@ -186,7 +244,15 @@
           "path": "/api/cart",
           "label": "List Cart",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 409, 422, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -196,7 +262,15 @@
           "path": "/api/cart",
           "label": "Create Cart",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 409, 422, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ],
           "requestFields": [
             {
               "name": "listingId",
@@ -217,7 +291,15 @@
           "path": "/api/cart",
           "label": "Delete Cart",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 409, 422, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -227,7 +309,10 @@
           "path": "/api/cart/validate",
           "label": "Validate Cart",
           "auth": "user",
-          "errorCodes": [401, 500],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -242,10 +327,18 @@
           "path": "/api/invites/:token/accept",
           "label": "Accept :Token",
           "auth": "admin",
-          "errorCodes": [400, 401, 404, 409, 500],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"]
+          "tags": [
+            "admin-only"
+          ]
         }
       ]
     },
@@ -257,7 +350,13 @@
           "path": "/api/listings/:id/duplicate",
           "label": "Duplicate :Id",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -267,7 +366,13 @@
           "path": "/api/listings/:id",
           "label": "List :Id",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -277,7 +382,13 @@
           "path": "/api/listings/:id",
           "label": ":Id Listing",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -287,7 +398,13 @@
           "path": "/api/listings/:id",
           "label": ":Id Listing",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -297,7 +414,13 @@
           "path": "/api/listings/:id/status",
           "label": "Status :Id",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [
             {
               "name": "status",
@@ -318,7 +441,10 @@
           "path": "/api/listings/:id/view",
           "label": "View :Id",
           "auth": "user",
-          "errorCodes": [404, 500],
+          "errorCodes": [
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -328,7 +454,10 @@
           "path": "/api/listings/autocomplete",
           "label": "List Autocomplete",
           "auth": "user",
-          "errorCodes": [400, 500],
+          "errorCodes": [
+            400,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -338,7 +467,13 @@
           "path": "/api/listings/drafts",
           "label": "List Draft",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -348,7 +483,13 @@
           "path": "/api/listings/drafts",
           "label": "Drafts Listing",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -358,7 +499,13 @@
           "path": "/api/listings/drafts",
           "label": "Drafts Listing",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -368,7 +515,11 @@
           "path": "/api/listings/recommendations",
           "label": "List Recommendation",
           "auth": "user",
-          "errorCodes": [400, 403, 500],
+          "errorCodes": [
+            400,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -378,7 +529,12 @@
           "path": "/api/listings",
           "label": "List Listing",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -388,7 +544,12 @@
           "path": "/api/listings",
           "label": "Create Listing",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -398,7 +559,10 @@
           "path": "/api/listings/search-suggestions",
           "label": "Search Suggestions Listing",
           "auth": "user",
-          "errorCodes": [400, 500],
+          "errorCodes": [
+            400,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -408,7 +572,10 @@
           "path": "/api/listings/search",
           "label": "List Search",
           "auth": "user",
-          "errorCodes": [400, 500],
+          "errorCodes": [
+            400,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -418,7 +585,12 @@
           "path": "/api/listings/seller",
           "label": "List Seller",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -428,7 +600,12 @@
           "path": "/api/listings/upload/delete",
           "label": "Delete Upload",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [
             {
               "name": "imageUrl",
@@ -449,10 +626,17 @@
           "path": "/api/listings/upload",
           "label": "Upload Listing",
           "auth": "user",
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["file-upload"]
+          "tags": [
+            "file-upload"
+          ]
         }
       ]
     },
@@ -464,17 +648,26 @@
           "path": "/api/members/avatar",
           "label": "Avatar Member",
           "auth": "user",
-          "errorCodes": [400, 401, 500],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["file-upload"]
+          "tags": [
+            "file-upload"
+          ]
         },
         {
           "method": "GET",
           "path": "/api/members/seller-preconditions",
           "label": "List Seller Precondition",
           "auth": "user",
-          "errorCodes": [401, 500],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -484,7 +677,11 @@
           "path": "/api/members/toggle-seller",
           "label": "Toggle Seller Member",
           "auth": "user",
-          "errorCodes": [400, 401, 500],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [
             {
               "name": "is_seller",
@@ -505,7 +702,11 @@
           "path": "/api/recently-viewed/merge",
           "label": "Merge Recently Viewed",
           "auth": "user",
-          "errorCodes": [400, 401, 500],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [
             {
               "name": "items",
@@ -521,7 +722,10 @@
           "path": "/api/recently-viewed",
           "label": "List Recently Viewed",
           "auth": "user",
-          "errorCodes": [401, 500],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -531,7 +735,10 @@
           "path": "/api/recently-viewed",
           "label": "Delete Recently Viewed",
           "auth": "user",
-          "errorCodes": [401, 500],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "",
           "tags": []
@@ -546,10 +753,16 @@
           "path": "/api/shops/:id/invites/:inviteId/resend",
           "label": "Resend :InviteId",
           "auth": "admin",
-          "errorCodes": [400, 404, 500],
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -560,10 +773,16 @@
           "path": "/api/shops/:id/invites/:inviteId",
           "label": ":InviteId Invite",
           "auth": "admin",
-          "errorCodes": [400, 404, 500],
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -574,10 +793,16 @@
           "path": "/api/shops/:id/invites",
           "label": "Invites :Id",
           "auth": "admin",
-          "errorCodes": [400, 409, 500],
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -588,10 +813,16 @@
           "path": "/api/shops/:id/invites",
           "label": "List Invite",
           "auth": "admin",
-          "errorCodes": [400, 409, 500],
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -602,10 +833,16 @@
           "path": "/api/shops/:id/members/:memberId/role",
           "label": "Role :MemberId",
           "auth": "admin",
-          "errorCodes": [400, 404, 500],
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -616,10 +853,14 @@
           "path": "/api/shops/:id/members/:memberId",
           "label": ":MemberId Member",
           "auth": "admin",
-          "errorCodes": [500],
+          "errorCodes": [
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -630,10 +871,14 @@
           "path": "/api/shops/:id/members",
           "label": "Members :Id",
           "auth": "admin",
-          "errorCodes": [500],
+          "errorCodes": [
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -644,10 +889,15 @@
           "path": "/api/shops/:id/ownership-transfer",
           "label": "List Ownership Transfer",
           "auth": "admin",
-          "errorCodes": [404, 500],
+          "errorCodes": [
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "view"
@@ -658,10 +908,15 @@
           "path": "/api/shops/:id/ownership-transfer",
           "label": "Ownership Transfer :Id",
           "auth": "admin",
-          "errorCodes": [404, 500],
+          "errorCodes": [
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "view"
@@ -672,10 +927,16 @@
           "path": "/api/shops/:id/ownership",
           "label": "Ownership :Id",
           "auth": "admin",
-          "errorCodes": [400, 409, 500],
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -686,10 +947,14 @@
           "path": "/api/shops/:id/roles",
           "label": "List Role",
           "auth": "admin",
-          "errorCodes": [500],
+          "errorCodes": [
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "members",
             "level": "view"
@@ -700,10 +965,15 @@
           "path": "/api/shops/:id",
           "label": ":Id Shop",
           "auth": "admin",
-          "errorCodes": [404, 500],
+          "errorCodes": [
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
@@ -714,10 +984,17 @@
           "path": "/api/shops/avatar",
           "label": "Avatar Shop",
           "auth": "admin",
-          "errorCodes": [400, 403, 500],
+          "errorCodes": [
+            400,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["file-upload", "admin-only"],
+          "tags": [
+            "file-upload",
+            "admin-only"
+          ],
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
@@ -728,10 +1005,17 @@
           "path": "/api/shops/hero-banner",
           "label": "Hero Banner Shop",
           "auth": "admin",
-          "errorCodes": [400, 403, 500],
+          "errorCodes": [
+            400,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["file-upload", "admin-only"],
+          "tags": [
+            "file-upload",
+            "admin-only"
+          ],
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
@@ -742,40 +1026,71 @@
           "path": "/api/shops/ownership-transfer/:token/accept",
           "label": "Accept :Token",
           "auth": "admin",
-          "errorCodes": [401, 403, 404, 410, 500],
+          "errorCodes": [
+            401,
+            403,
+            404,
+            410,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"]
+          "tags": [
+            "admin-only"
+          ]
         },
         {
           "method": "GET",
           "path": "/api/shops/ownership-transfer/:token",
           "label": "List :Token",
           "auth": "admin",
-          "errorCodes": [401, 403, 404, 410, 500],
+          "errorCodes": [
+            401,
+            403,
+            404,
+            410,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"]
+          "tags": [
+            "admin-only"
+          ]
         },
         {
           "method": "POST",
           "path": "/api/shops",
           "label": "Create Shop",
           "auth": "admin",
-          "errorCodes": [400, 401, 403, 409, 500],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"]
+          "tags": [
+            "admin-only"
+          ]
         },
         {
           "method": "POST",
           "path": "/api/shops/slug",
           "label": "Slug Shop",
           "auth": "admin",
-          "errorCodes": [400, 403, 409, 500],
+          "errorCodes": [
+            400,
+            403,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
