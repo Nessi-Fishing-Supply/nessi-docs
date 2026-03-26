@@ -44,6 +44,8 @@
   margin: 0;
   font-weight: 600;
   letter-spacing: -0.02em;
+  text-box-trim: both;
+  text-box-edge: cap alphabetic;
 }
 
 .badge {
