@@ -23,7 +23,7 @@ pnpm-debug.log*
 .vercel
 
 # superpowers brainstorm state
-/.superpowers/
+.superpowers/
 
 # typescript
 *.tsbuildinfo
