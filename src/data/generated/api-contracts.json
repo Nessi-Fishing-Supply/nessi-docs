@@ -335,6 +335,16 @@
         },
         {
           "method": "GET",
+          "path": "/api/listings/batch",
+          "label": "List Batch",
+          "auth": "none",
+          "errorCodes": [400, 500],
+          "requestFields": [],
+          "description": "",
+          "tags": []
+        },
+        {
+          "method": "GET",
           "path": "/api/listings/drafts",
           "label": "List Draft",
           "auth": "user",

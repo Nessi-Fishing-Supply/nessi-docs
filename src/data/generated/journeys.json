@@ -1073,6 +1073,72 @@
           "status": "built"
         },
         {
+          "id": "display-strip--entry",
+          "type": "entry",
+          "label": "Display Recently Viewed Strip"
+        },
+        {
+          "id": "display-strip--hook-reads-ids",
+          "type": "step",
+          "label": "useRecentlyViewedListings() reads IDs from useRecentlyViewed()",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-listings.ts"
+        },
+        {
+          "id": "display-strip--batch-fetch",
+          "type": "step",
+          "label": "GET /api/listings/batch?ids=... fetches full listing data",
+          "layer": "server",
+          "status": "built",
+          "route": "GET /api/listings/batch",
+          "notes": "Only returns active, non-deleted listings. Stale IDs silently filtered. Max 30 IDs.",
+          "errorCases": [
+            {
+              "condition": "No IDs provided",
+              "result": "400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "More than 30 IDs",
+              "result": "400 Bad Request",
+              "httpStatus": 400
+            }
+          ]
+        },
+        {
+          "id": "display-strip--decision-batch-fetch",
+          "type": "decision",
+          "label": "Listings found?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "display-strip--render-strip"
+            },
+            {
+              "label": "No (empty/stale)",
+              "to": "display-strip--strip-empty"
+            }
+          ]
+        },
+        {
+          "id": "display-strip--render-strip",
+          "type": "step",
+          "label": "RecentlyViewedStrip renders horizontal scroll of ListingCards",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx",
+          "notes": "CSS scroll-snap, 160px cards mobile / 220px desktop. Returns null when empty. role=region + aria-label."
+        },
+        {
+          "id": "display-strip--strip-empty",
+          "type": "step",
+          "label": "Strip returns null — nothing rendered",
+          "layer": "client",
+          "status": "built",
+          "notes": "No recently viewed items or all stale/deleted"
+        },
+        {
           "id": "clear-history--entry",
           "type": "entry",
           "label": "Clear History"
@@ -1139,6 +1205,32 @@
         {
           "from": "merge-on-login--dedup-merge",
           "to": "merge-on-login--silent-complete"
+        },
+        {
+          "from": "display-strip--entry",
+          "to": "display-strip--hook-reads-ids"
+        },
+        {
+          "from": "display-strip--hook-reads-ids",
+          "to": "display-strip--batch-fetch"
+        },
+        {
+          "from": "display-strip--batch-fetch",
+          "to": "display-strip--decision-batch-fetch"
+        },
+        {
+          "from": "display-strip--decision-batch-fetch",
+          "to": "display-strip--render-strip",
+          "opt": "Yes"
+        },
+        {
+          "from": "display-strip--decision-batch-fetch",
+          "to": "display-strip--strip-empty",
+          "opt": "No (empty/stale)"
+        },
+        {
+          "from": "display-strip--render-strip",
+          "to": "display-strip--strip-empty"
         },
         {
           "from": "clear-history--entry",
@@ -2331,6 +2423,60 @@
           "status": "built"
         },
         {
+          "id": "display-strip--entry",
+          "type": "entry",
+          "label": "Display Recently Viewed Strip"
+        },
+        {
+          "id": "display-strip--hook-reads-localstorage",
+          "type": "step",
+          "label": "useRecentlyViewedListings() reads IDs from localStorage via useRecentlyViewed()",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-listings.ts"
+        },
+        {
+          "id": "display-strip--batch-fetch",
+          "type": "step",
+          "label": "GET /api/listings/batch?ids=... fetches full listing data",
+          "layer": "server",
+          "status": "built",
+          "route": "GET /api/listings/batch",
+          "notes": "No auth required. Only returns active, non-deleted listings. Stale IDs silently filtered."
+        },
+        {
+          "id": "display-strip--decision-batch-fetch",
+          "type": "decision",
+          "label": "Listings found?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "display-strip--render-strip"
+            },
+            {
+              "label": "No (empty/stale)",
+              "to": "display-strip--strip-empty"
+            }
+          ]
+        },
+        {
+          "id": "display-strip--render-strip",
+          "type": "step",
+          "label": "RecentlyViewedStrip renders horizontal scroll of ListingCards",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx",
+          "notes": "CSS scroll-snap, 160px cards mobile / 220px desktop. Returns null when empty."
+        },
+        {
+          "id": "display-strip--strip-empty",
+          "type": "step",
+          "label": "Strip returns null — nothing rendered",
+          "layer": "client",
+          "status": "built",
+          "notes": "No recently viewed items in localStorage or all stale/deleted"
+        },
+        {
           "id": "merge-on-login--entry",
           "type": "entry",
           "label": "Merge Recently Viewed on Login"
@@ -2382,6 +2528,32 @@
         {
           "from": "track-view--store-localstorage",
           "to": "track-view--dedup-reorder"
+        },
+        {
+          "from": "display-strip--entry",
+          "to": "display-strip--hook-reads-localstorage"
+        },
+        {
+          "from": "display-strip--hook-reads-localstorage",
+          "to": "display-strip--batch-fetch"
+        },
+        {
+          "from": "display-strip--batch-fetch",
+          "to": "display-strip--decision-batch-fetch"
+        },
+        {
+          "from": "display-strip--decision-batch-fetch",
+          "to": "display-strip--render-strip",
+          "opt": "Yes"
+        },
+        {
+          "from": "display-strip--decision-batch-fetch",
+          "to": "display-strip--strip-empty",
+          "opt": "No (empty/stale)"
+        },
+        {
+          "from": "display-strip--render-strip",
+          "to": "display-strip--strip-empty"
         },
         {
           "from": "merge-on-login--entry",

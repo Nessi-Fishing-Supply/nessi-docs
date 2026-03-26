@@ -1,6 +1,6 @@
 {
-  "extractedAt": "2026-03-26T17:23:28.211Z",
-  "sourceCommit": "ad510b83d992f63f4516b6a5ede547d5395da556",
+  "extractedAt": "2026-03-26T17:31:20.913Z",
+  "sourceCommit": "7c7898d0e844ac5e8fa277fa137b72267ebd3ae0",
   "sourceRepo": "nessi-fishing-supply/Nessi-Web-App",
   "scriptVersion": "1.0.0",
   "itemCounts": {
@@ -13,7 +13,7 @@
     "lifecycles": 4,
     "journeys": 29,
     "roadmapItems": 191,
-    "changelogEntries": 79,
+    "changelogEntries": 80,
     "enums": 5
   },
   "gaps": [
@@ -30,7 +30,7 @@
     {
       "type": "api-summary",
       "slug": "api-contracts",
-      "reason": "60 endpoint(s) missing description"
+      "reason": "61 endpoint(s) missing description"
     }
   ]
 }

@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(recommendations): #207 ListingScrollStrip + recently viewed on homepage and category",
+      "number": 280,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/280",
+      "mergedAt": "2026-03-26T17:30:50Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "feat(listings): #206 recommendations API route with 3 context modes",
       "number": 279,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/279",
