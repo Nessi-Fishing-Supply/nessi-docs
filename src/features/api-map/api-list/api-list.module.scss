@@ -315,11 +315,11 @@
 }
 
 .detailLabel {
-  font-size: 9px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--text-dim);
-  margin-bottom: 6px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
   font-weight: 600;
 }
 
@@ -356,13 +356,13 @@
 
 .fieldType {
   font-family: var(--font-family-mono);
-  font-size: 10px;
-  color: var(--text-muted);
+  font-size: 11px;
+  color: var(--text-secondary);
   min-width: 60px;
 }
 
 .fieldReq {
-  font-size: 9px;
+  font-size: 10px;
   color: #e27739;
   font-weight: 600;
 }
@@ -378,30 +378,30 @@
 .statusPill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 3px 8px;
+  gap: 5px;
+  padding: 4px 10px;
   border-radius: 5px;
   font-family: var(--font-family-mono);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .statusSuccess {
-  background: rgb(61 140 117 / 10%);
-  color: #3d8c75;
-  border: 1px solid rgb(61 140 117 / 15%);
+  background: rgb(61 140 117 / 12%);
+  color: #4aa88e;
+  border: 1px solid rgb(61 140 117 / 20%);
 }
 
 .statusError {
-  background: rgb(184 64 64 / 8%);
-  color: #b84040;
-  border: 1px solid rgb(184 64 64 / 10%);
+  background: rgb(184 64 64 / 10%);
+  color: #d05050;
+  border: 1px solid rgb(184 64 64 / 15%);
 }
 
 .statusDesc {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 400;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-family-sans);
 }
 
@@ -411,8 +411,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
-  color: var(--text-muted);
+  font-size: 13px;
+  color: var(--text-secondary);
   text-decoration: none;
   transition: color 150ms ease-out;
 

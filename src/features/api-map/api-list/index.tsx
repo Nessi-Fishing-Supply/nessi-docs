@@ -240,7 +240,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
               href="/permissions"
               className={`${styles.epAuth} ${endpoint.auth === 'admin' ? styles.epAuthAdmin : ''}`}
             >
-              {endpoint.auth === 'admin' ? 'owner' : 'member'}
+              {endpoint.auth === 'admin' ? 'Owner' : 'Member'}
             </Link>
           )}
           {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
