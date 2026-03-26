@@ -1,0 +1,364 @@
+.container {
+  padding: 24px 28px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+// ─── Header ───
+
+.header {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.headerTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: 20px;
+  color: var(--text-primary);
+  margin: 0;
+  font-weight: 400;
+}
+
+.version {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+}
+
+.baseUrl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.baseLabel {
+  font-size: 9px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.baseValue {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--bg-input);
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+}
+
+// ─── Table of Contents ───
+
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.tocItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 150ms ease;
+
+  &:hover {
+    border-color: var(--border-medium);
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+}
+
+.tocName {
+  white-space: nowrap;
+}
+
+.tocCount {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: var(--bg-body);
+}
+
+// ─── Groups ───
+
+.group {
+  margin-bottom: 32px;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.groupName {
+  font-size: 14px;
+  color: var(--text-primary);
+  margin: 0;
+  font-weight: 600;
+}
+
+.groupCount {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: var(--font-family-mono);
+}
+
+// ─── Endpoint Cards ───
+
+.endpoints {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 150ms ease;
+
+  &:hover {
+    border-color: var(--border-medium);
+  }
+
+  &.open {
+    border-color: var(--method-border);
+    background: rgba(255, 255, 255, 0.01);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--method-bg);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  .open & {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+}
+
+.methodBadge {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-family-mono);
+  color: var(--method-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+  min-width: 56px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.path {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-family: var(--font-family-mono);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-left: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevron {
+  font-size: 10px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+// ─── Card Body (expanded) ───
+
+.cardBody {
+  padding: 14px 16px;
+}
+
+.section {
+  margin-bottom: 14px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sectionLabel {
+  font-size: 9px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+.fullDesc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.implBlock {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding: 10px 12px;
+  background: rgba(61, 140, 117, 0.04);
+  border-left: 2px solid #3d8c75;
+  border-radius: 4px;
+}
+
+// ─── Responses ───
+
+.responses {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.responseRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  font-size: 11px;
+  border-bottom: 1px solid var(--border-subtle);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.successResponse {
+  background: rgba(61, 140, 117, 0.04);
+
+  .statusCode {
+    color: #3d8c75;
+  }
+}
+
+.errorResponse {
+  background: rgba(184, 64, 64, 0.04);
+
+  .statusCode {
+    color: #b84040;
+  }
+}
+
+.statusCode {
+  font-family: var(--font-family-mono);
+  font-weight: 700;
+  font-size: 11px;
+  min-width: 32px;
+}
+
+.statusDesc {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+// ─── Error Cases ───
+
+.errorList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.errorItem {
+  padding: 8px 10px;
+  background: rgba(184, 64, 64, 0.04);
+  border: 1px solid rgba(184, 64, 64, 0.1);
+  border-radius: 4px;
+}
+
+.errorCondition {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.httpBadge {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: #b84040;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(184, 64, 64, 0.12);
+}
+
+.errorResult {
+  font-size: 10px;
+  color: var(--text-muted);
+  padding-left: 0;
+}
+
+// ─── Journey Links ───
+
+.journeyLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.journeyLink {
+  font-size: 11px;
+  color: #3d8c75;
+  text-decoration: none;
+  padding: 3px 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,36 @@
+import type { Journey } from '@/types/journey';
+
+export const signup: Journey = {
+  slug: 'signup',
+  title: 'Signup (Email + OTP)',
+  persona: 'auth',
+  description: 'Register with email/password, verify via OTP, then background side effects.',
+  nodes: [
+    { id: 'start', type: 'entry', label: 'User clicks Sign Up', x: 60, y: 180, layer: 'client', status: 'built' },
+    { id: 'modal', type: 'step', label: 'Open Auth Modal', x: 240, y: 180, layer: 'client', status: 'built', codeRef: 'src/features/auth/components/auth-modal/index.tsx', notes: 'Navbar Sign Up button opens modal', why: 'Single entry point for all auth flows keeps the UI clean and avoids full page navigations during signup.' },
+    { id: 'creds', type: 'step', label: 'Enter Email + Password', x: 440, y: 180, layer: 'client', status: 'built', codeRef: 'src/features/auth/components/register-form/index.tsx', notes: 'Email format, password min 8 chars, terms checkbox', why: 'Client-side validation prevents unnecessary server round-trips and gives instant feedback on common mistakes.' },
+    { id: 'submit', type: 'step', label: 'Submit Registration', x: 640, y: 180, layer: 'server', status: 'built', route: 'POST /api/auth/register', codeRef: 'src/app/api/auth/register/route.ts', notes: 'Admin client creates user, triggers OTP email', errorCases: [{ condition: 'Email already registered', result: 'Show sign-in-instead link', httpStatus: 409 }], why: 'Using admin client to create the user bypasses Supabase email confirmation flow, giving us control over the OTP experience.' },
+    { id: 'otp-view', type: 'step', label: 'Transition to OTP', x: 840, y: 180, layer: 'client', status: 'built', notes: 'Same modal, swap to 6-digit code entry', why: 'Keeping OTP in the same modal avoids losing context. No page navigation = no risk of invite tokens being lost from URL params.' },
+    { id: 'enter-otp', type: 'step', label: 'Enter 6-Digit Code', x: 1040, y: 180, layer: 'client', status: 'built', codeRef: 'src/features/auth/components/otp-input/index.tsx', notes: 'Auto-submit when 6 digits entered' },
+    { id: 'd-resend', type: 'decision', label: 'Code received?', x: 1240, y: 180, options: [{ label: 'Yes → Verify', to: 'verify' }, { label: 'Resend (60s)', to: 'enter-otp' }] },
+    { id: 'verify', type: 'step', label: 'Verify OTP', x: 1440, y: 140, layer: 'server', status: 'built', notes: 'verifyOtp(type=signup) sets session cookies', errorCases: [{ condition: 'Invalid/expired code', result: 'Show error, allow retry' }], why: 'OTP verification establishes the Supabase session via cookies, which proxy.ts and all server components depend on for auth checks.' },
+    { id: 'session', type: 'step', label: 'Session Established', x: 1640, y: 140, layer: 'server', status: 'built' },
+    { id: 'd-invite', type: 'decision', label: 'Invite token present?', x: 1840, y: 140, options: [{ label: 'Yes → Auto-accept', to: 'accept' }, { label: 'No → Skip', to: 'cart-merge' }] },
+    { id: 'accept', type: 'step', label: 'Auto-Accept Invite', x: 2040, y: 60, layer: 'background', status: 'built', route: 'POST /api/invites/[token]/accept', notes: 'Failure never blocks account creation', why: 'Users arriving from shop invite emails should seamlessly join the shop after signup without manual acceptance. Silent failure ensures the account is always created.' },
+    { id: 'cart-merge', type: 'step', label: 'Merge Guest Cart', x: 2040, y: 220, layer: 'background', status: 'built', route: 'POST /api/cart/merge', why: 'Guests may have added items before signing up. Merging prevents lost cart state and reduces purchase friction.' },
+    { id: 'rv-merge', type: 'step', label: 'Merge Recently Viewed', x: 2240, y: 140, layer: 'background', status: 'built', route: 'POST /api/recently-viewed/merge' },
+    { id: 'd-onboard', type: 'decision', label: 'Onboarding done?', x: 2440, y: 140, options: [{ label: 'No → Onboarding', to: 'onboard' }, { label: 'Yes → Dashboard', to: 'done' }] },
+    { id: 'onboard', type: 'step', label: 'Redirect to /onboarding', x: 2640, y: 80, layer: 'client', status: 'built', codeRef: 'src/proxy.ts', why: 'proxy.ts enforces onboarding completion before allowing access to any authenticated page. This prevents incomplete profiles from creating listings or joining shops.' },
+    { id: 'done', type: 'step', label: 'Ready — User Signed In', x: 2640, y: 200, layer: 'client', status: 'built' },
+  ],
+  edges: [
+    { from: 'start', to: 'modal' }, { from: 'modal', to: 'creds' }, { from: 'creds', to: 'submit' }, { from: 'submit', to: 'otp-view' },
+    { from: 'otp-view', to: 'enter-otp' }, { from: 'enter-otp', to: 'd-resend' },
+    { from: 'd-resend', to: 'verify', opt: 'Yes → Verify' }, { from: 'd-resend', to: 'enter-otp', opt: 'Resend (60s)' },
+    { from: 'verify', to: 'session' }, { from: 'session', to: 'd-invite' },
+    { from: 'd-invite', to: 'accept', opt: 'Yes → Auto-accept' }, { from: 'd-invite', to: 'cart-merge', opt: 'No → Skip' },
+    { from: 'accept', to: 'rv-merge' }, { from: 'cart-merge', to: 'rv-merge' },
+    { from: 'rv-merge', to: 'd-onboard' },
+    { from: 'd-onboard', to: 'onboard', opt: 'No → Onboarding' }, { from: 'd-onboard', to: 'done', opt: 'Yes → Dashboard' },
+  ],
+};

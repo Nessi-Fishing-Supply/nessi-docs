@@ -12,6 +12,7 @@
 @use 'variables/typography' as *;
 @use 'variables/shadows' as *;
 @use 'variables/radius' as *;
+@use 'variables/dark-theme' as *;
 
 // Mixins
 @use 'mixins/breakpoints' as *;
@@ -22,13 +23,15 @@
 }
 
 body {
-  background-color: var(--surface-page);
-  color: var(--color-neutral-800);
+  background: var(--bg-body);
+  color: var(--text-primary);
   font-family: var(--font-family-sans);
   font-size: var(--font-size-700);
   line-height: var(--line-height-300);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  height: 100vh;
 }
 
 // Global focus-visible ring for keyboard navigation (WCAG 2.4.7)
@@ -49,4 +52,50 @@ body {
   clip-path: inset(50%);
   white-space: nowrap;
   border-width: 0;
+}
+
+::selection {
+  background: rgba(61, 140, 117, 0.3);
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: 3px;
+}
+
+@keyframes flowPulse {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+@keyframes tooltipIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }

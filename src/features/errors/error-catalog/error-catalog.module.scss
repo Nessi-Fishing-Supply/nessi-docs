@@ -1,0 +1,248 @@
+.container {
+  padding: 24px 28px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+// ─── Header ───
+
+.header {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.title {
+  font-family: var(--font-family-serif);
+  font-size: 20px;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  font-weight: 400;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+// ─── Stats Grid ───
+
+.statsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  min-width: 120px;
+}
+
+.statValue {
+  font-size: 22px;
+  font-weight: 600;
+  font-family: var(--font-family-mono);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+// ─── Groups ───
+
+.group {
+  margin-bottom: 32px;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.groupName {
+  font-size: 14px;
+  color: var(--text-primary);
+  margin: 0;
+  font-weight: 600;
+}
+
+.noErrorsWarning {
+  font-size: 9px;
+  color: #b86e0a;
+  font-family: var(--font-family-mono);
+  background: rgb(184 110 10 / 10%);
+  border: 1px solid rgb(184 110 10 / 20%);
+  border-radius: 4px;
+  padding: 1px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.groupCount {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: var(--font-family-mono);
+  margin-left: auto;
+}
+
+// ─── Endpoints ───
+
+.endpoints {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.endpointCard {
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 150ms ease;
+
+  &:hover {
+    border-color: var(--border-medium);
+  }
+
+  &.open {
+    border-color: var(--method-color, var(--border-medium));
+  }
+}
+
+.endpointHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--method-bg, var(--bg-raised));
+  border: none;
+  text-align: left;
+
+  .open & {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+}
+
+.methodBadge {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-family-mono);
+  color: var(--method-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgb(0 0 0 / 30%);
+  min-width: 56px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.epPath {
+  font-size: 12px;
+  color: var(--text-primary);
+  font-family: var(--font-family-mono);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.epMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.errorCount {
+  font-size: 10px;
+  color: #b84040;
+  font-family: var(--font-family-mono);
+  background: rgb(184 64 64 / 10%);
+  border-radius: 4px;
+  padding: 1px 7px;
+}
+
+.noErrors {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.journeyCount {
+  font-size: 10px;
+  color: #3d8c75;
+  font-family: var(--font-family-mono);
+  background: rgb(61 140 117 / 10%);
+  border-radius: 4px;
+  padding: 1px 7px;
+}
+
+.chevron {
+  font-size: 10px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+// ─── Error List (expanded) ───
+
+.errorList {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 12px;
+  background: rgb(184 64 64 / 2%);
+}
+
+.errorRow {
+  padding: 8px 10px;
+  background: rgb(184 64 64 / 4%);
+  border: 1px solid rgb(184 64 64 / 10%);
+  border-radius: 4px;
+  margin-bottom: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.errorTop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.httpBadge {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.errorCondition {
+  font-size: 11px;
+  color: var(--text-primary);
+}
+
+.errorResult {
+  font-size: 10px;
+  color: var(--text-muted);
+  padding-left: 0;
+  line-height: 1.4;
+}

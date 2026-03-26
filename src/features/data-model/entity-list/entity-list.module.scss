@@ -1,0 +1,157 @@
+.container {
+  padding: 20px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.erdLink {
+  font-size: 11px;
+  color: #3d8c75;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 16px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ─── Groups ───
+
+.group {
+  margin-bottom: 28px;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.groupName {
+  font-size: 13px;
+  color: var(--text-primary);
+  margin: 0;
+  font-weight: 600;
+}
+
+.groupCount {
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: var(--font-family-mono);
+}
+
+// ─── Cards ───
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 150ms ease;
+
+  &.active {
+    border-color: #3d8c75;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg-raised);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+
+  &:hover {
+    background: var(--bg-hover);
+  }
+}
+
+.name {
+  font-size: 13px;
+  font-family: var(--font-family-mono);
+  color: #3d8c75;
+  font-weight: 600;
+}
+
+.count {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-left: auto;
+  font-family: var(--font-family-mono);
+}
+
+.chevron {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+// ─── Field table ───
+
+.fields {
+  padding: 0 14px 10px;
+  background: var(--bg-panel);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.fieldHeader {
+  display: flex;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-medium);
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  position: sticky;
+  top: 0;
+  background: var(--bg-panel);
+  z-index: 1;
+}
+
+.fieldRow {
+  display: flex;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 11px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.fieldName {
+  width: 180px;
+  flex-shrink: 0;
+  font-family: var(--font-family-mono);
+  color: var(--text-primary);
+  font-size: 11px;
+}
+
+.fieldType {
+  width: 110px;
+  flex-shrink: 0;
+  font-family: var(--font-family-mono);
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.fieldDesc {
+  flex: 1;
+  color: var(--text-secondary);
+  font-size: 11px;
+}

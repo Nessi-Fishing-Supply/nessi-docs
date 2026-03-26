@@ -1,100 +1,102 @@
 export type StepLayer = 'client' | 'server' | 'database' | 'background' | 'email' | 'external';
 export type StepStatus = 'planned' | 'built' | 'tested';
-
 export type Persona =
-  | 'guest'
-  | 'auth'
-  | 'onboarding'
-  | 'buyer'
-  | 'seller'
-  | 'shop-owner'
-  | 'shop-member'
-  | 'account'
-  | 'context';
+  | 'guest' | 'auth' | 'onboarding' | 'buyer' | 'seller'
+  | 'shop-owner' | 'shop-member' | 'account' | 'context';
 
-export type ErrorCase = {
+export interface LayerConfig {
+  label: string;
+  color: string;
+  icon: string;
+}
+
+export interface StatusConfig {
+  label: string;
+  color: string;
+}
+
+export interface PersonaConfig {
+  label: string;
+  description: string;
+  color: string;
+}
+
+export const LAYER_CONFIG: Record<StepLayer, LayerConfig> = {
+  client:     { label: 'Client',     color: '#3d8c75', icon: 'HiOutlineDesktopComputer' },
+  server:     { label: 'Server',     color: '#e27739', icon: 'HiOutlineServer' },
+  database:   { label: 'Database',   color: '#1e4a40', icon: 'HiOutlineDatabase' },
+  background: { label: 'Background', color: '#b86e0a', icon: 'HiOutlineLightningBolt' },
+  email:      { label: 'Email',      color: '#b84040', icon: 'HiOutlineMail' },
+  external:   { label: 'External',   color: '#78756f', icon: 'HiOutlineGlobe' },
+};
+
+export const STATUS_CONFIG: Record<StepStatus, StatusConfig> = {
+  planned: { label: 'Planned', color: '#5c5a55' },
+  built:   { label: 'Built',   color: '#3d8c75' },
+  tested:  { label: 'Tested',  color: '#1a6b43' },
+};
+
+export const PERSONA_CONFIG: Record<Persona, PersonaConfig> = {
+  guest:         { label: 'Guest',        description: 'Unauthenticated visitor', color: '#78756f' },
+  auth:          { label: 'Auth',         description: 'Authentication flows',    color: '#3d8c75' },
+  onboarding:    { label: 'Onboarding',   description: 'New user setup',          color: '#b86e0a' },
+  buyer:         { label: 'Buyer',        description: 'Authenticated buyer',     color: '#1e4a40' },
+  seller:        { label: 'Seller',       description: 'Listing creator',         color: '#e27739' },
+  'shop-owner':  { label: 'Shop Owner',   description: 'Shop administrator',      color: '#e89048' },
+  'shop-member': { label: 'Shop Member',  description: 'Shop participant',        color: '#b84040' },
+  account:       { label: 'Account',      description: 'Profile management',      color: '#681a19' },
+  context:       { label: 'Context',      description: 'Identity switching',      color: '#5c5a55' },
+};
+
+export interface UxBehavior {
+  toast?: string;
+  redirect?: string;
+  modal?: string;
+  email?: string;
+  notification?: string;
+  stateChange?: string;
+}
+
+export interface ErrorCase {
   condition: string;
   result: string;
   httpStatus?: number;
-};
+}
 
-export type Step = {
-  id: string;
+export interface DecisionOption {
   label: string;
-  layer: StepLayer;
-  status: StepStatus;
+  to: string;
+}
+
+export interface JourneyNode {
+  id: string;
+  type: 'entry' | 'step' | 'decision';
+  label: string;
+  x: number;
+  y: number;
+  layer?: StepLayer;
+  status?: StepStatus;
   route?: string;
   codeRef?: string;
   notes?: string;
+  why?: string;
   errorCases?: ErrorCase[];
-};
+  ux?: UxBehavior;
+  options?: DecisionOption[];
+}
 
-export type BranchPath = {
-  label: string;
-  goTo: string;
-};
-
-export type Branch = {
-  afterStep: string;
-  condition: string;
-  paths: BranchPath[];
-};
-
-export type Connection = {
+export interface JourneyEdge {
   from: string;
   to: string;
-  label?: string;
-};
+  opt?: string;
+}
 
-export type Flow = {
-  id: string;
-  title: string;
-  trigger?: string;
-  steps: Step[];
-  branches?: Branch[];
-  connections?: Connection[];
-};
-
-export type Journey = {
+export interface Journey {
   slug: string;
   title: string;
   persona: Persona;
   description: string;
   relatedIssues?: number[];
-  flows: Flow[];
-};
-
-// Layer metadata for rendering
-export const LAYER_CONFIG: Record<StepLayer, { label: string; color: string; icon: string }> = {
-  client: { label: 'Client', color: 'var(--color-primary-400)', icon: 'HiOutlineDesktopComputer' },
-  server: { label: 'Server', color: 'var(--color-accent-500)', icon: 'HiOutlineServer' },
-  database: { label: 'Database', color: 'var(--color-info-500)', icon: 'HiOutlineDatabase' },
-  background: {
-    label: 'Background',
-    color: 'var(--color-warning-500)',
-    icon: 'HiOutlineLightningBolt',
-  },
-  email: { label: 'Email', color: 'var(--color-destructive-400)', icon: 'HiOutlineMail' },
-  external: { label: 'External', color: 'var(--color-neutral-600)', icon: 'HiOutlineGlobe' },
-};
-
-export const STATUS_CONFIG: Record<StepStatus, { label: string; color: string }> = {
-  planned: { label: 'Planned', color: 'var(--color-neutral-400)' },
-  built: { label: 'Built', color: 'var(--color-primary-400)' },
-  tested: { label: 'Tested', color: 'var(--color-success-500)' },
-};
-
-export const PERSONA_CONFIG: Record<Persona, { label: string; description: string }> = {
-  guest: { label: 'Guest', description: 'Unauthenticated browsing, search, guest cart' },
-  auth: { label: 'Auth', description: 'Signup, login, OTP, password reset, email change' },
-  onboarding: { label: 'Onboarding', description: 'Post-signup wizard, buyer vs seller path' },
-  buyer: { label: 'Buyer', description: 'Search, filter, cart, recently viewed, checkout' },
-  seller: { label: 'Seller', description: 'Listing lifecycle, pricing, shipping, sharing' },
-  'shop-owner': { label: 'Shop Owner', description: 'Create, settings, members, roles, deletion' },
-  'shop-member': {
-    label: 'Shop Member',
-    description: 'Invite acceptance, permissions, leave shop',
-  },
-  account: { label: 'Account', description: 'Profile, addresses, email change, delete account' },
-  context: { label: 'Context', description: 'Member/shop identity switching, revocation' },
-};
+  nodes: JourneyNode[];
+  edges: JourneyEdge[];
+}
