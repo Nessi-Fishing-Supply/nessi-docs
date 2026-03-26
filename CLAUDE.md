@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
@@ -40,10 +40,13 @@ Package manager is **pnpm** (v10.13.1). Do not use npm or yarn.
 
 ### Key Directories
 
-- `src/app/` — Pages (homepage, journey detail)
-- `src/data/journeys/` — Journey JSON files (synced from nessi-web-app)
-- `src/types/journey.ts` — TypeScript types, layer/status/persona configs
-- `src/features/journeys/components/` — Journey visualization components
+- `src/app/` — Pages (journeys, api-map, data-model, lifecycles, coverage, features, permissions, config, errors, changelog, onboarding)
+- `src/data/` — All structured data modules (barrel-exported from `src/data/index.ts`)
+- `src/data/journeys/canvas/` — Journey definitions as TypeScript (source of truth, not JSON)
+- `src/types/` — TypeScript types for each data domain (journey, api-contract, data-model, lifecycle, feature, permission, config-ref, docs-context)
+- `src/features/` — Feature-scoped components (journeys, search)
+- `src/components/layout/` — Shell layout components (app-shell, sidebar, topbar, detail-panel, device-gate)
+- `src/providers/` — React context providers
 - `src/styles/` — Nessi design tokens (variables, mixins, globals)
 
 ### Journey Data Schema
@@ -56,14 +59,34 @@ Journey JSON files follow the schema in `nessi-web-app/docs/journeys/schema.json
 - **Branch** — A decision point that splits the flow
 - **ErrorCase** — Known error conditions at a step
 
+### App Shell Architecture
+
+The app uses a three-panel layout managed by `AppShell`:
+- **Sidebar** — Navigation across all doc pages and journeys
+- **Main content** — Page-specific visualization (canvas, tables, etc.)
+- **Detail panel** — Context-sensitive inspector that reacts to selection
+
+Selection state flows through `DocsProvider` (React context in `src/providers/docs-provider.tsx`). The `SelectedItem` union type (`src/types/docs-context.ts`) determines which detail panel renders — each variant (step, api, entity, lifecycle-state, coverage, feature, role, config-enum) has a corresponding panel component in `src/components/layout/detail-panel/panels/`.
+
+### Data Layer
+
+Journey data has migrated from JSON files to **TypeScript modules** in `src/data/journeys/canvas/`. Each journey is a `.ts` file exporting a `Journey` object with typed nodes and edges. The old JSON files in `src/data/journeys/*.json` are no longer the source of truth.
+
+All data modules (journeys, api-contracts, data-model, lifecycles, features, permissions, config-reference, changelog, onboarding, entity-relationships, cross-links) are barrel-exported from `src/data/index.ts`.
+
+### Fonts
+
+DM Sans (body/UI) and DM Serif Display (headings), loaded via `next/font/google` with CSS variables `--font-dm-sans` and `--font-dm-serif`.
+
 ### Styling
 
-Same conventions as nessi-web-app: SCSS Modules, CSS custom properties from design tokens, mobile-first with `@include breakpoint()`, kebab-case file names.
+Same conventions as nessi-web-app: SCSS Modules, CSS custom properties from design tokens, mobile-first with `@include breakpoint()`, kebab-case file names. The `sassOptions.includePaths` in `next.config.mjs` includes `src/styles/`, so SCSS imports can reference token files directly.
 
 ## Naming Conventions
 
-Same as nessi-web-app: all files and folders use **kebab-case**, enforced by eslint-plugin-check-file.
+All files and folders use **kebab-case**, enforced by eslint-plugin-check-file in `eslint.config.mjs`.
 
-## Path Alias
+## Path Aliases
 
-`@/*` maps to `./src/*` (configured in tsconfig.json).
+- `@/*` maps to `./src/*`
+- `@journeys/*` maps to `./src/data/journeys/*`
