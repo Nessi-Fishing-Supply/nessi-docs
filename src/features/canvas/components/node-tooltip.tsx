@@ -245,43 +245,47 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                   : null;
                 return (
                 <div>
-                  <div style={{ ...sectionLabel, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span>Error Cases</span>
-                    {errAnchor && (
-                      <Link
-                        href={`/errors#${errAnchor}`}
-                        style={{ color: '#6a6860', display: 'inline-flex', transition: 'color 150ms ease-out' }}
-                        onMouseEnter={(e) => { e.currentTarget.style.color = '#e05555'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.color = '#6a6860'; }}
-                      >
-                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-                          <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-                          <path d="M7 2.5H9.5V5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-                          <path d="M9.5 2.5L5.5 6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-                        </svg>
-                      </Link>
-                    )}
-                  </div>
+                  <div style={sectionLabel}>Error Cases</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                    {node.errorCases!.slice(0, 4).map((err, i) => (
-                      <div
-                        key={i}
-                        style={{
-                          fontSize: '10px',
-                          padding: '4px 8px',
-                          background: 'rgba(220,60,60,0.06)',
-                          borderRadius: '4px',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          gap: '8px',
-                        }}
-                      >
-                        <span style={{ color: '#e05555' }}>{err.condition}</span>
-                        <span style={{ color: '#6a6860', flexShrink: 0 }}>
-                          {err.httpStatus ? `${err.httpStatus}` : ''}
+                    {node.errorCases!.slice(0, 4).map((err, i) => {
+                      const errRow = (
+                        <span style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ color: '#e05555' }}>
+                            {err.condition}
+                            {err.httpStatus ? <span style={{ color: '#6a6860', marginLeft: '4px' }}>({err.httpStatus})</span> : ''}
+                          </span>
                         </span>
-                      </div>
-                    ))}
+                      );
+                      const rowStyle = {
+                        fontSize: '10px',
+                        padding: '4px 8px',
+                        background: 'rgba(220,60,60,0.06)',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        textDecoration: 'none' as const,
+                        transition: 'background 150ms ease-out',
+                      };
+                      return errAnchor ? (
+                        <Link
+                          key={i}
+                          href={`/errors#${errAnchor}`}
+                          style={rowStyle}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(220,60,60,0.12)'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(220,60,60,0.06)'; }}
+                        >
+                          {errRow}
+                          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.4 }}>
+                            <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="#e05555" strokeWidth="1" strokeLinecap="round" />
+                            <path d="M7 2.5H9.5V5" stroke="#e05555" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M9.5 2.5L5.5 6.5" stroke="#e05555" strokeWidth="1" strokeLinecap="round" />
+                          </svg>
+                        </Link>
+                      ) : (
+                        <div key={i} style={rowStyle}>{errRow}</div>
+                      );
+                    })}
                     {errorCount > 4 && (
                       <div style={{ fontSize: '9px', color: '#4a4840', paddingLeft: '8px' }}>
                         +{errorCount - 4} more

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
 import { useDocsContext } from '@/providers/docs-provider';
@@ -13,8 +13,18 @@ interface ApiListProps {
 }
 
 function EndpointCard({ endpoint, groupName }: { endpoint: ApiEndpoint; groupName: string }) {
+  const cardId = endpoint.path.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   const [isOpen, setIsOpen] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   const { setSelectedItem } = useDocsContext();
+
+  // Auto-expand and scroll when arriving via hash link
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === `#${cardId}`) {
+      setIsOpen(true);
+      setTimeout(() => cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const { color, bg, border } = getMethodColors(endpoint.method);
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
@@ -29,10 +39,8 @@ function EndpointCard({ endpoint, groupName }: { endpoint: ApiEndpoint; groupNam
 
   return (
     <div
-      id={endpoint.path
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '')}
+      ref={cardRef}
+      id={cardId}
       className={`${styles.card} ${isOpen ? styles.open : ''}`}
       style={
         {

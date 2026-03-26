@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import type { ApiGroup } from '@/types/api-contract';
 import { getErrorsForEndpoint, getLinksForEndpoint } from '@/data';
 import styles from './error-catalog.module.scss';
@@ -43,13 +43,23 @@ function getStatusColor(status: number): string {
 
 function EndpointRow({ ep }: { ep: EndpointData }) {
   const [isOpen, setIsOpen] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const errId = `err-${ep.path.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
   const color = METHOD_COLORS[ep.method] ?? '#78756f';
   const bg = METHOD_BG[ep.method] ?? 'rgba(120,117,111,0.1)';
   const hasErrors = ep.errors.length > 0;
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === `#${errId}` && hasErrors) {
+      setIsOpen(true);
+      setTimeout(() => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <div
-      id={`err-${ep.path.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+      ref={rowRef}
+      id={errId}
       className={`${styles.endpointCard} ${isOpen ? styles.open : ''}`}
       style={{ '--method-color': color, '--method-bg': bg } as React.CSSProperties}
     >
