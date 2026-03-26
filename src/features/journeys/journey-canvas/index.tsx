@@ -214,7 +214,7 @@ export function JourneyCanvas({
               transition: 'opacity 300ms ease-out, transform 300ms ease-out',
             }}
           >
-            <NodeTooltip node={node} suppressTooltip={isDimmed}>
+            <NodeTooltip node={node} suppressTooltip={isDimmed} isSelected={isSelected}>
               <StepNode
                 node={node}
                 isSelected={isSelected}

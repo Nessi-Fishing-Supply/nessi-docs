@@ -29,14 +29,17 @@ interface NodeTooltipProps {
   node: JourneyNode;
   children: React.ReactNode;
   suppressTooltip?: boolean;
+  isSelected?: boolean;
 }
 
-export function NodeTooltip({ node, children, suppressTooltip }: NodeTooltipProps) {
+export function NodeTooltip({ node, children, suppressTooltip, isSelected }: NodeTooltipProps) {
   const [hovered, setHovered] = useState(false);
 
   if (node.type !== 'step' || suppressTooltip) {
     return <g onMouseEnter={() => setHovered(false)}>{children}</g>;
   }
+
+  const showTooltip = hovered || isSelected;
 
   const layer = node.layer ? LAYER_CONFIG[node.layer] : null;
   const status = node.status ? STATUS_CONFIG[node.status] : null;
@@ -47,7 +50,7 @@ export function NodeTooltip({ node, children, suppressTooltip }: NodeTooltipProp
   return (
     <g onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       {children}
-      {hovered && (
+      {showTooltip && (
         <foreignObject
           x={node.x}
           y={node.y - 8}
