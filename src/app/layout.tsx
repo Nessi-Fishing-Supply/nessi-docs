@@ -8,7 +8,7 @@ import { DetailPanel } from '@/components/layout/detail-panel';
 import { SearchTrigger } from '@/features/search/search-trigger';
 import { DeviceGate } from '@/components/layout/device-gate';
 import { StalenessBanner } from '@/components/layout/staleness-banner';
-import { getAllJourneys, lifecycles } from '@/data';
+import { lifecycles } from '@/data';
 import '@/styles/globals.scss';
 
 const dmSans = DM_Sans({
@@ -31,8 +31,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const journeys = getAllJourneys();
-
   return (
     <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
       <body className={dmSans.className}>
@@ -41,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <DeviceGate />
           <AppShell
             topbar={<Topbar />}
-            sidebar={<Sidebar journeys={journeys} lifecycles={lifecycles} />}
+            sidebar={<Sidebar lifecycles={lifecycles} />}
             detail={<DetailPanel />}
           >
             {children}

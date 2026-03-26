@@ -14,9 +14,7 @@ import {
   HiOutlineCog,
   HiOutlineClock,
 } from 'react-icons/hi';
-import type { Journey } from '@/types/journey';
 import type { Lifecycle } from '@/types/lifecycle';
-import { PERSONA_CONFIG } from '@/types/journey';
 import styles from './sidebar.module.scss';
 
 const NAV_ITEMS = [
@@ -33,16 +31,14 @@ const NAV_ITEMS = [
 ];
 
 interface SidebarProps {
-  journeys: Journey[];
   lifecycles: Lifecycle[];
 }
 
-export function Sidebar({ journeys, lifecycles }: SidebarProps) {
+export function Sidebar({ lifecycles }: SidebarProps) {
   const pathname = usePathname();
 
   const activePage = NAV_ITEMS.find((item) => pathname.startsWith(item.href))?.id;
 
-  const showJourneySubnav = activePage === 'journeys';
   const showLifecycleSubnav = activePage === 'lifecycles';
 
   return (
@@ -63,29 +59,6 @@ export function Sidebar({ journeys, lifecycles }: SidebarProps) {
           );
         })}
       </div>
-
-      {showJourneySubnav && (
-        <>
-          <div className={styles.divider} />
-          <div className={styles.subnavLabel}>Journeys</div>
-          <div className={styles.subnav}>
-            {journeys.map((j) => {
-              const isActive = pathname === `/journeys/${j.slug}`;
-              const personaColor = PERSONA_CONFIG[j.persona]?.color;
-              return (
-                <Link
-                  key={j.slug}
-                  href={`/journeys/${j.slug}`}
-                  className={`${styles.subnavItem} ${isActive ? styles.active : ''}`}
-                >
-                  <span className={styles.dot} style={{ background: personaColor }} />
-                  <span>{j.title}</span>
-                </Link>
-              );
-            })}
-          </div>
-        </>
-      )}
 
       {showLifecycleSubnav && (
         <>
