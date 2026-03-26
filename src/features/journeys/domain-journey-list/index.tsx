@@ -72,7 +72,7 @@ export function DomainJourneyList({ domain, journeys, stats }: DomainJourneyList
               </div>
               <span
                 className={styles.personaBadge}
-                style={{ background: `${persona.color}15`, color: `${persona.color}99` }}
+                style={{ background: `${persona.color}25`, color: persona.color }}
               >
                 {persona.label}
               </span>
