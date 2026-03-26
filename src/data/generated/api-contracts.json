@@ -549,6 +549,31 @@
       ]
     },
     {
+      "name": "Reports",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/reports/check",
+          "label": "List Check",
+          "auth": "user",
+          "errorCodes": [400, 401, 500],
+          "requestFields": [],
+          "description": "",
+          "tags": []
+        },
+        {
+          "method": "POST",
+          "path": "/api/reports",
+          "label": "Create Report",
+          "auth": "user",
+          "errorCodes": [400, 401, 409, 500],
+          "requestFields": [],
+          "description": "",
+          "tags": []
+        }
+      ]
+    },
+    {
       "name": "Shops",
       "endpoints": [
         {
