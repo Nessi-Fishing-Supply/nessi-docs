@@ -1,0 +1,54 @@
+{
+  "features": [
+    "listings",
+    "pricing",
+    "orders",
+    "messaging",
+    "shop_settings",
+    "members"
+  ],
+  "roles": [
+    {
+      "slug": "owner",
+      "name": "Owner",
+      "description": "Full access to all shop features and settings",
+      "color": "#e27739",
+      "permissions": {
+        "listings": "full",
+        "pricing": "full",
+        "orders": "full",
+        "messaging": "full",
+        "shop_settings": "full",
+        "members": "full"
+      }
+    },
+    {
+      "slug": "manager",
+      "name": "Manager",
+      "description": "Operational access to listings, pricing, orders, and messaging",
+      "color": "#b86e0a",
+      "permissions": {
+        "listings": "full",
+        "pricing": "full",
+        "orders": "full",
+        "messaging": "full",
+        "shop_settings": "view",
+        "members": "none"
+      }
+    },
+    {
+      "slug": "contributor",
+      "name": "Contributor",
+      "description": "Can create and edit listings only",
+      "color": "#78756f",
+      "permissions": {
+        "listings": "full",
+        "pricing": "none",
+        "orders": "none",
+        "messaging": "none",
+        "shop_settings": "none",
+        "members": "none"
+      }
+    }
+  ]
+}

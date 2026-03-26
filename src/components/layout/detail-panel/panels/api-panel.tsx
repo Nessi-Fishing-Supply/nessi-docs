@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { ApiEndpoint } from '@/types/api-contract';
-import { getLinksForEndpoint } from '@/data/cross-links';
+import { getLinksForEndpoint } from '@/data';
 
 const METHOD_COLORS: Record<string, string> = {
   GET: '#3d8c75',

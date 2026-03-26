@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import type { ApiGroup } from '@/types/api-contract';
-import { getErrorsForEndpoint, getLinksForEndpoint } from '@/data/cross-links';
+import { getErrorsForEndpoint, getLinksForEndpoint } from '@/data';
 import styles from './error-catalog.module.scss';
 
 const METHOD_COLORS: Record<string, string> = {
@@ -111,7 +111,7 @@ export function ErrorCatalog({ groups }: ErrorCatalogProps) {
         allEndpoints.push({
           method: ep.method,
           path: ep.path,
-          description: ep.description,
+          description: ep.description ?? ep.label ?? '',
           errors,
           journeyCount: journeyLinks.length,
           groupName: group.name,

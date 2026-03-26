@@ -1,9 +1,4 @@
-import { getAllJourneys } from '@/data';
-import { apiGroups } from '@/data/api-contracts';
-import { entities } from '@/data/data-model';
-import { lifecycles } from '@/data/lifecycles';
-import { features } from '@/data/features';
-import { configEnums } from '@/data/config-reference';
+import { getAllJourneys, apiGroups, entities, lifecycles, features, configEnums } from '@/data';
 
 export interface SearchResult {
   type: 'step' | 'journey' | 'endpoint' | 'entity' | 'lifecycle' | 'state' | 'feature' | 'config';
@@ -47,7 +42,7 @@ function buildIndex(): SearchResult[] {
       results.push({
         type: 'endpoint',
         title: `${ep.method} ${ep.path}`,
-        subtitle: ep.description,
+        subtitle: ep.description ?? ep.label ?? '',
         href: '/api-map',
         color: ep.method === 'GET' ? '#3d8c75' : ep.method === 'DELETE' ? '#b84040' : '#e27739',
         icon: '▲',
@@ -84,7 +79,7 @@ function buildIndex(): SearchResult[] {
         title: state.label,
         subtitle: `${lc.name} lifecycle`,
         href: `/lifecycles/${lc.slug}`,
-        color: state.color,
+        color: state.color ?? '#78756f',
         icon: '○',
       });
     }

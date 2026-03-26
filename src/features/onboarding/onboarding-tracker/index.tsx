@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import type { OnboardingStep, SellerPrecondition } from '@/data/onboarding';
+import type { OnboardingStep, SellerPrecondition } from '@/types/onboarding';
 import styles from './onboarding-tracker.module.scss';
 
 interface OnboardingTrackerProps {

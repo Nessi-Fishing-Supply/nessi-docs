@@ -1,7 +1,7 @@
 'use client';
 
-import type { ChangelogEntry } from '@/data/changelog';
-import { CHANGE_TYPE_CONFIG } from '@/data/changelog';
+import type { ChangelogEntry } from '@/types/changelog';
+import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
 import styles from './changelog-feed.module.scss';
 
 interface ChangelogFeedProps {
@@ -9,7 +9,7 @@ interface ChangelogFeedProps {
 }
 
 export function ChangelogFeed({ entries }: ChangelogFeedProps) {
-  const totalChanges = entries.reduce((sum, e) => sum + e.changes.length, 0);
+  const totalChanges = entries.reduce((sum, e) => sum + (e.changes?.length ?? 0), 0);
 
   return (
     <div className={styles.container}>
@@ -26,10 +26,10 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
             <div className={styles.dot} />
             <div className={styles.entryHeader}>
               <span className={styles.date}>{entry.date}</span>
-              <span className={styles.changeCount}>{entry.changes.length} changes</span>
+              <span className={styles.changeCount}>{entry.changes?.length ?? 0} changes</span>
             </div>
             <ul className={styles.changeList}>
-              {entry.changes.map((change, i) => {
+              {(entry.changes ?? []).map((change, i) => {
                 const config = CHANGE_TYPE_CONFIG[change.type];
                 return (
                   <li key={i} className={styles.changeItem}>

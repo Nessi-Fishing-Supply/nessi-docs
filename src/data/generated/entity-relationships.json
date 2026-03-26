@@ -1,0 +1,184 @@
+{
+  "nodes": [
+    {
+      "id": "addresses",
+      "label": "Addresses",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "cart_items",
+      "label": "Cart Items",
+      "x": 280,
+      "y": 0
+    },
+    {
+      "id": "listing_photos",
+      "label": "Listing Photos",
+      "x": 560,
+      "y": 0
+    },
+    {
+      "id": "listings",
+      "label": "Listings",
+      "x": 0,
+      "y": 160
+    },
+    {
+      "id": "members",
+      "label": "Members",
+      "x": 280,
+      "y": 160
+    },
+    {
+      "id": "recently_viewed",
+      "label": "Recently Viewed",
+      "x": 560,
+      "y": 160
+    },
+    {
+      "id": "search_suggestions",
+      "label": "Search Suggestions",
+      "x": 0,
+      "y": 320
+    },
+    {
+      "id": "shop_invites",
+      "label": "Shop Invites",
+      "x": 280,
+      "y": 320
+    },
+    {
+      "id": "shop_members",
+      "label": "Shop Members",
+      "x": 560,
+      "y": 320
+    },
+    {
+      "id": "shop_ownership_transfers",
+      "label": "Shop Ownership Transfers",
+      "x": 0,
+      "y": 480
+    },
+    {
+      "id": "shop_roles",
+      "label": "Shop Roles",
+      "x": 280,
+      "y": 480
+    },
+    {
+      "id": "shops",
+      "label": "Shops",
+      "x": 560,
+      "y": 480
+    },
+    {
+      "id": "slugs",
+      "label": "Slugs",
+      "x": 0,
+      "y": 640
+    }
+  ],
+  "edges": [
+    {
+      "from": "addresses",
+      "to": "members",
+      "label": "user_id"
+    },
+    {
+      "from": "cart_items",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "cart_items",
+      "to": "members",
+      "label": "user_id"
+    },
+    {
+      "from": "listing_photos",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "listings",
+      "to": "members",
+      "label": "seller_id"
+    },
+    {
+      "from": "listings",
+      "to": "members",
+      "label": "member_id"
+    },
+    {
+      "from": "listings",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "recently_viewed",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "recently_viewed",
+      "to": "members",
+      "label": "user_id"
+    },
+    {
+      "from": "shop_invites",
+      "to": "members",
+      "label": "invited_by"
+    },
+    {
+      "from": "shop_invites",
+      "to": "shop_roles",
+      "label": "role_id"
+    },
+    {
+      "from": "shop_invites",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "shop_members",
+      "to": "members",
+      "label": "member_id"
+    },
+    {
+      "from": "shop_members",
+      "to": "shop_roles",
+      "label": "role_id"
+    },
+    {
+      "from": "shop_members",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "shop_ownership_transfers",
+      "to": "members",
+      "label": "from_member_id"
+    },
+    {
+      "from": "shop_ownership_transfers",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "shop_ownership_transfers",
+      "to": "members",
+      "label": "to_member_id"
+    },
+    {
+      "from": "shop_roles",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "shops",
+      "to": "members",
+      "label": "owner_id"
+    }
+  ]
+}

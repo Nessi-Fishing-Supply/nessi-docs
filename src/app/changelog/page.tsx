@@ -1,4 +1,4 @@
-import { changelog } from '@/data/changelog';
+import { changelog } from '@/data';
 import { ChangelogFeed } from '@/features/changelog/changelog-feed';
 
 export const metadata = { title: 'Changelog' };

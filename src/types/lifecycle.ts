@@ -1,7 +1,9 @@
+export const DEFAULT_STATE_COLOR = '#78756f';
+
 export interface LifecycleState {
   id: string;
   label: string;
-  color: string;
+  color?: string;
   x: number;
   y: number;
 }
@@ -20,7 +22,7 @@ export interface LifecycleTransition {
 export interface Lifecycle {
   slug: string;
   name: string;
-  badge: string;
+  badge?: string;
   description: string;
   why?: string;
   states: LifecycleState[];

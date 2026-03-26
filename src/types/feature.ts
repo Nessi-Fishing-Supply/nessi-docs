@@ -13,8 +13,10 @@ export interface Feature {
   description: string;
   componentCount: number;
   endpointCount: number;
-  journeyCoverage: boolean;
-  links: FeatureLink[];
+  hookCount?: number;
+  serviceCount?: number;
+  journeyCoverage?: boolean;
+  links?: FeatureLink[];
 }
 
 export const STATUS_COLORS: Record<FeatureStatus, string> = {

@@ -1,0 +1,19 @@
+{
+  "extractedAt": "2026-03-26T02:52:31.769Z",
+  "sourceCommit": "local",
+  "sourceRepo": "nessi-fishing-supply/Nessi-Web-App",
+  "scriptVersion": "1.0.0",
+  "itemCounts": {
+    "apiGroups": 8,
+    "entities": 13,
+    "roles": 3,
+    "permissionFeatures": 6,
+    "configs": 6,
+    "features": 14,
+    "lifecycles": 1,
+    "journeys": 3,
+    "onboardingSteps": 4,
+    "roadmapItems": 191,
+    "changelogEntries": 79
+  }
+}

@@ -1,4 +1,4 @@
-import { onboardingSteps, sellerPreconditions } from '@/data/onboarding';
+import { onboardingSteps, sellerPreconditions } from '@/data';
 import { OnboardingTracker } from '@/features/onboarding/onboarding-tracker';
 
 export const metadata = { title: 'Onboarding' };

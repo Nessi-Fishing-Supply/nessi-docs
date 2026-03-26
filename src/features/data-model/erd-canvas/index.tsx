@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import type { ErdNode, ErdEdge } from '@/data/entity-relationships';
+import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
 import styles from './erd-canvas.module.scss';
 
 const NODE_WIDTH = 160;
@@ -174,7 +174,7 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
                   className={styles.edgeLabel}
                   textAnchor="middle"
                 >
-                  {edge.fk}
+                  {edge.fk ?? edge.label}
                 </text>
               </g>
             );
@@ -182,7 +182,7 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
 
           {/* Nodes */}
           {nodes.map((node) => {
-            const color = BADGE_COLORS[node.badge] ?? '#78756f';
+            const color = BADGE_COLORS[node.badge ?? ''] ?? '#78756f';
             return (
               <g key={node.id}>
                 {/* Node box */}
@@ -221,7 +221,7 @@ export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
                   className={styles.nodeMeta}
                   fill="rgba(255,255,255,0.3)"
                 >
-                  {node.badge} · {node.fieldCount} fields
+                  {node.badge ?? ''}{node.badge && node.fieldCount ? ' · ' : ''}{node.fieldCount ? `${node.fieldCount} fields` : ''}
                 </text>
               </g>
             );

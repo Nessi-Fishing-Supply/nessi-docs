@@ -1,0 +1,836 @@
+{
+  "entities": [
+    {
+      "name": "addresses",
+      "label": "Addresses",
+      "fields": [
+        {
+          "name": "city",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "is_default",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "line1",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "line2",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "zip",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ]
+    },
+    {
+      "name": "cart_items",
+      "label": "Cart Items",
+      "fields": [
+        {
+          "name": "added_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "added_from",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "listing_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "price_at_add",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS"
+      ]
+    },
+    {
+      "name": "listing_photos",
+      "label": "Listing Photos",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "image_url",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "listing_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "position",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "thumbnail_url",
+          "type": "string",
+          "nullable": true
+        }
+      ],
+      "badges": [
+        "RLS"
+      ]
+    },
+    {
+      "name": "listings",
+      "label": "Listings",
+      "fields": [
+        {
+          "name": "brand",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "category",
+          "type": "enum:listing_category",
+          "nullable": false
+        },
+        {
+          "name": "condition",
+          "type": "enum:listing_condition",
+          "nullable": false
+        },
+        {
+          "name": "cover_photo_url",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "deleted_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "favorite_count",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "inquiry_count",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "is_visible",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "location_city",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "location_state",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "member_id",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "model",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "price_cents",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "published_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "quantity",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "search_vector",
+          "type": "unknown",
+          "nullable": false
+        },
+        {
+          "name": "seller_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "shipping_paid_by",
+          "type": "enum:shipping_paid_by",
+          "nullable": true
+        },
+        {
+          "name": "shipping_price_cents",
+          "type": "number",
+          "nullable": true
+        },
+        {
+          "name": "shop_id",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "sold_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "enum:listing_status",
+          "nullable": false
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "view_count",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "watcher_count",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "weight_oz",
+          "type": "number",
+          "nullable": true
+        }
+      ],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ]
+    },
+    {
+      "name": "members",
+      "label": "Members",
+      "fields": [
+        {
+          "name": "avatar_url",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "average_rating",
+          "type": "number",
+          "nullable": true
+        },
+        {
+          "name": "bio",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "deleted_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "first_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "home_state",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "is_seller",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "is_stripe_connected",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "last_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "last_seen_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "notification_preferences",
+          "type": "Json",
+          "nullable": false
+        },
+        {
+          "name": "onboarding_completed_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "primary_species",
+          "type": "string[]",
+          "nullable": false
+        },
+        {
+          "name": "primary_technique",
+          "type": "string[]",
+          "nullable": false
+        },
+        {
+          "name": "response_time_hours",
+          "type": "number",
+          "nullable": true
+        },
+        {
+          "name": "review_count",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "stripe_account_id",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "stripe_onboarding_status",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "total_transactions",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "years_fishing",
+          "type": "number",
+          "nullable": true
+        }
+      ],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ]
+    },
+    {
+      "name": "recently_viewed",
+      "label": "Recently Viewed",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "listing_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "viewed_at",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ]
+    },
+    {
+      "name": "search_suggestions",
+      "label": "Search Suggestions",
+      "fields": [
+        {
+          "name": "category",
+          "type": "enum:listing_category",
+          "nullable": true
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "popularity",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "term",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS"
+      ]
+    },
+    {
+      "name": "shop_invites",
+      "label": "Shop Invites",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "invited_by",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "role_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "shop_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "enum:invite_status",
+          "nullable": false
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS"
+      ]
+    },
+    {
+      "name": "shop_members",
+      "label": "Shop Members",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "member_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "role_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "shop_id",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS"
+      ]
+    },
+    {
+      "name": "shop_ownership_transfers",
+      "label": "Shop Ownership Transfers",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "from_member_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "shop_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "to_member_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS"
+      ]
+    },
+    {
+      "name": "shop_roles",
+      "label": "Shop Roles",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "is_system",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "permissions",
+          "type": "Json",
+          "nullable": false
+        },
+        {
+          "name": "shop_id",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "sort_order",
+          "type": "number",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS"
+      ]
+    },
+    {
+      "name": "shops",
+      "label": "Shops",
+      "fields": [
+        {
+          "name": "avatar_url",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "average_rating",
+          "type": "number",
+          "nullable": true
+        },
+        {
+          "name": "brand_colors",
+          "type": "Json",
+          "nullable": true
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "deleted_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "hero_banner_url",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "is_stripe_connected",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "is_verified",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "owner_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "review_count",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "shop_name",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "stripe_account_id",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "stripe_onboarding_status",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "stripe_subscription_id",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "subscription_status",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "subscription_tier",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "total_transactions",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ]
+    },
+    {
+      "name": "slugs",
+      "label": "Slugs",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "entity_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "entity_type",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [
+        "RLS"
+      ]
+    }
+  ]
+}

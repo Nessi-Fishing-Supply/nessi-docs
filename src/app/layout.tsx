@@ -8,8 +8,7 @@ import { DetailPanel } from '@/components/layout/detail-panel';
 import { SearchTrigger } from '@/features/search/search-trigger';
 import { DeviceGate } from '@/components/layout/device-gate';
 import { StalenessBanner } from '@/components/layout/staleness-banner';
-import { getAllJourneys } from '@/data';
-import { lifecycles } from '@/data/lifecycles';
+import { getAllJourneys, lifecycles } from '@/data';
 import '@/styles/globals.scss';
 
 const dmSans = DM_Sans({

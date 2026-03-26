@@ -143,9 +143,9 @@ export function FeatureList({ features }: FeatureListProps) {
                 </div>
 
                 {/* Cross-links */}
-                {feature.links.length > 0 && (
+                {(feature.links?.length ?? 0) > 0 && (
                   <div className={styles.links}>
-                    {feature.links.map((link, i) => (
+                    {(feature.links ?? []).map((link, i) => (
                       <Link
                         key={i}
                         href={link.href}

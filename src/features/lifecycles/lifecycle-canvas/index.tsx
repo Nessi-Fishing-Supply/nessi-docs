@@ -97,7 +97,7 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
         {lifecycle.name}
       </text>
       <text x={minX} y={minY - padding + 28} fill="#6a6860" fontSize={10}>
-        {lifecycle.badge} · {lifecycle.description.slice(0, 80)}...
+        {lifecycle.badge ? `${lifecycle.badge} · ` : ''}{lifecycle.description.slice(0, 80)}...
       </text>
 
       {/* Transitions (edges) */}

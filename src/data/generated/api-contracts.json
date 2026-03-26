@@ -1,0 +1,789 @@
+{
+  "groups": [
+    {
+      "name": "Addresses",
+      "endpoints": [
+        {
+          "method": "PATCH",
+          "path": "/api/addresses/:id/default",
+          "label": "Default :Id",
+          "auth": "user",
+          "errorCodes": [
+            401,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "PUT",
+          "path": "/api/addresses/:id",
+          "label": ":Id Address",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/addresses/:id",
+          "label": ":Id Address",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/addresses",
+          "label": "List Address",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            422,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/addresses",
+          "label": "Create Address",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            422,
+            500
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/auth/callback",
+          "label": "List Callback",
+          "auth": "user",
+          "errorCodes": []
+        },
+        {
+          "method": "POST",
+          "path": "/api/auth/check-email",
+          "label": "Check Email Auth",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            401,
+            409,
+            500
+          ]
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/auth/delete-account",
+          "label": "Delete Account Auth",
+          "auth": "admin",
+          "errorCodes": [
+            401,
+            409,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/auth/register",
+          "label": "Register Auth",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            409,
+            500
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "endpoints": [
+        {
+          "method": "PATCH",
+          "path": "/api/cart/:id/expiry",
+          "label": "Expiry :Id",
+          "auth": "user",
+          "errorCodes": [
+            401,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/cart/:id",
+          "label": ":Id Cart",
+          "auth": "user",
+          "errorCodes": [
+            401,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/cart/count",
+          "label": "List Count",
+          "auth": "user",
+          "errorCodes": [
+            401,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/cart/merge",
+          "label": "Merge Cart",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/cart",
+          "label": "List Cart",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/cart",
+          "label": "Create Cart",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ]
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/cart",
+          "label": "Delete Cart",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/cart/validate",
+          "label": "Validate Cart",
+          "auth": "user",
+          "errorCodes": [
+            401,
+            500
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Invites",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/invites/:token/accept",
+          "label": "Accept :Token",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            401,
+            404,
+            409,
+            500
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Listings",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/listings/:id/duplicate",
+          "label": "Duplicate :Id",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/listings/:id",
+          "label": "List :Id",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "PUT",
+          "path": "/api/listings/:id",
+          "label": ":Id Listing",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/listings/:id",
+          "label": ":Id Listing",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/listings/:id/status",
+          "label": "Status :Id",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/listings/:id/view",
+          "label": "View :Id",
+          "auth": "user",
+          "errorCodes": [
+            404,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/listings/autocomplete",
+          "label": "List Autocomplete",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/listings/drafts",
+          "label": "List Draft",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/listings/drafts",
+          "label": "Drafts Listing",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/listings/drafts",
+          "label": "Drafts Listing",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/listings/recommendations",
+          "label": "List Recommendation",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            403,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/listings",
+          "label": "List Listing",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/listings",
+          "label": "Create Listing",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/listings/search-suggestions",
+          "label": "Search Suggestions Listing",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/listings/search",
+          "label": "List Search",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/listings/seller",
+          "label": "List Seller",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ]
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/listings/upload/delete",
+          "label": "Delete Upload",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/listings/upload",
+          "label": "Upload Listing",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Members",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/members/avatar",
+          "label": "Avatar Member",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/members/seller-preconditions",
+          "label": "List Seller Precondition",
+          "auth": "user",
+          "errorCodes": [
+            401,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/members/toggle-seller",
+          "label": "Toggle Seller Member",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            500
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Recently Viewed",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/recently-viewed/merge",
+          "label": "Merge Recently Viewed",
+          "auth": "user",
+          "errorCodes": [
+            400,
+            401,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/recently-viewed",
+          "label": "List Recently Viewed",
+          "auth": "user",
+          "errorCodes": [
+            401,
+            500
+          ]
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/recently-viewed",
+          "label": "Delete Recently Viewed",
+          "auth": "user",
+          "errorCodes": [
+            401,
+            500
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shops",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/shops/:id/invites/:inviteId/resend",
+          "label": "Resend :InviteId",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/shops/:id/invites/:inviteId",
+          "label": ":InviteId Invite",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/shops/:id/invites",
+          "label": "Invites :Id",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/shops/:id/invites",
+          "label": "List Invite",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/shops/:id/members/:memberId/role",
+          "label": "Role :MemberId",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/shops/:id/members/:memberId",
+          "label": ":MemberId Member",
+          "auth": "admin",
+          "errorCodes": [
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/shops/:id/members",
+          "label": "Members :Id",
+          "auth": "admin",
+          "errorCodes": [
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/shops/:id/ownership-transfer",
+          "label": "List Ownership Transfer",
+          "auth": "admin",
+          "errorCodes": [
+            404,
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "view"
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/shops/:id/ownership-transfer",
+          "label": "Ownership Transfer :Id",
+          "auth": "admin",
+          "errorCodes": [
+            404,
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "view"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/shops/:id/ownership",
+          "label": "Ownership :Id",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/shops/:id/roles",
+          "label": "List Role",
+          "auth": "admin",
+          "errorCodes": [
+            500
+          ],
+          "permissions": {
+            "feature": "members",
+            "level": "view"
+          }
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/shops/:id",
+          "label": ":Id Shop",
+          "auth": "admin",
+          "errorCodes": [
+            404,
+            500
+          ],
+          "permissions": {
+            "feature": "shop_settings",
+            "level": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/shops/avatar",
+          "label": "Avatar Shop",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            403,
+            500
+          ],
+          "permissions": {
+            "feature": "shop_settings",
+            "level": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/shops/hero-banner",
+          "label": "Hero Banner Shop",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            403,
+            500
+          ],
+          "permissions": {
+            "feature": "shop_settings",
+            "level": "full"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/api/shops/ownership-transfer/:token/accept",
+          "label": "Accept :Token",
+          "auth": "admin",
+          "errorCodes": [
+            401,
+            403,
+            404,
+            410,
+            500
+          ]
+        },
+        {
+          "method": "GET",
+          "path": "/api/shops/ownership-transfer/:token",
+          "label": "List :Token",
+          "auth": "admin",
+          "errorCodes": [
+            401,
+            403,
+            404,
+            410,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/shops",
+          "label": "Create Shop",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            401,
+            403,
+            409,
+            500
+          ]
+        },
+        {
+          "method": "POST",
+          "path": "/api/shops/slug",
+          "label": "Slug Shop",
+          "auth": "admin",
+          "errorCodes": [
+            400,
+            403,
+            409,
+            500
+          ],
+          "permissions": {
+            "feature": "shop_settings",
+            "level": "full"
+          }
+        }
+      ]
+    }
+  ]
+}

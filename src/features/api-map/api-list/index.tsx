@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
 import { useDocsContext } from '@/providers/docs-provider';
-import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data/cross-links';
+import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import styles from './api-list.module.scss';
 
 const METHOD_COLORS: Record<string, string> = {

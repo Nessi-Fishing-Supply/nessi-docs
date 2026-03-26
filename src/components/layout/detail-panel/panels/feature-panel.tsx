@@ -18,9 +18,9 @@ export function FeaturePanel({ feature }: { feature: Feature }) {
         {feature.componentCount > 0 && <span>{feature.componentCount} components</span>}
         {feature.endpointCount > 0 && <span>{feature.endpointCount} endpoints</span>}
       </div>
-      {feature.links.length > 0 && (
+      {(feature.links?.length ?? 0) > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-          {feature.links.map((link, i) => (
+          {(feature.links ?? []).map((link, i) => (
             <Link key={i} href={link.href} style={{ fontSize: '11px', color: '#3d8c75', textDecoration: 'none' }}>
               {link.label}
             </Link>

@@ -1,0 +1,67 @@
+{
+  "lifecycles": [
+    {
+      "slug": "listing",
+      "name": "Listing Lifecycle",
+      "description": "Status lifecycle for listing entities",
+      "states": [
+        {
+          "id": "draft",
+          "label": "Draft"
+        },
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "reserved",
+          "label": "Reserved"
+        },
+        {
+          "id": "sold",
+          "label": "Sold"
+        },
+        {
+          "id": "archived",
+          "label": "Deactivated"
+        },
+        {
+          "id": "deleted",
+          "label": "Deleted"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "draft",
+          "to": "active",
+          "label": "Publish"
+        },
+        {
+          "from": "active",
+          "to": "sold",
+          "label": "Mark as sold"
+        },
+        {
+          "from": "active",
+          "to": "archived",
+          "label": "Deactivate"
+        },
+        {
+          "from": "draft",
+          "to": "deleted",
+          "label": "Delete draft"
+        },
+        {
+          "from": "active",
+          "to": "reserved",
+          "label": "Reserve"
+        },
+        {
+          "from": "reserved",
+          "to": "sold",
+          "label": "Complete sale"
+        }
+      ]
+    }
+  ]
+}

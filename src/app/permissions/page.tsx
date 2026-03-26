@@ -1,4 +1,4 @@
-import { roles } from '@/data/permissions';
+import { roles } from '@/data';
 import { PermissionsMatrix } from '@/features/permissions/permissions-matrix';
 
 export const metadata = { title: 'Permissions' };

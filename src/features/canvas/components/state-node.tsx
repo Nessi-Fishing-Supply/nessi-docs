@@ -4,6 +4,7 @@ import {
   hexToRgba,
 } from '../utils/geometry';
 import type { LifecycleState } from '@/types/lifecycle';
+import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
 
 interface StateNodeProps {
   state: LifecycleState;
@@ -12,6 +13,7 @@ interface StateNodeProps {
 }
 
 export function StateNode({ state, isSelected, onClick }: StateNodeProps) {
+  const color = state.color ?? DEFAULT_STATE_COLOR;
   return (
     <g
       transform={`translate(${state.x},${state.y})`}
@@ -22,8 +24,8 @@ export function StateNode({ state, isSelected, onClick }: StateNodeProps) {
         width={LIFECYCLE_NODE_WIDTH}
         height={LIFECYCLE_NODE_HEIGHT}
         rx={8}
-        fill={hexToRgba(state.color, 0.12)}
-        stroke={isSelected ? state.color : hexToRgba(state.color, 0.3)}
+        fill={hexToRgba(color, 0.12)}
+        stroke={isSelected ? color : hexToRgba(color, 0.3)}
         strokeWidth={isSelected ? 1.5 : 1}
       />
       <rect
@@ -32,7 +34,7 @@ export function StateNode({ state, isSelected, onClick }: StateNodeProps) {
         width={3}
         height={LIFECYCLE_NODE_HEIGHT - 16}
         rx={1.5}
-        fill={state.color}
+        fill={color}
       />
       <text
         x={LIFECYCLE_NODE_WIDTH / 2}

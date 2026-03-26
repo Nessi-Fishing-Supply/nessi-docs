@@ -1,4 +1,5 @@
 import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
+import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
 
 interface LifecyclePanelProps {
   state: LifecycleState;
@@ -6,6 +7,7 @@ interface LifecyclePanelProps {
 }
 
 export function LifecyclePanel({ state, lifecycle }: LifecyclePanelProps) {
+  const stateColor = state.color ?? DEFAULT_STATE_COLOR;
   const incoming = lifecycle.transitions.filter((t) => t.to === state.id);
   const outgoing = lifecycle.transitions.filter((t) => t.from === state.id);
 
@@ -15,7 +17,7 @@ export function LifecyclePanel({ state, lifecycle }: LifecyclePanelProps) {
         {state.label}
       </h3>
       <div style={{ display: 'flex', gap: '6px', marginBottom: '12px' }}>
-        <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '10px', background: `${state.color}1a`, color: state.color }}>
+        <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '10px', background: `${stateColor}1a`, color: stateColor }}>
           {lifecycle.name}
         </span>
         <span style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '10px', background: 'var(--bg-raised)', color: 'var(--text-dim)' }}>

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { JourneyNode, Journey } from '@/types/journey';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
-import { getLinksForRoute } from '@/data/cross-links';
+import { getLinksForRoute } from '@/data';
 
 interface StepPanelProps {
   node: JourneyNode;

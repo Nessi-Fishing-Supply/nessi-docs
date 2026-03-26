@@ -1,4 +1,4 @@
-import { features } from '@/data/features';
+import { features } from '@/data';
 import { FeatureList } from '@/features/feature-readiness/feature-list';
 
 export const metadata = { title: 'Features' };

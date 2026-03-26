@@ -1,0 +1,947 @@
+{
+  "journeys": [
+    {
+      "slug": "guest-cart",
+      "title": "Guest Cart → Login → Merge",
+      "persona": "guest",
+      "description": "Guest adds items to localStorage cart, logs in, and cart silently merges to the database.",
+      "relatedIssues": [
+        128,
+        129,
+        130
+      ],
+      "nodes": [
+        {
+          "id": "add-to-cart--entry",
+          "type": "entry",
+          "label": "Add Item to Guest Cart",
+          "x": 40,
+          "y": 0
+        },
+        {
+          "id": "add-to-cart--click-add",
+          "type": "step",
+          "label": "Guest clicks 'Add to Cart' button",
+          "x": 40,
+          "y": 120,
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/cart/components/add-to-cart-button/index.tsx"
+        },
+        {
+          "id": "add-to-cart--validate-client",
+          "type": "step",
+          "label": "Client-side validation (own listing, already in cart, cart full)",
+          "x": 40,
+          "y": 240,
+          "layer": "client",
+          "status": "built",
+          "errorCases": [
+            {
+              "condition": "User's own listing",
+              "result": "Button disabled"
+            },
+            {
+              "condition": "Already in cart",
+              "result": "Button shows 'In Cart'"
+            },
+            {
+              "condition": "Cart has 25 items",
+              "result": "Toast: cart full"
+            }
+          ]
+        },
+        {
+          "id": "add-to-cart--write-localstorage",
+          "type": "step",
+          "label": "Add item to localStorage cart (listingId + priceCents snapshot)",
+          "x": 40,
+          "y": 360,
+          "layer": "background",
+          "status": "built",
+          "notes": "Guest cart is entirely localStorage-backed. No API calls."
+        },
+        {
+          "id": "add-to-cart--update-badge",
+          "type": "step",
+          "label": "CartIcon badge count updates via Zustand store",
+          "x": 40,
+          "y": 480,
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "add-to-cart--show-toast",
+          "type": "step",
+          "label": "Toast: 'Added to cart'",
+          "x": 40,
+          "y": 600,
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "view-cart--entry",
+          "type": "entry",
+          "label": "View Guest Cart",
+          "x": 40,
+          "y": 720
+        },
+        {
+          "id": "view-cart--load-cart",
+          "type": "step",
+          "label": "Read cart items from localStorage",
+          "x": 40,
+          "y": 840,
+          "layer": "background",
+          "status": "built"
+        },
+        {
+          "id": "view-cart--decision-load-cart",
+          "type": "decision",
+          "label": "Has items?",
+          "x": 280,
+          "y": 960,
+          "options": [
+            {
+              "label": "Yes",
+              "to": "view-cart--group-by-seller"
+            },
+            {
+              "label": "No — show empty state + browse CTA",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "view-cart--group-by-seller",
+          "type": "step",
+          "label": "Items grouped by seller for display",
+          "x": 40,
+          "y": 1080,
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/app/(frontend)/cart/page.tsx"
+        },
+        {
+          "id": "view-cart--show-items",
+          "type": "step",
+          "label": "Render cart items with remove/clear actions",
+          "x": 40,
+          "y": 1200,
+          "layer": "client",
+          "status": "built",
+          "notes": "Checkout button is disabled in MVP."
+        },
+        {
+          "id": "merge-on-login--entry",
+          "type": "entry",
+          "label": "Cart Merge on Login",
+          "x": 40,
+          "y": 1320
+        },
+        {
+          "id": "merge-on-login--login-detected",
+          "type": "step",
+          "label": "useCartMerge() detects auth state change",
+          "x": 40,
+          "y": 1440,
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/cart/hooks/use-cart-merge.ts",
+          "notes": "This is a background hook — the user sees nothing. It fires on login regardless of what page they're on."
+        },
+        {
+          "id": "merge-on-login--read-guest-cart",
+          "type": "step",
+          "label": "Read localStorage cart items",
+          "x": 40,
+          "y": 1560,
+          "layer": "background",
+          "status": "built"
+        },
+        {
+          "id": "merge-on-login--post-merge",
+          "type": "step",
+          "label": "POST /api/cart/merge with guest items",
+          "x": 40,
+          "y": 1680,
+          "layer": "server",
+          "status": "built",
+          "route": "POST /api/cart/merge",
+          "notes": "Server validates every guest item: checks listing exists, not sold, not own listing, not already in DB cart."
+        },
+        {
+          "id": "merge-on-login--server-validate",
+          "type": "step",
+          "label": "Skip invalid/duplicate/own-listing items",
+          "x": 40,
+          "y": 1800,
+          "layer": "server",
+          "status": "built",
+          "notes": "No errors surfaced to user — invalid items are silently dropped."
+        },
+        {
+          "id": "merge-on-login--insert-valid",
+          "type": "step",
+          "label": "Insert valid items into cart table (DB)",
+          "x": 40,
+          "y": 1920,
+          "layer": "database",
+          "status": "built"
+        },
+        {
+          "id": "merge-on-login--clear-localstorage",
+          "type": "step",
+          "label": "Clear localStorage guest cart",
+          "x": 40,
+          "y": 2040,
+          "layer": "background",
+          "status": "built",
+          "notes": "No toast, no redirect. Entirely silent. User's cart page now shows DB-backed items."
+        }
+      ],
+      "edges": [
+        {
+          "from": "add-to-cart--entry",
+          "to": "add-to-cart--click-add"
+        },
+        {
+          "from": "add-to-cart--click-add",
+          "to": "add-to-cart--validate-client"
+        },
+        {
+          "from": "add-to-cart--validate-client",
+          "to": "add-to-cart--write-localstorage"
+        },
+        {
+          "from": "add-to-cart--write-localstorage",
+          "to": "add-to-cart--update-badge"
+        },
+        {
+          "from": "add-to-cart--update-badge",
+          "to": "add-to-cart--show-toast"
+        },
+        {
+          "from": "view-cart--entry",
+          "to": "view-cart--load-cart"
+        },
+        {
+          "from": "view-cart--load-cart",
+          "to": "view-cart--decision-load-cart"
+        },
+        {
+          "from": "view-cart--decision-load-cart",
+          "to": "view-cart--group-by-seller",
+          "opt": "Yes"
+        },
+        {
+          "from": "view-cart--decision-load-cart",
+          "to": "view-cart--group-by-seller"
+        },
+        {
+          "from": "view-cart--group-by-seller",
+          "to": "view-cart--show-items"
+        },
+        {
+          "from": "merge-on-login--entry",
+          "to": "merge-on-login--login-detected"
+        },
+        {
+          "from": "merge-on-login--login-detected",
+          "to": "merge-on-login--read-guest-cart"
+        },
+        {
+          "from": "merge-on-login--read-guest-cart",
+          "to": "merge-on-login--post-merge"
+        },
+        {
+          "from": "merge-on-login--post-merge",
+          "to": "merge-on-login--server-validate"
+        },
+        {
+          "from": "merge-on-login--server-validate",
+          "to": "merge-on-login--insert-valid"
+        },
+        {
+          "from": "merge-on-login--insert-valid",
+          "to": "merge-on-login--clear-localstorage"
+        }
+      ]
+    },
+    {
+      "slug": "shop-invite-acceptance",
+      "title": "Shop Invite → Accept (or Register & Auto-Accept)",
+      "persona": "shop-member",
+      "description": "A user receives a shop invite email, lands on the invite page, and either accepts directly (if authenticated) or registers a new account with auto-accept.",
+      "relatedIssues": [
+        250,
+        251,
+        252,
+        253,
+        254,
+        255
+      ],
+      "nodes": [
+        {
+          "id": "invite-sent--entry",
+          "type": "entry",
+          "label": "Owner Sends Invite",
+          "x": 40,
+          "y": 0
+        },
+        {
+          "id": "invite-sent--open-modal",
+          "type": "step",
+          "label": "Owner clicks Invite button",
+          "x": 40,
+          "y": 120,
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/shops/components/invite-member-modal/index.tsx"
+        },
+        {
+          "id": "invite-sent--enter-details",
+          "type": "step",
+          "label": "Enter recipient email + select role",
+          "x": 40,
+          "y": 240,
+          "layer": "client",
+          "status": "built",
+          "notes": "RoleSelect dropdown filters out Owner role. Validates via validateInviteInput()."
+        },
+        {
+          "id": "invite-sent--create-invite",
+          "type": "step",
+          "label": "POST /api/shops/[id]/invites",
+          "x": 40,
+          "y": 360,
+          "layer": "server",
+          "status": "built",
+          "route": "POST /api/shops/[id]/invites",
+          "codeRef": "src/app/api/shops/[id]/invites/route.ts",
+          "notes": "Requires requireShopPermission('members', 'full'). Enforces 5-member cap (members + pending invites).",
+          "errorCases": [
+            {
+              "condition": "Members + pending invites >= 5",
+              "result": "MEMBER_LIMIT_REACHED",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Email already a shop member",
+              "result": "ALREADY_MEMBER",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Duplicate pending invite for same email",
+              "result": "DUPLICATE_INVITE",
+              "httpStatus": 409
+            }
+          ]
+        },
+        {
+          "id": "invite-sent--insert-row",
+          "type": "step",
+          "label": "Insert shop_invites row with 7-day expiry token",
+          "x": 40,
+          "y": 480,
+          "layer": "database",
+          "status": "built"
+        },
+        {
+          "id": "invite-sent--send-email",
+          "type": "step",
+          "label": "Send invite email via Resend with /invite/{token} link",
+          "x": 40,
+          "y": 600,
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/features/email/templates/shop-invite.tsx",
+          "notes": "Email failure is logged but does NOT block the 201 response. Invite is still created."
+        },
+        {
+          "id": "accept-authenticated--entry",
+          "type": "entry",
+          "label": "Accept Invite (Already Logged In)",
+          "x": 40,
+          "y": 720
+        },
+        {
+          "id": "accept-authenticated--land-on-page",
+          "type": "step",
+          "label": "User lands on /invite/[token]",
+          "x": 40,
+          "y": 840,
+          "layer": "client",
+          "status": "built",
+          "route": "/invite/[token]",
+          "codeRef": "src/app/(frontend)/invite/[token]/page.tsx",
+          "notes": "Server component fetches invite data via admin client. Invalid token → 404."
+        },
+        {
+          "id": "accept-authenticated--decision-land-on-page",
+          "type": "decision",
+          "label": "Invite still valid?",
+          "x": 280,
+          "y": 960,
+          "options": [
+            {
+              "label": "Pending + not expired",
+              "to": "accept-authenticated--check-auth"
+            },
+            {
+              "label": "Expired",
+              "to": "END"
+            },
+            {
+              "label": "Revoked",
+              "to": "END"
+            },
+            {
+              "label": "Already accepted",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "accept-authenticated--check-auth",
+          "type": "step",
+          "label": "InviteAccept checks useAuth() session",
+          "x": 40,
+          "y": 1080,
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/shops/components/invite-accept/index.tsx"
+        },
+        {
+          "id": "accept-authenticated--show-accept-button",
+          "type": "step",
+          "label": "Show invite details + 'Accept Invitation' button",
+          "x": 40,
+          "y": 1200,
+          "layer": "client",
+          "status": "built",
+          "notes": "Shows shop name, avatar, inviter name, assigned role."
+        },
+        {
+          "id": "accept-authenticated--click-accept",
+          "type": "step",
+          "label": "User clicks Accept Invitation",
+          "x": 40,
+          "y": 1320,
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "accept-authenticated--accept-api",
+          "type": "step",
+          "label": "POST /api/invites/[token]/accept",
+          "x": 40,
+          "y": 1440,
+          "layer": "server",
+          "status": "built",
+          "route": "POST /api/invites/[token]/accept",
+          "codeRef": "src/app/api/invites/[token]/accept/route.ts",
+          "notes": "Uses cookie session auth (no X-Nessi-Context header). Looks up invite by token via admin client.",
+          "errorCases": [
+            {
+              "condition": "Already a shop member",
+              "result": "ALREADY_MEMBER",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Shop at member cap",
+              "result": "MEMBER_LIMIT_REACHED",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Member belongs to 5 shops already",
+              "result": "SHOP_LIMIT_REACHED",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Invite expired",
+              "result": "INVITE_EXPIRED",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Invite revoked",
+              "result": "INVITE_REVOKED",
+              "httpStatus": 400
+            }
+          ]
+        },
+        {
+          "id": "accept-authenticated--insert-membership",
+          "type": "step",
+          "label": "Insert shop_members row with invite's role_id",
+          "x": 40,
+          "y": 1560,
+          "layer": "database",
+          "status": "built"
+        },
+        {
+          "id": "accept-authenticated--mark-accepted",
+          "type": "step",
+          "label": "Update shop_invites status = 'accepted'",
+          "x": 40,
+          "y": 1680,
+          "layer": "database",
+          "status": "built"
+        },
+        {
+          "id": "accept-authenticated--redirect-success",
+          "type": "step",
+          "label": "Redirect to /dashboard + success toast",
+          "x": 40,
+          "y": 1800,
+          "layer": "client",
+          "status": "built",
+          "notes": "Member now sees shop in navbar context switcher dropdown."
+        },
+        {
+          "id": "accept-new-user--entry",
+          "type": "entry",
+          "label": "Register & Auto-Accept (New User)",
+          "x": 40,
+          "y": 1920
+        },
+        {
+          "id": "accept-new-user--land-unauthenticated",
+          "type": "step",
+          "label": "User lands on /invite/[token] without session",
+          "x": 40,
+          "y": 2040,
+          "layer": "client",
+          "status": "built",
+          "route": "/invite/[token]"
+        },
+        {
+          "id": "accept-new-user--show-auth-options",
+          "type": "step",
+          "label": "Show 'Sign Up' and 'Sign In' buttons (no Accept yet)",
+          "x": 40,
+          "y": 2160,
+          "layer": "client",
+          "status": "built",
+          "notes": "Sign Up navigates to ?register=true&invite={token}"
+        },
+        {
+          "id": "accept-new-user--click-signup",
+          "type": "step",
+          "label": "User clicks 'Sign Up'",
+          "x": 40,
+          "y": 2280,
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "accept-new-user--navbar-detects-params",
+          "type": "step",
+          "label": "Navbar useEffect detects ?register=true&invite={token}",
+          "x": 40,
+          "y": 2400,
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/components/navigation/navbar/index.tsx",
+          "notes": "Stores inviteToken in component state, opens register modal, cleans URL params."
+        },
+        {
+          "id": "accept-new-user--register",
+          "type": "step",
+          "label": "User enters email + password → POST /api/auth/register",
+          "x": 40,
+          "y": 2520,
+          "layer": "server",
+          "status": "built",
+          "route": "POST /api/auth/register"
+        },
+        {
+          "id": "accept-new-user--otp-verify",
+          "type": "step",
+          "label": "User enters 6-digit OTP code → verifyOtp(type='signup')",
+          "x": 40,
+          "y": 2640,
+          "layer": "client",
+          "status": "built",
+          "notes": "inviteToken is threaded: Navbar → RegisterForm → OtpInput via props."
+        },
+        {
+          "id": "accept-new-user--session-established",
+          "type": "step",
+          "label": "Session established via cookies",
+          "x": 40,
+          "y": 2760,
+          "layer": "server",
+          "status": "built"
+        },
+        {
+          "id": "accept-new-user--auto-accept",
+          "type": "step",
+          "label": "acceptShopInvite(token) called automatically",
+          "x": 40,
+          "y": 2880,
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/shops/services/shop-invites.ts",
+          "notes": "Called inside OtpInput after verifyOtp succeeds. Failure is NEVER blocking — account creation always completes. Error → toast suggesting manual acceptance."
+        },
+        {
+          "id": "accept-new-user--decision-auto-accept",
+          "type": "decision",
+          "label": "Accept result?",
+          "x": 280,
+          "y": 3000,
+          "options": [
+            {
+              "label": "Success",
+              "to": "accept-new-user--auto-accept-success"
+            },
+            {
+              "label": "Failure",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "accept-new-user--auto-accept-success",
+          "type": "step",
+          "label": "Toast: 'You've joined {shopName}!' + redirect to /dashboard",
+          "x": 40,
+          "y": 3120,
+          "layer": "client",
+          "status": "built",
+          "notes": "onInviteAccepted callback fires in Navbar, shows toast, navigates."
+        }
+      ],
+      "edges": [
+        {
+          "from": "invite-sent--entry",
+          "to": "invite-sent--open-modal"
+        },
+        {
+          "from": "invite-sent--open-modal",
+          "to": "invite-sent--enter-details"
+        },
+        {
+          "from": "invite-sent--enter-details",
+          "to": "invite-sent--create-invite"
+        },
+        {
+          "from": "invite-sent--create-invite",
+          "to": "invite-sent--insert-row"
+        },
+        {
+          "from": "invite-sent--insert-row",
+          "to": "invite-sent--send-email"
+        },
+        {
+          "from": "accept-authenticated--entry",
+          "to": "accept-authenticated--land-on-page"
+        },
+        {
+          "from": "accept-authenticated--land-on-page",
+          "to": "accept-authenticated--decision-land-on-page"
+        },
+        {
+          "from": "accept-authenticated--decision-land-on-page",
+          "to": "accept-authenticated--check-auth",
+          "opt": "Pending + not expired"
+        },
+        {
+          "from": "accept-authenticated--decision-land-on-page",
+          "to": "accept-authenticated--check-auth"
+        },
+        {
+          "from": "accept-authenticated--check-auth",
+          "to": "accept-authenticated--show-accept-button"
+        },
+        {
+          "from": "accept-authenticated--show-accept-button",
+          "to": "accept-authenticated--click-accept"
+        },
+        {
+          "from": "accept-authenticated--click-accept",
+          "to": "accept-authenticated--accept-api"
+        },
+        {
+          "from": "accept-authenticated--accept-api",
+          "to": "accept-authenticated--insert-membership"
+        },
+        {
+          "from": "accept-authenticated--insert-membership",
+          "to": "accept-authenticated--mark-accepted"
+        },
+        {
+          "from": "accept-authenticated--mark-accepted",
+          "to": "accept-authenticated--redirect-success"
+        },
+        {
+          "from": "accept-new-user--entry",
+          "to": "accept-new-user--land-unauthenticated"
+        },
+        {
+          "from": "accept-new-user--land-unauthenticated",
+          "to": "accept-new-user--show-auth-options"
+        },
+        {
+          "from": "accept-new-user--show-auth-options",
+          "to": "accept-new-user--click-signup"
+        },
+        {
+          "from": "accept-new-user--click-signup",
+          "to": "accept-new-user--navbar-detects-params"
+        },
+        {
+          "from": "accept-new-user--navbar-detects-params",
+          "to": "accept-new-user--register"
+        },
+        {
+          "from": "accept-new-user--register",
+          "to": "accept-new-user--otp-verify"
+        },
+        {
+          "from": "accept-new-user--otp-verify",
+          "to": "accept-new-user--session-established"
+        },
+        {
+          "from": "accept-new-user--session-established",
+          "to": "accept-new-user--auto-accept"
+        },
+        {
+          "from": "accept-new-user--auto-accept",
+          "to": "accept-new-user--decision-auto-accept"
+        },
+        {
+          "from": "accept-new-user--decision-auto-accept",
+          "to": "accept-new-user--auto-accept-success",
+          "opt": "Success"
+        },
+        {
+          "from": "accept-new-user--decision-auto-accept",
+          "to": "accept-new-user--auto-accept-success"
+        }
+      ]
+    },
+    {
+      "slug": "signup",
+      "title": "Signup (Email + OTP)",
+      "persona": "auth",
+      "description": "New user registers with email and password, verifies via 6-digit OTP code, and gets a session. Includes invite auto-accept, cart merge, and recently-viewed merge as background side effects.",
+      "relatedIssues": [
+        159,
+        254
+      ],
+      "nodes": [
+        {
+          "id": "register--entry",
+          "type": "entry",
+          "label": "Register & Verify Email",
+          "x": 40,
+          "y": 0
+        },
+        {
+          "id": "register--open-modal",
+          "type": "step",
+          "label": "User clicks Sign Up → navbar modal opens",
+          "x": 40,
+          "y": 120,
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/auth/components/register-form/index.tsx"
+        },
+        {
+          "id": "register--enter-credentials",
+          "type": "step",
+          "label": "Enter email + password",
+          "x": 40,
+          "y": 240,
+          "layer": "client",
+          "status": "built",
+          "notes": "Client-side validation: email format, password min 8 chars."
+        },
+        {
+          "id": "register--submit-register",
+          "type": "step",
+          "label": "POST /api/auth/register (admin client creates user)",
+          "x": 40,
+          "y": 360,
+          "layer": "server",
+          "status": "built",
+          "route": "POST /api/auth/register",
+          "codeRef": "src/app/api/auth/register/route.ts",
+          "notes": "Uses admin client to create user, bypassing email confirmation flow. Triggers Supabase to send OTP email.",
+          "errorCases": [
+            {
+              "condition": "Email already registered",
+              "result": "Show inline 'Sign in instead' link",
+              "httpStatus": 409
+            }
+          ]
+        },
+        {
+          "id": "register--transition-to-otp",
+          "type": "step",
+          "label": "Form transitions to OTP input (same modal, no page change)",
+          "x": 40,
+          "y": 480,
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "register--enter-otp",
+          "type": "step",
+          "label": "User enters 6-digit code from email",
+          "x": 40,
+          "y": 600,
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/auth/components/otp-input/index.tsx"
+        },
+        {
+          "id": "register--decision-enter-otp",
+          "type": "decision",
+          "label": "Code not received?",
+          "x": 280,
+          "y": 720,
+          "options": [
+            {
+              "label": "Resend OTP (60s cooldown)",
+              "to": "register--transition-to-otp"
+            }
+          ]
+        },
+        {
+          "id": "register--verify-otp",
+          "type": "step",
+          "label": "verifyOtp(type='signup') → session established",
+          "x": 40,
+          "y": 840,
+          "layer": "server",
+          "status": "built",
+          "notes": "On success, Supabase sets session cookies.",
+          "errorCases": [
+            {
+              "condition": "Invalid/expired code",
+              "result": "Show error, allow retry"
+            }
+          ]
+        },
+        {
+          "id": "post-auth-side-effects--entry",
+          "type": "entry",
+          "label": "Post-Auth Background Side Effects",
+          "x": 40,
+          "y": 960
+        },
+        {
+          "id": "post-auth-side-effects--invite-check",
+          "type": "step",
+          "label": "Check if invite token was present in URL params",
+          "x": 40,
+          "y": 1080,
+          "layer": "background",
+          "status": "built",
+          "notes": "Token was stored in Navbar state from ?register=true&invite={token}. Threaded to OtpInput via props."
+        },
+        {
+          "id": "post-auth-side-effects--auto-accept-invite",
+          "type": "step",
+          "label": "acceptShopInvite(token) — join shop automatically",
+          "x": 40,
+          "y": 1200,
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/shops/services/shop-invites.ts",
+          "notes": "Only fires if invite token present. Failure never blocks — account is always created. See shop-invite-acceptance.json for full flow."
+        },
+        {
+          "id": "post-auth-side-effects--cart-merge",
+          "type": "step",
+          "label": "useCartMerge() — merge localStorage cart to DB",
+          "x": 40,
+          "y": 1320,
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/cart/hooks/use-cart-merge.ts",
+          "notes": "Silent. No toast. Fires on any auth state change. See guest-cart.json for full flow."
+        },
+        {
+          "id": "post-auth-side-effects--recently-viewed-merge",
+          "type": "step",
+          "label": "useRecentlyViewedMerge() — merge localStorage views to DB",
+          "x": 40,
+          "y": 1440,
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts",
+          "notes": "Silent. POST /api/recently-viewed/merge. Deduplicates on server."
+        },
+        {
+          "id": "post-auth-side-effects--onboarding-check",
+          "type": "step",
+          "label": "Check onboarding_completed_at on member record",
+          "x": 40,
+          "y": 1560,
+          "layer": "client",
+          "status": "built",
+          "notes": "If null → onboarding banner appears. If set → user stays on current page."
+        }
+      ],
+      "edges": [
+        {
+          "from": "register--entry",
+          "to": "register--open-modal"
+        },
+        {
+          "from": "register--open-modal",
+          "to": "register--enter-credentials"
+        },
+        {
+          "from": "register--enter-credentials",
+          "to": "register--submit-register"
+        },
+        {
+          "from": "register--submit-register",
+          "to": "register--transition-to-otp"
+        },
+        {
+          "from": "register--transition-to-otp",
+          "to": "register--enter-otp"
+        },
+        {
+          "from": "register--enter-otp",
+          "to": "register--decision-enter-otp"
+        },
+        {
+          "from": "register--decision-enter-otp",
+          "to": "register--transition-to-otp",
+          "opt": "Resend OTP (60s cooldown)"
+        },
+        {
+          "from": "register--decision-enter-otp",
+          "to": "register--verify-otp"
+        },
+        {
+          "from": "post-auth-side-effects--entry",
+          "to": "post-auth-side-effects--invite-check"
+        },
+        {
+          "from": "post-auth-side-effects--invite-check",
+          "to": "post-auth-side-effects--auto-accept-invite"
+        },
+        {
+          "from": "post-auth-side-effects--auto-accept-invite",
+          "to": "post-auth-side-effects--cart-merge"
+        },
+        {
+          "from": "post-auth-side-effects--cart-merge",
+          "to": "post-auth-side-effects--recently-viewed-merge"
+        },
+        {
+          "from": "post-auth-side-effects--recently-viewed-merge",
+          "to": "post-auth-side-effects--onboarding-check"
+        }
+      ]
+    }
+  ]
+}
