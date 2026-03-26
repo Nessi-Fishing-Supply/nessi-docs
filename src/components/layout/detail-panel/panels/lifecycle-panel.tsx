@@ -1,5 +1,7 @@
 import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
+import { Badge, SectionLabel } from '@/components/ui';
+import styles from './panel-content.module.scss';
 
 interface LifecyclePanelProps {
   state: LifecycleState;
@@ -13,68 +15,20 @@ export function LifecyclePanel({ state, lifecycle }: LifecyclePanelProps) {
 
   return (
     <div>
-      <h3
-        style={{
-          fontFamily: 'var(--font-dm-serif)',
-          fontSize: '16px',
-          color: 'var(--text-primary)',
-          margin: '0 0 4px',
-        }}
-      >
-        {state.label}
-      </h3>
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '12px' }}>
-        <span
-          style={{
-            fontSize: '10px',
-            padding: '2px 8px',
-            borderRadius: '10px',
-            background: `${stateColor}1a`,
-            color: stateColor,
-          }}
-        >
-          {lifecycle.name}
-        </span>
-        <span
-          style={{
-            fontSize: '10px',
-            padding: '2px 8px',
-            borderRadius: '10px',
-            background: 'var(--bg-raised)',
-            color: 'var(--text-dim)',
-          }}
-        >
-          {lifecycle.badge}
-        </span>
+      <h3 className={styles.panelTitle}>{state.label}</h3>
+
+      <div className={styles.badgeRow}>
+        <Badge color={stateColor}>{lifecycle.name}</Badge>
+        <Badge variant="subtle">{lifecycle.badge}</Badge>
       </div>
 
       {incoming.length > 0 && (
         <>
-          <div
-            style={{
-              fontSize: '9px',
-              color: 'var(--text-dim)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase' as const,
-              marginBottom: '4px',
-            }}
-          >
-            How you get here
-          </div>
+          <SectionLabel spaced={false}>How you get here</SectionLabel>
           {incoming.map((t, i) => (
-            <div
-              key={i}
-              style={{
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
-                padding: '4px 8px',
-                background: 'var(--bg-raised)',
-                borderRadius: '4px',
-                marginBottom: '3px',
-              }}
-            >
-              <span style={{ color: 'var(--text-muted)' }}>{t.from}</span>
-              <span style={{ color: 'var(--text-dim)', margin: '0 6px' }}>→</span>
+            <div key={i} className={styles.transitionRow}>
+              <span className={styles.transitionMuted}>{t.from}</span>
+              <span className={styles.transitionArrow}>→</span>
               <span>{t.label}</span>
             </div>
           ))}
@@ -83,50 +37,19 @@ export function LifecyclePanel({ state, lifecycle }: LifecyclePanelProps) {
 
       {outgoing.length > 0 && (
         <>
-          <div
-            style={{
-              fontSize: '9px',
-              color: 'var(--text-dim)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase' as const,
-              marginTop: '12px',
-              marginBottom: '4px',
-            }}
-          >
-            Where it goes
-          </div>
+          <SectionLabel>Where it goes</SectionLabel>
           {outgoing.map((t, i) => (
-            <div
-              key={i}
-              style={{
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
-                padding: '4px 8px',
-                background: 'var(--bg-raised)',
-                borderRadius: '4px',
-                marginBottom: '3px',
-              }}
-            >
+            <div key={i} className={styles.transitionRow}>
               <span>{t.label}</span>
-              <span style={{ color: 'var(--text-dim)', margin: '0 6px' }}>→</span>
-              <span style={{ color: 'var(--text-muted)' }}>{t.to}</span>
+              <span className={styles.transitionArrow}>→</span>
+              <span className={styles.transitionMuted}>{t.to}</span>
             </div>
           ))}
         </>
       )}
 
       {outgoing.length === 0 && (
-        <div
-          style={{
-            fontSize: '11px',
-            color: '#b84040',
-            padding: '8px 10px',
-            background: 'rgba(184,64,64,0.06)',
-            border: '1px solid rgba(184,64,64,0.12)',
-            borderRadius: '4px',
-            marginTop: '12px',
-          }}
-        >
+        <div className={styles.terminalState}>
           Terminal state — no outgoing transitions
         </div>
       )}

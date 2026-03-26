@@ -31,10 +31,10 @@ export interface PersonaConfig {
 export const LAYER_CONFIG: Record<StepLayer, LayerConfig> = {
   client: { label: 'Client', color: '#3d8c75', icon: 'HiOutlineDesktopComputer' },
   server: { label: 'Server', color: '#e27739', icon: 'HiOutlineServer' },
-  database: { label: 'Database', color: '#1e4a40', icon: 'HiOutlineDatabase' },
-  background: { label: 'Background', color: '#b86e0a', icon: 'HiOutlineLightningBolt' },
-  email: { label: 'Email', color: '#b84040', icon: 'HiOutlineMail' },
-  external: { label: 'External', color: '#78756f', icon: 'HiOutlineGlobe' },
+  database: { label: 'Database', color: '#8b5cf6', icon: 'HiOutlineDatabase' },
+  background: { label: 'Background', color: '#6b7280', icon: 'HiOutlineLightningBolt' },
+  email: { label: 'Email', color: '#ec4899', icon: 'HiOutlineMail' },
+  external: { label: 'External', color: '#f59e0b', icon: 'HiOutlineGlobe' },
 };
 
 export const STATUS_CONFIG: Record<StepStatus, StatusConfig> = {

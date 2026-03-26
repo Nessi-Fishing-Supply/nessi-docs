@@ -184,9 +184,25 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
   })) as JourneyNode[];
 }
 
+/** Clean journey titles: strip parenthetical tech details, arrows, file refs */
+function cleanJourneyTitle(title: string): string {
+  let t = title;
+  // Strip parenthetical details: "Account Deletion (Full Cascade)" → "Account Deletion"
+  t = t.replace(/\s*\([^)]*\)\s*/g, '').trim();
+  // Strip arrow chains: "Guest Cart → Login → Merge" → "Guest Cart"
+  // But keep the first segment which is the meaningful name
+  if (t.includes(' → ')) {
+    t = t.split(' → ')[0].trim();
+  }
+  // Strip "& TechDetail" when the second part is technical
+  // Keep genuine compound names like "Browse & Discover"
+  return t;
+}
+
 function transformJourneys(raw: RawJourney[]): Journey[] {
   return raw.map((j) => ({
     ...j,
+    title: cleanJourneyTitle(j.title),
     nodes: layoutJourneyNodes(j.nodes, j.edges),
     edges: j.edges as JourneyEdge[],
   })) as Journey[];

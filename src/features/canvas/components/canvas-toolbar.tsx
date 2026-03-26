@@ -32,6 +32,8 @@ interface CanvasToolbarProps {
   zoomControls: ZoomControls;
   minimapVisible: boolean;
   onToggleMinimap: () => void;
+  legendVisible?: boolean;
+  onToggleLegend?: () => void;
   filterControls?: FilterControls;
   pathControls?: PathControls;
 }
@@ -115,6 +117,17 @@ function FilterIcon() {
         strokeWidth="1.2"
         strokeLinecap="round"
       />
+    </svg>
+  );
+}
+
+function LegendIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <rect x="2" y="3" width="4" height="3" rx="0.5" stroke="currentColor" strokeWidth="1.1" />
+      <line x1="8" y1="4.5" x2="14" y2="4.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
+      <rect x="2" y="9" width="4" height="3" rx="0.5" stroke="currentColor" strokeWidth="1.1" />
+      <line x1="8" y1="10.5" x2="14" y2="10.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
     </svg>
   );
 }
@@ -323,15 +336,50 @@ function ToolbarBtn({
   const bg = isActive ? BTN_ACTIVE_BG : hovered ? BTN_HOVER_BG : 'none';
 
   return (
-    <button
-      aria-label={label}
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ ...BTN_STYLE, background: bg, ...extraStyle }}
-    >
-      {children}
-    </button>
+    <div style={{ position: 'relative', display: 'inline-flex' }}>
+      <button
+        aria-label={label}
+        onClick={onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{ ...BTN_STYLE, background: bg, ...extraStyle }}
+      >
+        {children}
+      </button>
+      {hovered && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            marginBottom: 8,
+            pointerEvents: 'none',
+            animation: 'tooltip-in 120ms ease-out',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              whiteSpace: 'nowrap',
+              padding: '4px 10px',
+              background: 'rgba(15,19,25,0.97)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: 6,
+              fontSize: 10,
+              color: '#b0ada8',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.6), 0 8px 40px rgba(0,0,0,0.3)',
+            }}
+          >
+            {label}
+            <svg width="14" height="7" viewBox="0 0 14 7" style={{ position: 'absolute', bottom: -7, left: '50%', marginLeft: -7, display: 'block' }}>
+              <path d="M0,0 L6,6 Q7,7 8,6 L14,0" fill="rgba(15,19,25,0.97)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeLinejoin="round" />
+              <rect x="0" y="0" width="14" height="1" fill="rgba(15,19,25,0.97)" />
+            </svg>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -343,6 +391,8 @@ export function CanvasToolbar({
   zoomControls,
   minimapVisible,
   onToggleMinimap,
+  legendVisible,
+  onToggleLegend,
   filterControls,
   pathControls,
 }: CanvasToolbarProps) {
@@ -385,9 +435,20 @@ export function CanvasToolbar({
       {/* Toolbar */}
       <div style={{ ...TOOLBAR_STYLE, pointerEvents: 'auto' }}>
         {/* Minimap toggle */}
-        <ToolbarBtn label="Toggle minimap" isActive={minimapVisible} onClick={onToggleMinimap}>
+        <ToolbarBtn label="Minimap" isActive={minimapVisible} onClick={onToggleMinimap}>
           <MinimapIcon />
         </ToolbarBtn>
+
+        {/* Legend toggle */}
+        {onToggleLegend && (
+          <ToolbarBtn
+            label="Legend"
+            isActive={legendVisible}
+            onClick={() => { onToggleLegend(); setFiltersOpen(false); }}
+          >
+            <LegendIcon />
+          </ToolbarBtn>
+        )}
 
         {/* Separator */}
         <div style={SEP_STYLE} />
@@ -399,7 +460,7 @@ export function CanvasToolbar({
 
         {/* Zoom percentage — click to reset */}
         <ToolbarBtn
-          label="Reset zoom to 100%"
+          label="Reset Zoom"
           onClick={zoomControls.resetView}
           style={ZOOM_TEXT_STYLE}
         >
@@ -415,7 +476,7 @@ export function CanvasToolbar({
         <div style={SEP_STYLE} />
 
         {/* Fit to view */}
-        <ToolbarBtn label="Fit to view" onClick={zoomControls.resetView}>
+        <ToolbarBtn label="Recenter Canvas" onClick={zoomControls.resetView}>
           <FitViewIcon />
         </ToolbarBtn>
 
@@ -424,7 +485,7 @@ export function CanvasToolbar({
           <>
             <div style={SEP_STYLE} />
             <ToolbarBtn
-              label="Toggle filters"
+              label="Filter Nodes"
               isActive={filtersOpen}
               onClick={() => setFiltersOpen((p) => !p)}
             >
@@ -437,7 +498,7 @@ export function CanvasToolbar({
         {pathControls?.hasPath && (
           <>
             <div style={SEP_STYLE} />
-            <ToolbarBtn label="Clear path trace" onClick={pathControls.resetPath}>
+            <ToolbarBtn label="Exit Trace Mode" onClick={pathControls.resetPath}>
               <ClearIcon />
             </ToolbarBtn>
           </>

@@ -1,0 +1,9 @@
+.block {
+  font-size: var(--font-size-200);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding: 8px 10px;
+  background: rgba(61, 140, 117, 0.05);
+  border-left: 2px solid var(--color-primary-400);
+  border-radius: 4px;
+}

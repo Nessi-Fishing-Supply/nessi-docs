@@ -5,31 +5,8 @@ import Link from 'next/link';
 import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
 import { useDocsContext } from '@/providers/docs-provider';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
+import { getMethodColors } from '@/constants/colors';
 import styles from './api-list.module.scss';
-
-const METHOD_COLORS: Record<string, string> = {
-  GET: '#3d8c75',
-  POST: '#e27739',
-  PUT: '#b86e0a',
-  PATCH: '#e89048',
-  DELETE: '#b84040',
-};
-
-const METHOD_BG: Record<string, string> = {
-  GET: 'rgba(61,140,117,0.1)',
-  POST: 'rgba(226,119,57,0.1)',
-  PUT: 'rgba(184,110,10,0.1)',
-  PATCH: 'rgba(232,144,72,0.1)',
-  DELETE: 'rgba(184,64,64,0.1)',
-};
-
-const METHOD_BORDER: Record<string, string> = {
-  GET: 'rgba(61,140,117,0.25)',
-  POST: 'rgba(226,119,57,0.25)',
-  PUT: 'rgba(184,110,10,0.25)',
-  PATCH: 'rgba(232,144,72,0.25)',
-  DELETE: 'rgba(184,64,64,0.25)',
-};
 
 interface ApiListProps {
   groups: ApiGroup[];
@@ -38,9 +15,7 @@ interface ApiListProps {
 function EndpointCard({ endpoint, groupName }: { endpoint: ApiEndpoint; groupName: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const { setSelectedItem } = useDocsContext();
-  const color = METHOD_COLORS[endpoint.method] ?? '#78756f';
-  const bg = METHOD_BG[endpoint.method] ?? 'rgba(120,117,111,0.1)';
-  const border = METHOD_BORDER[endpoint.method] ?? 'rgba(120,117,111,0.25)';
+  const { color, bg, border } = getMethodColors(endpoint.method);
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
 

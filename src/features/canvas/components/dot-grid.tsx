@@ -3,12 +3,12 @@
 import { useRef, useEffect } from 'react';
 
 const DOT_SPACING = 14;
-const BASE_RADIUS = 0.4;
-const MAX_RADIUS = 1.6;
+const BASE_RADIUS = 0.6;
+const MAX_RADIUS = 1.4;
 const GLOW_RADIUS = 120;
-const BASE_ALPHA = 0.06;
-const MAX_ALPHA = 0.4;
-const DOT_COLOR = { r: 61, g: 140, b: 117 };
+const BASE_ALPHA = 0.18;
+const MAX_ALPHA = 0.35;
+const DOT_COLOR = { r: 180, g: 178, b: 172 };
 
 export function DotGrid() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -103,7 +103,11 @@ export function DotGrid() {
             if (dist2 >= glowR2) continue;
 
             const t = 1 - Math.sqrt(dist2) / GLOW_RADIUS;
-            const ease = t * t * (3 - 2 * t);
+            // Steep cubic falloff — outer dots barely differ from base,
+            // only dots close to cursor get noticeably brighter
+            const ease = t * t * t;
+            if (ease < 0.01) continue; // skip imperceptible changes
+
             const radius = BASE_RADIUS + (MAX_RADIUS - BASE_RADIUS) * ease;
             const alpha = BASE_ALPHA + (MAX_ALPHA - BASE_ALPHA) * ease;
             const r = Math.round(255 + (DOT_COLOR.r - 255) * ease);

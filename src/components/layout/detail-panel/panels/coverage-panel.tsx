@@ -1,5 +1,8 @@
 import type { Journey } from '@/types/journey';
 import { PERSONA_CONFIG, STATUS_CONFIG } from '@/types/journey';
+import { colorTint } from '@/constants/colors';
+import { Badge, SectionLabel, ProgressBar } from '@/components/ui';
+import styles from './panel-content.module.scss';
 
 interface CoveragePanelProps {
   journey: Journey;
@@ -18,132 +21,37 @@ export function CoveragePanel({ journey }: CoveragePanelProps) {
 
   return (
     <div>
-      <h3
-        style={{
-          fontFamily: 'var(--font-dm-serif)',
-          fontSize: '16px',
-          color: 'var(--text-primary)',
-          margin: '0 0 4px',
-        }}
-      >
-        {journey.title}
-      </h3>
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '12px' }}>
-        <span
-          style={{
-            fontSize: '10px',
-            padding: '2px 8px',
-            borderRadius: '10px',
-            background: `${personaCfg.color}1a`,
-            color: personaCfg.color,
-          }}
-        >
-          {personaCfg.label}
-        </span>
+      <h3 className={styles.panelTitle}>{journey.title}</h3>
+
+      <div className={styles.badgeRow}>
+        <Badge color={personaCfg.color}>{personaCfg.label}</Badge>
       </div>
 
-      <div
-        style={{
-          fontSize: '11px',
-          color: 'var(--text-secondary)',
-          marginBottom: '16px',
-          lineHeight: '1.5',
-        }}
-      >
-        {journey.description}
-      </div>
+      <p className={styles.description}>{journey.description}</p>
 
-      {/* Built progress */}
-      <div style={{ marginBottom: '12px' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            fontSize: '10px',
-            marginBottom: '4px',
-          }}
-        >
-          <span style={{ color: 'var(--text-muted)' }}>Built</span>
-          <span style={{ color: STATUS_CONFIG.built.color }}>
-            {builtPct}% ({built}/{total})
-          </span>
-        </div>
-        <div
-          style={{
-            height: '4px',
-            background: 'var(--bg-raised)',
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              height: '100%',
-              width: `${builtPct}%`,
-              background: STATUS_CONFIG.built.color,
-              borderRadius: '2px',
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Tested progress */}
-      <div style={{ marginBottom: '16px' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            fontSize: '10px',
-            marginBottom: '4px',
-          }}
-        >
-          <span style={{ color: 'var(--text-muted)' }}>Tested</span>
-          <span style={{ color: STATUS_CONFIG.tested.color }}>
-            {testedPct}% ({tested}/{total})
-          </span>
-        </div>
-        <div
-          style={{
-            height: '4px',
-            background: 'var(--bg-raised)',
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              height: '100%',
-              width: `${testedPct}%`,
-              background: STATUS_CONFIG.tested.color,
-              borderRadius: '2px',
-            }}
-          />
-        </div>
-      </div>
+      <ProgressBar
+        label="Built"
+        value={`${builtPct}% (${built}/${total})`}
+        percent={builtPct}
+        color={STATUS_CONFIG.built.color}
+      />
+      <ProgressBar
+        label="Tested"
+        value={`${testedPct}% (${tested}/${total})`}
+        percent={testedPct}
+        color={STATUS_CONFIG.tested.color}
+      />
 
       {planned.length > 0 && (
         <>
-          <div
-            style={{
-              fontSize: '9px',
-              color: 'var(--text-dim)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase' as const,
-              marginBottom: '4px',
-            }}
-          >
-            Not Yet Built ({planned.length})
-          </div>
+          <SectionLabel spaced={false}>Not Yet Built ({planned.length})</SectionLabel>
           {planned.map((s) => (
             <div
               key={s.id}
+              className={styles.statusItem}
               style={{
-                fontSize: '10px',
                 color: '#b84040',
-                padding: '3px 8px',
-                background: 'rgba(184,64,64,0.06)',
-                borderRadius: '3px',
-                marginBottom: '2px',
+                background: colorTint('#b84040', 0.06),
               }}
             >
               {s.label}
@@ -154,28 +62,14 @@ export function CoveragePanel({ journey }: CoveragePanelProps) {
 
       {builtUntested.length > 0 && (
         <>
-          <div
-            style={{
-              fontSize: '9px',
-              color: 'var(--text-dim)',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase' as const,
-              marginTop: '12px',
-              marginBottom: '4px',
-            }}
-          >
-            Built but Untested ({builtUntested.length})
-          </div>
+          <SectionLabel>Built but Untested ({builtUntested.length})</SectionLabel>
           {builtUntested.map((s) => (
             <div
               key={s.id}
+              className={styles.statusItem}
               style={{
-                fontSize: '10px',
                 color: '#e27739',
-                padding: '3px 8px',
-                background: 'rgba(226,119,57,0.06)',
-                borderRadius: '3px',
-                marginBottom: '2px',
+                background: colorTint('#e27739', 0.06),
               }}
             >
               {s.label}

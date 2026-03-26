@@ -17,19 +17,23 @@ export function AnimatedEdge({ from, to, isLit, isDimmed, hasActivePath }: Anima
   const tp = getPort(to, 'left');
   const d = bezier(fp.x, fp.y, tp.x, tp.y);
 
-  const opacity = isLit ? 0.6 : 0.08;
-  const color = isLit ? 'rgba(61,140,117,0.6)' : 'rgba(255,255,255,0.15)';
+  const opacity = isLit ? 0.85 : 0.08;
+  const color = isLit ? 'rgba(61,140,117,0.7)' : 'rgba(255,255,255,0.15)';
+  const marker = isLit ? 'url(#arrow-lit)' : undefined;
 
   return (
     <path
       d={d}
       fill="none"
       stroke={color}
-      strokeWidth={isLit ? 2 : 1}
+      strokeWidth={isLit ? 2.5 : 1}
       strokeDasharray="4 16"
+      strokeLinecap="round"
+      markerEnd={marker}
       style={{
         animation: 'flow-pulse 1.8s linear infinite',
         opacity,
+        transition: 'opacity 400ms ease-out',
       }}
     />
   );

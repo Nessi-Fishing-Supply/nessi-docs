@@ -17,6 +17,7 @@ interface CanvasProviderProps {
   viewKey?: string;
   children: ReactNode;
   overlay?: ReactNode;
+  legend?: ReactNode;
   renderMinimap?: (viewBoxString: string, panTo: (x: number, y: number) => void) => ReactNode;
   renderToolbar?: (zoomControls: ZoomControls) => ReactNode;
 }
@@ -26,6 +27,7 @@ export function CanvasProvider({
   viewKey,
   children,
   overlay,
+  legend,
   renderMinimap,
   renderToolbar,
 }: CanvasProviderProps) {
@@ -43,39 +45,41 @@ export function CanvasProvider({
             viewBox="0 0 10 10"
             refX="10"
             refY="5"
-            markerWidth="8"
-            markerHeight="8"
+            markerWidth="5"
+            markerHeight="5"
             orient="auto"
           >
-            <path d="M0,0 L10,5 L0,10 Z" fill="rgba(61,140,117,0.5)" />
+            <path d="M2,2 L10,5 L2,8 Z" fill="rgba(61,140,117,0.5)" />
           </marker>
           <marker
             id="arrow-lit"
             viewBox="0 0 10 10"
             refX="10"
             refY="5"
-            markerWidth="8"
-            markerHeight="8"
+            markerWidth="5"
+            markerHeight="5"
             orient="auto"
           >
-            <path d="M0,0 L10,5 L0,10 Z" fill="rgba(61,140,117,0.8)" />
+            <path d="M2,2 L10,5 L2,8 Z" fill="rgba(61,140,117,0.8)" />
           </marker>
           <marker
             id="arrow-decision"
             viewBox="0 0 10 10"
             refX="10"
             refY="5"
-            markerWidth="8"
-            markerHeight="8"
+            markerWidth="5"
+            markerHeight="5"
             orient="auto"
           >
-            <path d="M0,0 L10,5 L0,10 Z" fill="rgba(232,144,72,0.5)" />
+            <path d="M2,2 L10,5 L2,8 Z" fill="rgba(167,139,250,0.5)" />
           </marker>
         </defs>
         {children}
       </svg>
 
       {overlay}
+
+      {legend}
 
       {renderMinimap && renderMinimap(viewBoxString, panTo)}
 

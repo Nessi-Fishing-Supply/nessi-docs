@@ -13,10 +13,11 @@ export function Edge({ from, to, isDecision, isLit, isDimmed }: EdgeProps) {
   const tp = getPort(to, 'left');
   const d = bezier(fp.x, fp.y, tp.x, tp.y);
 
-  const opacity = isDimmed ? 0.06 : isLit ? 0.75 : 0.25;
-  const strokeWidth = isLit ? 2.5 : 1.5;
-  const stroke = isDecision ? 'rgba(232,144,72,0.6)' : 'rgba(61,140,117,0.6)';
-  const marker = isDecision ? 'url(#arrow-decision)' : isLit ? 'url(#arrow-lit)' : 'url(#arrow)';
+  // When lit, this edge becomes a subtle track — the AnimatedEdge is the primary visual
+  const opacity = isDimmed ? 0.06 : isLit ? 0.2 : 0.25;
+  const strokeWidth = isLit ? 1.5 : 1.5;
+  const stroke = isDecision ? 'rgba(167,139,250,0.6)' : 'rgba(61,140,117,0.6)';
+  const marker = isLit ? undefined : isDecision ? 'url(#arrow-decision)' : 'url(#arrow)';
 
   return (
     <path

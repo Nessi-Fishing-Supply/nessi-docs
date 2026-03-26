@@ -4,15 +4,8 @@ import { useState, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './app-shell.module.scss';
 
-// Pages that support detail panel selection
-const DETAIL_PANEL_PAGES = [
-  '/journeys',
-  '/api-map',
-  '/data-model',
-  '/lifecycles',
-  '/coverage',
-  '/features',
-];
+// Pages that support detail panel selection (journeys excluded — uses tooltips instead)
+const DETAIL_PANEL_PAGES = ['/api-map', '/data-model', '/lifecycles', '/coverage', '/features'];
 
 interface AppShellProps {
   topbar: ReactNode;
@@ -44,7 +37,7 @@ export function AppShell({ topbar, sidebar, detail, children }: AppShellProps) {
       <aside className={styles.detail}>{detail}</aside>
 
       {/* Toggle sits on the shell grid, not inside main, so overflow:hidden doesn't clip it */}
-      <button
+      {pageSupportsDetail && <button
         className={styles.detailToggle}
         onClick={() =>
           setManualOverride((prev) => {
@@ -56,7 +49,7 @@ export function AppShell({ topbar, sidebar, detail, children }: AppShellProps) {
         aria-label={detailCollapsed ? 'Show detail panel' : 'Hide detail panel'}
       >
         <span className={styles.toggleArrow}>{detailCollapsed ? '‹' : '›'}</span>
-      </button>
+      </button>}
     </div>
   );
 }

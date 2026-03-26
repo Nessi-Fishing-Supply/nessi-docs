@@ -1,5 +1,30 @@
+'use client';
+
+import { useState } from 'react';
 import type { DecisionOption } from '@/types/journey';
 import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
+
+const DECISION_COLOR = '#a78bfa';
+
+/** Clean snake_case/SCREAMING_CASE into title case: "email_not_confirmed" → "Email Not Confirmed" */
+function humanize(text: string): string {
+  if (text.includes('_')) {
+    return text
+      .split('_')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+      .join(' ');
+  }
+  return text;
+}
+
+/** Split "No — empty state: 'Add your first address'" into { short: "No", detail: "empty state: ..." } */
+function parseOptionLabel(label: string): { short: string; detail?: string } {
+  const sep = label.indexOf(' — ');
+  if (sep !== -1) {
+    return { short: humanize(label.slice(0, sep).trim()), detail: label.slice(sep + 3).trim() };
+  }
+  return { short: humanize(label) };
+}
 
 interface DecisionNodeProps {
   x: number;
@@ -20,62 +45,128 @@ export function DecisionNode({
   isDimmed,
   onChoose,
 }: DecisionNodeProps) {
+  const [hoveredPill, setHoveredPill] = useState<string | null>(null);
   const cx = x + DECISION_SIZE / 2;
   const cy = y + DECISION_SIZE / 2;
   const opacity = isDimmed ? 0.15 : 1;
 
+  const parsedOptions = options.map((opt) => ({
+    ...opt,
+    ...parseOptionLabel(opt.label),
+  }));
+
+  // Measure pill width from short label
+  const pillW = Math.max(
+    DECISION_SIZE + 10,
+    ...parsedOptions.map((o) => o.short.length * 7 + 24),
+  );
+
   return (
     <g style={{ opacity, transition: 'opacity 400ms ease-out' }}>
-      {/* Diamond */}
-      <g transform={`translate(${cx},${cy}) rotate(45)`} style={{ cursor: 'default' }}>
+      {/* Diamond — no hover, not interactive (pills below are the actions) */}
+      <g transform={`translate(${cx},${cy}) rotate(45)` } style={{ cursor: 'default' }}>
         <rect
           x={-DECISION_SIZE / 2 + 6}
           y={-DECISION_SIZE / 2 + 6}
           width={DECISION_SIZE - 12}
           height={DECISION_SIZE - 12}
           rx={4}
-          fill={hexToRgba('#e89048', 0.12)}
-          stroke={hexToRgba('#e89048', 0.35)}
+          fill={hexToRgba(DECISION_COLOR, 0.12)}
+          stroke={hexToRgba(DECISION_COLOR, 0.35)}
           strokeWidth={1}
         />
       </g>
+
       {/* ? mark */}
-      <text x={cx} y={cy + 4} fill="#e89048" fontSize={14} fontWeight={700} textAnchor="middle">
+      <text x={cx} y={cy + 4} fill={DECISION_COLOR} fontSize={14} fontWeight={700} textAnchor="middle">
         ?
       </text>
+
       {/* Label above */}
       <text x={cx} y={y - 6} fill="#9a9790" fontSize={9} textAnchor="middle">
         {label}
       </text>
-      {/* Option pills */}
-      {options.map((opt, i) => {
-        const py = y + DECISION_SIZE + 8 + i * 24;
+
+      {/* Option pills — short labels only */}
+      {parsedOptions.map((opt, i) => {
+        const py = y + DECISION_SIZE + 8 + i * 26;
         const isChosen = chosenOpt === opt.label;
         const pillOpacity = chosenOpt && !isChosen ? 0.35 : 1;
+        const isHovPill = hoveredPill === opt.label;
+
         return (
           <g
             key={opt.label}
-            transform={`translate(${x - 10},${py})`}
+            transform={`translate(${cx - pillW / 2},${py})`}
             onClick={() => onChoose?.(opt.label, opt.to)}
+            onMouseEnter={() => setHoveredPill(opt.label)}
+            onMouseLeave={() => setHoveredPill(null)}
             style={{ cursor: 'pointer', opacity: pillOpacity }}
           >
             <rect
-              width={DECISION_SIZE + 30}
-              height={18}
-              rx={9}
-              fill={hexToRgba('#e89048', isChosen ? 0.2 : 0.08)}
-              stroke={hexToRgba('#e89048', isChosen ? 0.5 : 0.2)}
+              width={pillW}
+              height={20}
+              rx={10}
+              fill={hexToRgba(DECISION_COLOR, isChosen ? 0.2 : isHovPill ? 0.14 : 0.08)}
+              stroke={hexToRgba(DECISION_COLOR, isChosen ? 0.5 : isHovPill ? 0.35 : 0.2)}
               strokeWidth={0.8}
             />
             <text
-              x={(DECISION_SIZE + 30) / 2}
-              y={12}
+              x={pillW / 2}
+              y={13}
               fill={isChosen ? '#e8e6e1' : '#9a9790'}
-              fontSize={9}
+              fontSize={10}
+              fontWeight={isChosen ? 500 : 400}
               textAnchor="middle"
             >
-              {opt.label}
+              {opt.short}
             </text>
+
+            {/* Detail tooltip on pill hover */}
+            {isHovPill && opt.detail && (
+              <foreignObject
+                x={pillW + 12}
+                y={-10}
+                width={230}
+                height={1}
+                overflow="visible"
+                style={{ pointerEvents: 'none' }}
+              >
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    animation: 'tooltip-in 120ms ease-out',
+                  }}
+                >
+                  {/* Left arrow — overlaps tooltip border by 2px to hide seam */}
+                  <svg width="7" height="14" viewBox="0 0 7 14" style={{ display: 'block', flexShrink: 0, marginRight: -3, position: 'relative', zIndex: 1 }}>
+                    <path d="M7,0 L1,6 Q0,7 1,8 L7,14" fill="rgba(15,19,25,0.97)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeLinejoin="round" />
+                    <rect x="5" y="0" width="3" height="14" fill="rgba(15,19,25,0.97)" />
+                  </svg>
+                  <div
+                    style={{
+                      position: 'relative',
+                      maxWidth: 200,
+                      padding: '6px 10px',
+                      background: 'rgba(15,19,25,0.97)',
+                      border: '1px solid rgba(255,255,255,0.12)',
+                      borderRadius: '6px',
+                      backdropFilter: 'blur(12px)',
+                      boxShadow: '0 4px 20px rgba(0,0,0,0.6), 0 8px 40px rgba(0,0,0,0.3)',
+                      fontSize: '10px',
+                      color: '#b0ada8',
+                      lineHeight: '1.4',
+                    }}
+                  >
+                    {opt.detail}
+                  </div>
+                </div>
+              </foreignObject>
+            )}
           </g>
         );
       })}

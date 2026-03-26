@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { Journey, JourneyNode, StepLayer, StepStatus } from '@/types/journey';
+import { PERSONA_CONFIG } from '@/types/journey';
 import { useDocsContext } from '@/providers/docs-provider';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { useViewport } from '@/features/canvas/hooks/use-viewport';
@@ -16,6 +17,7 @@ import { AnimatedEdge } from '@/features/canvas/components/animated-edge';
 import { NodeTooltip } from '@/features/canvas/components/node-tooltip';
 import { Minimap } from '@/features/canvas/components/minimap';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
+import { Legend } from '@/features/canvas/components/legend';
 
 interface JourneyCanvasProps {
   journey: Journey;
@@ -33,13 +35,12 @@ export function JourneyCanvas({
   onToggleStatus,
 }: JourneyCanvasProps) {
   const { selectedItem, setSelectedItem, clearSelection } = useDocsContext();
-  const { chosenPath, choosePath, resetPath, litNodes, litEdges, hasPath } = usePathTrace(
-    journey.nodes,
-    journey.edges,
-  );
+  const { chosenPath, choosePath, startFromEntry, activeEntryId, resetPath, litNodes, litEdges, hasPath } =
+    usePathTrace(journey.nodes, journey.edges);
   const viewBox = useViewport(journey.nodes);
 
   const [minimapVisible, setMinimapVisible] = useState(true);
+  const [legendVisible, setLegendVisible] = useState(false);
 
   const entered = useStaggerEntry(journey.nodes.map((n) => ({ id: n.id, x: n.x })));
 
@@ -89,11 +90,14 @@ export function JourneyCanvas({
           visible={minimapVisible}
         />
       )}
+      legend={<Legend visible={legendVisible} />}
       renderToolbar={(zoomControls) => (
         <CanvasToolbar
           zoomControls={zoomControls}
           minimapVisible={minimapVisible}
           onToggleMinimap={() => setMinimapVisible((p) => !p)}
+          legendVisible={legendVisible}
+          onToggleLegend={() => setLegendVisible((p) => !p)}
           filterControls={{
             visibleLayers,
             visibleStatuses,
@@ -161,7 +165,16 @@ export function JourneyCanvas({
                 y={node.y}
                 label={node.label}
                 isDimmed={isDimmed}
-                onClick={() => handleNodeClick(node)}
+                isActive={activeEntryId === node.id}
+                meta={{
+                  description: journey.description,
+                  persona: PERSONA_CONFIG[journey.persona]?.label,
+                  personaColor: PERSONA_CONFIG[journey.persona]?.color,
+                  stepCount: journey.nodes.filter((n) => n.type === 'step').length,
+                  decisionCount: journey.nodes.filter((n) => n.type === 'decision').length,
+                  errorCount: journey.nodes.reduce((sum, n) => sum + (n.errorCases?.length ?? 0), 0),
+                }}
+                onClick={() => startFromEntry(node.id)}
               />
             </g>
           );
@@ -201,7 +214,7 @@ export function JourneyCanvas({
               transition: 'opacity 300ms ease-out, transform 300ms ease-out',
             }}
           >
-            <NodeTooltip node={node}>
+            <NodeTooltip node={node} suppressTooltip={isDimmed}>
               <StepNode
                 node={node}
                 isSelected={isSelected}
