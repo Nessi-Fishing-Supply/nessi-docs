@@ -49,6 +49,7 @@ function EndpointRow({ ep }: { ep: EndpointData }) {
 
   return (
     <div
+      id={`err-${ep.path.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
       className={`${styles.endpointCard} ${isOpen ? styles.open : ''}`}
       style={{ '--method-color': color, '--method-bg': bg } as React.CSSProperties}
     >

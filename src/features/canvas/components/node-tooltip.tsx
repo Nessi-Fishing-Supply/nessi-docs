@@ -239,9 +239,29 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
               )}
 
               {/* Error cases */}
-              {errorCount > 0 && (
+              {errorCount > 0 && (() => {
+                const errAnchor = node.route
+                  ? `err-${node.route.replace(/^(GET|POST|PUT|PATCH|DELETE)\s+/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`
+                  : null;
+                return (
                 <div>
-                  <div style={sectionLabel}>Error Cases</div>
+                  <div style={{ ...sectionLabel, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span>Error Cases</span>
+                    {errAnchor && (
+                      <Link
+                        href={`/errors#${errAnchor}`}
+                        style={{ color: '#6a6860', display: 'inline-flex', transition: 'color 150ms ease-out' }}
+                        onMouseEnter={(e) => { e.currentTarget.style.color = '#e05555'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.color = '#6a6860'; }}
+                      >
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                          <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                          <path d="M7 2.5H9.5V5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M9.5 2.5L5.5 6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                        </svg>
+                      </Link>
+                    )}
+                  </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
                     {node.errorCases!.slice(0, 4).map((err, i) => (
                       <div
@@ -269,7 +289,8 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                     )}
                   </div>
                 </div>
-              )}
+                );
+              })()}
 
               {/* Down arrow */}
               <svg width="14" height="7" viewBox="0 0 14 7" style={{ position: 'absolute', bottom: -7, left: '50%', marginLeft: -7, display: 'block' }}>
