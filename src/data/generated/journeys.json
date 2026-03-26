@@ -192,8 +192,7 @@
           "from": "delete-account--clear-session",
           "to": "delete-account--redirect-home"
         }
-      ],
-      "domain": "account"
+      ]
     },
     {
       "slug": "account-settings",
@@ -370,8 +369,7 @@
           "from": "profile-completeness--show-suggestions",
           "to": "profile-completeness--complete-badge"
         }
-      ],
-      "domain": "account"
+      ]
     },
     {
       "slug": "buyer-addresses",
@@ -557,8 +555,7 @@
           "from": "manage-addresses--auto-promote-default",
           "to": "manage-addresses--set-default"
         }
-      ],
-      "domain": "account"
+      ]
     },
     {
       "slug": "buyer-cart",
@@ -793,8 +790,7 @@
           "from": "pre-checkout-validation--validate-cart",
           "to": "pre-checkout-validation--decision-validate-cart"
         }
-      ],
-      "domain": "cart"
+      ]
     },
     {
       "slug": "buyer-checkout",
@@ -906,8 +902,7 @@
           "from": "checkout--buyer-confirms",
           "to": "checkout--escrow-released"
         }
-      ],
-      "domain": "cart"
+      ]
     },
     {
       "slug": "buyer-recently-viewed",
@@ -1163,8 +1158,7 @@
           "from": "clear-history--clear-authenticated",
           "to": "clear-history--clear-guest"
         }
-      ],
-      "domain": "shopping"
+      ]
     },
     {
       "slug": "buyer-search",
@@ -1308,8 +1302,7 @@
           "from": "filter-results--view-count",
           "to": "filter-results--recently-viewed"
         }
-      ],
-      "domain": "shopping"
+      ]
     },
     {
       "slug": "context-switching",
@@ -1643,8 +1636,7 @@
           "from": "edge-cases--multiple-tabs",
           "to": "edge-cases--localstorage-cleared"
         }
-      ],
-      "domain": "identity"
+      ]
     },
     {
       "slug": "email-change",
@@ -1788,8 +1780,7 @@
           "to": "change-email--enter-otp",
           "opt": "No"
         }
-      ],
-      "domain": "auth"
+      ]
     },
     {
       "slug": "guest-browse",
@@ -2020,19 +2011,14 @@
           "from": "view-profiles--shop-page",
           "to": "view-profiles--shop-listings"
         }
-      ],
-      "domain": "shopping"
+      ]
     },
     {
       "slug": "guest-cart",
       "title": "Guest Cart → Login → Merge",
       "persona": "guest",
       "description": "Guest adds items to localStorage cart, logs in, and cart silently merges to the database.",
-      "relatedIssues": [
-        128,
-        129,
-        130
-      ],
+      "relatedIssues": [128, 129, 130],
       "nodes": [
         {
           "id": "add-to-cart--entry",
@@ -2229,8 +2215,7 @@
           "from": "merge-on-login--insert-valid",
           "to": "merge-on-login--clear-localstorage"
         }
-      ],
-      "domain": "cart"
+      ]
     },
     {
       "slug": "guest-recently-viewed",
@@ -2406,8 +2391,7 @@
           "from": "merge-on-login--merge-to-db",
           "to": "merge-on-login--silent-complete"
         }
-      ],
-      "domain": "shopping"
+      ]
     },
     {
       "slug": "login",
@@ -2579,8 +2563,7 @@
           "from": "resend-verification--resend-otp",
           "to": "resend-verification--verify-then-login"
         }
-      ],
-      "domain": "auth"
+      ]
     },
     {
       "slug": "logout",
@@ -2646,8 +2629,7 @@
           "from": "logout--reset-context",
           "to": "logout--redirect-home"
         }
-      ],
-      "domain": "auth"
+      ]
     },
     {
       "slug": "onboarding",
@@ -2898,8 +2880,7 @@
           "from": "post-onboarding-seller-optin--choose-method",
           "to": "post-onboarding-seller-optin--decision-choose-method"
         }
-      ],
-      "domain": "account"
+      ]
     },
     {
       "slug": "password-reset",
@@ -3037,8 +3018,7 @@
           "from": "reset-password--session-established",
           "to": "reset-password--redirect-home"
         }
-      ],
-      "domain": "auth"
+      ]
     },
     {
       "slug": "route-protection",
@@ -3229,8 +3209,7 @@
           "from": "route-protection--allow-dashboard",
           "to": "route-protection--refresh-public"
         }
-      ],
-      "domain": "auth"
+      ]
     },
     {
       "slug": "seller-context",
@@ -3389,8 +3368,7 @@
           "from": "context-header--validate-member",
           "to": "context-header--validate-shop"
         }
-      ],
-      "domain": "identity"
+      ]
     },
     {
       "slug": "seller-listings",
@@ -3740,8 +3718,7 @@
           "from": "dashboard-management--draft-actions",
           "to": "dashboard-management--archived-actions"
         }
-      ],
-      "domain": "listings"
+      ]
     },
     {
       "slug": "seller-social-sharing",
@@ -3867,8 +3844,7 @@
           "from": "share-listing--copy-success",
           "to": "share-listing--copy-denied"
         }
-      ],
-      "domain": "listings"
+      ]
     },
     {
       "slug": "seller-toggle",
@@ -4007,8 +3983,7 @@
           "from": "toggle-off--hide-listings",
           "to": "toggle-off--hide-seller-features"
         }
-      ],
-      "domain": "account"
+      ]
     },
     {
       "slug": "shop-create",
@@ -4169,22 +4144,14 @@
           "from": "create-shop--set-seller-flag",
           "to": "create-shop--redirect-settings"
         }
-      ],
-      "domain": "shops"
+      ]
     },
     {
       "slug": "shop-invite-acceptance",
       "title": "Shop Invite → Accept (or Register & Auto-Accept)",
       "persona": "shop-member",
       "description": "A user receives a shop invite email, lands on the invite page, and either accepts directly (if authenticated) or registers a new account with auto-accept.",
-      "relatedIssues": [
-        250,
-        251,
-        252,
-        253,
-        254,
-        255
-      ],
+      "relatedIssues": [250, 251, 252, 253, 254, 255],
       "nodes": [
         {
           "id": "invite-sent--entry",
@@ -4528,8 +4495,7 @@
           "to": "accept-new-user--auto-accept-success",
           "opt": "Success"
         }
-      ],
-      "domain": "shops"
+      ]
     },
     {
       "slug": "shop-member-journey",
@@ -4875,8 +4841,7 @@
           "from": "multi-shop--set-context",
           "to": "multi-shop--persist-context"
         }
-      ],
-      "domain": "shops"
+      ]
     },
     {
       "slug": "shop-member-management",
@@ -5148,8 +5113,7 @@
           "from": "assign-role--show-toast",
           "to": "assign-role--permissions-change"
         }
-      ],
-      "domain": "shops"
+      ]
     },
     {
       "slug": "shop-ownership-transfer",
@@ -5400,8 +5364,7 @@
           "from": "cancel-transfer--delete-transfer",
           "to": "cancel-transfer--set-cancelled"
         }
-      ],
-      "domain": "shops"
+      ]
     },
     {
       "slug": "shop-roles",
@@ -5533,8 +5496,7 @@
           "from": "custom-roles--click-add-custom",
           "to": "custom-roles--upsell-modal"
         }
-      ],
-      "domain": "shops"
+      ]
     },
     {
       "slug": "shop-settings",
@@ -5714,18 +5676,14 @@
           "from": "delete-shop--soft-delete-shop",
           "to": "delete-shop--release-slug"
         }
-      ],
-      "domain": "shops"
+      ]
     },
     {
       "slug": "signup",
       "title": "Signup (Email + OTP)",
       "persona": "auth",
       "description": "New user registers with email and password, verifies via 6-digit OTP code, and gets a session. Includes invite auto-accept, cart merge, and recently-viewed merge as background side effects.",
-      "relatedIssues": [
-        159,
-        254
-      ],
+      "relatedIssues": [159, 254],
       "nodes": [
         {
           "id": "register--entry",
@@ -5885,8 +5843,7 @@
           "from": "post-auth-side-effects--recently-viewed-merge",
           "to": "post-auth-side-effects--onboarding-check"
         }
-      ],
-      "domain": "auth"
+      ]
     }
   ]
 }

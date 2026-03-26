@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(recommendations): #210 More From This Seller section on listing detail",
+      "number": 283,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/283",
+      "mergedAt": "2026-03-26T20:27:20Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "feat(recommendations): #209 you might also like strip on cart page",
       "number": 282,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/282",

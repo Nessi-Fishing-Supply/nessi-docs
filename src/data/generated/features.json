@@ -170,7 +170,7 @@
       "name": "Listings",
       "description": "Listings are the core marketplace entities in Nessi — individual items posted for sale by members or shops. This feature provides the full data layer (types, services, hooks), validations, UI components, and pages for creating, editing, and managing listings. Related tickets: #21 (photo infrastructure), #5 (create wizard), #7 (edit wizard).",
       "status": "built",
-      "componentCount": 58,
+      "componentCount": 59,
       "endpointCount": 14,
       "hookCount": 10,
       "serviceCount": 7,
