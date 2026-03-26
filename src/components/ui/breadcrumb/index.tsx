@@ -58,7 +58,11 @@ export function Breadcrumb({ segments, switcher }: BreadcrumbProps) {
         const isLast = i === segments.length - 1;
         return (
           <span key={seg.label} style={{ display: 'contents' }}>
-            {i > 0 && <span className={styles.separator}>›</span>}
+            {i > 0 && (
+              <svg className={styles.separator} width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M5 3L9 7L5 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            )}
             {isLast ? (
               <span className={styles.switcherWrap} ref={dropdownRef}>
                 <span className={styles.current}>{seg.label}</span>
