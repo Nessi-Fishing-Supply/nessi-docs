@@ -10,7 +10,6 @@ import {
   HiOutlineChartBar,
   HiOutlinePuzzle,
   HiOutlineShieldCheck,
-  HiOutlineExclamationCircle,
   HiOutlineCog,
   HiOutlineClock,
 } from 'react-icons/hi';
@@ -25,7 +24,6 @@ const NAV_ITEMS = [
   { id: 'coverage', label: 'Coverage', icon: HiOutlineChartBar, href: '/coverage' },
   { id: 'features', label: 'Features', icon: HiOutlinePuzzle, href: '/features' },
   { id: 'permissions', label: 'Permissions', icon: HiOutlineShieldCheck, href: '/permissions' },
-  { id: 'errors', label: 'Errors', icon: HiOutlineExclamationCircle, href: '/errors' },
   { id: 'config', label: 'Config', icon: HiOutlineCog, href: '/config' },
   { id: 'changelog', label: 'Changelog', icon: HiOutlineClock, href: '/changelog' },
 ];

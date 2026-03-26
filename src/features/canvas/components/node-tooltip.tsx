@@ -239,53 +239,31 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
               )}
 
               {/* Error cases */}
-              {errorCount > 0 && (() => {
-                const errAnchor = node.route
-                  ? `err-${node.route.replace(/^(GET|POST|PUT|PATCH|DELETE)\s+/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`
-                  : null;
-                return (
+              {errorCount > 0 && (
                 <div>
                   <div style={sectionLabel}>Error Cases</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                    {node.errorCases!.slice(0, 4).map((err, i) => {
-                      const errRow = (
+                    {node.errorCases!.slice(0, 4).map((err, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          fontSize: '10px',
+                          padding: '4px 8px',
+                          background: 'rgba(220,60,60,0.06)',
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                        }}
+                      >
                         <span style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
                           <span style={{ color: '#e05555' }}>
                             {err.condition}
                             {err.httpStatus ? <span style={{ color: '#6a6860', marginLeft: '4px' }}>({err.httpStatus})</span> : ''}
                           </span>
                         </span>
-                      );
-                      const rowStyle = {
-                        fontSize: '10px',
-                        padding: '4px 8px',
-                        background: 'rgba(220,60,60,0.06)',
-                        borderRadius: '4px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        textDecoration: 'none' as const,
-                        transition: 'background 150ms ease-out',
-                      };
-                      return errAnchor ? (
-                        <Link
-                          key={i}
-                          href={`/errors#${errAnchor}`}
-                          style={rowStyle}
-                          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(220,60,60,0.12)'; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(220,60,60,0.06)'; }}
-                        >
-                          {errRow}
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.5 }}>
-                            <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="#e05555" strokeWidth="1" strokeLinecap="round" />
-                            <path d="M7 2.5H9.5V5" stroke="#e05555" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-                            <path d="M9.5 2.5L5.5 6.5" stroke="#e05555" strokeWidth="1" strokeLinecap="round" />
-                          </svg>
-                        </Link>
-                      ) : (
-                        <div key={i} style={rowStyle}>{errRow}</div>
-                      );
-                    })}
+                      </div>
+                    ))}
                     {errorCount > 4 && (
                       <div style={{ fontSize: '9px', color: '#4a4840', paddingLeft: '8px' }}>
                         +{errorCount - 4} more
@@ -293,8 +271,7 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                     )}
                   </div>
                 </div>
-                );
-              })()}
+              )}
 
               {/* Down arrow */}
               <svg width="14" height="7" viewBox="0 0 14 7" style={{ position: 'absolute', bottom: -7, left: '50%', marginLeft: -7, display: 'block' }}>
