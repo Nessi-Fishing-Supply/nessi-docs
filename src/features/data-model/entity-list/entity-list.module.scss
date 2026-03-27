@@ -15,142 +15,244 @@
   }
 }
 
-// ─── Groups ───
+// ─── Filter Bar ───
 
-.group {
-  margin-bottom: 28px;
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 0;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
 }
 
-.groupHeader {
+.filterLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-right: 2px;
+  white-space: nowrap;
+}
+
+.filterChip {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: rgb(255 255 255 / 3%);
+  border: 1px solid rgb(255 255 255 / 6%);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 150ms ease-out;
+  white-space: nowrap;
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  gap: 4px;
+
+  &:hover {
+    border-color: rgb(255 255 255 / 12%);
+    color: var(--text-secondary);
+    background: rgb(255 255 255 / 5%);
+  }
+}
+
+.filterChipActive {
+  background: rgb(30 74 64 / 12%);
+  border-color: rgb(61 140 117 / 25%);
+  color: #3d8c75;
+}
+
+.chipCount {
+  font-size: 10px;
+  color: var(--text-muted);
+
+  .filterChipActive & {
+    color: rgb(61 140 117 / 80%);
+  }
+}
+
+// ─── Entity Container ───
+
+.entityContainer {
+  padding-top: 4px;
+}
+
+// ─── Group Dividers ───
+
+.groupDivider {
+  display: flex;
+  align-items: center;
   gap: 10px;
-  padding-bottom: 8px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--border-subtle);
+  margin: 16px 0 8px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .groupName {
   font-size: 13px;
-  color: var(--text-primary);
-  margin: 0;
   font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.groupLine {
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
 }
 
 .groupCount {
-  font-size: 10px;
-  color: var(--text-dim);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: rgb(255 255 255 / 5%);
+  padding: 2px 8px;
+  border-radius: 4px;
   font-family: var(--font-family-mono);
 }
 
-// ─── Cards ───
+// ─── Entity Row ───
 
-.cards {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.entityRow {
+  margin-bottom: 2px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 150ms ease-out;
+  animation: rowEnter 200ms ease-out both;
+  animation-delay: var(--stagger);
 }
 
-.card {
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  overflow: hidden;
-  transition: border-color 150ms ease;
-
-  &.active {
-    border-color: #3d8c75;
+@keyframes rowEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.cardHeader {
+.entityRowHeader {
   display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
   padding: 10px 14px;
-  background: var(--bg-raised);
+  background: none;
   border: none;
   cursor: pointer;
   text-align: left;
+  border-radius: 8px;
+  transition: background 150ms ease-out;
+  color: inherit;
+  font: inherit;
 
   &:hover {
-    background: var(--bg-hover);
+    background: rgb(255 255 255 / 2%);
   }
 }
 
-.name {
+.entityRow:hover {
+  border-color: rgb(255 255 255 / 4%);
+}
+
+.entityRowOpen {
+  background: rgb(30 74 64 / 5%);
+  border-color: rgb(61 140 117 / 15%);
+
+  .entityRowHeader {
+    border-radius: 8px 8px 0 0;
+  }
+}
+
+.entityName {
   font-size: 13px;
   font-family: var(--font-family-mono);
   color: #3d8c75;
   font-weight: 600;
 }
 
-.count {
-  font-size: 10px;
+.categoryBadge {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
   color: var(--text-muted);
+  background: rgb(255 255 255 / 4%);
+}
+
+.entityMeta {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.rlsBadge {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #3d8c75;
+  background: rgb(61 140 117 / 10%);
+}
+
+.triggerBadge {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: #e27739;
+  background: rgb(226 119 57 / 10%);
+}
+
+.fkCount {
+  font-size: 10px;
   font-family: var(--font-family-mono);
+  color: var(--text-muted);
+}
+
+.fieldCount {
+  font-size: 10px;
+  font-family: var(--font-family-mono);
+  color: var(--text-muted);
 }
 
 .chevron {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text-muted);
-}
+  transition: transform 200ms ease-out;
 
-// ─── Field table ───
-
-.fields {
-  padding: 0 14px 10px;
-  background: var(--bg-panel);
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.fieldHeader {
-  display: flex;
-  gap: 8px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border-medium);
-  font-size: 9px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  position: sticky;
-  top: 0;
-  background: var(--bg-panel);
-  z-index: 1;
-}
-
-.fieldRow {
-  display: flex;
-  gap: 8px;
-  padding: 6px 0;
-  border-bottom: 1px solid var(--border-subtle);
-  font-size: 11px;
-
-  &:last-child {
-    border-bottom: none;
+  .entityRowOpen & {
+    transform: rotate(90deg);
   }
 }
 
-.fieldName {
-  width: 180px;
-  flex-shrink: 0;
-  font-family: var(--font-family-mono);
-  color: var(--text-primary);
-  font-size: 11px;
+// ─── Expansion (placeholder — styles added in Task 6) ───
+
+.expansion {
+  border-top: 1px solid rgb(61 140 117 / 10%);
+  border-radius: 0 0 8px 8px;
+  background: rgb(15 19 25 / 50%);
 }
 
-.fieldType {
-  width: 110px;
-  flex-shrink: 0;
-  font-family: var(--font-family-mono);
-  color: var(--text-muted);
-  font-size: 10px;
-}
+// ─── Empty State ───
 
-.fieldDesc {
-  flex: 1;
-  color: var(--text-secondary);
-  font-size: 11px;
+.emptyState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  font-size: 12px;
+  color: var(--text-dim);
 }
