@@ -192,24 +192,30 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 
 function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; staggerIndex: number }) {
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
-  const [isOpen, setIsOpen] = useState(false);
+  const isInitialDeepLink = typeof window !== 'undefined' && window.location.hash === `#${slug}`;
+  const [isOpen, setIsOpen] = useState(isInitialDeepLink);
   const [highlight, setHighlight] = useState(false);
+  const [skipAnimation, setSkipAnimation] = useState(isInitialDeepLink);
   const rowRef = useRef<HTMLDivElement>(null);
   const { color, bg, border } = getMethodColors(endpoint.method);
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const errorCount = errors.length;
 
-  // Deep-link: auto-expand and highlight on hash match (mount + in-app navigation)
+  // Deep-link: auto-expand, skip stagger animation, scroll, and highlight
   useEffect(() => {
     function checkHash() {
       if (window.location.hash === `#${slug}`) {
         setIsOpen(true);
-        setHighlight(true);
-        setTimeout(
-          () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
-          100,
-        );
-        setTimeout(() => setHighlight(false), 2000);
+        setSkipAnimation(true);
+        // Wait a frame for the row to render without animation, then scroll and glow
+        requestAnimationFrame(() => {
+          setHighlight(true);
+          setTimeout(
+            () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+            50,
+          );
+          setTimeout(() => setHighlight(false), 2000);
+        });
       }
     }
 
@@ -224,7 +230,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
     <div
       ref={rowRef}
       id={slug}
-      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''} ${highlight ? styles.epRowHighlight : ''}`}
+      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''} ${highlight ? styles.epRowHighlight : ''} ${skipAnimation ? styles.epRowNoAnimation : ''}`}
       style={
         {
           '--method-color': color,

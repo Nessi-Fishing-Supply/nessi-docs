@@ -158,6 +158,11 @@
   }
 }
 
+.epRowNoAnimation {
+  animation: none !important;
+  opacity: 1;
+}
+
 .epRowHeader {
   display: flex;
   align-items: center;
