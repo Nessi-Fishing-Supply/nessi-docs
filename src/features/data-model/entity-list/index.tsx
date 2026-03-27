@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import type { Entity } from '@/types/data-model';
 import { PageHeader } from '@/components/ui/page-header';
@@ -85,18 +85,35 @@ function EntityRow({
   staggerIndex,
   isOpen,
   onToggle,
+  onScrollToEntity,
 }: {
   entity: Entity;
   staggerIndex: number;
   isOpen: boolean;
   onToggle: () => void;
+  onScrollToEntity: (name: string) => void;
 }) {
   const fkCount = countForeignKeys(entity);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const [highlight, setHighlight] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === `#${entity.name}`) {
+      if (!isOpen) onToggle();
+      setHighlight(true);
+      setTimeout(
+        () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+        100,
+      );
+      setTimeout(() => setHighlight(false), 2000);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div
+      ref={rowRef}
       id={entity.name}
-      className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''}`}
+      className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''} ${highlight ? styles.entityRowHighlight : ''}`}
       style={{ '--stagger': `${staggerIndex * 20}ms` } as React.CSSProperties}
     >
       <button className={styles.entityRowHeader} onClick={onToggle}>
@@ -117,19 +134,121 @@ function EntityRow({
         </span>
       </button>
 
-      {isOpen && <EntityExpansion entity={entity} />}
+      {isOpen && <EntityExpansion entity={entity} onScrollToEntity={onScrollToEntity} />}
     </div>
   );
 }
 
-/* ── Entity Expansion (placeholder — built in Task 6) ── */
+/* ── Field Table ── */
 
-function EntityExpansion({ entity }: { entity: Entity }) {
+function FieldTable({ entity, onScrollToEntity }: { entity: Entity; onScrollToEntity: (name: string) => void }) {
+  return (
+    <table className={styles.fieldTable}>
+      <thead>
+        <tr>
+          <th className={styles.fieldThName}>Column</th>
+          <th className={styles.fieldThType}>Type</th>
+          <th className={styles.fieldThDefault}>Default</th>
+          <th className={styles.fieldThRef}></th>
+        </tr>
+      </thead>
+      <tbody>
+        {entity.fields.map((f) => (
+          <tr key={f.name} className={styles.fieldRow}>
+            <td className={styles.fieldName}>
+              {f.name}
+              {f.isPrimaryKey && <span className={styles.tagPk}>PK</span>}
+              {f.references && <span className={styles.tagFk}>FK</span>}
+              {f.nullable && !f.isPrimaryKey && !f.references && (
+                <span className={styles.tagNull}>null</span>
+              )}
+            </td>
+            <td className={styles.fieldType}>{f.type}</td>
+            <td className={styles.fieldDefault}>{f.default ?? ''}</td>
+            <td className={styles.fieldRef}>
+              {f.references && (
+                <a
+                  href={`#${f.references.table}`}
+                  className={styles.fkRef}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onScrollToEntity(f.references!.table);
+                  }}
+                >
+                  → {f.references.table}.{f.references.column}
+                  {f.references.onDelete ? ` ${f.references.onDelete}` : ''}
+                </a>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+/* ── Meta Sections ── */
+
+function MetaSections({ entity }: { entity: Entity }) {
+  return (
+    <div className={styles.metaSections}>
+      {entity.rlsPolicies && entity.rlsPolicies.length > 0 && (
+        <div>
+          <div className={styles.sectionLabel}>RLS Policies</div>
+          {entity.rlsPolicies.map((p, i) => (
+            <div key={i} className={styles.metaRow}>
+              <span className={styles.policyOp}>{p.operation}</span>
+              <span className={styles.metaText}>{p.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {entity.triggers && entity.triggers.length > 0 && (
+        <div>
+          <div className={styles.sectionLabel}>Triggers</div>
+          {entity.triggers.map((t, i) => (
+            <div key={i} className={styles.metaRow}>
+              <span className={styles.triggerEvent}>{t.event}</span>
+              <span className={styles.metaText}>{t.name}</span>
+              <span className={styles.triggerFn}>{t.function}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {entity.indexes && entity.indexes.length > 0 && (
+        <div>
+          <div className={styles.sectionLabel}>Indexes</div>
+          {entity.indexes.map((idx, i) => (
+            <div key={i} className={styles.metaRow}>
+              <span className={styles.indexCols}>{idx.columns.join(', ')}</span>
+              {idx.unique && <span className={styles.indexUnique}>unique</span>}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Entity Expansion ── */
+
+function EntityExpansion({ entity, onScrollToEntity }: { entity: Entity; onScrollToEntity: (name: string) => void }) {
+  const hasMeta = hasMetaSections(entity);
+
   return (
     <div className={styles.expansion}>
-      <p style={{ padding: '16px 18px', color: 'var(--text-muted)', fontSize: '12px' }}>
-        Expansion view — {entity.fields.length} fields
-      </p>
+      <div className={hasMeta ? styles.splitLayout : undefined}>
+        <div className={hasMeta ? styles.splitLeft : styles.fullWidth}>
+          <FieldTable entity={entity} onScrollToEntity={onScrollToEntity} />
+        </div>
+        {hasMeta && (
+          <div className={styles.splitRight}>
+            <MetaSections entity={entity} />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -204,6 +323,22 @@ export function EntityList({ entities }: EntityListProps) {
     });
   };
 
+  const scrollToAndExpand = (entityName: string) => {
+    setOpenEntities((prev) => {
+      const next = new Set(prev);
+      next.add(entityName);
+      return next;
+    });
+    setTimeout(() => {
+      const el = document.getElementById(entityName);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add(styles.entityRowHighlight);
+        setTimeout(() => el.classList.remove(styles.entityRowHighlight), 2000);
+      }
+    }, 50);
+  };
+
   let staggerIndex = 0;
 
   return (
@@ -243,6 +378,7 @@ export function EntityList({ entities }: EntityListProps) {
                   staggerIndex={idx}
                   isOpen={openEntities.has(entity.name)}
                   onToggle={() => toggleEntity(entity.name)}
+                  onScrollToEntity={scrollToAndExpand}
                 />
               );
             })}

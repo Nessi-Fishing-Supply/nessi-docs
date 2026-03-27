@@ -256,3 +256,230 @@
   font-size: 12px;
   color: var(--text-dim);
 }
+
+// ─── Expansion Layout ───
+
+.splitLayout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+}
+
+.splitLeft {
+  padding: 16px 18px;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.splitRight {
+  padding: 16px 18px;
+}
+
+.fullWidth {
+  padding: 16px 18px;
+}
+
+// ─── Field Table ───
+
+.fieldTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.fieldThName,
+.fieldThType,
+.fieldThDefault,
+.fieldThRef {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-align: left;
+  padding: 4px 8px 6px;
+  border-bottom: 1px solid var(--border-medium);
+  position: sticky;
+  top: 0;
+  background: rgb(15 19 25 / 50%);
+  z-index: 1;
+}
+
+.fieldThName { width: 150px; }
+.fieldThType { width: 80px; }
+.fieldThDefault { width: 120px; }
+
+.fieldRow td {
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+.fieldRow:last-child td {
+  border-bottom: none;
+}
+
+.fieldRow:hover td {
+  background: rgb(255 255 255 / 2%);
+}
+
+.fieldName {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--text-primary);
+}
+
+.fieldType {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.fieldDefault {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.fieldRef {
+  // no fixed width — takes remaining space
+}
+
+.tagPk,
+.tagFk,
+.tagNull {
+  display: inline-block;
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.tagPk {
+  color: #3d8c75;
+  background: rgb(61 140 117 / 10%);
+}
+
+.tagFk {
+  color: #b8a0f0;
+  background: rgb(139 92 246 / 10%);
+}
+
+.tagNull {
+  color: var(--text-dim);
+  background: rgb(255 255 255 / 4%);
+}
+
+.fkRef {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  color: #b8a0f0;
+  opacity: 0.8;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 150ms ease-out;
+
+  &:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+}
+
+// ─── Meta Sections ───
+
+.metaSections {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sectionLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  margin-bottom: 3px;
+  background: rgb(255 255 255 / 2%);
+}
+
+.policyOp {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: #3d8c75;
+  background: rgb(61 140 117 / 10%);
+  padding: 2px 6px;
+  border-radius: 3px;
+  min-width: 48px;
+  text-align: center;
+}
+
+.triggerEvent {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: #e27739;
+  background: rgb(226 119 57 / 10%);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.metaText {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.triggerFn {
+  font-family: var(--font-family-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+
+.indexCols {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.indexUnique {
+  font-size: 8px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #3d8c75;
+  background: rgb(61 140 117 / 10%);
+}
+
+// ─── Deep-link highlight ───
+
+.entityRowHighlight {
+  animation: deepLinkGlow 2s ease-out;
+}
+
+@keyframes deepLinkGlow {
+  0% {
+    box-shadow: 0 0 20px rgb(61 140 117 / 20%);
+    border-color: rgb(61 140 117 / 40%);
+  }
+  30% {
+    box-shadow: 0 0 20px rgb(61 140 117 / 20%);
+    border-color: rgb(61 140 117 / 40%);
+  }
+  100% {
+    box-shadow: none;
+    border-color: transparent;
+  }
+}
