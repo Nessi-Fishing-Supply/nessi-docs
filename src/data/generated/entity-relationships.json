@@ -1,10 +1,6 @@
 {
   "nodes": [
     {
-      "id": "graphql",
-      "label": "Graphql"
-    },
-    {
       "id": "addresses",
       "label": "Addresses"
     },
@@ -37,10 +33,6 @@
       "label": "Recently Viewed"
     },
     {
-      "id": "reports",
-      "label": "Reports"
-    },
-    {
       "id": "search_suggestions",
       "label": "Search Suggestions"
     },
@@ -70,11 +62,6 @@
     }
   ],
   "edges": [
-    {
-      "from": "graphql",
-      "to": "members",
-      "label": "user_id"
-    },
     {
       "from": "addresses",
       "to": "members",
