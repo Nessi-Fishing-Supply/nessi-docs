@@ -166,6 +166,30 @@
       ]
     },
     {
+      "slug": "flags",
+      "name": "Flags",
+      "description": "User-generated content and behavior flags. Allows authenticated users to flag listings, members, shops, or messages for review by the platform. The UI says \"Report this...\" but the codebase uses \"flags\" to avoid ambiguity with data reports.",
+      "status": "built",
+      "componentCount": 2,
+      "endpointCount": 2,
+      "hookCount": 2,
+      "serviceCount": 2,
+      "entities": ["flags"],
+      "journeySlugs": [],
+      "links": [
+        {
+          "type": "entity",
+          "label": "flags",
+          "href": "/data-model"
+        },
+        {
+          "type": "api-group",
+          "label": "Flags",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
       "slug": "listings",
       "name": "Listings",
       "description": "Listings are the core marketplace entities in Nessi — individual items posted for sale by members or shops. This feature provides the full data layer (types, services, hooks), validations, UI components, and pages for creating, editing, and managing listings. Related tickets: #21 (photo infrastructure), #5 (create wizard), #7 (edit wizard).",
@@ -299,30 +323,6 @@
         {
           "type": "api-group",
           "label": "Recently Viewed",
-          "href": "/api-map"
-        }
-      ]
-    },
-    {
-      "slug": "reports",
-      "name": "Reports",
-      "description": "User-generated content and behavior reports. Allows authenticated users to flag listings, members, shops, or messages for review by the platform.",
-      "status": "built",
-      "componentCount": 2,
-      "endpointCount": 2,
-      "hookCount": 2,
-      "serviceCount": 2,
-      "entities": ["reports"],
-      "journeySlugs": [],
-      "links": [
-        {
-          "type": "entity",
-          "label": "reports",
-          "href": "/data-model"
-        },
-        {
-          "type": "api-group",
-          "label": "Reports",
           "href": "/api-map"
         }
       ]

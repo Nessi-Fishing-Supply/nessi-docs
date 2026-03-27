@@ -958,14 +958,13 @@
       ]
     },
     {
-      "name": "reports",
-      "label": "Reports",
+      "name": "flags",
+      "label": "Flags",
       "fields": [
         {
           "name": "created_at",
           "type": "string",
-          "nullable": false,
-          "default": "now()"
+          "nullable": false
         },
         {
           "name": "description",
@@ -975,13 +974,11 @@
         {
           "name": "id",
           "type": "string",
-          "nullable": false,
-          "isPrimaryKey": true,
-          "default": "gen_random_uuid()"
+          "nullable": false
         },
         {
           "name": "reason",
-          "type": "enum:report_reason",
+          "type": "enum:flag_reason",
           "nullable": false
         },
         {
@@ -991,9 +988,8 @@
         },
         {
           "name": "status",
-          "type": "enum:report_status",
-          "nullable": false,
-          "default": "'pending'"
+          "type": "enum:flag_status",
+          "nullable": false
         },
         {
           "name": "target_id",
@@ -1002,35 +998,24 @@
         },
         {
           "name": "target_type",
-          "type": "enum:report_target_type",
+          "type": "enum:flag_target_type",
           "nullable": false
         }
       ],
-      "badges": ["RLS"],
+      "badges": [],
       "rlsPolicies": [
         {
-          "name": "Authenticated users can insert own reports",
+          "name": "Authenticated users can insert own flags",
           "operation": "INSERT",
           "withCheck": "reporter_id = (SELECT auth.uid())"
         },
         {
-          "name": "Authenticated users can view own reports",
+          "name": "Authenticated users can view own flags",
           "operation": "SELECT",
           "using": "reporter_id = (SELECT auth.uid())"
         }
       ],
-      "indexes": [
-        {
-          "name": "reports_reporter_id_idx",
-          "columns": ["reporter_id"],
-          "unique": false
-        },
-        {
-          "name": "reports_target_type_target_id_idx",
-          "columns": ["target_type", "target_id"],
-          "unique": false
-        }
-      ],
+      "indexes": [],
       "triggers": []
     },
     {

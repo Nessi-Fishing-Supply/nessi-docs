@@ -252,6 +252,33 @@
       ]
     },
     {
+      "name": "Flags",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/flags/check",
+          "label": "List Check",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 500],
+          "requestFields": [],
+          "description": "Checks whether the current user has already flagged a specific item.",
+          "tags": []
+        },
+        {
+          "method": "POST",
+          "path": "/api/flags",
+          "label": "Create Flag",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 409, 500],
+          "requestFields": [],
+          "description": "Submits a flag reporting a listing or user for review by the Nessi team.",
+          "tags": []
+        }
+      ]
+    },
+    {
       "name": "Invites",
       "endpoints": [
         {
@@ -587,33 +614,6 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Clears the user's entire recently-viewed browsing history.",
-          "tags": []
-        }
-      ]
-    },
-    {
-      "name": "Reports",
-      "endpoints": [
-        {
-          "method": "GET",
-          "path": "/api/reports/check",
-          "label": "List Check",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
-          "requestFields": [],
-          "description": "Checks whether the current user has already reported a specific item.",
-          "tags": []
-        },
-        {
-          "method": "POST",
-          "path": "/api/reports",
-          "label": "Create Report",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
-          "requestFields": [],
-          "description": "Submits a report flagging a listing or user for review by the Nessi team.",
           "tags": []
         }
       ]

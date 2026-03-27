@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "refactor: rename reports feature to flags",
+      "number": 288,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/288",
+      "mergedAt": "2026-03-27T02:54:40Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "refactor"
+    },
+    {
       "title": "feat(reports): #201 integrate report triggers into listing, member, and shop pages",
       "number": 287,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/287",
