@@ -145,6 +145,7 @@
   transition: all 150ms ease-out;
   animation: rowEnter 200ms ease-out both;
   animation-delay: var(--stagger);
+  position: relative;
 }
 
 @keyframes rowEnter {
@@ -192,21 +193,40 @@
 }
 
 .epRowHighlight {
-  animation: deepLinkGlow 1.2s ease-in-out 3;
+  border-color: rgb(61 140 117 / 20%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 9px;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--trace-angle, 0deg),
+      transparent 0deg,
+      transparent 300deg,
+      rgb(61 140 117 / 70%) 330deg,
+      rgb(61 140 117) 360deg
+    );
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: borderTrace 2.4s linear 3;
+    pointer-events: none;
+  }
 }
 
-@keyframes deepLinkGlow {
-  0%,
-  100% {
-    box-shadow: none;
-    border-color: transparent;
-    background-color: transparent;
+@keyframes borderTrace {
+  to {
+    --trace-angle: 360deg;
   }
-  40% {
-    box-shadow: 0 0 30px rgb(61 140 117 / 45%), 0 0 60px rgb(61 140 117 / 15%);
-    border-color: rgb(61 140 117 / 65%);
-    background-color: rgb(61 140 117 / 8%);
-  }
+}
+
+@property --trace-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
 }
 
 .methodBadge {

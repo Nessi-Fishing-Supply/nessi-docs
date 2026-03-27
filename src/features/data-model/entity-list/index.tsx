@@ -108,7 +108,7 @@ function EntityRow({
         () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
         100,
       );
-      setTimeout(() => setHighlight(false), 4000);
+      setTimeout(() => setHighlight(false), 7500);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -371,7 +371,7 @@ export function EntityList({ entities }: EntityListProps) {
         // Step 3: After scroll settles, start the glow
         setTimeout(() => {
           el.classList.add(styles.entityRowHighlight);
-          setTimeout(() => el.classList.remove(styles.entityRowHighlight), 4000);
+          setTimeout(() => el.classList.remove(styles.entityRowHighlight), 7500);
         }, 400);
       }
     }, 50);

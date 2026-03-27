@@ -219,7 +219,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
             // Step 3: After scroll settles, start the glow
             setTimeout(() => {
               setHighlight(true);
-              setTimeout(() => setHighlight(false), 4000);
+              setTimeout(() => setHighlight(false), 7500);
             }, 400); // allow scroll to settle
           }, 50); // allow expansion to render
         }, expandDelay);
