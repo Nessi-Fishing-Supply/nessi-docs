@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { Entity } from '@/types/data-model';
 import type { ErdNode } from '@/types/entity-relationship';
 import { getEndpointsForTable, type EndpointRef } from '@/data/cross-links';
-import { ERD_NODE_WIDTH, ERD_NODE_HEIGHT } from '../utils/geometry';
+import { ERD_NODE_WIDTH } from '../utils/geometry';
 
 const TT_BG = 'rgba(15,19,25,0.97)';
 const TT_BORDER = 'rgba(255,255,255,0.12)';
@@ -47,8 +47,19 @@ const linkIcon = (
     fill="none"
     style={{ flexShrink: 0, opacity: 0.5 }}
   >
-    <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-    <path d="M7 2.5H9.5V5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M4.5 2.5H2.5V9.5H9.5V7.5"
+      stroke="currentColor"
+      strokeWidth="1"
+      strokeLinecap="round"
+    />
+    <path
+      d="M7 2.5H9.5V5"
+      stroke="currentColor"
+      strokeWidth="1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
     <path d="M9.5 2.5L5.5 6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
   </svg>
 );

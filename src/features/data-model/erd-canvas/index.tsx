@@ -188,7 +188,7 @@ export function ErdCanvas({ nodes, edges, entities }: ErdCanvasProps) {
   const [visibleCategories, setVisibleCategories] = useState<Set<string>>(
     () => new Set(ALL_CATEGORIES),
   );
-  const { selectedItem, setSelectedItem } = useDocsContext();
+  const { setSelectedItem } = useDocsContext();
   const { toggleFocus, resetTrace, litNodes, litEdges, hasTrace } = useErdTrace(edges);
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
   const entityMap = new Map(entities.map((e) => [e.name, e]));
@@ -256,7 +256,13 @@ export function ErdCanvas({ nodes, edges, entities }: ErdCanvasProps) {
             visibleCategories,
             onToggleCategory: toggleCategory,
           }}
-          pathControls={{ hasPath: hasTrace, resetPath: () => { resetTrace(); setPinnedNodeId(null); } }}
+          pathControls={{
+            hasPath: hasTrace,
+            resetPath: () => {
+              resetTrace();
+              setPinnedNodeId(null);
+            },
+          }}
           resetControls={{
             isDirty: hasTrace || visibleCategories.size !== ALL_CATEGORIES.size,
             onReset: () => {
@@ -371,10 +377,7 @@ export function ErdCanvas({ nodes, edges, entities }: ErdCanvasProps) {
               transition: 'opacity 400ms ease-out',
             }}
           >
-            <EntityTooltip
-              node={node}
-              entity={entity}
-            >
+            <EntityTooltip node={node} entity={entity}>
               <EntityNode
                 node={node}
                 isSelected={isPinned}
