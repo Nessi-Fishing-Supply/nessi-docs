@@ -142,14 +142,8 @@ function matchSegmentsToTables(segments: string[], tableNames: string[]): string
       continue;
     }
 
-    // Direct/plural match: segment === table name
-    if (tableNames.includes(snake)) {
-      matched.add(snake);
-      continue;
-    }
-
-    // Compound match: singularize parent + "_" + child matches a table
-    // e.g. shops + invites → shop_invites
+    // Compound match first (more specific than direct match)
+    // e.g. shops + members → shop_members takes priority over members
     if (i > 0) {
       const parent = singularize(toSnake(segments[i - 1]));
       const compound = `${parent}_${snake}`;
@@ -166,8 +160,33 @@ function matchSegmentsToTables(segments: string[], tableNames: string[]): string
       }
     }
 
+    // Direct/plural match: segment === table name
+    if (tableNames.includes(snake)) {
+      matched.add(snake);
+      continue;
+    }
+
+    // Prefix match: only for single-segment paths (no children to compound with)
+    // e.g. /api/cart → cart → cart_items
+    // Skip for multi-segment parents like /api/shops (would over-match shop_invites etc.)
+    if (segments.length === 1) {
+      const prefixMatch = tableNames.find((t) => t.startsWith(`${snake}_`));
+      if (prefixMatch) {
+        matched.add(prefixMatch);
+        continue;
+      }
+
+      const singSnake = singularize(snake);
+      if (singSnake !== snake) {
+        const singPrefixMatch = tableNames.find((t) => t.startsWith(`${singSnake}_`));
+        if (singPrefixMatch) {
+          matched.add(singPrefixMatch);
+          continue;
+        }
+      }
+    }
+
     // Suffix match: table name ends with "_" + segment
-    // e.g. cart → cart_items
     const suffixMatch = tableNames.find((t) => t.endsWith(`_${snake}`));
     if (suffixMatch) {
       matched.add(suffixMatch);
