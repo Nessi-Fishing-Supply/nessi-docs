@@ -1,245 +1,399 @@
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
 import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
-import styles from './erd-canvas.module.scss';
-
-const NODE_WIDTH = 160;
-const NODE_HEIGHT = 52;
-const CANVAS_PADDING = 60;
-
-const BADGE_COLORS: Record<string, string> = {
-  core: '#3d8c75',
-  lifecycle: '#b86e0a',
-  junction: '#e89048',
-  config: '#78756f',
-  media: '#e27739',
-  tracking: '#1e4a40',
-  discovery: '#b86e0a',
-  user: '#3d8c75',
-  system: '#5c5a55',
-};
-
-const BADGE_ORDER = [
-  'core',
-  'lifecycle',
-  'junction',
-  'config',
-  'media',
-  'tracking',
-  'discovery',
-  'user',
-  'system',
-];
+import type { Entity } from '@/types/data-model';
+import { useDocsContext } from '@/providers/docs-provider';
+import { CanvasProvider } from '@/features/canvas/canvas-provider';
+import { EntityNode } from '@/features/canvas/components/entity-node';
+import { EntityTooltip } from '@/features/canvas/components/entity-tooltip';
+import { LabelPill } from '@/features/canvas/components/label-pill';
+import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
+import { Minimap } from '@/features/canvas/components/minimap';
+import { ErdLegend } from '@/features/canvas/components/erd-legend';
+import { useErdTrace } from '@/features/canvas/hooks/use-erd-trace';
+import {
+  ERD_NODE_WIDTH,
+  ERD_NODE_HEIGHT,
+  smoothPath,
+  type PortSide,
+} from '@/features/canvas/utils/geometry';
 
 interface ErdCanvasProps {
   nodes: ErdNode[];
   edges: ErdEdge[];
+  entities: Entity[];
 }
 
-function getNodeCenter(node: ErdNode) {
-  return {
-    x: node.x + NODE_WIDTH / 2,
-    y: node.y + NODE_HEIGHT / 2,
-  };
+/** Spread between sibling edges sharing the same node pair */
+const SIBLING_SPREAD = 24;
+
+/**
+ * Build a map of edge pair key → count of siblings and per-edge index.
+ * Returns a Map keyed by edge index with { siblingIndex, siblingCount }.
+ */
+function buildSiblingMap(edges: ErdEdge[]) {
+  // Group by sorted node pair
+  const groups = new Map<string, number[]>();
+  edges.forEach((e, i) => {
+    const key = [e.from, e.to].sort().join('::');
+    const arr = groups.get(key) ?? [];
+    arr.push(i);
+    groups.set(key, arr);
+  });
+
+  const result = new Map<number, { siblingIndex: number; siblingCount: number }>();
+  for (const indices of groups.values()) {
+    indices.forEach((edgeIdx, sibIdx) => {
+      result.set(edgeIdx, { siblingIndex: sibIdx, siblingCount: indices.length });
+    });
+  }
+  return result;
 }
 
-function getEdgePath(fromNode: ErdNode, toNode: ErdNode) {
-  const from = getNodeCenter(fromNode);
-  const to = getNodeCenter(toNode);
+function getEdgePath(fromNode: ErdNode, toNode: ErdNode, perpOffset = 0) {
+  const fromCx = fromNode.x + ERD_NODE_WIDTH / 2;
+  const fromCy = fromNode.y + ERD_NODE_HEIGHT / 2;
+  const toCx = toNode.x + ERD_NODE_WIDTH / 2;
+  const toCy = toNode.y + ERD_NODE_HEIGHT / 2;
 
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
+  const dx = toCx - fromCx;
+  const dy = toCy - fromCy;
 
-  // Control point offset for bezier curve
-  const cpOffset = Math.max(Math.abs(dx) * 0.4, 40);
-
-  // Determine exit/entry sides based on relative positions
-  let fromX = from.x;
-  let fromY = from.y;
-  let toX = to.x;
-  let toY = to.y;
-  let cp1x: number;
-  let cp1y: number;
-  let cp2x: number;
-  let cp2y: number;
+  let fx: number, fy: number, tx: number, ty: number;
+  let fDir: PortSide, tDir: PortSide;
 
   if (Math.abs(dx) > Math.abs(dy)) {
-    // Horizontal dominant: exit from left/right sides
+    // Horizontal dominant — exit right/left sides
+    fy = fromNode.y + ERD_NODE_HEIGHT / 2 + perpOffset;
+    ty = toNode.y + ERD_NODE_HEIGHT / 2 + perpOffset;
     if (dx > 0) {
-      fromX = fromNode.x + NODE_WIDTH;
-      toX = toNode.x;
+      fx = fromNode.x + ERD_NODE_WIDTH;
+      tx = toNode.x;
+      fDir = 'right';
+      tDir = 'left';
     } else {
-      fromX = fromNode.x;
-      toX = toNode.x + NODE_WIDTH;
+      fx = fromNode.x;
+      tx = toNode.x + ERD_NODE_WIDTH;
+      fDir = 'left';
+      tDir = 'right';
     }
-    fromY = fromNode.y + NODE_HEIGHT / 2;
-    toY = toNode.y + NODE_HEIGHT / 2;
-    cp1x = fromX + (dx > 0 ? cpOffset : -cpOffset);
-    cp1y = fromY;
-    cp2x = toX + (dx > 0 ? -cpOffset : cpOffset);
-    cp2y = toY;
   } else {
-    // Vertical dominant: exit from top/bottom sides
+    // Vertical dominant — exit top/bottom
+    fx = fromNode.x + ERD_NODE_WIDTH / 2 + perpOffset;
+    tx = toNode.x + ERD_NODE_WIDTH / 2 + perpOffset;
     if (dy > 0) {
-      fromY = fromNode.y + NODE_HEIGHT;
-      toY = toNode.y;
+      fy = fromNode.y + ERD_NODE_HEIGHT;
+      ty = toNode.y;
+      fDir = 'bottom';
+      tDir = 'top';
     } else {
-      fromY = fromNode.y;
-      toY = toNode.y + NODE_HEIGHT;
+      fy = fromNode.y;
+      ty = toNode.y + ERD_NODE_HEIGHT;
+      fDir = 'top';
+      tDir = 'bottom';
     }
-    fromX = fromNode.x + NODE_WIDTH / 2;
-    toX = toNode.x + NODE_WIDTH / 2;
-    cp1x = fromX;
-    cp1y = fromY + (dy > 0 ? cpOffset : -cpOffset);
-    cp2x = toX;
-    cp2y = toY + (dy > 0 ? -cpOffset : cpOffset);
   }
 
-  const midX = (fromX + toX) / 2;
-  const midY = (fromY + toY) / 2;
-
   return {
-    d: `M ${fromX} ${fromY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${toX} ${toY}`,
-    midX,
-    midY,
+    d: smoothPath(fx, fy, fDir, tx, ty, tDir),
+    mx: (fx + tx) / 2,
+    my: (fy + ty) / 2,
+    fx,
+    fy,
+    tx,
+    ty,
   };
 }
 
-export function ErdCanvas({ nodes, edges }: ErdCanvasProps) {
+/** Padding around node boxes for label collision detection */
+const LABEL_PAD = 8;
+
+/** Check if a point overlaps any node's bounding box (with padding) */
+function overlapsNode(
+  x: number,
+  y: number,
+  allNodes: ErdNode[],
+  excludeIds: Set<string>,
+): ErdNode | null {
+  for (const n of allNodes) {
+    if (excludeIds.has(n.id)) continue;
+    if (
+      x >= n.x - LABEL_PAD &&
+      x <= n.x + ERD_NODE_WIDTH + LABEL_PAD &&
+      y >= n.y - LABEL_PAD &&
+      y <= n.y + ERD_NODE_HEIGHT + LABEL_PAD
+    ) {
+      return n;
+    }
+  }
+  return null;
+}
+
+/** Nudge a label position along the edge direction to avoid overlapping a node */
+function avoidNodeOverlap(
+  mx: number,
+  my: number,
+  fx: number,
+  fy: number,
+  tx: number,
+  ty: number,
+  allNodes: ErdNode[],
+  edgeFromId: string,
+  edgeToId: string,
+): { lx: number; ly: number } {
+  const excludeIds = new Set([edgeFromId, edgeToId]);
+  if (!overlapsNode(mx, my, allNodes, excludeIds)) {
+    return { lx: mx, ly: my };
+  }
+
+  // Try sliding toward source and target in 10% increments
+  for (let t = 0.3; t >= 0.1; t -= 0.1) {
+    // Closer to source
+    const sx = fx + (tx - fx) * t;
+    const sy = fy + (ty - fy) * t;
+    if (!overlapsNode(sx, sy, allNodes, excludeIds)) {
+      return { lx: sx, ly: sy };
+    }
+    // Closer to target
+    const dx = fx + (tx - fx) * (1 - t);
+    const dy = fy + (ty - fy) * (1 - t);
+    if (!overlapsNode(dx, dy, allNodes, excludeIds)) {
+      return { lx: dx, ly: dy };
+    }
+  }
+
+  // Fallback: return original midpoint
+  return { lx: mx, ly: my };
+}
+
+const CATEGORY_DEFS = [
+  { key: 'core', label: 'Core', color: '#3d8c75' },
+  { key: 'user', label: 'User', color: '#5b9fd6' },
+  { key: 'lifecycle', label: 'Lifecycle', color: '#d4923a' },
+  { key: 'junction', label: 'Junction', color: '#9b7bd4' },
+  { key: 'media', label: 'Media', color: '#d46b8a' },
+  { key: 'tracking', label: 'Tracking', color: '#5bbfcf' },
+  { key: 'discovery', label: 'Discovery', color: '#c9b44a' },
+  { key: 'config', label: 'Config', color: '#8a8580' },
+  { key: 'system', label: 'System', color: '#7a8591' },
+];
+
+const ALL_CATEGORIES = new Set(CATEGORY_DEFS.map((c) => c.key));
+
+export function ErdCanvas({ nodes, edges, entities }: ErdCanvasProps) {
+  const [minimapVisible, setMinimapVisible] = useState(false);
+  const [legendVisible, setLegendVisible] = useState(false);
+  const [pinnedNodeId, setPinnedNodeId] = useState<string | null>(null);
+  const [visibleCategories, setVisibleCategories] = useState<Set<string>>(
+    () => new Set(ALL_CATEGORIES),
+  );
+  const { selectedItem, setSelectedItem } = useDocsContext();
+  const { toggleFocus, resetTrace, litNodes, litEdges, hasTrace } = useErdTrace(edges);
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
+  const entityMap = new Map(entities.map((e) => [e.name, e]));
+  const siblingMap = buildSiblingMap(edges);
 
-  const maxX = Math.max(...nodes.map((n) => n.x)) + NODE_WIDTH + CANVAS_PADDING;
-  const maxY = Math.max(...nodes.map((n) => n.y)) + NODE_HEIGHT + CANVAS_PADDING;
-  const svgWidth = maxX + CANVAS_PADDING;
-  const svgHeight = maxY + CANVAS_PADDING;
+  const toggleCategory = (key: string) => {
+    setVisibleCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
 
-  const presentBadges = BADGE_ORDER.filter((b) => nodes.some((n) => n.badge === b));
+  const isNodeVisible = (node: ErdNode) => {
+    const badge = node.badge ?? 'system';
+    return visibleCategories.has(badge);
+  };
+
+  // Compute viewBox from node positions
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity;
+  for (const n of nodes) {
+    minX = Math.min(minX, n.x);
+    minY = Math.min(minY, n.y);
+    maxX = Math.max(maxX, n.x + ERD_NODE_WIDTH);
+    maxY = Math.max(maxY, n.y + ERD_NODE_HEIGHT);
+  }
+  const padding = 80;
+  const viewBox = {
+    minX: minX - padding,
+    minY: minY - padding,
+    width: maxX - minX + padding * 2,
+    height: maxY - minY + padding * 2,
+  };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <div className={styles.headerTop}>
-          <Link href="/data-model" className={styles.backLink}>
-            ← Data Model
-          </Link>
-          <h1 className={styles.title}>Entity Relationships</h1>
-        </div>
-        <p className={styles.subtitle}>
-          {nodes.length} entities · {edges.length} relationships
-        </p>
-      </div>
+    <CanvasProvider
+      viewBox={viewBox}
+      viewKey="erd"
+      renderMinimap={(vbs, panTo) => (
+        <Minimap
+          nodes={nodes}
+          bounds={viewBox}
+          viewBoxString={vbs}
+          onPan={panTo}
+          visible={minimapVisible}
+          nodeWidth={ERD_NODE_WIDTH}
+          nodeHeight={ERD_NODE_HEIGHT}
+          nodeColor="#3d8c75"
+        />
+      )}
+      legend={<ErdLegend visible={legendVisible} />}
+      renderToolbar={(zoomControls) => (
+        <CanvasToolbar
+          zoomControls={zoomControls}
+          minimapVisible={minimapVisible}
+          onToggleMinimap={() => setMinimapVisible((p) => !p)}
+          legendVisible={legendVisible}
+          onToggleLegend={() => setLegendVisible((p) => !p)}
+          categoryControls={{
+            categories: CATEGORY_DEFS,
+            visibleCategories,
+            onToggleCategory: toggleCategory,
+          }}
+          pathControls={{ hasPath: hasTrace, resetPath: () => { resetTrace(); setPinnedNodeId(null); } }}
+          resetControls={{
+            isDirty: hasTrace || visibleCategories.size !== ALL_CATEGORIES.size,
+            onReset: () => {
+              resetTrace();
+              setPinnedNodeId(null);
+              setVisibleCategories(new Set(ALL_CATEGORIES));
+            },
+          }}
+        />
+      )}
+    >
+      {/* Edge lines — rendered first (lowest z-layer) */}
+      {edges.map((edge, i) => {
+        const fromNode = nodeMap.get(edge.from);
+        const toNode = nodeMap.get(edge.to);
+        if (!fromNode || !toNode) return null;
+        if (!isNodeVisible(fromNode) || !isNodeVisible(toNode)) return null;
 
-      <div className={styles.canvasWrapper}>
-        <svg
-          className={styles.svg}
-          width={svgWidth}
-          height={svgHeight}
-          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <pattern id="dot-grid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="1" cy="1" r="0.8" fill="rgba(255,255,255,0.06)" />
-            </pattern>
-            <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="rgba(255,255,255,0.2)" />
-            </marker>
-          </defs>
+        const isLit = litEdges.has(i);
+        const isDimmed = hasTrace && !isLit;
 
-          {/* Dot grid background */}
-          <rect width={svgWidth} height={svgHeight} fill="url(#dot-grid)" />
+        const sibling = siblingMap.get(i);
+        const perpOffset =
+          sibling && sibling.siblingCount > 1
+            ? (sibling.siblingIndex - (sibling.siblingCount - 1) / 2) * SIBLING_SPREAD
+            : 0;
 
-          {/* Edges */}
-          {edges.map((edge, i) => {
-            const fromNode = nodeMap.get(edge.from);
-            const toNode = nodeMap.get(edge.to);
-            if (!fromNode || !toNode) return null;
+        const path = getEdgePath(fromNode, toNode, perpOffset);
 
-            const { d, midX, midY } = getEdgePath(fromNode, toNode);
+        return (
+          <g key={i}>
+            <path
+              d={path.d}
+              fill="none"
+              stroke={isLit ? 'rgba(61,140,117,0.5)' : 'rgba(154,151,144,0.25)'}
+              strokeWidth={isLit ? 2 : 1.5}
+              markerEnd={isLit ? 'url(#arrow-lit)' : 'url(#arrow)'}
+              style={{
+                opacity: isDimmed ? 0.08 : 1,
+                transition: 'opacity 400ms ease-out',
+              }}
+            />
+            {/* Animated flow on lit edges */}
+            {isLit && (
+              <path
+                d={path.d}
+                fill="none"
+                stroke="rgba(61,140,117,0.7)"
+                strokeWidth={2.5}
+                strokeDasharray="4 16"
+                strokeLinecap="round"
+                markerEnd="url(#arrow-lit)"
+                style={{
+                  animation: 'flow-pulse 1.8s linear infinite',
+                  opacity: 0.85,
+                }}
+              />
+            )}
+          </g>
+        );
+      })}
 
-            return (
-              <g key={i}>
-                <path
-                  d={d}
-                  fill="none"
-                  stroke="rgba(255,255,255,0.12)"
-                  strokeWidth={1.5}
-                  markerEnd="url(#arrowhead)"
-                />
-                {/* FK label */}
-                <rect
-                  x={midX - 32}
-                  y={midY - 9}
-                  width={64}
-                  height={16}
-                  rx={3}
-                  fill="#0f1319"
-                  stroke="rgba(255,255,255,0.07)"
-                  strokeWidth={1}
-                />
-                <text x={midX} y={midY + 4} className={styles.edgeLabel} textAnchor="middle">
-                  {edge.fk ?? edge.label}
-                </text>
-              </g>
-            );
-          })}
+      {/* Edge labels — rendered above all lines so glass effect works */}
+      {edges.map((edge, i) => {
+        const fromNode = nodeMap.get(edge.from);
+        const toNode = nodeMap.get(edge.to);
+        if (!fromNode || !toNode) return null;
+        if (!isNodeVisible(fromNode) || !isNodeVisible(toNode)) return null;
 
-          {/* Nodes */}
-          {nodes.map((node) => {
-            const color = BADGE_COLORS[node.badge ?? ''] ?? '#78756f';
-            return (
-              <g key={node.id}>
-                {/* Node box */}
-                <rect
-                  x={node.x}
-                  y={node.y}
-                  width={NODE_WIDTH}
-                  height={NODE_HEIGHT}
-                  rx={6}
-                  fill="#161c26"
-                  stroke={color}
-                  strokeWidth={1.5}
-                />
-                {/* Left accent bar */}
-                <rect
-                  x={node.x}
-                  y={node.y + 8}
-                  width={3}
-                  height={NODE_HEIGHT - 16}
-                  rx={1.5}
-                  fill={color}
-                />
-                {/* Entity label */}
-                <text x={node.x + 14} y={node.y + 22} className={styles.nodeLabel} fill={color}>
-                  {node.label}
-                </text>
-                {/* Badge + field count meta */}
-                <text
-                  x={node.x + 14}
-                  y={node.y + 38}
-                  className={styles.nodeMeta}
-                  fill="rgba(255,255,255,0.3)"
-                >
-                  {node.badge ?? ''}
-                  {node.badge && node.fieldCount ? ' · ' : ''}
-                  {node.fieldCount ? `${node.fieldCount} fields` : ''}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-      </div>
+        const sibling = siblingMap.get(i);
+        const perpOffset =
+          sibling && sibling.siblingCount > 1
+            ? (sibling.siblingIndex - (sibling.siblingCount - 1) / 2) * SIBLING_SPREAD
+            : 0;
 
-      {/* Legend */}
-      <div className={styles.legend}>
-        {presentBadges.map((badge) => (
-          <div key={badge} className={styles.legendItem}>
-            <span className={styles.legendDot} style={{ background: BADGE_COLORS[badge] }} />
-            <span className={styles.legendLabel}>{badge}</span>
-          </div>
-        ))}
-      </div>
-    </div>
+        const path = getEdgePath(fromNode, toNode, perpOffset);
+        const { lx, ly } = avoidNodeOverlap(
+          path.mx,
+          path.my,
+          path.fx,
+          path.fy,
+          path.tx,
+          path.ty,
+          nodes,
+          edge.from,
+          edge.to,
+        );
+
+        const isLit = litEdges.has(i);
+        const isDimmed = hasTrace && !isLit;
+
+        return (
+          <g key={i} style={{ opacity: isDimmed ? 0.1 : 1, transition: 'opacity 400ms ease-out' }}>
+            <LabelPill x={lx} y={ly} label={edge.fk ?? edge.label} />
+          </g>
+        );
+      })}
+
+      {/* Entity nodes */}
+      {nodes.map((node) => {
+        if (!isNodeVisible(node)) return null;
+        const entity = entityMap.get(node.id);
+        const isPinned = pinnedNodeId === node.id;
+        const isLit = litNodes.has(node.id);
+        const isDimmed = hasTrace && !isLit;
+
+        return (
+          <g
+            key={node.id}
+            style={{
+              opacity: isDimmed ? 0.15 : 1,
+              transition: 'opacity 400ms ease-out',
+            }}
+          >
+            <EntityTooltip
+              node={node}
+              entity={entity}
+            >
+              <EntityNode
+                node={node}
+                isSelected={isPinned}
+                onClick={() => {
+                  // Toggle trace focus
+                  toggleFocus(node.id);
+
+                  if (isPinned) {
+                    setPinnedNodeId(null);
+                  } else {
+                    setPinnedNodeId(node.id);
+                    if (entity) setSelectedItem({ type: 'entity', entity });
+                  }
+                }}
+              />
+            </EntityTooltip>
+          </g>
+        );
+      })}
+    </CanvasProvider>
   );
 }

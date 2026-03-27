@@ -191,6 +191,9 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 
 function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; staggerIndex: number }) {
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
+  const [isDeepLinkTarget] = useState(
+    () => typeof window !== 'undefined' && window.location.hash === `#${slug}`,
+  );
   const [isOpen, setIsOpen] = useState(false);
   const [highlight, setHighlight] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
@@ -198,37 +201,29 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const errorCount = errors.length;
 
-  // Deep-link: sequential animation — stagger in → expand → scroll → glow
+  // Deep-link: expand → scroll → glow (matches Data Model timing)
   useEffect(() => {
     function checkHash() {
       if (window.location.hash === `#${slug}`) {
-        // Wait for stagger animation to complete (stagger delay + 200ms animation duration)
-        const staggerDelay = staggerIndex * 20;
-        const animationDuration = 200;
-        const expandDelay = staggerDelay + animationDuration + 100; // +100ms buffer
-
-        // Step 1: Let the row animate in naturally, then expand it
-        setTimeout(() => {
-          setIsOpen(true);
-
-          // Step 2: After expansion renders, scroll into view
-          setTimeout(() => {
-            rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            // Step 3: After scroll settles, start the glow
-            setTimeout(() => {
-              setHighlight(true);
-              setTimeout(() => setHighlight(false), 9500);
-            }, 400); // allow scroll to settle
-          }, 50); // allow expansion to render
-        }, expandDelay);
+        setIsOpen(true);
+        setHighlight(true);
+        setTimeout(
+          () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+          100,
+        );
+        // Clear hash after scroll settles so it doesn't stack on next navigation
+        setTimeout(
+          () => history.replaceState(null, '', window.location.pathname),
+          600,
+        );
+        setTimeout(() => setHighlight(false), 9500);
       }
     }
 
     checkHash();
     window.addEventListener('hashchange', checkHash);
     return () => window.removeEventListener('hashchange', checkHash);
-  }, [slug, staggerIndex]);
+  }, [slug]);
 
   const pathParts = endpoint.path.split(/(:[\w]+)/g);
 
@@ -242,7 +237,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
           '--method-color': color,
           '--method-bg': bg,
           '--method-border': border,
-          '--stagger': `${staggerIndex * 20}ms`,
+          '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms`,
         } as React.CSSProperties
       }
     >

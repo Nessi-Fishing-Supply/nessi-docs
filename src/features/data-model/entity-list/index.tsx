@@ -96,6 +96,7 @@ function EntityRow({
   isOpen,
   isHighlighted,
   onToggle,
+  onOpen,
   onScrollToEntity,
 }: {
   entity: Entity;
@@ -103,23 +104,37 @@ function EntityRow({
   isOpen: boolean;
   isHighlighted: boolean;
   onToggle: () => void;
+  onOpen: () => void;
   onScrollToEntity: (name: string) => void;
 }) {
   const fkCount = countForeignKeys(entity);
+  const [isDeepLinkTarget] = useState(
+    () => typeof window !== 'undefined' && window.location.hash === `#${entity.name}`,
+  );
   const rowRef = useRef<HTMLDivElement>(null);
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash === `#${entity.name}`) {
-      if (!isOpen) onToggle();
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time mount init for deep-link
-      setHighlight(true);
-      setTimeout(
-        () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
-        100,
-      );
-      setTimeout(() => setHighlight(false), 9500);
+    function checkHash() {
+      if (window.location.hash === `#${entity.name}`) {
+        onOpen();
+        setHighlight(true);
+        setTimeout(
+          () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+          100,
+        );
+        // Clear hash after scroll settles so it doesn't stack on next navigation
+        setTimeout(
+          () => history.replaceState(null, '', window.location.pathname),
+          600,
+        );
+        setTimeout(() => setHighlight(false), 9500);
+      }
     }
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    return () => window.removeEventListener('hashchange', checkHash);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -127,7 +142,7 @@ function EntityRow({
       ref={rowRef}
       id={entity.name}
       className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''}`}
-      style={{ '--stagger': `${staggerIndex * 20}ms` } as React.CSSProperties}
+      style={{ '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms` } as React.CSSProperties}
     >
       <BorderTrace active={highlight || isHighlighted} />
       <button className={styles.entityRowHeader} onClick={onToggle}>
@@ -364,6 +379,14 @@ export function EntityList({ entities }: EntityListProps) {
     });
   };
 
+  const openEntity = (name: string) => {
+    setOpenEntities((prev) => {
+      const next = new Set(prev);
+      next.add(name);
+      return next;
+    });
+  };
+
   const scrollToAndExpand = (entityName: string) => {
     // Step 1: Expand the target entity
     setOpenEntities((prev) => {
@@ -418,6 +441,7 @@ export function EntityList({ entities }: EntityListProps) {
                   isOpen={openEntities.has(entity.name)}
                   isHighlighted={highlightedEntity === entity.name}
                   onToggle={() => toggleEntity(entity.name)}
+                  onOpen={() => openEntity(entity.name)}
                   onScrollToEntity={scrollToAndExpand}
                 />
               );

@@ -1,4 +1,4 @@
-import { getPort, bezier } from '../utils/geometry';
+import { getPort, smoothPath } from '../utils/geometry';
 
 interface AnimatedEdgeProps {
   from: { x: number; y: number; type: string };
@@ -15,7 +15,7 @@ export function AnimatedEdge({ from, to, isLit, isDimmed, hasActivePath }: Anima
 
   const fp = getPort(from, 'right');
   const tp = getPort(to, 'left');
-  const d = bezier(fp.x, fp.y, tp.x, tp.y);
+  const d = smoothPath(fp.x, fp.y, 'right', tp.x, tp.y, 'left');
 
   const opacity = isLit ? 0.85 : 0.08;
   const color = isLit ? 'rgba(61,140,117,0.7)' : 'rgba(255,255,255,0.15)';

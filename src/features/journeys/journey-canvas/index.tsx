@@ -25,6 +25,8 @@ interface JourneyCanvasProps {
   visibleStatuses: Set<string>;
   onToggleLayer: (layer: StepLayer) => void;
   onToggleStatus: (status: StepStatus) => void;
+  onResetFilters?: () => void;
+  filtersAreDirty?: boolean;
 }
 
 export function JourneyCanvas({
@@ -33,6 +35,8 @@ export function JourneyCanvas({
   visibleStatuses,
   onToggleLayer,
   onToggleStatus,
+  onResetFilters,
+  filtersAreDirty,
 }: JourneyCanvasProps) {
   const { selectedItem, setSelectedItem, clearSelection } = useDocsContext();
   const {
@@ -122,6 +126,14 @@ export function JourneyCanvas({
             onToggleStatus,
           }}
           pathControls={{ hasPath, resetPath }}
+          resetControls={{
+            isDirty: hasPath || (filtersAreDirty ?? false),
+            onReset: () => {
+              resetPath();
+              setPinnedNodes(new Set());
+              onResetFilters?.();
+            },
+          }}
         />
       )}
     >
