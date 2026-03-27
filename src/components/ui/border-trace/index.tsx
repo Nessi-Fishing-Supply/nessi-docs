@@ -17,9 +17,9 @@ interface BorderTraceProps {
 }
 
 /**
- * SVG-based border trace animation that moves at constant perimeter speed.
- * Renders an absolutely-positioned SVG overlay with an animated stroke-dashoffset.
- * Uses a blurred glow layer + a sharp core layer for a soft highlight effect.
+ * SVG-based border trace animation — a small glowing sparkle that traces
+ * the border at constant perimeter speed. Uses layered strokes with
+ * decreasing opacity/length to create a gradient tail effect.
  * Must be placed inside a `position: relative` container.
  */
 export function BorderTrace({
@@ -64,13 +64,18 @@ export function BorderTrace({
   const cornerArc = (2 * Math.PI * radius) / 4;
   const perimeter = 2 * straightH + 2 * straightV + 4 * cornerArc;
 
-  // Short trace (~8% of perimeter) for a tight glow spot
-  const traceLength = perimeter * 0.08;
-  const gapLength = perimeter - traceLength;
-
   const totalDuration = duration * loops;
 
-  const rectProps = {
+  // Layered strokes — each shorter and more opaque to create gradient falloff
+  // The "sparkle" is the bright tip; the tail fades out behind it
+  const layers = [
+    { lengthPct: 0.04, opacity: 0.08, width: 3 },   // outermost soft tail
+    { lengthPct: 0.025, opacity: 0.15, width: 2.5 }, // mid tail
+    { lengthPct: 0.012, opacity: 0.3, width: 2 },    // inner tail
+    { lengthPct: 0.004, opacity: 0.6, width: 1.5 },  // bright core
+  ];
+
+  const rectBase = {
     x: 0.75,
     y: 0.75,
     width: width - 1.5,
@@ -78,8 +83,7 @@ export function BorderTrace({
     rx: radius,
     ry: radius,
     fill: 'none' as const,
-    strokeDasharray: `${traceLength} ${gapLength}`,
-    strokeDashoffset: perimeter,
+    stroke: color,
     strokeLinecap: 'round' as const,
   };
 
@@ -98,33 +102,27 @@ export function BorderTrace({
       } as React.CSSProperties}
     >
       <defs>
-        <filter id="trace-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="4" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="blur" />
-          </feMerge>
+        <filter id="trace-soft" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2" />
         </filter>
       </defs>
 
-      {/* Outer glow layer — blurred, wider, softer */}
-      <rect
-        className={styles.trace}
-        {...rectProps}
-        stroke={color}
-        strokeWidth="6"
-        strokeOpacity="0.4"
-        filter="url(#trace-glow)"
-      />
-
-      {/* Core layer — sharp, thinner, brighter */}
-      <rect
-        className={styles.trace}
-        {...rectProps}
-        stroke={color}
-        strokeWidth="1.5"
-        strokeOpacity="0.8"
-      />
+      {layers.map((layer, i) => {
+        const traceLength = perimeter * layer.lengthPct;
+        const gapLength = perimeter - traceLength;
+        return (
+          <rect
+            key={i}
+            className={styles.trace}
+            {...rectBase}
+            strokeWidth={layer.width}
+            strokeOpacity={layer.opacity}
+            strokeDasharray={`${traceLength} ${gapLength}`}
+            strokeDashoffset={perimeter}
+            filter={i < 2 ? 'url(#trace-soft)' : undefined}
+          />
+        );
+      })}
     </svg>
   );
 }
