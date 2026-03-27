@@ -1,8 +1,5 @@
-import { features } from '@/data';
-import { FeatureList } from '@/features/feature-readiness/feature-list';
+import { redirect } from 'next/navigation';
 
-export const metadata = { title: 'Features' };
-
-export default function FeaturesPage() {
-  return <FeatureList features={features} />;
+export default function FeaturesIndex() {
+  redirect('/');
 }
