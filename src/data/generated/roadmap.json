@@ -1528,9 +1528,9 @@
       "title": "feat(follows): #155.5 — Following list page in dashboard",
       "number": 215,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/215",
-      "state": "OPEN",
+      "state": "CLOSED",
       "labels": ["feature", "P2-medium", "frontend", "conductor"],
-      "status": "Todo",
+      "status": "Done",
       "priority": "P2 - medium",
       "area": "Frontend",
       "executor": "Conductor",
@@ -1547,6 +1547,18 @@
       "area": "Backend",
       "executor": "Conductor",
       "feature": ""
+    },
+    {
+      "title": "Watchlist + price drop alerts",
+      "number": 36,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/36",
+      "state": "OPEN",
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
+      "status": "Todo",
+      "priority": "P2 - medium",
+      "area": "Full-stack",
+      "executor": "Conductor",
+      "feature": "watchlist"
     },
     {
       "title": "feat(seed): #156.1 — seed data fixtures and script infrastructure",
@@ -1859,18 +1871,6 @@
       "area": "Frontend",
       "executor": "Conductor",
       "feature": ""
-    },
-    {
-      "title": "Watchlist + price drop alerts",
-      "number": 36,
-      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/36",
-      "state": "OPEN",
-      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
-      "status": "Todo",
-      "priority": "P2 - medium",
-      "area": "Full-stack",
-      "executor": "Conductor",
-      "feature": "watchlist"
     },
     {
       "title": "Seller ratings + reviews system",

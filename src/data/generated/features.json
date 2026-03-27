@@ -194,7 +194,7 @@
       "name": "Follows",
       "description": "Part of #155 (social/follows parent feature).",
       "status": "built",
-      "componentCount": 1,
+      "componentCount": 2,
       "endpointCount": 4,
       "hookCount": 4,
       "serviceCount": 2,
