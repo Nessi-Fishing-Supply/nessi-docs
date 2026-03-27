@@ -29,7 +29,7 @@ Sidebar journey subnav is removed entirely. "Journeys" becomes a single nav item
 Add to `schema.json` in nessi-web-app and to the `Journey` type in nessi-docs:
 
 ```typescript
-domain: 'auth' | 'shopping' | 'cart' | 'account' | 'shops' | 'listings' | 'identity'
+domain: 'auth' | 'shopping' | 'cart' | 'account' | 'shops' | 'listings' | 'identity';
 ```
 
 Each journey gets an explicit domain tag. The domain is the grouping key for tiles and routing.
@@ -41,9 +41,9 @@ A static config object in nessi-docs maps domain slugs to display metadata:
 ```typescript
 interface DomainConfig {
   slug: string;
-  label: string;          // "Authentication", "Cart & Checkout"
-  description: string;    // One-line summary of what's in this domain
-  order: number;          // Sort order for the grid
+  label: string; // "Authentication", "Cart & Checkout"
+  description: string; // One-line summary of what's in this domain
+  order: number; // Sort order for the grid
 }
 ```
 
@@ -51,25 +51,25 @@ Defined in `src/constants/domains.ts`. Not in the journey data — this is rende
 
 ### Domain assignments
 
-| Domain | Slug | Journeys |
-|--------|------|----------|
-| Authentication | `auth` | signup, login, logout, password-reset, email-change, route-protection |
-| Shopping | `shopping` | guest-browse, buyer-search, buyer-recently-viewed, guest-recently-viewed |
-| Cart & Checkout | `cart` | guest-cart, buyer-cart, buyer-checkout |
-| Account | `account` | account-settings, buyer-addresses, account-deletion, onboarding, seller-toggle |
-| Shops | `shops` | shop-create, shop-settings, shop-roles, shop-invite-acceptance, shop-member-journey, shop-member-management, shop-ownership-transfer |
-| Listings | `listings` | seller-listings, seller-social-sharing |
-| Identity | `identity` | context-switching, seller-context |
+| Domain          | Slug       | Journeys                                                                                                                             |
+| --------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Authentication  | `auth`     | signup, login, logout, password-reset, email-change, route-protection                                                                |
+| Shopping        | `shopping` | guest-browse, buyer-search, buyer-recently-viewed, guest-recently-viewed                                                             |
+| Cart & Checkout | `cart`     | guest-cart, buyer-cart, buyer-checkout                                                                                               |
+| Account         | `account`  | account-settings, buyer-addresses, account-deletion, onboarding, seller-toggle                                                       |
+| Shops           | `shops`    | shop-create, shop-settings, shop-roles, shop-invite-acceptance, shop-member-journey, shop-member-management, shop-ownership-transfer |
+| Listings        | `listings` | seller-listings, seller-social-sharing                                                                                               |
+| Identity        | `identity` | context-switching, seller-context                                                                                                    |
 
 ---
 
 ## Route Structure
 
-| Route | View | Component |
-|-------|------|-----------|
-| `/journeys` | Domain grid | `DomainGrid` |
-| `/journeys/[domain]` | Journey list within domain | `DomainJourneyList` |
-| `/journeys/[domain]/[slug]` | Journey canvas | Existing `JourneyPageClient` |
+| Route                       | View                       | Component                    |
+| --------------------------- | -------------------------- | ---------------------------- |
+| `/journeys`                 | Domain grid                | `DomainGrid`                 |
+| `/journeys/[domain]`        | Journey list within domain | `DomainJourneyList`          |
+| `/journeys/[domain]/[slug]` | Journey canvas             | Existing `JourneyPageClient` |
 
 The old `/journeys/[slug]` route is replaced by `/journeys/[domain]/[slug]`. Redirect old URLs if needed.
 
@@ -82,6 +82,7 @@ The old `/journeys/[slug]` route is replaced by `/journeys/[domain]/[slug]`. Red
 **Location:** `src/features/journeys/domain-grid/`
 
 Renders a 3-column CSS grid of domain cards. Each card shows:
+
 - Domain name (DM Serif Display, 14px)
 - Journey count (monospace, top-right)
 - Description (muted, 11px)
@@ -90,6 +91,7 @@ Renders a 3-column CSS grid of domain cards. Each card shows:
 - Coverage color: green (>75%), orange (50-75%), muted (<50%)
 
 Card styling matches existing app aesthetic:
+
 - Background: `rgba(15,19,25,0.6)` with `backdrop-filter: blur(8px)`
 - Border: `1px solid var(--border-subtle)`
 - Radius: 8px
@@ -100,6 +102,7 @@ Cards link to `/journeys/[domain]`.
 Stats are computed at build time from journey data (step count, decision count, coverage %).
 
 **Animations:**
+
 - Cards stagger-enter on page load (opacity + translateY, 50ms delay between cards)
 - Hover: border brightens, subtle scale lift (`transform: scale(1.01)`), box-shadow deepens — all with 200ms ease-out transitions
 - Progress bar fills animate on enter (width transition from 0%)
@@ -114,12 +117,14 @@ Stats are computed at build time from journey data (step count, decision count, 
 Two sections:
 
 **Domain header:**
+
 - Domain name (DM Serif Display, 18px)
 - Description (muted)
 - Aggregate stats (journey count, step count, coverage %)
 - Bottom border separator
 
 **Journey rows:**
+
 - Each row: title, description, persona badge, step count, coverage bar, chevron
 - Rows link to `/journeys/[domain]/[slug]`
 - Hover: subtle background change
@@ -130,6 +135,7 @@ Two sections:
 **Location:** `src/components/ui/breadcrumb/`
 
 Renders breadcrumb navigation above the content:
+
 - Domain list: `Journeys`
 - Journey list: `Journeys › Authentication`
 - Canvas: `Journeys › Authentication › Login`
@@ -164,13 +170,13 @@ All computed at build time via `generateStaticParams`. No runtime data fetching.
 ```typescript
 // /journeys/[domain]/page.tsx
 export function generateStaticParams() {
-  return getDomains().map(d => ({ domain: d.slug }));
+  return getDomains().map((d) => ({ domain: d.slug }));
 }
 
 // /journeys/[domain]/[slug]/page.tsx
 export function generateStaticParams() {
-  return getDomains().flatMap(d =>
-    getJourneysByDomain(d.slug).map(j => ({ domain: d.slug, slug: j.slug }))
+  return getDomains().flatMap((d) =>
+    getJourneysByDomain(d.slug).map((j) => ({ domain: d.slug, slug: j.slug })),
   );
 }
 ```

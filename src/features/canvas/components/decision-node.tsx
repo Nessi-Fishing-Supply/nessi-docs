@@ -56,15 +56,12 @@ export function DecisionNode({
   }));
 
   // Measure pill width from short label
-  const pillW = Math.max(
-    DECISION_SIZE + 10,
-    ...parsedOptions.map((o) => o.short.length * 7 + 24),
-  );
+  const pillW = Math.max(DECISION_SIZE + 10, ...parsedOptions.map((o) => o.short.length * 7 + 24));
 
   return (
     <g style={{ opacity, transition: 'opacity 400ms ease-out' }}>
       {/* Diamond — no hover, not interactive (pills below are the actions) */}
-      <g transform={`translate(${cx},${cy}) rotate(45)` } style={{ cursor: 'default' }}>
+      <g transform={`translate(${cx},${cy}) rotate(45)`} style={{ cursor: 'default' }}>
         <rect
           x={-DECISION_SIZE / 2 + 6}
           y={-DECISION_SIZE / 2 + 6}
@@ -78,7 +75,14 @@ export function DecisionNode({
       </g>
 
       {/* ? mark */}
-      <text x={cx} y={cy + 4} fill={DECISION_COLOR} fontSize={14} fontWeight={700} textAnchor="middle">
+      <text
+        x={cx}
+        y={cy + 4}
+        fill={DECISION_COLOR}
+        fontSize={14}
+        fontWeight={700}
+        textAnchor="middle"
+      >
         ?
       </text>
 
@@ -143,8 +147,25 @@ export function DecisionNode({
                   }}
                 >
                   {/* Left arrow — overlaps tooltip border by 2px to hide seam */}
-                  <svg width="7" height="14" viewBox="0 0 7 14" style={{ display: 'block', flexShrink: 0, marginRight: -3, position: 'relative', zIndex: 1 }}>
-                    <path d="M7,0 L1,6 Q0,7 1,8 L7,14" fill="rgba(15,19,25,0.97)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeLinejoin="round" />
+                  <svg
+                    width="7"
+                    height="14"
+                    viewBox="0 0 7 14"
+                    style={{
+                      display: 'block',
+                      flexShrink: 0,
+                      marginRight: -3,
+                      position: 'relative',
+                      zIndex: 1,
+                    }}
+                  >
+                    <path
+                      d="M7,0 L1,6 Q0,7 1,8 L7,14"
+                      fill="rgba(15,19,25,0.97)"
+                      stroke="rgba(255,255,255,0.12)"
+                      strokeWidth="1"
+                      strokeLinejoin="round"
+                    />
                     <rect x="5" y="0" width="3" height="14" fill="rgba(15,19,25,0.97)" />
                   </svg>
                   <div

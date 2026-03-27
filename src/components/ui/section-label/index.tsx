@@ -7,9 +7,5 @@ interface SectionLabelProps {
 }
 
 export function SectionLabel({ children, spaced = true }: SectionLabelProps) {
-  return (
-    <div className={`${styles.label} ${spaced ? styles.spaced : ''}`}>
-      {children}
-    </div>
-  );
+  return <div className={`${styles.label} ${spaced ? styles.spaced : ''}`}>{children}</div>;
 }

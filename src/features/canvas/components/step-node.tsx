@@ -35,11 +35,12 @@ function nounFromPath(path: string): string {
   // Take the first meaningful segment (most descriptive)
   const noun = segments[0] ?? 'resource';
   // Singularize simple plural: "addresses" → "address", "items" → "item"
-  const singular = noun.endsWith('es') && noun.length > 4
-    ? noun.slice(0, -2)
-    : noun.endsWith('s') && noun.length > 3
-      ? noun.slice(0, -1)
-      : noun;
+  const singular =
+    noun.endsWith('es') && noun.length > 4
+      ? noun.slice(0, -2)
+      : noun.endsWith('s') && noun.length > 3
+        ? noun.slice(0, -1)
+        : noun;
   return singular.charAt(0).toUpperCase() + singular.slice(1).replace(/-/g, ' ');
 }
 
@@ -185,7 +186,12 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
               <stop offset="100%" stopColor={layerCfg.color} stopOpacity={0} />
             </radialGradient>
           </defs>
-          <circle cx={NODE_WIDTH / 2} cy={NODE_HEIGHT / 2} r={NODE_WIDTH * 0.55} fill={`url(#hover-${node.id})`} />
+          <circle
+            cx={NODE_WIDTH / 2}
+            cy={NODE_HEIGHT / 2}
+            r={NODE_WIDTH * 0.55}
+            fill={`url(#hover-${node.id})`}
+          />
         </>
       )}
       {/* Selection glow */}
@@ -197,7 +203,13 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
               <stop offset="100%" stopColor={layerCfg.color} stopOpacity={0} />
             </radialGradient>
           </defs>
-          <circle cx={NODE_WIDTH / 2} cy={NODE_HEIGHT / 2} r={NODE_WIDTH * 0.6} fill={`url(#glow-${node.id})`} style={{ animation: 'glow-pulse 3s ease-in-out infinite' }} />
+          <circle
+            cx={NODE_WIDTH / 2}
+            cy={NODE_HEIGHT / 2}
+            r={NODE_WIDTH * 0.6}
+            fill={`url(#glow-${node.id})`}
+            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
+          />
         </>
       )}
       {/* Background */}
@@ -206,7 +218,13 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
         height={NODE_HEIGHT}
         rx={6}
         fill={hexToRgba(layerCfg.color, isPlanned ? 0.03 : 0.08)}
-        stroke={isSelected ? layerCfg.color : hovered ? hexToRgba(layerCfg.color, 0.4) : hexToRgba(layerCfg.color, isPlanned ? 0.12 : 0.2)}
+        stroke={
+          isSelected
+            ? layerCfg.color
+            : hovered
+              ? hexToRgba(layerCfg.color, 0.4)
+              : hexToRgba(layerCfg.color, isPlanned ? 0.12 : 0.2)
+        }
         strokeWidth={isSelected ? 1.5 : 1}
         strokeDasharray={isPlanned ? '4 3' : undefined}
       />
@@ -216,12 +234,7 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
       {/* Top-right: method pill OR layer dot */}
       {httpMethod ? (
         <g transform={`translate(${NODE_WIDTH - methodPillW - 6}, 5)`}>
-          <rect
-            width={methodPillW}
-            height={14}
-            rx={3}
-            fill={hexToRgba(layerCfg.color, 0.2)}
-          />
+          <rect width={methodPillW} height={14} rx={3} fill={hexToRgba(layerCfg.color, 0.2)} />
           <text
             x={methodPillW / 2}
             y={10}
@@ -239,7 +252,14 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
       )}
 
       {/* Label */}
-      <text x={12} y={sublabel ? 18 : NODE_HEIGHT / 2 + 1} fill="#e8e6e1" fontSize={11} fontWeight={500} dominantBaseline={sublabel ? undefined : 'central'}>
+      <text
+        x={12}
+        y={sublabel ? 18 : NODE_HEIGHT / 2 + 1}
+        fill="#e8e6e1"
+        fontSize={11}
+        fontWeight={500}
+        dominantBaseline={sublabel ? undefined : 'central'}
+      >
         {smartTruncate(displayLabel, LABEL_MAX)}
       </text>
       {/* Sublabel */}

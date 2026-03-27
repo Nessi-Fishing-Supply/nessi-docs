@@ -49,9 +49,7 @@ export function LifecyclePanel({ state, lifecycle }: LifecyclePanelProps) {
       )}
 
       {outgoing.length === 0 && (
-        <div className={styles.terminalState}>
-          Terminal state — no outgoing transitions
-        </div>
+        <div className={styles.terminalState}>Terminal state — no outgoing transitions</div>
       )}
     </div>
   );

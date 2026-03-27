@@ -37,6 +37,10 @@
       "label": "Recently Viewed"
     },
     {
+      "id": "reports",
+      "label": "Reports"
+    },
+    {
       "id": "search_suggestions",
       "label": "Search Suggestions"
     },

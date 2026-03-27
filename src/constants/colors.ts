@@ -31,7 +31,11 @@ export const METHOD_COLORS: Record<string, { color: string; bg: string; border: 
   },
 };
 
-const DEFAULT_METHOD = { color: '#78756f', bg: 'rgba(120,117,111,0.1)', border: 'rgba(120,117,111,0.25)' };
+const DEFAULT_METHOD = {
+  color: '#78756f',
+  bg: 'rgba(120,117,111,0.1)',
+  border: 'rgba(120,117,111,0.25)',
+};
 
 export function getMethodColors(method: string) {
   return METHOD_COLORS[method] ?? DEFAULT_METHOD;

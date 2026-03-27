@@ -125,9 +125,25 @@ function LegendIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
       <rect x="2" y="3" width="4" height="3" rx="0.5" stroke="currentColor" strokeWidth="1.1" />
-      <line x1="8" y1="4.5" x2="14" y2="4.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
+      <line
+        x1="8"
+        y1="4.5"
+        x2="14"
+        y2="4.5"
+        stroke="currentColor"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+      />
       <rect x="2" y="9" width="4" height="3" rx="0.5" stroke="currentColor" strokeWidth="1.1" />
-      <line x1="8" y1="10.5" x2="14" y2="10.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
+      <line
+        x1="8"
+        y1="10.5"
+        x2="14"
+        y2="10.5"
+        stroke="currentColor"
+        strokeWidth="1.1"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }
@@ -372,8 +388,25 @@ function ToolbarBtn({
             }}
           >
             {label}
-            <svg width="14" height="7" viewBox="0 0 14 7" style={{ position: 'absolute', bottom: -7, left: '50%', marginLeft: -7, display: 'block' }}>
-              <path d="M0,0 L6,6 Q7,7 8,6 L14,0" fill="rgba(15,19,25,0.97)" stroke="rgba(255,255,255,0.12)" strokeWidth="1" strokeLinejoin="round" />
+            <svg
+              width="14"
+              height="7"
+              viewBox="0 0 14 7"
+              style={{
+                position: 'absolute',
+                bottom: -7,
+                left: '50%',
+                marginLeft: -7,
+                display: 'block',
+              }}
+            >
+              <path
+                d="M0,0 L6,6 Q7,7 8,6 L14,0"
+                fill="rgba(15,19,25,0.97)"
+                stroke="rgba(255,255,255,0.12)"
+                strokeWidth="1"
+                strokeLinejoin="round"
+              />
               <rect x="0" y="0" width="14" height="1" fill="rgba(15,19,25,0.97)" />
             </svg>
           </div>
@@ -444,7 +477,10 @@ export function CanvasToolbar({
           <ToolbarBtn
             label="Legend"
             isActive={legendVisible}
-            onClick={() => { onToggleLegend(); setFiltersOpen(false); }}
+            onClick={() => {
+              onToggleLegend();
+              setFiltersOpen(false);
+            }}
           >
             <LegendIcon />
           </ToolbarBtn>
@@ -459,11 +495,7 @@ export function CanvasToolbar({
         </ToolbarBtn>
 
         {/* Zoom percentage — click to reset */}
-        <ToolbarBtn
-          label="Reset Zoom"
-          onClick={zoomControls.resetView}
-          style={ZOOM_TEXT_STYLE}
-        >
+        <ToolbarBtn label="Reset Zoom" onClick={zoomControls.resetView} style={ZOOM_TEXT_STYLE}>
           {zoomControls.zoom}%
         </ToolbarBtn>
 

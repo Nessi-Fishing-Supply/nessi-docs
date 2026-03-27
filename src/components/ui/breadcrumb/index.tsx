@@ -59,8 +59,20 @@ export function Breadcrumb({ segments, switcher }: BreadcrumbProps) {
         return (
           <span key={seg.label} style={{ display: 'contents' }}>
             {i > 0 && (
-              <svg className={styles.separator} width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M3.5 2L6.5 5L3.5 8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                className={styles.separator}
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+              >
+                <path
+                  d="M3.5 2L6.5 5L3.5 8"
+                  stroke="currentColor"
+                  strokeWidth="1.3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             )}
             {isLast ? (
@@ -81,7 +93,9 @@ export function Breadcrumb({ segments, switcher }: BreadcrumbProps) {
                           <Link
                             key={item.href}
                             href={item.href}
-                            className={item.active ? styles.dropdownItemActive : styles.dropdownItem}
+                            className={
+                              item.active ? styles.dropdownItemActive : styles.dropdownItem
+                            }
                             onClick={() => setOpen(false)}
                           >
                             <div className={styles.dropdownTitle}>{item.label}</div>
@@ -96,7 +110,9 @@ export function Breadcrumb({ segments, switcher }: BreadcrumbProps) {
                 )}
               </span>
             ) : seg.href ? (
-              <Link href={seg.href} className={styles.link}>{seg.label}</Link>
+              <Link href={seg.href} className={styles.link}>
+                {seg.label}
+              </Link>
             ) : (
               <span className={styles.current}>{seg.label}</span>
             )}

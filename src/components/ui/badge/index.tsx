@@ -8,14 +8,15 @@ interface BadgeProps {
 }
 
 export function Badge({ children, color, variant = 'default' }: BadgeProps) {
-  const classNames = [styles.badge, variant === 'method' && styles.method, variant === 'subtle' && styles.subtle]
+  const classNames = [
+    styles.badge,
+    variant === 'method' && styles.method,
+    variant === 'subtle' && styles.subtle,
+  ]
     .filter(Boolean)
     .join(' ');
 
-  const style =
-    color && variant !== 'subtle'
-      ? { background: `${color}1a`, color }
-      : undefined;
+  const style = color && variant !== 'subtle' ? { background: `${color}1a`, color } : undefined;
 
   return (
     <span className={classNames} style={style}>

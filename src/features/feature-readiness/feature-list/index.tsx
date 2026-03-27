@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { Feature, FeatureStatus } from '@/types/feature';
 import { STATUS_COLORS } from '@/types/feature';
 import { useDocsContext } from '@/providers/docs-provider';
+import { PageHeader } from '@/components/ui/page-header';
 import styles from './feature-list.module.scss';
 
 const STATUS_LABELS: Record<FeatureStatus, string> = {
@@ -40,9 +41,6 @@ export function FeatureList({ features }: FeatureListProps) {
   const builtCount = features.filter((f) => f.status === 'built').length;
   const totalComponents = features.reduce((sum, f) => sum + f.componentCount, 0);
   const totalEndpoints = features.reduce((sum, f) => sum + f.endpointCount, 0);
-  const journeyCoverageCount = features.filter((f) =>
-    f.links?.some((l) => l.type === 'journey'),
-  ).length;
   const builtPct = total > 0 ? Math.round((builtCount / total) * 100) : 0;
 
   const grouped = STATUS_ORDER.map((status) => ({
@@ -53,13 +51,14 @@ export function FeatureList({ features }: FeatureListProps) {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
-        <h2 className={styles.title}>Feature Readiness</h2>
-        <p className={styles.subtitle}>
-          {total} features &middot; {totalComponents} components &middot; {totalEndpoints} endpoints
-          &middot; {journeyCoverageCount} with journey coverage
-        </p>
-      </div>
+      <PageHeader
+        title="Feature Readiness"
+        metrics={[
+          { value: total, label: 'features' },
+          { value: totalComponents, label: 'components' },
+          { value: totalEndpoints, label: 'endpoints' },
+        ]}
+      />
 
       {/* Summary */}
       <div className={styles.summary}>

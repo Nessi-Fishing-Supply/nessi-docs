@@ -6,7 +6,14 @@ import styles from './panel-content.module.scss';
 export function FeaturePanel({ feature }: { feature: Feature }) {
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '8px',
+        }}
+      >
         <h3 style={{ fontSize: '14px', color: 'var(--text-primary)', margin: 0 }}>
           {feature.name}
         </h3>
@@ -32,7 +39,9 @@ export function FeaturePanel({ feature }: { feature: Feature }) {
       {(feature.links?.length ?? 0) > 0 && (
         <div className={styles.linkList}>
           {(feature.links ?? []).map((link, i) => (
-            <CrossLink key={i} href={link.href}>{link.label}</CrossLink>
+            <CrossLink key={i} href={link.href}>
+              {link.label}
+            </CrossLink>
           ))}
         </div>
       )}

@@ -1,120 +1,180 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
-import { useDocsContext } from '@/providers/docs-provider';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
+import { PageHeader } from '@/components/ui/page-header';
+import { BorderTrace } from '@/components/ui/border-trace';
 import styles from './api-list.module.scss';
 
-interface ApiListProps {
+const ALL_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const;
+
+/* ── Filter Bar ── */
+
+function FilterBar({
+  groups,
+  activeGroups,
+  activeMethods,
+  onToggleGroup,
+  onToggleMethod,
+  onToggleAllGroups,
+}: {
   groups: ApiGroup[];
-}
-
-function EndpointCard({ endpoint, groupName }: { endpoint: ApiEndpoint; groupName: string }) {
-  const cardId = endpoint.path.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  const [isOpen, setIsOpen] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const { setSelectedItem } = useDocsContext();
-
-  // Auto-expand and scroll when arriving via hash link
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash === `#${cardId}`) {
-      setIsOpen(true);
-      setTimeout(() => cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-  const { color, bg, border } = getMethodColors(endpoint.method);
-  const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
-  const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
-
-  const handleClick = () => {
-    setIsOpen((p) => !p);
-    setSelectedItem({ type: 'api', endpoint, group: groupName });
-  };
-
-  // Parse HTTP status codes from the why text (e.g. "409 DUPLICATE_EMAIL", "Returns 404")
-  const statusCodes = extractStatusCodes(endpoint.why, errors);
+  activeGroups: Set<string>;
+  activeMethods: Set<string>;
+  onToggleGroup: (name: string) => void;
+  onToggleMethod: (method: string) => void;
+  onToggleAllGroups: () => void;
+}) {
+  const allGroupsActive = activeGroups.size === groups.length;
 
   return (
-    <div
-      ref={cardRef}
-      id={cardId}
-      className={`${styles.card} ${isOpen ? styles.open : ''}`}
-      style={
-        {
-          '--method-color': color,
-          '--method-bg': bg,
-          '--method-border': border,
-        } as React.CSSProperties
-      }
-    >
-      <button className={styles.cardHeader} onClick={handleClick}>
-        <span className={styles.methodBadge}>{endpoint.method}</span>
-        <span className={styles.path}>{endpoint.path}</span>
-        <span className={styles.desc}>{endpoint.description}</span>
-        <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
+    <div className={styles.filterBar}>
+      <span className={styles.filterLabel}>Group</span>
+      <button
+        className={`${styles.filterChip} ${allGroupsActive ? styles.filterChipActive : ''}`}
+        onClick={onToggleAllGroups}
+      >
+        All{' '}
+        <span className={styles.chipCount}>
+          {groups.reduce((s, g) => s + g.endpoints.length, 0)}
+        </span>
       </button>
+      {groups.map((g) => (
+        <button
+          key={g.name}
+          className={`${styles.filterChip} ${activeGroups.has(g.name) ? styles.filterChipActive : ''}`}
+          onClick={() => onToggleGroup(g.name)}
+        >
+          {g.name} <span className={styles.chipCount}>{g.endpoints.length}</span>
+        </button>
+      ))}
 
-      {isOpen && (
-        <div className={styles.cardBody}>
-          {/* Description */}
-          <div className={styles.section}>
-            <p className={styles.fullDesc}>{endpoint.description}</p>
+      <span className={styles.filterDivider} />
+      <span className={styles.filterLabel}>Method</span>
+      {ALL_METHODS.map((m) => {
+        const { color, bg, border } = getMethodColors(m);
+        return (
+          <button
+            key={m}
+            className={`${styles.methodChip} ${activeMethods.has(m) ? styles.methodChipActive : ''}`}
+            style={
+              {
+                '--mc': color,
+                '--mbg': bg,
+                '--mborder': border,
+              } as React.CSSProperties
+            }
+            onClick={() => onToggleMethod(m)}
+          >
+            {m}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ── Endpoint Detail (Expanded) ── */
+
+function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
+  const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
+  const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
+  const hasRequestFields = endpoint.requestFields && endpoint.requestFields.length > 0;
+  const responseCodes = buildResponseCodes(endpoint.errorCodes);
+
+  return (
+    <div className={styles.epDetail}>
+      {endpoint.description && <p className={styles.epDescription}>{endpoint.description}</p>}
+      <div className={hasRequestFields ? styles.detailCols : undefined}>
+        {hasRequestFields && (
+          <div>
+            <div className={styles.detailSection}>
+              <div className={styles.detailLabel}>Request Body</div>
+              <div className={styles.fieldTable}>
+                {endpoint.requestFields!.map((f) => (
+                  <div key={f.name} className={styles.fieldRow}>
+                    <span className={styles.fieldName}>{f.name}</span>
+                    <span className={styles.fieldType}>{f.type}</span>
+                    {f.required && <span className={styles.fieldReq}>required</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {errors.length > 0 && (
+              <div className={styles.detailSection}>
+                <div className={styles.detailLabel}>Error Cases</div>
+                {errors.map((err, i) => (
+                  <div key={i} className={styles.errorCase}>
+                    {err.httpStatus && <span className={styles.errorHttp}>{err.httpStatus}</span>}
+                    <span className={styles.errorText}>
+                      {err.condition}
+                      {err.result && <> &mdash; {err.result}</>}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        <div>
+          <div className={styles.detailSection}>
+            <div className={styles.detailLabel}>Responses</div>
+            <div className={styles.responseRow}>
+              {responseCodes.map((rc) => (
+                <span
+                  key={rc.code}
+                  className={`${styles.statusPill} ${rc.isError ? styles.statusError : styles.statusSuccess}`}
+                >
+                  {rc.code} <span className={styles.statusDesc}>{rc.label}</span>
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Why / Implementation Notes */}
-          {endpoint.why && (
-            <div className={styles.section}>
-              <h4 className={styles.sectionLabel}>Implementation Details</h4>
-              <div className={styles.implBlock}>{endpoint.why}</div>
-            </div>
-          )}
-
-          {/* Response codes */}
-          {statusCodes.length > 0 && (
-            <div className={styles.section}>
-              <h4 className={styles.sectionLabel}>Responses</h4>
-              <div className={styles.responses}>
-                {statusCodes.map((sc, i) => (
-                  <div
-                    key={i}
-                    className={`${styles.responseRow} ${sc.isError ? styles.errorResponse : styles.successResponse}`}
+          {endpoint.access && endpoint.access.length > 0 && (
+            <div className={styles.detailSection}>
+              <div className={styles.detailLabel}>Access</div>
+              <div className={styles.accessRow}>
+                {endpoint.access.map((ctx) => (
+                  <Link
+                    key={ctx}
+                    href="/permissions"
+                    className={`${styles.accessBadge} ${ctx === 'Shop' ? styles.accessShop : ''}`}
                   >
-                    <span className={styles.statusCode}>{sc.code}</span>
-                    <span className={styles.statusDesc}>{sc.description}</span>
-                  </div>
+                    <span className={styles.accessDot} />
+                    {ctx}
+                  </Link>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Error cases from journeys */}
-          {errors.length > 0 && (
-            <div className={styles.section}>
-              <h4 className={styles.sectionLabel}>Error Cases</h4>
-              <div className={styles.errorList}>
-                {errors.map((err, i) => (
-                  <div key={i} className={styles.errorItem}>
-                    <div className={styles.errorCondition}>
-                      {err.httpStatus && <span className={styles.httpBadge}>{err.httpStatus}</span>}
-                      {err.condition}
-                    </div>
-                    <div className={styles.errorResult}>{err.result}</div>
-                  </div>
-                ))}
-              </div>
+          {!hasRequestFields && errors.length > 0 && (
+            <div className={styles.detailSection}>
+              <div className={styles.detailLabel}>Error Cases</div>
+              {errors.map((err, i) => (
+                <div key={i} className={styles.errorCase}>
+                  {err.httpStatus && <span className={styles.errorHttp}>{err.httpStatus}</span>}
+                  <span className={styles.errorText}>
+                    {err.condition}
+                    {err.result && <> &mdash; {err.result}</>}
+                  </span>
+                </div>
+              ))}
             </div>
           )}
 
-          {/* Journey usage */}
           {journeyLinks.length > 0 && (
-            <div className={styles.section}>
-              <h4 className={styles.sectionLabel}>Used in Journeys</h4>
-              <div className={styles.journeyLinks}>
+            <div className={styles.detailSection}>
+              <div className={styles.detailLabel}>Used in Journeys</div>
+              <div className={styles.journeyChips}>
                 {journeyLinks.map((link, i) => (
-                  <Link key={i} href={link.href} className={styles.journeyLink}>
+                  <Link key={i} href={link.href} className={styles.journeyChip}>
                     {link.label}
                   </Link>
                 ))}
@@ -122,56 +182,131 @@ function EndpointCard({ endpoint, groupName }: { endpoint: ApiEndpoint; groupNam
             </div>
           )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
-interface StatusCode {
-  code: string;
-  description: string;
+/* ── Endpoint Row ── */
+
+function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; staggerIndex: number }) {
+  const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
+  const [isOpen, setIsOpen] = useState(false);
+  const [highlight, setHighlight] = useState(false);
+  const rowRef = useRef<HTMLDivElement>(null);
+  const { color, bg, border } = getMethodColors(endpoint.method);
+  const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
+  const errorCount = errors.length;
+
+  // Deep-link: sequential animation — stagger in → expand → scroll → glow
+  useEffect(() => {
+    function checkHash() {
+      if (window.location.hash === `#${slug}`) {
+        // Wait for stagger animation to complete (stagger delay + 200ms animation duration)
+        const staggerDelay = staggerIndex * 20;
+        const animationDuration = 200;
+        const expandDelay = staggerDelay + animationDuration + 100; // +100ms buffer
+
+        // Step 1: Let the row animate in naturally, then expand it
+        setTimeout(() => {
+          setIsOpen(true);
+
+          // Step 2: After expansion renders, scroll into view
+          setTimeout(() => {
+            rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Step 3: After scroll settles, start the glow
+            setTimeout(() => {
+              setHighlight(true);
+              setTimeout(() => setHighlight(false), 9500);
+            }, 400); // allow scroll to settle
+          }, 50); // allow expansion to render
+        }, expandDelay);
+      }
+    }
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    return () => window.removeEventListener('hashchange', checkHash);
+  }, [slug, staggerIndex]);
+
+  const pathParts = endpoint.path.split(/(:[\w]+)/g);
+
+  return (
+    <div
+      ref={rowRef}
+      id={slug}
+      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''}`}
+      style={
+        {
+          '--method-color': color,
+          '--method-bg': bg,
+          '--method-border': border,
+          '--stagger': `${staggerIndex * 20}ms`,
+        } as React.CSSProperties
+      }
+    >
+      <BorderTrace active={highlight} />
+      <button className={styles.epRowHeader} onClick={() => setIsOpen((p) => !p)}>
+        <span className={styles.methodBadge}>{endpoint.method}</span>
+        <span className={styles.epPath}>
+          {pathParts.map((part, i) =>
+            part.startsWith(':') ? (
+              <span key={i} className={styles.epParam}>
+                {part}
+              </span>
+            ) : (
+              <span key={i}>{part}</span>
+            ),
+          )}
+        </span>
+        <span className={styles.epMeta}>
+          {endpoint.access?.map((ctx) => (
+            <Link
+              key={ctx}
+              href="/permissions"
+              className={`${styles.epAccess} ${ctx === 'Shop' ? styles.epAccessShop : ''}`}
+            >
+              {ctx}
+            </Link>
+          ))}
+          {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
+          <span className={styles.epChevron}>&#9656;</span>
+        </span>
+      </button>
+
+      {isOpen && <EndpointDetail endpoint={endpoint} />}
+    </div>
+  );
+}
+
+/* ── Helpers ── */
+
+interface ResponseCode {
+  code: number;
+  label: string;
   isError: boolean;
 }
 
-function extractStatusCodes(
-  why: string | undefined,
-  errors: { httpStatus?: number; condition: string }[],
-): StatusCode[] {
-  const codes: StatusCode[] = [];
-  const seen = new Set<string>();
+function buildResponseCodes(errorCodes?: number[]): ResponseCode[] {
+  const codes: ResponseCode[] = [{ code: 200, label: 'OK', isError: false }];
+  const seen = new Set<number>([200]);
 
-  // Always add a success response
-  codes.push({ code: '200', description: 'Success', isError: false });
-  seen.add('200');
+  const STATUS_LABELS: Record<number, string> = {
+    400: 'Bad Request',
+    401: 'Unauthorized',
+    403: 'Forbidden',
+    404: 'Not Found',
+    409: 'Conflict',
+    422: 'Unprocessable',
+    500: 'Server Error',
+  };
 
-  // Extract from errors
-  for (const err of errors) {
-    if (err.httpStatus) {
-      const key = String(err.httpStatus);
-      if (!seen.has(key)) {
-        seen.add(key);
-        codes.push({ code: key, description: err.condition, isError: true });
-      }
-    }
-  }
-
-  // Parse codes from why text
-  if (why) {
-    const matches = why.matchAll(/(\d{3})\s+([A-Z_]+)/g);
-    for (const m of matches) {
-      const code = m[1];
+  if (errorCodes) {
+    for (const code of errorCodes) {
       if (!seen.has(code)) {
         seen.add(code);
-        codes.push({ code, description: m[2].replace(/_/g, ' '), isError: parseInt(code) >= 400 });
-      }
-    }
-    // Also catch "Returns 404" pattern
-    const returnMatches = why.matchAll(/[Rr]eturns?\s+(\d{3})/g);
-    for (const m of returnMatches) {
-      const code = m[1];
-      if (!seen.has(code)) {
-        seen.add(code);
-        codes.push({ code, description: `Error`, isError: parseInt(code) >= 400 });
+        codes.push({ code, label: STATUS_LABELS[code] ?? 'Error', isError: code >= 400 });
       }
     }
   }
@@ -179,57 +314,112 @@ function extractStatusCodes(
   return codes;
 }
 
-export function ApiList({ groups }: ApiListProps) {
-  const totalEndpoints = groups.reduce((sum, g) => sum + g.endpoints.length, 0);
+/* ── Main Component ── */
+
+interface ApiListProps {
+  groups: ApiGroup[];
+  totalEndpoints: number;
+}
+
+export function ApiList({ groups, totalEndpoints }: ApiListProps) {
+  const [activeGroups, setActiveGroups] = useState<Set<string>>(
+    () => new Set(groups.map((g) => g.name)),
+  );
+  const [activeMethods, setActiveMethods] = useState<Set<string>>(() => new Set(ALL_METHODS));
+
+  const allGroupNames = useMemo(() => new Set(groups.map((g) => g.name)), [groups]);
+
+  const toggleGroup = (name: string) => {
+    setActiveGroups((prev) => {
+      const allSelected = prev.size === allGroupNames.size;
+      if (allSelected) {
+        // From "all" state, clicking one shows only that one
+        return new Set([name]);
+      }
+      const next = new Set(prev);
+      if (next.has(name)) {
+        next.delete(name);
+        // If nothing left, go back to all
+        return next.size === 0 ? new Set(allGroupNames) : next;
+      }
+      next.add(name);
+      return next;
+    });
+  };
+
+  const toggleAllGroups = () => {
+    setActiveGroups(new Set(allGroupNames));
+  };
+
+  const toggleMethod = (method: string) => {
+    setActiveMethods((prev) => {
+      const allSelected = prev.size === ALL_METHODS.length;
+      if (allSelected) {
+        return new Set([method]);
+      }
+      const next = new Set(prev);
+      if (next.has(method)) {
+        next.delete(method);
+        return next.size === 0 ? new Set(ALL_METHODS) : next;
+      }
+      next.add(method);
+      return next;
+    });
+  };
+
+  const filteredGroups = useMemo(() => {
+    return groups
+      .filter((g) => activeGroups.has(g.name))
+      .map((g) => ({
+        ...g,
+        endpoints: g.endpoints.filter((ep) => activeMethods.has(ep.method)),
+      }))
+      .filter((g) => g.endpoints.length > 0);
+  }, [groups, activeGroups, activeMethods]);
+
+  let staggerIndex = 0;
 
   return (
     <div className={styles.container}>
-      {/* Header */}
-      <div className={styles.header}>
-        <div className={styles.headerTitle}>
-          <h2 className={styles.title}>Nessi API</h2>
-          <span className={styles.version}>v1</span>
-        </div>
-        <p className={styles.subtitle}>
-          {totalEndpoints} endpoints across {groups.length} groups
-        </p>
-        <div className={styles.baseUrl}>
-          <span className={styles.baseLabel}>Base URL</span>
-          <code className={styles.baseValue}>nessifishingsupply.com</code>
-        </div>
-      </div>
+      <PageHeader
+        title="API Map"
+        metrics={[
+          { value: totalEndpoints, label: 'endpoints' },
+          { value: groups.length, label: 'groups' },
+        ]}
+      />
 
-      {/* Table of contents */}
-      <nav className={styles.toc}>
-        {groups.map((group) => (
-          <a key={group.name} href={`#${slugify(group.name)}`} className={styles.tocItem}>
-            <span className={styles.tocName}>{group.name}</span>
-            <span className={styles.tocCount}>{group.endpoints.length}</span>
-          </a>
+      <FilterBar
+        groups={groups}
+        activeGroups={activeGroups}
+        activeMethods={activeMethods}
+        onToggleGroup={toggleGroup}
+        onToggleMethod={toggleMethod}
+        onToggleAllGroups={toggleAllGroups}
+      />
+
+      <div className={styles.epContainer}>
+        {filteredGroups.map((group) => (
+          <div key={group.name}>
+            <div className={styles.groupDivider}>
+              <span className={styles.groupName}>{group.name}</span>
+              <span className={styles.groupLine} />
+              <span className={styles.groupCount}>{group.endpoints.length}</span>
+            </div>
+
+            {group.endpoints.map((ep) => {
+              const idx = staggerIndex++;
+              return (
+                <EndpointRow key={`${ep.method}-${ep.path}`} endpoint={ep} staggerIndex={idx} />
+              );
+            })}
+          </div>
         ))}
-      </nav>
 
-      {/* Groups */}
-      {groups.map((group) => (
-        <div key={group.name} id={slugify(group.name)} className={styles.group}>
-          <div className={styles.groupHeader}>
-            <h2 className={styles.groupName}>{group.name}</h2>
-            <span className={styles.groupCount}>{group.endpoints.length} endpoints</span>
-          </div>
-          <div className={styles.endpoints}>
-            {group.endpoints.map((ep) => (
-              <EndpointCard key={`${ep.method}-${ep.path}`} endpoint={ep} groupName={group.name} />
-            ))}
-          </div>
-        </div>
-      ))}
+        {filteredGroups.length === 0 && (
+          <div className={styles.emptyState}>No endpoints match the current filters.</div>
+        )}
+      </div>
     </div>
   );
-}
-
-function slugify(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
 }

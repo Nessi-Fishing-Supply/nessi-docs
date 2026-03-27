@@ -4,5 +4,7 @@ import { ApiList } from '@/features/api-map/api-list';
 export const metadata = { title: 'API Map' };
 
 export default function ApiMapPage() {
-  return <ApiList groups={apiGroups} />;
+  const totalEndpoints = apiGroups.reduce((sum, g) => sum + g.endpoints.length, 0);
+
+  return <ApiList groups={apiGroups} totalEndpoints={totalEndpoints} />;
 }

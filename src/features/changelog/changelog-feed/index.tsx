@@ -2,6 +2,7 @@
 
 import type { ChangelogEntry } from '@/types/changelog';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
+import { PageHeader } from '@/components/ui/page-header';
 import styles from './changelog-feed.module.scss';
 
 interface ChangelogFeedProps {
@@ -13,12 +14,13 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h2 className={styles.title}>Changelog</h2>
-        <p className={styles.subtitle}>
-          {totalChanges} changes across {entries.length} releases
-        </p>
-      </div>
+      <PageHeader
+        title="Changelog"
+        metrics={[
+          { value: totalChanges, label: 'changes' },
+          { value: entries.length, label: 'releases' },
+        ]}
+      />
 
       <div className={styles.timeline}>
         {entries.map((entry) => (

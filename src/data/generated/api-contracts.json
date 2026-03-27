@@ -252,104 +252,6 @@
       ]
     },
     {
-      "name": "Flags",
-      "endpoints": [
-        {
-          "method": "GET",
-          "path": "/api/flags/check",
-          "label": "List Check",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
-          "requestFields": [],
-          "description": "Checks whether the current user has already flagged a specific item.",
-          "tags": []
-        },
-        {
-          "method": "POST",
-          "path": "/api/flags",
-          "label": "Create Flag",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
-          "requestFields": [],
-          "description": "Submits a flag reporting a listing or user for review by the Nessi team.",
-          "tags": []
-        }
-      ]
-    },
-    {
-      "name": "Follows",
-      "endpoints": [
-        {
-          "method": "GET",
-          "path": "/api/follows/count",
-          "label": "List Count",
-          "auth": "none",
-          "access": [],
-          "errorCodes": [400, 500],
-          "requestFields": [],
-          "description": "Get the follower count for a member or shop",
-          "tags": []
-        },
-        {
-          "method": "GET",
-          "path": "/api/follows/following",
-          "label": "List Following",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
-          "requestFields": [],
-          "description": "List members and shops the authenticated user follows",
-          "tags": []
-        },
-        {
-          "method": "POST",
-          "path": "/api/follows",
-          "label": "Create Follow",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 409, 500],
-          "requestFields": [
-            {
-              "name": "target_type",
-              "type": "unknown",
-              "required": true
-            },
-            {
-              "name": "target_id",
-              "type": "unknown",
-              "required": true
-            }
-          ],
-          "description": "Follow a member or shop",
-          "tags": []
-        },
-        {
-          "method": "DELETE",
-          "path": "/api/follows",
-          "label": "Delete Follow",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 409, 500],
-          "requestFields": [],
-          "description": "Unfollow a member or shop",
-          "tags": []
-        },
-        {
-          "method": "GET",
-          "path": "/api/follows/status",
-          "label": "List Statu",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
-          "requestFields": [],
-          "description": "Check if the authenticated user follows a member or shop",
-          "tags": []
-        }
-      ]
-    },
-    {
       "name": "Invites",
       "endpoints": [
         {
@@ -685,6 +587,33 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Clears the user's entire recently-viewed browsing history.",
+          "tags": []
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/reports/check",
+          "label": "List Check",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 500],
+          "requestFields": [],
+          "description": "Checks whether the current user has already reported a specific item.",
+          "tags": []
+        },
+        {
+          "method": "POST",
+          "path": "/api/reports",
+          "label": "Create Report",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 409, 500],
+          "requestFields": [],
+          "description": "Submits a report flagging a listing or user for review by the Nessi team.",
           "tags": []
         }
       ]

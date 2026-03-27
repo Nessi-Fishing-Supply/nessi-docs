@@ -28,14 +28,11 @@ export function usePathTrace(nodes: JourneyNode[], edges: JourneyEdge[]) {
     });
   }, []);
 
-  const startFromEntry = useCallback(
-    (entryId: string) => {
-      setActiveEntryId((prev) => (prev === entryId ? null : entryId));
-      // Clear decision choices when toggling entry
-      setChosenPath([]);
-    },
-    [],
-  );
+  const startFromEntry = useCallback((entryId: string) => {
+    setActiveEntryId((prev) => (prev === entryId ? null : entryId));
+    // Clear decision choices when toggling entry
+    setChosenPath([]);
+  }, []);
 
   const resetPath = useCallback(() => {
     setChosenPath([]);

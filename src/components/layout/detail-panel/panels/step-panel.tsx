@@ -33,7 +33,7 @@ export function StepPanel({ node, journey }: StepPanelProps) {
         </>
       )}
 
-      {node.route && (
+      {node.route && node.layer === 'server' && (
         <>
           <SectionLabel>API Route</SectionLabel>
           <Link
@@ -46,6 +46,20 @@ export function StepPanel({ node, journey }: StepPanelProps) {
           >
             {node.route} →
           </Link>
+        </>
+      )}
+
+      {node.route && node.layer !== 'server' && (
+        <>
+          <SectionLabel>Page</SectionLabel>
+          <a
+            href={`https://nessifishingsupply.com${node.route}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.codeBlockAccent}
+          >
+            {node.route} ↗
+          </a>
         </>
       )}
 
@@ -83,7 +97,9 @@ export function StepPanel({ node, journey }: StepPanelProps) {
           <SectionLabel>See also</SectionLabel>
           <div className={styles.linkList}>
             {crossLinks.map((link, i) => (
-              <CrossLink key={i} href={link.href}>View API Spec</CrossLink>
+              <CrossLink key={i} href={link.href}>
+                View API Spec
+              </CrossLink>
             ))}
           </div>
         </>

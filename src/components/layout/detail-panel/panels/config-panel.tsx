@@ -18,7 +18,13 @@ export function ConfigPanel({ configEnum }: { configEnum: ConfigEnum }) {
         {configEnum.values.map((v) => (
           <KeyValueRow
             key={v.value}
-            label={<code style={{ fontFamily: 'var(--font-family-mono)', color: 'var(--color-primary-400)' }}>{v.value}</code>}
+            label={
+              <code
+                style={{ fontFamily: 'var(--font-family-mono)', color: 'var(--color-primary-400)' }}
+              >
+                {v.value}
+              </code>
+            }
             value={v.label}
             valueColor="var(--text-muted)"
           />

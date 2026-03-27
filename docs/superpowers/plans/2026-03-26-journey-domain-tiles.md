@@ -13,6 +13,7 @@
 ### Task 1: Add domain field to journey schema and data
 
 **Files:**
+
 - Modify: `/Users/kyleholloway/Documents/Development/nessi-web-app/docs/journeys/schema.json`
 - Modify: All 29 journey JSON files in `/Users/kyleholloway/Documents/Development/nessi-web-app/docs/journeys/*.json`
 - Modify: `src/types/journey.ts`
@@ -36,17 +37,18 @@ Add `"domain"` to the `required` array.
 
 Add the `domain` field to each journey file per this mapping:
 
-| domain | files |
-|--------|-------|
-| `auth` | signup, login, logout, password-reset, email-change, route-protection |
-| `shopping` | guest-browse, buyer-search, buyer-recently-viewed, guest-recently-viewed |
-| `cart` | guest-cart, buyer-cart, buyer-checkout |
-| `account` | account-settings, buyer-addresses, account-deletion, onboarding, seller-toggle |
-| `shops` | shop-create, shop-settings, shop-roles, shop-invite-acceptance, shop-member-journey, shop-member-management, shop-ownership-transfer |
-| `listings` | seller-listings, seller-social-sharing |
-| `identity` | context-switching, seller-context |
+| domain     | files                                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `auth`     | signup, login, logout, password-reset, email-change, route-protection                                                                |
+| `shopping` | guest-browse, buyer-search, buyer-recently-viewed, guest-recently-viewed                                                             |
+| `cart`     | guest-cart, buyer-cart, buyer-checkout                                                                                               |
+| `account`  | account-settings, buyer-addresses, account-deletion, onboarding, seller-toggle                                                       |
+| `shops`    | shop-create, shop-settings, shop-roles, shop-invite-acceptance, shop-member-journey, shop-member-management, shop-ownership-transfer |
+| `listings` | seller-listings, seller-social-sharing                                                                                               |
+| `identity` | context-switching, seller-context                                                                                                    |
 
 Example — add as a top-level field after `slug`:
+
 ```json
 {
   "slug": "login",
@@ -61,10 +63,18 @@ Example — add as a top-level field after `slug`:
 In `src/types/journey.ts`, add the domain type and update `Journey`:
 
 ```typescript
-export type JourneyDomain = 'auth' | 'shopping' | 'cart' | 'account' | 'shops' | 'listings' | 'identity';
+export type JourneyDomain =
+  | 'auth'
+  | 'shopping'
+  | 'cart'
+  | 'account'
+  | 'shops'
+  | 'listings'
+  | 'identity';
 ```
 
 Add to the `Journey` interface:
+
 ```typescript
 export interface Journey {
   slug: string;
@@ -95,6 +105,7 @@ git commit -m "feat: add domain field to journey types and data layer"
 ### Task 2: Create domain configuration and data helpers
 
 **Files:**
+
 - Create: `src/constants/domains.ts`
 - Modify: `src/data/index.ts`
 
@@ -111,13 +122,48 @@ export interface DomainConfig {
 }
 
 export const DOMAINS: DomainConfig[] = [
-  { slug: 'auth', label: 'Authentication', description: 'Signup, login, password management, route protection', order: 0 },
-  { slug: 'shopping', label: 'Shopping', description: 'Browse, search, discovery, recently viewed', order: 1 },
-  { slug: 'cart', label: 'Cart & Checkout', description: 'Guest cart, authenticated cart, checkout flow', order: 2 },
-  { slug: 'account', label: 'Account', description: 'Settings, addresses, deletion, onboarding', order: 3 },
-  { slug: 'shops', label: 'Shops', description: 'Create, settings, roles, invites, members, ownership', order: 4 },
-  { slug: 'listings', label: 'Listings', description: 'Lifecycle management, social sharing', order: 5 },
-  { slug: 'identity', label: 'Identity', description: 'Context switching, seller context', order: 6 },
+  {
+    slug: 'auth',
+    label: 'Authentication',
+    description: 'Signup, login, password management, route protection',
+    order: 0,
+  },
+  {
+    slug: 'shopping',
+    label: 'Shopping',
+    description: 'Browse, search, discovery, recently viewed',
+    order: 1,
+  },
+  {
+    slug: 'cart',
+    label: 'Cart & Checkout',
+    description: 'Guest cart, authenticated cart, checkout flow',
+    order: 2,
+  },
+  {
+    slug: 'account',
+    label: 'Account',
+    description: 'Settings, addresses, deletion, onboarding',
+    order: 3,
+  },
+  {
+    slug: 'shops',
+    label: 'Shops',
+    description: 'Create, settings, roles, invites, members, ownership',
+    order: 4,
+  },
+  {
+    slug: 'listings',
+    label: 'Listings',
+    description: 'Lifecycle management, social sharing',
+    order: 5,
+  },
+  {
+    slug: 'identity',
+    label: 'Identity',
+    description: 'Context switching, seller context',
+    order: 6,
+  },
 ];
 
 export function getDomainConfig(slug: string): DomainConfig | undefined {
@@ -194,6 +240,7 @@ git commit -m "feat: add domain config and journey grouping helpers"
 ### Task 3: Create Breadcrumb component
 
 **Files:**
+
 - Create: `src/components/ui/breadcrumb/index.tsx`
 - Create: `src/components/ui/breadcrumb/breadcrumb.module.scss`
 - Modify: `src/components/ui/index.ts`
@@ -235,8 +282,12 @@ Create `src/components/ui/breadcrumb/breadcrumb.module.scss`:
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 ```
 
@@ -268,7 +319,9 @@ export function Breadcrumb({ segments }: BreadcrumbProps) {
             {isLast || !seg.href ? (
               <span className={styles.current}>{seg.label}</span>
             ) : (
-              <Link href={seg.href} className={styles.link}>{seg.label}</Link>
+              <Link href={seg.href} className={styles.link}>
+                {seg.label}
+              </Link>
             )}
           </span>
         );
@@ -281,6 +334,7 @@ export function Breadcrumb({ segments }: BreadcrumbProps) {
 - [ ] **Step 3: Add to barrel export**
 
 In `src/components/ui/index.ts`, add:
+
 ```typescript
 export { Breadcrumb } from './breadcrumb';
 ```
@@ -302,6 +356,7 @@ git commit -m "feat: add Breadcrumb UI component"
 ### Task 4: Create DomainGrid component
 
 **Files:**
+
 - Create: `src/features/journeys/domain-grid/index.tsx`
 - Create: `src/features/journeys/domain-grid/domain-grid.module.scss`
 
@@ -480,7 +535,10 @@ export function DomainGrid({ domains }: DomainGridProps) {
                 <span>{d.stepCount} steps</span>
                 <span>{d.decisionCount} decisions</span>
               </div>
-              <span className={styles.coveragePercent} style={{ color: coverageColor(d.builtPercent) }}>
+              <span
+                className={styles.coveragePercent}
+                style={{ color: coverageColor(d.builtPercent) }}
+              >
                 {d.builtPercent}%
               </span>
             </div>
@@ -519,6 +577,7 @@ git commit -m "feat: add DomainGrid component with stagger animations"
 ### Task 5: Create DomainJourneyList component
 
 **Files:**
+
 - Create: `src/features/journeys/domain-journey-list/index.tsx`
 - Create: `src/features/journeys/domain-journey-list/domain-journey-list.module.scss`
 
@@ -683,10 +742,7 @@ export function DomainJourneyList({ domain, journeys, stats }: DomainJourneyList
 
   return (
     <div className={styles.container}>
-      <Breadcrumb segments={[
-        { label: 'Journeys', href: '/journeys' },
-        { label: domain.label },
-      ]} />
+      <Breadcrumb segments={[{ label: 'Journeys', href: '/journeys' }, { label: domain.label }]} />
 
       <div className={styles.domainHeader}>
         <div className={styles.domainTitle}>{domain.label}</div>
@@ -694,7 +750,9 @@ export function DomainJourneyList({ domain, journeys, stats }: DomainJourneyList
         <div className={styles.domainStats}>
           <span>{journeys.length} journeys</span>
           <span>{stats.stepCount} steps</span>
-          <span style={{ color: coverageColor(stats.builtPercent) }}>{stats.builtPercent}% built</span>
+          <span style={{ color: coverageColor(stats.builtPercent) }}>
+            {stats.builtPercent}% built
+          </span>
         </div>
       </div>
 
@@ -763,6 +821,7 @@ git commit -m "feat: add DomainJourneyList component with stagger animations"
 ### Task 6: Restructure routes
 
 **Files:**
+
 - Modify: `src/app/journeys/page.tsx`
 - Create: `src/app/journeys/[domain]/page.tsx`
 - Create: `src/app/journeys/[domain]/[slug]/page.tsx`
@@ -839,13 +898,21 @@ export function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ domain: string; slug: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ domain: string; slug: string }>;
+}) {
   const { domain, slug } = await params;
   const journey = getJourney(domain, slug);
   return { title: journey?.title ?? 'Journey' };
 }
 
-export default async function JourneyPage({ params }: { params: Promise<{ domain: string; slug: string }> }) {
+export default async function JourneyPage({
+  params,
+}: {
+  params: Promise<{ domain: string; slug: string }>;
+}) {
   const { domain, slug } = await params;
   const journey = getJourney(domain, slug);
   if (!journey) notFound();
@@ -900,11 +967,13 @@ export function JourneyPageClient({ journey, domain }: JourneyPageClientProps) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ padding: '12px 16px 0', flexShrink: 0 }}>
-        <Breadcrumb segments={[
-          { label: 'Journeys', href: '/journeys' },
-          { label: domainConfig?.label ?? domain, href: `/journeys/${domain}` },
-          { label: journey.title },
-        ]} />
+        <Breadcrumb
+          segments={[
+            { label: 'Journeys', href: '/journeys' },
+            { label: domainConfig?.label ?? domain, href: `/journeys/${domain}` },
+            { label: journey.title },
+          ]}
+        />
       </div>
       <div style={{ flex: 1, minHeight: 0 }}>
         <JourneyCanvas
@@ -945,6 +1014,7 @@ git commit -m "feat: restructure journey routes to domain/slug pattern with brea
 ### Task 7: Remove sidebar journey subnav
 
 **Files:**
+
 - Modify: `src/components/layout/sidebar/index.tsx`
 - Modify: `src/app/layout.tsx`
 
@@ -953,6 +1023,7 @@ git commit -m "feat: restructure journey routes to domain/slug pattern with brea
 In `src/components/layout/sidebar/index.tsx`:
 
 Remove the `journeys` prop from `SidebarProps` (keep `lifecycles`):
+
 ```typescript
 interface SidebarProps {
   lifecycles: Lifecycle[];
@@ -966,6 +1037,7 @@ Remove the entire `{showJourneySubnav && (...)}` block (lines 67-88).
 Remove `showJourneySubnav` variable.
 
 Update the component signature:
+
 ```typescript
 export function Sidebar({ lifecycles }: SidebarProps) {
 ```
@@ -975,6 +1047,7 @@ export function Sidebar({ lifecycles }: SidebarProps) {
 In `src/app/layout.tsx`:
 
 Remove `getAllJourneys` from the import:
+
 ```typescript
 import { lifecycles } from '@/data';
 ```
@@ -982,6 +1055,7 @@ import { lifecycles } from '@/data';
 Remove `const journeys = getAllJourneys();` line.
 
 Update the Sidebar prop:
+
 ```tsx
 <Sidebar lifecycles={lifecycles} />
 ```
@@ -1003,6 +1077,7 @@ git commit -m "feat: remove journey subnav from sidebar — navigation moved to 
 ### Task 8: Update root page redirect
 
 **Files:**
+
 - Modify: `src/app/page.tsx`
 
 - [ ] **Step 1: Update root redirect**
@@ -1034,6 +1109,7 @@ git commit -m "chore: update root redirect to journeys domain grid"
 ### Task 9: Add domain field to nessi-web-app journey files and sync
 
 **Files:**
+
 - Modify: All 29 journey JSON files in `/Users/kyleholloway/Documents/Development/nessi-web-app/docs/journeys/`
 - Modify: `src/data/generated/journeys.json` (manual sync or re-extract)
 
@@ -1077,6 +1153,7 @@ git commit -m "data: sync journeys with domain field"
 - [ ] **Step 1: Verify all routes**
 
 Run `pnpm build` and check output:
+
 - `/journeys` → domain grid (static)
 - `/journeys/auth` → journey list (SSG)
 - `/journeys/auth/login` → canvas (SSG)
