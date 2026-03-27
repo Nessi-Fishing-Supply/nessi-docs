@@ -377,7 +377,7 @@ export function ErdCanvas({ nodes, edges, entities }: ErdCanvasProps) {
               transition: 'opacity 400ms ease-out',
             }}
           >
-            <EntityTooltip node={node} entity={entity}>
+            <EntityTooltip node={node} entity={entity} suppressTooltip={isDimmed}>
               <EntityNode
                 node={node}
                 isSelected={isPinned}
