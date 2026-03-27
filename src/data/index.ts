@@ -269,8 +269,8 @@ function transformJourneys(raw: RawJourney[]): Journey[] {
 
 const LC_NODE_W = 140;
 const LC_NODE_H = 60;
-const LC_H_GAP = 80;
-const LC_V_GAP = 80;
+const LC_H_GAP = 140;
+const LC_V_GAP = 120;
 
 const STATE_COLOR_MAP: Record<string, string> = {
   sold: '#3d8c75',
@@ -317,15 +317,13 @@ function transformLifecycles(raw: RawLifecycle[]): Lifecycle[] {
     const bfsQueue = roots.length > 0 ? [...roots] : [stateIds[0]];
     for (const r of bfsQueue) level.set(r, 0);
 
-    const maxIter = stateIds.length * lc.transitions.length + stateIds.length;
-    let iter = 0;
-    while (bfsQueue.length > 0 && iter++ < maxIter) {
+    while (bfsQueue.length > 0) {
       const current = bfsQueue.shift()!;
       const currentLevel = level.get(current)!;
       for (const next of outgoing.get(current) ?? []) {
-        const proposed = currentLevel + 1;
-        if (!level.has(next) || level.get(next)! < proposed) {
-          level.set(next, proposed);
+        // Only assign first-seen level — prevents back-edges from inflating levels
+        if (!level.has(next)) {
+          level.set(next, currentLevel + 1);
           bfsQueue.push(next);
         }
       }

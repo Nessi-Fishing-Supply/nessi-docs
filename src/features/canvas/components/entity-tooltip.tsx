@@ -128,12 +128,13 @@ interface EntityTooltipProps {
   node: ErdNode;
   entity: Entity | undefined;
   children: React.ReactNode;
+  suppressTooltip?: boolean;
 }
 
 /** Delay before closing tooltip — gives cursor time to bridge from node to tooltip */
 const CLOSE_DELAY = 120;
 
-export function EntityTooltip({ node, entity, children }: EntityTooltipProps) {
+export function EntityTooltip({ node, entity, children, suppressTooltip }: EntityTooltipProps) {
   const [visible, setVisible] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -160,7 +161,7 @@ export function EntityTooltip({ node, entity, children }: EntityTooltipProps) {
   const triggerCount = entity?.triggers?.length ?? 0;
   const endpoints: EndpointRef[] = entity ? getEndpointsForTable(entity.name) : [];
 
-  const showTooltip = visible && entity;
+  const showTooltip = visible && entity && !suppressTooltip;
 
   return (
     <g onMouseEnter={show} onMouseLeave={scheduleClose}>
