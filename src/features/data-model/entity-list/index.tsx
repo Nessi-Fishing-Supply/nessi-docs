@@ -108,7 +108,7 @@ function EntityRow({
         () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
         100,
       );
-      setTimeout(() => setHighlight(false), 2000);
+      setTimeout(() => setHighlight(false), 4000);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -367,7 +367,7 @@ export function EntityList({ entities }: EntityListProps) {
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add(styles.entityRowHighlight);
-        setTimeout(() => el.classList.remove(styles.entityRowHighlight), 2000);
+        setTimeout(() => el.classList.remove(styles.entityRowHighlight), 4000);
       }
     }, 50);
   };

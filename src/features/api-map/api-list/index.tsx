@@ -214,7 +214,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
             () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
             50,
           );
-          setTimeout(() => setHighlight(false), 2000);
+          setTimeout(() => setHighlight(false), 4000);
         });
       }
     }

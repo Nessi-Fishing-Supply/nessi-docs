@@ -491,20 +491,17 @@
 // ─── Deep-link highlight ───
 
 .entityRowHighlight {
-  animation: deepLinkGlow 2s ease-out;
+  animation: deepLinkGlow 1.2s ease-in-out 3;
 }
 
 @keyframes deepLinkGlow {
-  0% {
-    box-shadow: 0 0 20px rgb(61 140 117 / 20%);
-    border-color: rgb(61 140 117 / 40%);
-  }
-  30% {
-    box-shadow: 0 0 20px rgb(61 140 117 / 20%);
-    border-color: rgb(61 140 117 / 40%);
-  }
+  0%,
   100% {
     box-shadow: none;
     border-color: transparent;
+  }
+  40% {
+    box-shadow: 0 0 20px rgb(61 140 117 / 20%);
+    border-color: rgb(61 140 117 / 40%);
   }
 }
