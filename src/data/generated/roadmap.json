@@ -1,6 +1,18 @@
 {
   "items": [
     {
+      "title": "feat(listings): #155.7 — \"From Sellers You Follow\" homepage listing strip",
+      "number": 294,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/294",
+      "state": "CLOSED",
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
+      "status": "Done",
+      "priority": "P2 - medium",
+      "area": "Full-stack",
+      "executor": "Conductor",
+      "feature": ""
+    },
+    {
       "title": "Pre-delete entity snapshots for account deletion",
       "number": 273,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/273",

@@ -233,13 +233,18 @@
       "name": "Listings",
       "description": "Listings are the core marketplace entities in Nessi — individual items posted for sale by members or shops. This feature provides the full data layer (types, services, hooks), validations, UI components, and pages for creating, editing, and managing listings. Related tickets: #21 (photo infrastructure), #5 (create wizard), #7 (edit wizard).",
       "status": "built",
-      "componentCount": 59,
-      "endpointCount": 14,
-      "hookCount": 10,
+      "componentCount": 60,
+      "endpointCount": 15,
+      "hookCount": 11,
       "serviceCount": 7,
-      "entities": ["listings", "members", "shops"],
-      "journeySlugs": [],
+      "entities": ["follows", "listings", "members", "shops"],
+      "journeySlugs": ["member-follow"],
       "links": [
+        {
+          "type": "entity",
+          "label": "follows",
+          "href": "/data-model"
+        },
         {
           "type": "entity",
           "label": "listings",
@@ -254,6 +259,11 @@
           "type": "entity",
           "label": "shops",
           "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-follow",
+          "href": "/journeys/member-follow"
         },
         {
           "type": "api-group",

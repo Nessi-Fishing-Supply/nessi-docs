@@ -502,6 +502,17 @@
         },
         {
           "method": "GET",
+          "path": "/api/listings/followed-sellers",
+          "label": "List Followed Seller",
+          "auth": "user",
+          "access": ["Member", "Shop"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Returns recent active listings from members and shops the user follows",
+          "tags": []
+        },
+        {
+          "method": "GET",
           "path": "/api/listings/recommendations",
           "label": "List Recommendation",
           "auth": "user",
