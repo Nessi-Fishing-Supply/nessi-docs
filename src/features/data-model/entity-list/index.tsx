@@ -379,11 +379,7 @@ export function EntityList({ entities }: EntityListProps) {
       <PageHeader
         title="Data Model"
         metrics={[{ value: entities.length, label: 'tables' }]}
-      >
-        <Link href="/entity-relationships" className={styles.erdLink}>
-          View Entity Relationships →
-        </Link>
-      </PageHeader>
+      />
 
       <FilterBar
         categories={categories}
