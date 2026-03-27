@@ -486,26 +486,28 @@
 // ─── Deep-link highlight ───
 
 .entityRowHighlight {
-  border-color: rgb(61 140 117 / 20%);
+  border-color: rgb(61 140 117 / 15%);
 
   &::before {
     content: '';
     position: absolute;
     inset: -1px;
     border-radius: 9px;
-    padding: 1px;
+    padding: 1.5px;
     background: conic-gradient(
       from var(--trace-angle, 0deg),
       transparent 0deg,
-      transparent 300deg,
-      rgb(61 140 117 / 70%) 330deg,
-      rgb(61 140 117) 360deg
+      transparent 320deg,
+      rgb(61 140 117 / 50%) 345deg,
+      rgb(61 140 117 / 80%) 360deg
     );
     mask:
       linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
     mask-composite: exclude;
-    animation: borderTrace 2.4s linear 3;
+    animation:
+      borderTrace 3s linear 3,
+      traceFadeOut 9s ease-in forwards;
     pointer-events: none;
   }
 }
@@ -513,6 +515,16 @@
 @keyframes borderTrace {
   to {
     --trace-angle: 360deg;
+  }
+}
+
+@keyframes traceFadeOut {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
