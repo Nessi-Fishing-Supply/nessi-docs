@@ -199,19 +199,24 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const errorCount = errors.length;
 
-  // Deep-link: auto-expand and highlight on hash match (one-time mount effect)
+  // Deep-link: auto-expand and highlight on hash match (mount + in-app navigation)
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash === `#${slug}`) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time mount init for deep-link
-      setIsOpen(true);
-      setHighlight(true);
-      setTimeout(
-        () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
-        100,
-      );
-      setTimeout(() => setHighlight(false), 2000);
+    function checkHash() {
+      if (window.location.hash === `#${slug}`) {
+        setIsOpen(true);
+        setHighlight(true);
+        setTimeout(
+          () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+          100,
+        );
+        setTimeout(() => setHighlight(false), 2000);
+      }
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    return () => window.removeEventListener('hashchange', checkHash);
+  }, [slug]);
 
   const pathParts = endpoint.path.split(/(:[\w]+)/g);
 

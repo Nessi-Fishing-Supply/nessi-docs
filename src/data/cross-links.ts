@@ -278,7 +278,7 @@ export function rlsOperationToMethod(operation: string): string {
 
 /**
  * Get the best endpoint for a given table + RLS operation combo.
- * Prefers exact HTTP method match; falls back to first available.
+ * Prefers exact HTTP method match with shortest path (base resource endpoint).
  */
 export function getBestEndpointForOperation(
   tableName: string,
@@ -288,6 +288,24 @@ export function getBestEndpointForOperation(
   if (endpoints.length === 0) return null;
 
   const targetMethod = rlsOperationToMethod(operation);
-  const exact = endpoints.find((ep) => ep.method === targetMethod);
-  return exact ?? endpoints[0];
+  const methodMatches = endpoints.filter((ep) => ep.method === targetMethod);
+
+  if (methodMatches.length > 0) {
+    // Prefer shortest path — base resource endpoint (e.g. /api/cart over /api/cart/:id)
+    return methodMatches.sort((a, b) => a.path.length - b.path.length)[0];
+  }
+
+  return endpoints[0];
+}
+
+/**
+ * Get all endpoints matching a table + RLS operation for linking.
+ */
+export function getEndpointsForOperation(
+  tableName: string,
+  operation: string,
+): EndpointRef[] {
+  const endpoints = getEndpointsForTable(tableName);
+  const targetMethod = rlsOperationToMethod(operation);
+  return endpoints.filter((ep) => ep.method === targetMethod);
 }
