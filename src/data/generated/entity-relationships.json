@@ -1,12 +1,24 @@
 {
   "nodes": [
     {
+      "id": "graphql",
+      "label": "Graphql"
+    },
+    {
       "id": "addresses",
       "label": "Addresses"
     },
     {
       "id": "cart_items",
       "label": "Cart Items"
+    },
+    {
+      "id": "flags",
+      "label": "Flags"
+    },
+    {
+      "id": "follows",
+      "label": "Follows"
     },
     {
       "id": "listing_photos",
@@ -59,6 +71,11 @@
   ],
   "edges": [
     {
+      "from": "graphql",
+      "to": "members",
+      "label": "user_id"
+    },
+    {
       "from": "addresses",
       "to": "members",
       "label": "user_id"
@@ -72,6 +89,11 @@
       "from": "cart_items",
       "to": "members",
       "label": "user_id"
+    },
+    {
+      "from": "follows",
+      "to": "members",
+      "label": "follower_id"
     },
     {
       "from": "listing_photos",

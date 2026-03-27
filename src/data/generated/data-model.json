@@ -1,6 +1,75 @@
 {
   "entities": [
     {
+      "name": "graphql",
+      "label": "Graphql",
+      "fields": [
+        {
+          "name": "city",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "is_default",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "line1",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "line2",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id"
+          }
+        },
+        {
+          "name": "zip",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [],
+      "rlsPolicies": [],
+      "indexes": [],
+      "triggers": []
+    },
+    {
       "name": "addresses",
       "label": "Addresses",
       "fields": [
@@ -224,6 +293,144 @@
         }
       ],
       "triggers": []
+    },
+    {
+      "name": "flags",
+      "label": "Flags",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "reason",
+          "type": "enum:flag_reason",
+          "nullable": false
+        },
+        {
+          "name": "reporter_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "enum:flag_status",
+          "nullable": false
+        },
+        {
+          "name": "target_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "target_type",
+          "type": "enum:flag_target_type",
+          "nullable": false
+        }
+      ],
+      "badges": [],
+      "rlsPolicies": [
+        {
+          "name": "Authenticated users can insert own flags",
+          "operation": "INSERT",
+          "withCheck": "reporter_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Authenticated users can view own flags",
+          "operation": "SELECT",
+          "using": "reporter_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [],
+      "triggers": []
+    },
+    {
+      "name": "follows",
+      "label": "Follows",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        },
+        {
+          "name": "follower_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "target_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "target_type",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": ["RLS", "Triggers"],
+      "rlsPolicies": [
+        {
+          "name": "Follows are viewable by everyone",
+          "operation": "SELECT",
+          "using": "true"
+        },
+        {
+          "name": "Users can insert own follows",
+          "operation": "INSERT",
+          "withCheck": "follower_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "Users can delete own follows",
+          "operation": "DELETE",
+          "using": "follower_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "follows_follower_id_idx",
+          "columns": ["follower_id"],
+          "unique": false
+        },
+        {
+          "name": "follows_target_type_target_id_idx",
+          "columns": ["target_type", "target_id"],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "on_follows_change",
+          "event": "INSERT OR DELETE",
+          "timing": "AFTER",
+          "function": "public.update_follower_count"
+        }
+      ]
     },
     {
       "name": "listing_photos",
@@ -715,6 +922,11 @@
         {
           "name": "first_name",
           "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "follower_count",
+          "type": "number",
           "nullable": false
         },
         {
@@ -1631,6 +1843,11 @@
           "name": "description",
           "type": "string",
           "nullable": true
+        },
+        {
+          "name": "follower_count",
+          "type": "number",
+          "nullable": false
         },
         {
           "name": "hero_banner_url",

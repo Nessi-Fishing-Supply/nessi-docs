@@ -183,6 +183,69 @@
       ]
     },
     {
+      "slug": "flags",
+      "name": "Flags",
+      "description": "User-generated content and behavior flags. Allows authenticated users to flag listings, members, shops, or messages for review by the platform. The UI says \"Report this...\" but the codebase uses \"flags\" to avoid ambiguity with data reports.",
+      "status": "built",
+      "componentCount": 2,
+      "endpointCount": 2,
+      "hookCount": 2,
+      "serviceCount": 2,
+      "entities": ["flags"],
+      "journeySlugs": [],
+      "links": [
+        {
+          "type": "entity",
+          "label": "flags",
+          "href": "/data-model"
+        },
+        {
+          "type": "api-group",
+          "label": "Flags",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "follows",
+      "name": "Follows",
+      "description": "Part of #155 (social/follows parent feature).",
+      "status": "built",
+      "componentCount": 0,
+      "endpointCount": 4,
+      "hookCount": 4,
+      "serviceCount": 2,
+      "entities": ["follows", "members", "shops"],
+      "journeySlugs": ["member-follow"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "follows",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-follow",
+          "href": "/journeys/member-follow"
+        },
+        {
+          "type": "api-group",
+          "label": "Follows",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
       "slug": "listings",
       "name": "Listings",
       "description": "Listings are the core marketplace entities in Nessi — individual items posted for sale by members or shops. This feature provides the full data layer (types, services, hooks), validations, UI components, and pages for creating, editing, and managing listings. Related tickets: #21 (photo infrastructure), #5 (create wizard), #7 (edit wizard).",
