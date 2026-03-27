@@ -100,7 +100,32 @@ interface RawEntity {
   name: string;
   label?: string;
   badges?: string[];
-  fields: { name: string; type: string; nullable?: boolean; description?: string }[];
+  fields: {
+    name: string;
+    type: string;
+    nullable?: boolean;
+    description?: string;
+    isPrimaryKey?: boolean;
+    default?: string;
+    references?: { table: string; column: string; onDelete?: string };
+  }[];
+  rlsPolicies?: {
+    name: string;
+    operation: string;
+    using?: string;
+    withCheck?: string;
+  }[];
+  indexes?: {
+    name: string;
+    columns: string[];
+    unique: boolean;
+  }[];
+  triggers?: {
+    name: string;
+    event: string;
+    timing: string;
+    function: string;
+  }[];
 }
 
 /* ------------------------------------------------------------------ */
