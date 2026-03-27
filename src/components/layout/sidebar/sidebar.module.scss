@@ -98,3 +98,11 @@
   background: var(--bg-raised);
   flex-shrink: 0;
 }
+
+.sectionLabel {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 12px 16px 4px;
+}

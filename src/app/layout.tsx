@@ -8,7 +8,7 @@ import { DetailPanel } from '@/components/layout/detail-panel';
 import { SearchTrigger } from '@/features/search/search-trigger';
 import { DeviceGate } from '@/components/layout/device-gate';
 import { StalenessBanner } from '@/components/layout/staleness-banner';
-import { lifecycles } from '@/data';
+import { lifecycles, getFeatureDomains } from '@/data';
 import '@/styles/globals.scss';
 
 const dmSans = DM_Sans({
@@ -39,7 +39,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <DeviceGate />
           <AppShell
             topbar={<Topbar />}
-            sidebar={<Sidebar lifecycles={lifecycles} />}
+            sidebar={
+              <Sidebar
+                lifecycles={lifecycles}
+                featureDomains={getFeatureDomains().map((d) => ({ slug: d.slug, label: d.label }))}
+              />
+            }
             detail={<DetailPanel />}
           >
             {children}
