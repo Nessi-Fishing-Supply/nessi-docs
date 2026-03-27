@@ -1,6 +1,8 @@
 # Nessi Docs
 
-Documentation and user journey visualization app for the [Nessi](https://nessifishingsupply.com) fishing marketplace. Renders structured journey data as interactive flow visualizations for the product team to review and test against.
+Internal documentation and product visualization app for the [Nessi](https://nessifishingsupply.com) fishing marketplace. Provides interactive visualizations of user journeys, API contracts, data model, entity relationships, state machine lifecycles, and feature domain dashboards.
+
+Built for the product and engineering teams to review system architecture, track build progress, and navigate cross-cutting concerns across the platform.
 
 ## Getting Started
 
@@ -26,20 +28,58 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Stack
 
 - **Next.js 16** (App Router, fully static SSG)
-- **SCSS Modules** with Nessi design tokens
+- **SCSS Modules** with Nessi design tokens (dark theme)
+- **Custom SVG canvas** system for graph visualizations (no external canvas library)
 - **react-icons** for UI icons
 - **DM Sans / DM Serif Display** via `next/font`
 
 ## Architecture
 
-The app is a three-panel layout — sidebar navigation, main content area, and a context-sensitive detail panel — all driven by a shared selection context (`DocsProvider`).
-
-### Data
-
-All structured data lives in `src/data/` and is barrel-exported from `src/data/index.ts`. Journey definitions are TypeScript modules in `src/data/journeys/canvas/`.
-
-Journey data originates in `nessi-web-app/docs/journeys/` and is synced here.
-
 ### Pages
 
-Journeys, API map, data model, lifecycles, coverage, features, permissions, config reference, errors, changelog, and onboarding.
+| Route | Description |
+|-------|-------------|
+| `/` | Dashboard — build progress, recent changes, feature domain grid |
+| `/journeys/**` | Interactive journey flow canvases with path tracing |
+| `/api-map` | API endpoint reference with expandable details |
+| `/data-model` | Database entity reference with field tables |
+| `/entity-relationships` | ERD canvas with trace mode and entity tooltips |
+| `/lifecycles/**` | State machine canvases per entity lifecycle |
+| `/features/**` | Feature domain dashboards with scoped coverage and deep-links |
+| `/config` | Configuration enums + roles/permissions reference |
+| `/changelog` | Chronological change feed |
+
+### Shared Canvas System
+
+All graph visualizations (Journeys, ERD, Lifecycles) share a common canvas infrastructure:
+
+- SVG-based pan/zoom with momentum
+- Frosted glass node effects
+- Direction-aware bezier edge routing
+- Hover glow, selection glow with pulse animation
+- Trace mode (click to isolate connected nodes)
+- Animated flowing edges on traced paths
+- Minimap, toolbar, legend, category filters
+- Hover tooltips with cursor bridging
+
+### Cross-Page Deep-Linking
+
+Pages are deeply interconnected. Clicking an API endpoint in an entity tooltip navigates to the API Map and auto-expands the target row with a border trace animation. The same pattern works across Data Model, API Map, and Feature Domain pages.
+
+### Data Flow
+
+```
+nessi-web-app (source) → extraction scripts → JSON files
+    ↓
+src/data/generated/*.json (raw data, synced via GitHub Action)
+    ↓
+src/data/index.ts (transformer — layout, colors, domain mapping, cross-links)
+    ↓
+Pages + Components (SSG at build time)
+```
+
+All derived fields (node positions, category colors, domain grouping, cross-link indexes) are computed in the data transformer, not stored in the extracted JSON.
+
+## Data Sync
+
+Raw JSON is extracted from `nessi-web-app` and synced to `src/data/generated/`. The `_meta.json` file tracks the source commit. This app never modifies the generated JSON — it only reads and transforms.
