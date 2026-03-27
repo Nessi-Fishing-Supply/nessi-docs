@@ -15,6 +15,7 @@
 ## File Structure
 
 ### New Files
+
 - `src/types/dashboard.ts` — FeatureDomain, DashboardMetrics types
 - `src/features/dashboard/dashboard-view/index.tsx` — Dashboard page component
 - `src/features/dashboard/dashboard-view/dashboard-view.module.scss` — Dashboard styles
@@ -23,6 +24,7 @@
 - `src/app/features/[domain]/page.tsx` — Dynamic route for feature domain pages
 
 ### Modified Files
+
 - `src/data/index.ts` — Add FEATURE_TO_DOMAIN map, new exports (getFeatureDomains, getFeaturesByDomain, getChangelogByDomain, getDashboardMetrics)
 - `src/app/page.tsx` — Replace redirect with dashboard
 - `src/app/features/page.tsx` — Redirect to `/`
@@ -31,6 +33,7 @@
 - `src/components/layout/app-shell/index.tsx` — Remove detail panel for feature domain pages
 
 ### Deleted Files
+
 - `src/app/coverage/page.tsx`
 - `src/app/permissions/page.tsx`
 
@@ -39,6 +42,7 @@
 ### Task 1: Types & Data Transformer
 
 **Files:**
+
 - Create: `src/types/dashboard.ts`
 - Modify: `src/data/index.ts`
 
@@ -108,9 +112,7 @@ const FEATURE_TO_DOMAIN: Record<string, string> = {
 
 export function getFeatureDomains(): FeatureDomain[] {
   return DOMAINS.map((d) => {
-    const domainFeatures = features.filter(
-      (f) => FEATURE_TO_DOMAIN[f.slug] === d.slug,
-    );
+    const domainFeatures = features.filter((f) => FEATURE_TO_DOMAIN[f.slug] === d.slug);
     const dJourneys = journeys.filter((j) => j.domain === d.slug);
     const domainEntities = new Set(domainFeatures.flatMap((f) => (f as any).entities ?? []));
 
@@ -186,10 +188,7 @@ export function getChangelogByDomain(domain: string): ChangelogEntry[] {
 export function getDashboardMetrics(): DashboardMetrics {
   return {
     totalFeatures: features.length,
-    totalEndpoints: apiGroups.reduce(
-      (sum, g) => sum + g.endpoints.length,
-      0,
-    ),
+    totalEndpoints: apiGroups.reduce((sum, g) => sum + g.endpoints.length, 0),
     totalJourneys: journeys.length,
     totalEntities: entities.length,
     totalLifecycles: lifecycles.length,
@@ -218,6 +217,7 @@ git commit -m "feat: add feature domain mapping and dashboard metrics to data tr
 ### Task 2: Dashboard Page
 
 **Files:**
+
 - Create: `src/features/dashboard/dashboard-view/index.tsx`
 - Create: `src/features/dashboard/dashboard-view/dashboard-view.module.scss`
 - Modify: `src/app/page.tsx`
@@ -592,6 +592,7 @@ git commit -m "feat: add dashboard home page with metrics, changelog, and domain
 ### Task 3: Feature Domain Page
 
 **Files:**
+
 - Create: `src/features/feature-domain/feature-domain-view/index.tsx`
 - Create: `src/features/feature-domain/feature-domain-view/feature-domain-view.module.scss`
 - Create: `src/app/features/[domain]/page.tsx`
@@ -599,6 +600,7 @@ git commit -m "feat: add dashboard home page with metrics, changelog, and domain
 - [ ] **Step 1: Create feature domain SCSS module**
 
 Create `src/features/feature-domain/feature-domain-view/feature-domain-view.module.scss` with styles for:
+
 - Container with scrollable layout
 - Coverage hero with progress bar and metric pills
 - Feature rows (accordion) with status dots, stagger animation, expand/collapse
@@ -705,6 +707,7 @@ git commit -m "feat: add feature domain pages with accordion, deep-links, covera
 ### Task 4: Config Page — Absorb Permissions
 
 **Files:**
+
 - Modify: `src/features/config/config-list/index.tsx`
 - Modify: `src/app/config/page.tsx`
 
@@ -750,6 +753,7 @@ git commit -m "feat: absorb roles/permissions section into config page"
 ### Task 5: Sidebar Navigation Restructure
 
 **Files:**
+
 - Modify: `src/components/layout/sidebar/index.tsx`
 
 - [ ] **Step 1: Restructure sidebar into three groups**
@@ -805,6 +809,7 @@ git commit -m "feat: restructure sidebar into system views, features, reference 
 ### Task 6: Route Cleanup
 
 **Files:**
+
 - Delete: `src/app/coverage/page.tsx`
 - Delete: `src/app/permissions/page.tsx`
 - Modify: `src/components/layout/app-shell/index.tsx`
@@ -860,6 +865,7 @@ git commit -m "chore: remove coverage and permissions routes, clean up app shell
 
 Run: `pnpm build`
 Expected: All pages generate. Check output for:
+
 - `/` (dashboard)
 - `/features/shops`, `/features/listings`, `/features/auth`, `/features/cart`, `/features/account`, `/features/shopping`, `/features/identity`
 - No `/coverage`, `/permissions` in output
@@ -867,6 +873,7 @@ Expected: All pages generate. Check output for:
 - [ ] **Step 2: Visual smoke test**
 
 Start dev server and verify:
+
 - `/` shows dashboard with metrics, changelog, domain grid
 - Clicking a domain tile navigates to `/features/[domain]`
 - Feature domain page shows coverage hero, feature list, connections

@@ -220,11 +220,11 @@ interface DashboardMetrics {
 
 ## Routes Removed
 
-| Route | Disposition |
-|-------|-------------|
-| `/coverage` | Deleted. Coverage is now a widget on each feature domain page. |
-| `/features` (flat list) | Becomes redirect to `/` or a simple domain index grid. |
-| `/permissions` | Deleted. Roles section absorbed into `/config`. |
+| Route                   | Disposition                                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| `/coverage`             | Deleted. Coverage is now a widget on each feature domain page. |
+| `/features` (flat list) | Becomes redirect to `/` or a simple domain index grid.         |
+| `/permissions`          | Deleted. Roles section absorbed into `/config`.                |
 
 ---
 

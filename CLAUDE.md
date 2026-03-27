@@ -149,6 +149,7 @@ DM Sans (body/UI) and DM Serif Display (headings), loaded via `next/font/google`
 SCSS Modules with CSS custom properties from design tokens. Dark theme. `sassOptions.includePaths` in `next.config.mjs` includes `src/styles/` so token files can be imported directly.
 
 Key design patterns:
+
 - Dark backgrounds with subtle borders (`var(--bg-raised)`, `var(--border-subtle)`)
 - Frosted glass effects via `backdrop-filter: blur()`
 - Category-colored accent bars on nodes/rows

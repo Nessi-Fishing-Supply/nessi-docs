@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import styles from './app-shell.module.scss';
 
 // Pages that support detail panel selection (canvas pages use tooltips instead)
-const DETAIL_PANEL_PAGES = ['/coverage', '/features'];
+const DETAIL_PANEL_PAGES: string[] = [];
 
 interface AppShellProps {
   topbar: ReactNode;

@@ -37,17 +37,17 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### Pages
 
-| Route | Description |
-|-------|-------------|
-| `/` | Dashboard — build progress, recent changes, feature domain grid |
-| `/journeys/**` | Interactive journey flow canvases with path tracing |
-| `/api-map` | API endpoint reference with expandable details |
-| `/data-model` | Database entity reference with field tables |
-| `/entity-relationships` | ERD canvas with trace mode and entity tooltips |
-| `/lifecycles/**` | State machine canvases per entity lifecycle |
-| `/features/**` | Feature domain dashboards with scoped coverage and deep-links |
-| `/config` | Configuration enums + roles/permissions reference |
-| `/changelog` | Chronological change feed |
+| Route                   | Description                                                     |
+| ----------------------- | --------------------------------------------------------------- |
+| `/`                     | Dashboard — build progress, recent changes, feature domain grid |
+| `/journeys/**`          | Interactive journey flow canvases with path tracing             |
+| `/api-map`              | API endpoint reference with expandable details                  |
+| `/data-model`           | Database entity reference with field tables                     |
+| `/entity-relationships` | ERD canvas with trace mode and entity tooltips                  |
+| `/lifecycles/**`        | State machine canvases per entity lifecycle                     |
+| `/features/**`          | Feature domain dashboards with scoped coverage and deep-links   |
+| `/config`               | Configuration enums + roles/permissions reference               |
+| `/changelog`            | Chronological change feed                                       |
 
 ### Shared Canvas System
 
