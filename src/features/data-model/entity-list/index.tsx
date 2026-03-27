@@ -100,6 +100,7 @@ function EntityRow({
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.hash === `#${entity.name}`) {
       if (!isOpen) onToggle();
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time mount init for deep-link
       setHighlight(true);
       setTimeout(
         () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
