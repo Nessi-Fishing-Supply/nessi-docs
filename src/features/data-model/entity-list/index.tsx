@@ -130,7 +130,7 @@ function EntityRow({
             <span className={styles.triggerBadge}>Triggers</span>
           )}
           {fkCount > 0 && (
-            <span className={styles.fkCount}>{fkCount} FK</span>
+            <span className={styles.fkBadge}>FK</span>
           )}
           <span className={styles.fieldCount}>{entity.fields.length} fields</span>
           <span className={styles.chevron}>&#9656;</span>

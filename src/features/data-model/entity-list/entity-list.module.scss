@@ -140,7 +140,7 @@
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 10px 14px;
+  padding: 11px 14px;
   background: none;
   border: none;
   cursor: pointer;
@@ -195,37 +195,42 @@
 }
 
 .rlsBadge {
-  font-size: 9px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 3px 10px;
+  border-radius: 5px;
   color: #3d8c75;
   background: rgb(61 140 117 / 10%);
 }
 
 .triggerBadge {
-  font-size: 9px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 3px 10px;
+  border-radius: 5px;
   color: #e27739;
   background: rgb(226 119 57 / 10%);
 }
 
-.fkCount {
-  font-size: 10px;
-  font-family: var(--font-family-mono);
-  color: var(--text-muted);
+.fkBadge {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 5px;
+  color: #b8a0f0;
+  background: rgb(139 92 246 / 10%);
 }
 
 .fieldCount {
-  font-size: 10px;
+  font-size: 12px;
   font-family: var(--font-family-mono);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .chevron {
@@ -288,13 +293,13 @@
 .fieldThType,
 .fieldThDefault,
 .fieldThRef {
-  font-size: 9px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--text-dim);
+  color: var(--text-muted);
   font-weight: 600;
   text-align: left;
-  padding: 4px 8px 6px;
+  padding: 6px 8px 8px;
   border-bottom: 1px solid var(--border-medium);
   position: sticky;
   top: 0;
@@ -307,7 +312,7 @@
 .fieldThDefault { width: 120px; }
 
 .fieldRow td {
-  padding: 5px 8px;
+  padding: 7px 8px;
   border-bottom: 1px solid var(--border-subtle);
   vertical-align: middle;
 }
@@ -322,20 +327,20 @@
 
 .fieldName {
   font-family: var(--font-family-mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-primary);
 }
 
 .fieldType {
   font-family: var(--font-family-mono);
-  font-size: 10px;
-  color: var(--text-muted);
+  font-size: 11px;
+  color: var(--text-secondary);
 }
 
 .fieldDefault {
   font-family: var(--font-family-mono);
-  font-size: 10px;
-  color: var(--text-dim);
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
 .fieldRef {
@@ -346,13 +351,13 @@
 .tagFk,
 .tagNull {
   display: inline-block;
-  font-size: 8px;
-  padding: 1px 5px;
+  font-size: 9px;
+  padding: 2px 6px;
   border-radius: 3px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-left: 4px;
+  margin-left: 5px;
   vertical-align: middle;
 }
 
@@ -373,7 +378,7 @@
 
 .fkRef {
   font-family: var(--font-family-mono);
-  font-size: 9px;
+  font-size: 11px;
   color: #b8a0f0;
   opacity: 0.8;
   text-decoration: none;
@@ -395,10 +400,10 @@
 }
 
 .sectionLabel {
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-weight: 600;
   margin-bottom: 8px;
 }
@@ -406,21 +411,21 @@
 .metaRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 8px;
-  border-radius: 4px;
-  margin-bottom: 3px;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 5px;
+  margin-bottom: 4px;
   background: rgb(255 255 255 / 2%);
 }
 
 .policyOp {
   font-family: var(--font-family-mono);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   // color and background set via inline styles (method-colored)
-  padding: 2px 6px;
-  border-radius: 3px;
-  min-width: 48px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  min-width: 56px;
   text-align: center;
 }
 
@@ -452,35 +457,35 @@
 
 .triggerEvent {
   font-family: var(--font-family-mono);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   color: #e27739;
   background: rgb(226 119 57 / 10%);
-  padding: 2px 6px;
-  border-radius: 3px;
+  padding: 3px 8px;
+  border-radius: 4px;
 }
 
 .metaText {
-  font-size: 10px;
-  color: var(--text-secondary);
+  font-size: 12px;
+  color: var(--text-primary);
 }
 
 .triggerFn {
   font-family: var(--font-family-mono);
-  font-size: 9px;
-  color: var(--text-dim);
+  font-size: 10px;
+  color: var(--text-muted);
   margin-left: auto;
 }
 
 .indexCols {
   font-family: var(--font-family-mono);
-  font-size: 10px;
-  color: var(--text-secondary);
+  font-size: 12px;
+  color: var(--text-primary);
 }
 
 .indexUnique {
-  font-size: 8px;
-  padding: 1px 5px;
+  font-size: 9px;
+  padding: 2px 6px;
   border-radius: 3px;
   font-weight: 700;
   text-transform: uppercase;
