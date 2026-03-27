@@ -27,7 +27,7 @@
   &:hover {
     border-color: var(--border-strong);
     transform: scale(1.01);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 30%);
   }
 }
 
@@ -78,7 +78,7 @@
 
 .progressTrack {
   height: 2px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgb(255 255 255 / 6%);
   border-radius: 1px;
   margin-top: 8px;
   overflow: hidden;

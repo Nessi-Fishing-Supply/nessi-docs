@@ -4,24 +4,25 @@
   pointer-events: none;
   z-index: 1;
   overflow: visible;
-  animation: traceFadeOut var(--fade-duration) ease-in forwards;
+  animation: trace-fade-out var(--fade-duration) ease-in forwards;
 }
 
 .trace {
-  animation: traceMove var(--trace-duration) linear var(--trace-loops);
+  animation: trace-move var(--trace-duration) linear var(--trace-loops);
 }
 
-@keyframes traceMove {
+@keyframes trace-move {
   to {
     stroke-dashoffset: var(--trace-end-offset, 0);
   }
 }
 
-@keyframes traceFadeOut {
+@keyframes trace-fade-out {
   0%,
   60% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }

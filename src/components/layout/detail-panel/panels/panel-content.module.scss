@@ -53,20 +53,22 @@
 }
 
 .codeBlockAccent {
-  composes: codeBlock;
+  /* stylelint-disable-next-line property-no-unknown */
+  composes: codeblock;
   color: var(--color-accent-500);
 }
 
 .codeBlockPrimary {
-  composes: codeBlock;
+  /* stylelint-disable-next-line property-no-unknown */
+  composes: codeblock;
   color: var(--color-primary-400);
 }
 
 .errorCard {
   font-size: var(--font-size-200);
   padding: 6px 8px;
-  background: rgba(184, 64, 64, 0.06);
-  border: 1px solid rgba(184, 64, 64, 0.12);
+  background: rgb(184 64 64 / 6%);
+  border: 1px solid rgb(184 64 64 / 12%);
   border-radius: 4px;
   margin-bottom: 4px;
 }
@@ -104,8 +106,8 @@
   font-size: var(--font-size-200);
   color: var(--color-destructive-400);
   padding: 8px 10px;
-  background: rgba(184, 64, 64, 0.06);
-  border: 1px solid rgba(184, 64, 64, 0.12);
+  background: rgb(184 64 64 / 6%);
+  border: 1px solid rgb(184 64 64 / 12%);
   border-radius: 4px;
   margin-top: 12px;
 }

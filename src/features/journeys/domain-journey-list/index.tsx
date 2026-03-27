@@ -6,7 +6,6 @@ import type { Journey } from '@/types/journey';
 import { PERSONA_CONFIG } from '@/types/journey';
 import type { DomainConfig } from '@/constants/domains';
 import { Breadcrumb } from '@/components/ui';
-import type { SwitcherItem } from '@/components/ui/breadcrumb';
 import styles from './domain-journey-list.module.scss';
 
 interface DomainJourneyListProps {

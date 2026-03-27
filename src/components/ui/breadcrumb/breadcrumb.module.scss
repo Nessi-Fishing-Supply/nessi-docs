@@ -5,7 +5,7 @@
   font-size: var(--font-size-400);
   color: var(--text-dim);
   margin-bottom: 16px;
-  animation: fadeIn 200ms ease-out;
+  animation: fade-in 200ms ease-out;
 }
 
 .link {
@@ -71,10 +71,10 @@
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 8px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 60%), 0 8px 40px rgb(0 0 0 / 30%);
   z-index: 20;
   padding: 4px;
-  animation: fadeIn 120ms ease-out;
+  animation: fade-in 120ms ease-out;
 }
 
 .dropdownItem {
@@ -91,7 +91,8 @@
 }
 
 .dropdownItemActive {
-  composes: dropdownItem;
+  /* stylelint-disable-next-line property-no-unknown */
+  composes: dropdownitem;
   background: var(--bg-raised);
 }
 
@@ -107,7 +108,7 @@
   margin-top: 1px;
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
