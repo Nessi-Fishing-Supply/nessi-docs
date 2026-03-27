@@ -1384,6 +1384,15 @@
           "why": "Infinite scroll pagination"
         },
         {
+          "id": "filter-results--watch-from-card",
+          "type": "step",
+          "label": "Watch from Card",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/listings/components/listing-card/index.tsx",
+          "why": "WatchButton overlaid on listing card image. Auth-gated — unauthenticated users are redirected to ?login=true. See member-watchlist.json for the full watch/unwatch flow."
+        },
+        {
           "id": "filter-results--click-listing",
           "type": "step",
           "label": "Click Listing Card",
@@ -1450,6 +1459,10 @@
         },
         {
           "from": "filter-results--infinite-scroll",
+          "to": "filter-results--watch-from-card"
+        },
+        {
+          "from": "filter-results--watch-from-card",
           "to": "filter-results--click-listing"
         },
         {
@@ -3431,6 +3444,542 @@
       ]
     },
     {
+      "slug": "member-watchlist",
+      "domain": "shopping",
+      "title": "Watchlist & Price Alerts",
+      "persona": "buyer",
+      "description": "Authenticated members watch listings via a heart icon toggle, view their watchlist page, and receive price drop email alerts when sellers reduce prices.",
+      "relatedIssues": [36],
+      "nodes": [
+        {
+          "id": "watch-toggle--entry",
+          "type": "entry",
+          "label": "Watch / Unwatch a Listing"
+        },
+        {
+          "id": "watch-toggle--click-heart",
+          "type": "step",
+          "label": "Click Heart Icon",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/watchlist/components/watch-button/index.tsx",
+          "why": "WatchButton renders over listing images on ListingCard and on the detail page gallery. FaRegHeart (unwatched) / FaHeart (watched). Minimum 44x44px tap target."
+        },
+        {
+          "id": "watch-toggle--check-auth",
+          "type": "step",
+          "label": "Check Auth State",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/watchlist/components/watch-button/index.tsx",
+          "why": "useAuth() — if !isAuthenticated, push to {pathname}?login=true to open the login modal. No toast shown — the modal open is the signal."
+        },
+        {
+          "id": "watch-toggle--decision-check-auth",
+          "type": "decision",
+          "label": "Authenticated?",
+          "options": [
+            {
+              "label": "No",
+              "to": "END"
+            },
+            {
+              "label": "Yes",
+              "to": "watch-toggle--optimistic-update"
+            }
+          ]
+        },
+        {
+          "id": "watch-toggle--optimistic-update",
+          "type": "step",
+          "label": "Optimistic UI Update",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/watchlist/hooks/use-watch-toggle.ts",
+          "why": "Cancels in-flight ['watchlist', 'status', listingId] queries, snapshots cache, and immediately flips is_watching in the cache before the API call resolves."
+        },
+        {
+          "id": "watch-toggle--decision-optimistic-update",
+          "type": "decision",
+          "label": "Currently watching?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "watch-toggle--api-unwatch"
+            },
+            {
+              "label": "No",
+              "to": "watch-toggle--api-watch"
+            }
+          ]
+        },
+        {
+          "id": "watch-toggle--api-watch",
+          "type": "step",
+          "label": "Watch Listing",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/watchlist",
+          "codeRef": "src/app/api/watchlist/route.ts",
+          "why": "Body: { listing_id }. Calls addWatcherServer(userId, listingId). On 23505 unique violation, returns the existing row rather than erroring.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "listing_id missing or empty",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Already watching this listing",
+              "result": "Returns 409 — client treats as success, no rollback",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "watch-toggle--api-unwatch",
+          "type": "step",
+          "label": "Unwatch Listing",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/watchlist",
+          "codeRef": "src/app/api/watchlist/route.ts",
+          "why": "Query param: ?listing_id=... Calls removeWatcherServer(userId, listingId). Returns 404 if watcher row not found — client treats as success.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "listing_id query param missing",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Not watching this listing",
+              "result": "Returns 404 — client treats as success, no rollback",
+              "httpStatus": 404
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "watch-toggle--update-watcher-count",
+          "type": "step",
+          "label": "Update Watcher Count",
+          "layer": "database",
+          "status": "built",
+          "codeRef": "supabase/migrations/20260327155304_watchers_and_price_drop_notifications.sql",
+          "why": "AFTER INSERT OR DELETE trigger on watchers table. update_watcher_count() increments or decrements listings.watcher_count. Decrement is clamped to 0 via GREATEST(0, ...)."
+        },
+        {
+          "id": "watch-toggle--show-toast",
+          "type": "step",
+          "label": "Show Result Toast",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/watchlist/components/watch-button/index.tsx",
+          "why": "Watch success: 'Added to Watchlist — We\\'ll tell you if the price drops.' Unwatch success: 'Removed from Watchlist — You will no longer receive alerts.' Error: 'Something went wrong — Please try again.'"
+        },
+        {
+          "id": "watch-toggle--invalidate-cache",
+          "type": "step",
+          "label": "Invalidate Query Cache",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/watchlist/hooks/use-watch-toggle.ts",
+          "why": "On settle (success or error): invalidates ['watchlist', 'status', listingId] and the root ['watchlist'] key, refreshing the watchlist page if open."
+        },
+        {
+          "id": "watchlist-status--entry",
+          "type": "entry",
+          "label": "Load Watch Status on Render"
+        },
+        {
+          "id": "watchlist-status--fetch-status",
+          "type": "step",
+          "label": "Fetch Watch Status",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/watchlist/[listing_id]",
+          "codeRef": "src/app/api/watchlist/[listing_id]/route.ts",
+          "why": "getWatchStatusServer(userId, listingId) — maybeSingle() lookup returns { is_watching: boolean }. Query key: ['watchlist', 'status', listingId]. Disabled when listingId is falsy.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 — WatchButton renders in unauthenticated state",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 — button defaults to unwatched state",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "watchlist-status--render-button",
+          "type": "step",
+          "label": "Render Heart State",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/watchlist/components/watch-button/index.tsx",
+          "why": "Defaults to is_watching: false while loading. aria-pressed reflects watch state. aria-busy true while mutation pending."
+        },
+        {
+          "id": "watchlist-page--entry",
+          "type": "entry",
+          "label": "View Watchlist Page"
+        },
+        {
+          "id": "watchlist-page--route-guard",
+          "type": "step",
+          "label": "Route Guard",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/proxy.ts",
+          "why": "proxy.ts guards /watchlist — unauthenticated users are redirected to /. See route-protection.json."
+        },
+        {
+          "id": "watchlist-page--navigate-watchlist",
+          "type": "step",
+          "label": "Open Watchlist Page",
+          "layer": "client",
+          "status": "built",
+          "route": "/watchlist",
+          "codeRef": "src/app/(frontend)/watchlist/page.tsx",
+          "why": "Accessible via Watchlist link in the user dropdown nav (HiOutlineHeart icon)."
+        },
+        {
+          "id": "watchlist-page--fetch-watchlist",
+          "type": "step",
+          "label": "Fetch Watched Listings",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/watchlist",
+          "codeRef": "src/app/api/watchlist/route.ts",
+          "why": "getWatchedListingsServer(userId) — joins watchers → listings → listing_photos. Filters soft-deleted listings. Ordered by watched_at DESC. Query key: ['watchlist'].",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 — page shows error state with retry prompt",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "watchlist-page--decision-fetch-watchlist",
+          "type": "decision",
+          "label": "Watchlist empty?",
+          "options": [
+            {
+              "label": "Empty",
+              "to": "END"
+            },
+            {
+              "label": "Has items",
+              "to": "watchlist-page--render-grid"
+            }
+          ]
+        },
+        {
+          "id": "watchlist-page--render-grid",
+          "type": "step",
+          "label": "Render Listing Grid",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/app/(frontend)/watchlist/watchlist-page.tsx",
+          "why": "Renders ListingCard for each WatchedListing. Sold listings show a 'Sold' overlay badge. Skeleton shown while loading (count: 8)."
+        },
+        {
+          "id": "price-drop-notification--entry",
+          "type": "entry",
+          "label": "Price Drop Email Alert"
+        },
+        {
+          "id": "price-drop-notification--detect-price-drop",
+          "type": "step",
+          "label": "Detect Price Drop",
+          "layer": "database",
+          "status": "built",
+          "codeRef": "supabase/migrations/20260327155304_watchers_and_price_drop_notifications.sql",
+          "why": "AFTER UPDATE OF price_cents trigger on listings. detect_price_drop() fires when NEW.price_cents < OLD.price_cents — inserts a price_drop_notifications row with listing_id, old_price_cents, new_price_cents."
+        },
+        {
+          "id": "price-drop-notification--cron-trigger",
+          "type": "step",
+          "label": "Cron Job Fires",
+          "layer": "external",
+          "status": "built",
+          "codeRef": "vercel.json",
+          "why": "Vercel cron schedule: */15 * * * * (every 15 minutes). Calls GET /api/cron/price-drops with Authorization: Bearer {CRON_SECRET}."
+        },
+        {
+          "id": "price-drop-notification--fetch-notifications",
+          "type": "step",
+          "label": "Fetch Notifications",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/cron/price-drops",
+          "codeRef": "src/app/api/cron/price-drops/route.ts",
+          "why": "Fetches up to 100 unprocessed rows (processed=false) from price_drop_notifications, ordered by created_at ASC (oldest first). Secured by CRON_SECRET bearer token.",
+          "errorCases": [
+            {
+              "condition": "Authorization header missing or incorrect CRON_SECRET",
+              "result": "Returns 401 Unauthorized — no notifications processed",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Database error fetching notifications",
+              "result": "Returns 500 — no notifications processed",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "price-drop-notification--resolve-watchers",
+          "type": "step",
+          "label": "Resolve Eligible Watchers",
+          "layer": "database",
+          "status": "built",
+          "codeRef": "src/app/api/cron/price-drops/route.ts",
+          "why": "For each notification: queries watchers WHERE listing_id matches AND (last_notified_price_cents IS NULL OR last_notified_price_cents > new_price_cents). Skips watchers already notified at or below the new price."
+        },
+        {
+          "id": "price-drop-notification--lookup-email",
+          "type": "step",
+          "label": "Look Up Watcher Email",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/app/api/cron/price-drops/route.ts",
+          "why": "auth.admin.getUserById(watcher.user_id) via admin client. If userError or no email, watcher is silently skipped."
+        },
+        {
+          "id": "price-drop-notification--send-price-drop-email",
+          "type": "step",
+          "label": "Send Price Drop Email",
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/features/email/templates/price-drop.ts",
+          "why": "Subject: '{listingTitle} just dropped in price!' Body: title, old price (strikethrough), new price, CTA button to /listing/{listingId}, fallback plain-text URL. listingTitle is HTML-escaped. Uses emailLayout() branded shell."
+        },
+        {
+          "id": "price-drop-notification--update-notified-price",
+          "type": "step",
+          "label": "Record Notified Price",
+          "layer": "database",
+          "status": "built",
+          "codeRef": "src/app/api/cron/price-drops/route.ts",
+          "why": "Updates watchers.last_notified_price_cents = new_price_cents for this watcher. Prevents duplicate notifications on successive smaller drops."
+        },
+        {
+          "id": "price-drop-notification--mark-processed",
+          "type": "step",
+          "label": "Mark Notification Done",
+          "layer": "database",
+          "status": "built",
+          "codeRef": "src/app/api/cron/price-drops/route.ts",
+          "why": "Sets price_drop_notifications.processed = true after all watcher emails for that notification have been attempted. Returns { processed: N, emails_sent: N }."
+        },
+        {
+          "id": "price-drop-notification--planned-unwatch-on-sell",
+          "type": "step",
+          "label": "Remove Watch on Sold",
+          "layer": "database",
+          "status": "planned",
+          "notes": "When a listing transitions to status=sold, watchers rows should be deleted automatically (or watcher_count zeroed). Currently sold listings remain on the watchlist page with a Sold overlay but the user must manually unwatch. A DB trigger on listing status change to sold could clean up watchers rows, or the PATCH /api/listings/[id]/status handler could call removeWatchersForListing."
+        },
+        {
+          "id": "price-drop-notification--planned-unwatch-cta",
+          "type": "step",
+          "label": "Unwatch in Email",
+          "layer": "email",
+          "status": "planned",
+          "notes": "Price drop email has no unsubscribe or unwatch link. Adding a one-click unwatch token URL (e.g., /api/watchlist/unwatch?token=...) would reduce friction and follow email best practices. Token would encode listing_id + user_id and be validated server-side without requiring login."
+        },
+        {
+          "id": "seller-watcher-count--entry",
+          "type": "entry",
+          "label": "Seller Sees Watcher Demand"
+        },
+        {
+          "id": "seller-watcher-count--open-quick-edit",
+          "type": "step",
+          "label": "Open Quick Edit Price",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/listings/components/quick-edit-price/index.tsx",
+          "why": "Seller clicks Quick Edit Price from the dashboard listing row actions menu."
+        },
+        {
+          "id": "seller-watcher-count--show-watcher-count",
+          "type": "step",
+          "label": "Show Watcher Count",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/listings/components/quick-edit-price/index.tsx",
+          "why": "listings.watcher_count is denormalized and available on the listing object — no extra API call needed. Displayed as demand signal (e.g., 'X people are watching this listing')."
+        },
+        {
+          "id": "seller-watcher-count--planned-watcher-count-on-row",
+          "type": "step",
+          "label": "Watcher Count on Row",
+          "layer": "client",
+          "status": "planned",
+          "notes": "watcher_count is only shown inside QuickEditPrice. Surfacing it inline on the ListingRow (e.g., a small heart + count badge) would give sellers a at-a-glance demand signal without opening the modal."
+        }
+      ],
+      "edges": [
+        {
+          "from": "watch-toggle--entry",
+          "to": "watch-toggle--click-heart"
+        },
+        {
+          "from": "watch-toggle--click-heart",
+          "to": "watch-toggle--check-auth"
+        },
+        {
+          "from": "watch-toggle--check-auth",
+          "to": "watch-toggle--decision-check-auth"
+        },
+        {
+          "from": "watch-toggle--decision-check-auth",
+          "to": "watch-toggle--optimistic-update",
+          "opt": "Yes"
+        },
+        {
+          "from": "watch-toggle--optimistic-update",
+          "to": "watch-toggle--decision-optimistic-update"
+        },
+        {
+          "from": "watch-toggle--decision-optimistic-update",
+          "to": "watch-toggle--api-unwatch",
+          "opt": "Yes"
+        },
+        {
+          "from": "watch-toggle--decision-optimistic-update",
+          "to": "watch-toggle--api-watch",
+          "opt": "No"
+        },
+        {
+          "from": "watch-toggle--api-watch",
+          "to": "watch-toggle--api-unwatch"
+        },
+        {
+          "from": "watch-toggle--api-unwatch",
+          "to": "watch-toggle--update-watcher-count"
+        },
+        {
+          "from": "watch-toggle--update-watcher-count",
+          "to": "watch-toggle--show-toast"
+        },
+        {
+          "from": "watch-toggle--show-toast",
+          "to": "watch-toggle--invalidate-cache"
+        },
+        {
+          "from": "watchlist-status--entry",
+          "to": "watchlist-status--fetch-status"
+        },
+        {
+          "from": "watchlist-status--fetch-status",
+          "to": "watchlist-status--render-button"
+        },
+        {
+          "from": "watchlist-page--entry",
+          "to": "watchlist-page--route-guard"
+        },
+        {
+          "from": "watchlist-page--route-guard",
+          "to": "watchlist-page--navigate-watchlist"
+        },
+        {
+          "from": "watchlist-page--navigate-watchlist",
+          "to": "watchlist-page--fetch-watchlist"
+        },
+        {
+          "from": "watchlist-page--fetch-watchlist",
+          "to": "watchlist-page--decision-fetch-watchlist"
+        },
+        {
+          "from": "watchlist-page--decision-fetch-watchlist",
+          "to": "watchlist-page--render-grid",
+          "opt": "Has items"
+        },
+        {
+          "from": "price-drop-notification--entry",
+          "to": "price-drop-notification--detect-price-drop"
+        },
+        {
+          "from": "price-drop-notification--detect-price-drop",
+          "to": "price-drop-notification--cron-trigger"
+        },
+        {
+          "from": "price-drop-notification--cron-trigger",
+          "to": "price-drop-notification--fetch-notifications"
+        },
+        {
+          "from": "price-drop-notification--fetch-notifications",
+          "to": "price-drop-notification--resolve-watchers"
+        },
+        {
+          "from": "price-drop-notification--resolve-watchers",
+          "to": "price-drop-notification--lookup-email"
+        },
+        {
+          "from": "price-drop-notification--lookup-email",
+          "to": "price-drop-notification--send-price-drop-email"
+        },
+        {
+          "from": "price-drop-notification--send-price-drop-email",
+          "to": "price-drop-notification--update-notified-price"
+        },
+        {
+          "from": "price-drop-notification--update-notified-price",
+          "to": "price-drop-notification--mark-processed"
+        },
+        {
+          "from": "price-drop-notification--mark-processed",
+          "to": "price-drop-notification--planned-unwatch-on-sell"
+        },
+        {
+          "from": "price-drop-notification--planned-unwatch-on-sell",
+          "to": "price-drop-notification--planned-unwatch-cta"
+        },
+        {
+          "from": "seller-watcher-count--entry",
+          "to": "seller-watcher-count--open-quick-edit"
+        },
+        {
+          "from": "seller-watcher-count--open-quick-edit",
+          "to": "seller-watcher-count--show-watcher-count"
+        },
+        {
+          "from": "seller-watcher-count--show-watcher-count",
+          "to": "seller-watcher-count--planned-watcher-count-on-row"
+        }
+      ]
+    },
+    {
       "slug": "onboarding",
       "domain": "account",
       "title": "Onboarding Wizard (Buyer vs Seller Path)",
@@ -3874,7 +4423,7 @@
       "domain": "auth",
       "title": "Route Protection (proxy.ts)",
       "persona": "auth",
-      "description": "proxy.ts intercepts every request to enforce auth on /dashboard/* routes, redirect completed onboarding users, and refresh session cookies on public pages.",
+      "description": "proxy.ts intercepts every request to enforce auth on /dashboard/*, /shop/transfer, and /watchlist routes, redirect completed onboarding users, and refresh session cookies on public pages.",
       "relatedIssues": [],
       "nodes": [
         {
@@ -3909,7 +4458,7 @@
               "to": "route-protection--skip-auth"
             },
             {
-              "label": "Dashboard",
+              "label": "Protected",
               "to": "route-protection--verify-jwt"
             },
             {
@@ -3932,7 +4481,7 @@
           "label": "Verify JWT",
           "layer": "server",
           "status": "built",
-          "why": "getUser() verifies JWT from cookies for /dashboard/* routes"
+          "why": "getUser() verifies JWT from cookies for /dashboard/*, /shop/transfer, and /watchlist routes"
         },
         {
           "id": "route-protection--decision-verify-jwt",
@@ -3955,7 +4504,7 @@
           "label": "Redirect to Home",
           "layer": "server",
           "status": "built",
-          "why": "Redirect unauthenticated users to /"
+          "why": "Redirect unauthenticated users to / when accessing /dashboard/*, /shop/transfer, or /watchlist"
         },
         {
           "id": "route-protection--check-onboarding",
@@ -4026,7 +4575,7 @@
         {
           "from": "route-protection--decision-check-path",
           "to": "route-protection--verify-jwt",
-          "opt": "Dashboard"
+          "opt": "Protected"
         },
         {
           "from": "route-protection--decision-check-path",
@@ -4511,6 +5060,15 @@
           "why": "Edit, Mark Sold, Archive, Quick Edit Price, Duplicate"
         },
         {
+          "id": "dashboard-management--quick-edit-watcher-count",
+          "type": "step",
+          "label": "View Watcher Count",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/listings/components/quick-edit-price/index.tsx",
+          "why": "QuickEditPrice modal displays listings.watcher_count as a demand signal. Denormalized by a DB trigger on the watchers table — no extra fetch needed. See member-watchlist.json for the watcher count trigger."
+        },
+        {
           "id": "dashboard-management--duplicate-listing",
           "type": "step",
           "label": "Duplicate Listing",
@@ -4644,6 +5202,10 @@
         },
         {
           "from": "dashboard-management--active-actions",
+          "to": "dashboard-management--quick-edit-watcher-count"
+        },
+        {
+          "from": "dashboard-management--quick-edit-watcher-count",
           "to": "dashboard-management--duplicate-listing"
         },
         {

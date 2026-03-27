@@ -156,8 +156,13 @@
       "hookCount": 0,
       "serviceCount": 2,
       "entities": [],
-      "journeySlugs": ["shop-invite-acceptance"],
+      "journeySlugs": ["member-watchlist", "shop-invite-acceptance"],
       "links": [
+        {
+          "type": "journey",
+          "label": "member-watchlist",
+          "href": "/journeys/member-watchlist"
+        },
         {
           "type": "journey",
           "label": "shop-invite-acceptance",
@@ -238,7 +243,7 @@
       "hookCount": 11,
       "serviceCount": 7,
       "entities": ["follows", "listings", "members", "shops"],
-      "journeySlugs": ["member-follow"],
+      "journeySlugs": ["buyer-search", "member-follow", "member-watchlist", "seller-listings"],
       "links": [
         {
           "type": "entity",
@@ -262,8 +267,23 @@
         },
         {
           "type": "journey",
+          "label": "buyer-search",
+          "href": "/journeys/buyer-search"
+        },
+        {
+          "type": "journey",
           "label": "member-follow",
           "href": "/journeys/member-follow"
+        },
+        {
+          "type": "journey",
+          "label": "member-watchlist",
+          "href": "/journeys/member-watchlist"
+        },
+        {
+          "type": "journey",
+          "label": "seller-listings",
+          "href": "/journeys/seller-listings"
         },
         {
           "type": "api-group",
@@ -429,6 +449,35 @@
         {
           "type": "api-group",
           "label": "Shops",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "watchlist",
+      "name": "Watchlist",
+      "description": "Part of the price-drop notification system. Allows authenticated members to watch listings and receive email notifications when the price drops.",
+      "status": "built",
+      "componentCount": 1,
+      "endpointCount": 2,
+      "hookCount": 3,
+      "serviceCount": 2,
+      "entities": ["watchers"],
+      "journeySlugs": ["member-watchlist"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "watchers",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-watchlist",
+          "href": "/journeys/member-watchlist"
+        },
+        {
+          "type": "api-group",
+          "label": "Watchlist",
           "href": "/api-map"
         }
       ]

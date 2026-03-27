@@ -29,6 +29,10 @@
       "label": "Members"
     },
     {
+      "id": "price_drop_notifications",
+      "label": "Price Drop Notifications"
+    },
+    {
       "id": "recently_viewed",
       "label": "Recently Viewed"
     },
@@ -59,6 +63,10 @@
     {
       "id": "slugs",
       "label": "Slugs"
+    },
+    {
+      "id": "watchers",
+      "label": "Watchers"
     }
   ],
   "edges": [
@@ -101,6 +109,11 @@
       "from": "listings",
       "to": "shops",
       "label": "shop_id"
+    },
+    {
+      "from": "price_drop_notifications",
+      "to": "listings",
+      "label": "listing_id"
     },
     {
       "from": "recently_viewed",
@@ -166,6 +179,16 @@
       "from": "shops",
       "to": "members",
       "label": "owner_id"
+    },
+    {
+      "from": "watchers",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "watchers",
+      "to": "members",
+      "label": "user_id"
     }
   ]
 }

@@ -252,6 +252,22 @@
       ]
     },
     {
+      "name": "Cron",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/cron/price-drops",
+          "label": "List Price Drop",
+          "auth": "admin",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Process price drop notifications and email watchers about reduced prices",
+          "tags": ["admin-only"]
+        }
+      ]
+    },
+    {
       "name": "Flags",
       "endpoints": [
         {
@@ -960,6 +976,61 @@
             "feature": "shop_settings",
             "level": "full"
           }
+        }
+      ]
+    },
+    {
+      "name": "Watchlist",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/watchlist/:listing_id",
+          "label": "List :Listing Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Check if the authenticated user is watching a specific listing",
+          "tags": []
+        },
+        {
+          "method": "GET",
+          "path": "/api/watchlist",
+          "label": "List Watchlist",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 404, 409, 500],
+          "requestFields": [],
+          "description": "List all listings the authenticated user is watching",
+          "tags": []
+        },
+        {
+          "method": "POST",
+          "path": "/api/watchlist",
+          "label": "Create Watchlist",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 404, 409, 500],
+          "requestFields": [
+            {
+              "name": "listing_id",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "Watch a listing for the authenticated user",
+          "tags": []
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/watchlist",
+          "label": "Delete Watchlist",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 404, 409, 500],
+          "requestFields": [],
+          "description": "Stop watching a listing for the authenticated user",
+          "tags": []
         }
       ]
     }

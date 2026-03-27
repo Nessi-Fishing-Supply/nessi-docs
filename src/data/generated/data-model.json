@@ -772,6 +772,12 @@
           "event": "UPDATE OF STATUS",
           "timing": "AFTER",
           "function": "public.handle_listing_status_change"
+        },
+        {
+          "name": "listings_detect_price_drop",
+          "event": "UPDATE OF PRICE_CENTS",
+          "timing": "AFTER",
+          "function": "public.detect_price_drop"
         }
       ]
     },
@@ -1011,6 +1017,73 @@
           "function": "public.handle_member_deletion"
         }
       ]
+    },
+    {
+      "name": "price_drop_notifications",
+      "label": "Price Drop Notifications",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "listing_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "listings",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "new_price_cents",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "old_price_cents",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "processed",
+          "type": "boolean",
+          "nullable": false,
+          "default": "false"
+        }
+      ],
+      "badges": ["RLS"],
+      "rlsPolicies": [
+        {
+          "name": "price_drop_notifications_service_role_select",
+          "operation": "SELECT",
+          "using": "true"
+        },
+        {
+          "name": "price_drop_notifications_service_role_update",
+          "operation": "UPDATE",
+          "using": "true",
+          "withCheck": "true"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "price_drop_notifications_processed_created_at_idx",
+          "columns": ["processed", "created_at"],
+          "unique": false
+        }
+      ],
+      "triggers": []
     },
     {
       "name": "recently_viewed",
@@ -1776,6 +1849,83 @@
         }
       ],
       "triggers": []
+    },
+    {
+      "name": "watchers",
+      "label": "Watchers",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "last_notified_price_cents",
+          "type": "number",
+          "nullable": true
+        },
+        {
+          "name": "listing_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "listings",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "watched_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        }
+      ],
+      "badges": ["RLS", "Triggers"],
+      "rlsPolicies": [
+        {
+          "name": "watchers_select_own",
+          "operation": "SELECT",
+          "using": "user_id = auth.uid()"
+        },
+        {
+          "name": "watchers_insert_own",
+          "operation": "INSERT",
+          "withCheck": "user_id = auth.uid()"
+        },
+        {
+          "name": "watchers_delete_own",
+          "operation": "DELETE",
+          "using": "user_id = auth.uid()"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "watchers_user_id_idx",
+          "columns": ["user_id"],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "watchers_update_count",
+          "event": "INSERT OR DELETE",
+          "timing": "AFTER",
+          "function": "public.update_watcher_count"
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(watchlist): #36 watchlist + price drop alerts",
+      "number": 300,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/300",
+      "mergedAt": "2026-03-27T18:33:53Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "feat(listings): #294 \"From Sellers You Follow\" homepage listing strip",
       "number": 295,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/295",
