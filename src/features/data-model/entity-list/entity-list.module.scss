@@ -417,12 +417,37 @@
   font-family: var(--font-family-mono);
   font-size: 9px;
   font-weight: 700;
-  color: #3d8c75;
-  background: rgb(61 140 117 / 10%);
+  // color and background set via inline styles (method-colored)
   padding: 2px 6px;
   border-radius: 3px;
   min-width: 48px;
   text-align: center;
+}
+
+.metaRowLink {
+  cursor: pointer;
+  transition: background 150ms ease-out;
+
+  &:hover {
+    background: rgb(255 255 255 / 4%);
+  }
+}
+
+.metaLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.metaArrow {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-left: auto;
+  transition: color 150ms ease-out;
+
+  .metaRowLink:hover & {
+    color: var(--text-muted);
+  }
 }
 
 .triggerEvent {

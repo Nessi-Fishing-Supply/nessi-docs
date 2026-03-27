@@ -3,6 +3,8 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import type { Entity } from '@/types/data-model';
+import { getMethodColors } from '@/constants/colors';
+import { rlsOperationToMethod, getBestEndpointForOperation } from '@/data/cross-links';
 import { PageHeader } from '@/components/ui/page-header';
 import styles from './entity-list.module.scss';
 
@@ -196,12 +198,42 @@ function MetaSections({ entity }: { entity: Entity }) {
       {entity.rlsPolicies && entity.rlsPolicies.length > 0 && (
         <div>
           <div className={styles.sectionLabel}>RLS Policies</div>
-          {entity.rlsPolicies.map((p, i) => (
-            <div key={i} className={styles.metaRow}>
-              <span className={styles.policyOp}>{p.operation}</span>
-              <span className={styles.metaText}>{p.name}</span>
-            </div>
-          ))}
+          {entity.rlsPolicies.map((p, i) => {
+            const method = rlsOperationToMethod(p.operation);
+            const { color, bg } = getMethodColors(method);
+            const bestEndpoint = getBestEndpointForOperation(entity.name, p.operation);
+
+            const row = (
+              <div
+                key={i}
+                className={`${styles.metaRow} ${bestEndpoint ? styles.metaRowLink : ''}`}
+              >
+                <span
+                  className={styles.policyOp}
+                  style={{ color, background: bg }}
+                >
+                  {p.operation}
+                </span>
+                <span className={styles.metaText}>{p.name}</span>
+                {bestEndpoint && (
+                  <span className={styles.metaArrow}>→</span>
+                )}
+              </div>
+            );
+
+            if (bestEndpoint) {
+              return (
+                <Link
+                  key={i}
+                  href={`/api-map#${bestEndpoint.anchor}`}
+                  className={styles.metaLink}
+                >
+                  {row}
+                </Link>
+              );
+            }
+            return row;
+          })}
         </div>
       )}
 
