@@ -409,6 +409,73 @@
       ]
     },
     {
+      "slug": "report-target-type",
+      "name": "Report Target Type",
+      "description": "Database enum Report Target Type with 4 values",
+      "source": "supabase/migrations/20260326000000_create_reports.sql",
+      "values": [
+        {
+          "value": "listing",
+          "label": "Listing"
+        },
+        {
+          "value": "member",
+          "label": "Member"
+        },
+        {
+          "value": "shop",
+          "label": "Shop"
+        },
+        {
+          "value": "message",
+          "label": "Message"
+        }
+      ]
+    },
+    {
+      "slug": "reports-reasons",
+      "name": "Reports Reasons",
+      "description": "Reports Reasons configuration with 7 defined values",
+      "source": "src/features/reports/constants/reasons.ts",
+      "values": [
+        {
+          "value": "spam",
+          "label": "Spam",
+          "description": "Irrelevant, repetitive, or unsolicited promotional content."
+        },
+        {
+          "value": "prohibited_item",
+          "label": "Prohibited Item",
+          "description": "Item that violates marketplace policies or is illegal to sell."
+        },
+        {
+          "value": "counterfeit",
+          "label": "Counterfeit",
+          "description": "Fake, replica, or knockoff item being sold as genuine."
+        },
+        {
+          "value": "inappropriate_content",
+          "label": "Inappropriate Content",
+          "description": "Offensive, vulgar, or otherwise inappropriate text or images."
+        },
+        {
+          "value": "off_platform_transaction",
+          "label": "Off-Platform Transaction",
+          "description": "Attempting to complete sales outside of Nessi."
+        },
+        {
+          "value": "harassment",
+          "label": "Harassment",
+          "description": "Threatening, abusive, or harassing behavior toward other users."
+        },
+        {
+          "value": "other",
+          "label": "Other",
+          "description": "Something else not covered by the categories above."
+        }
+      ]
+    },
+    {
       "slug": "shipping-paid-by",
       "name": "Shipping Paid By",
       "description": "Database enum Shipping Paid By with 3 values",
