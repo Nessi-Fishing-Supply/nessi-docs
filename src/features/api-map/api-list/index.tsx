@@ -192,10 +192,9 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 
 function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; staggerIndex: number }) {
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
-  const isInitialDeepLink = typeof window !== 'undefined' && window.location.hash === `#${slug}`;
-  const [isOpen, setIsOpen] = useState(isInitialDeepLink);
+  const [isOpen, setIsOpen] = useState(false);
   const [highlight, setHighlight] = useState(false);
-  const [skipAnimation, setSkipAnimation] = useState(isInitialDeepLink);
+  const [skipAnimation, setSkipAnimation] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
   const { color, bg, border } = getMethodColors(endpoint.method);
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
