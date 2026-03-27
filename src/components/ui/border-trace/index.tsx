@@ -66,13 +66,13 @@ export function BorderTrace({
 
   const totalDuration = duration * loops;
 
-  // Layered strokes — each shorter and more opaque to create gradient falloff
-  // The "sparkle" is the bright tip; the tail fades out behind it
+  // Layered strokes — bright core leads, tail trails behind (motion blur effect)
+  // Each tail layer is offset backwards so it appears behind the leading tip
   const layers = [
-    { lengthPct: 0.04, opacity: 0.08, width: 3 },   // outermost soft tail
-    { lengthPct: 0.025, opacity: 0.15, width: 2.5 }, // mid tail
-    { lengthPct: 0.012, opacity: 0.3, width: 2 },    // inner tail
-    { lengthPct: 0.004, opacity: 0.6, width: 1.5 },  // bright core
+    { lengthPct: 0.004, opacity: 0.6, width: 1.5, tailOffset: 0 },       // bright core (leading edge)
+    { lengthPct: 0.012, opacity: 0.3, width: 2, tailOffset: 0.004 },     // inner tail
+    { lengthPct: 0.025, opacity: 0.15, width: 2.5, tailOffset: 0.008 },  // mid tail
+    { lengthPct: 0.04, opacity: 0.08, width: 3, tailOffset: 0.012 },     // outermost soft tail
   ];
 
   const rectBase = {
@@ -110,6 +110,8 @@ export function BorderTrace({
       {layers.map((layer, i) => {
         const traceLength = perimeter * layer.lengthPct;
         const gapLength = perimeter - traceLength;
+        // Offset tail layers backwards so they trail behind the bright core
+        const offset = perimeter * layer.tailOffset;
         return (
           <rect
             key={i}
@@ -118,8 +120,9 @@ export function BorderTrace({
             strokeWidth={layer.width}
             strokeOpacity={layer.opacity}
             strokeDasharray={`${traceLength} ${gapLength}`}
-            strokeDashoffset={perimeter}
-            filter={i < 2 ? 'url(#trace-soft)' : undefined}
+            strokeDashoffset={perimeter + offset}
+            style={{ '--trace-end-offset': `${offset}` } as React.CSSProperties}
+            filter={i >= 2 ? 'url(#trace-soft)' : undefined}
           />
         );
       })}

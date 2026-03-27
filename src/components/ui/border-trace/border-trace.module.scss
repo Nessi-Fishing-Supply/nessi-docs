@@ -13,7 +13,7 @@
 
 @keyframes traceMove {
   to {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: var(--trace-end-offset, 0);
   }
 }
 
