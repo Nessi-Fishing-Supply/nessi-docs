@@ -357,17 +357,22 @@ export function EntityList({ entities }: EntityListProps) {
   };
 
   const scrollToAndExpand = (entityName: string) => {
+    // Step 1: Expand the target entity
     setOpenEntities((prev) => {
       const next = new Set(prev);
       next.add(entityName);
       return next;
     });
+    // Step 2: After expansion renders, scroll into view
     setTimeout(() => {
       const el = document.getElementById(entityName);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        el.classList.add(styles.entityRowHighlight);
-        setTimeout(() => el.classList.remove(styles.entityRowHighlight), 4000);
+        // Step 3: After scroll settles, start the glow
+        setTimeout(() => {
+          el.classList.add(styles.entityRowHighlight);
+          setTimeout(() => el.classList.remove(styles.entityRowHighlight), 4000);
+        }, 400);
       }
     }, 50);
   };

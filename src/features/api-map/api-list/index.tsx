@@ -194,34 +194,42 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
   const [isOpen, setIsOpen] = useState(false);
   const [highlight, setHighlight] = useState(false);
-  const [skipAnimation, setSkipAnimation] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
   const { color, bg, border } = getMethodColors(endpoint.method);
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const errorCount = errors.length;
 
-  // Deep-link: auto-expand, skip stagger animation, scroll, and highlight
+  // Deep-link: sequential animation — stagger in → expand → scroll → glow
   useEffect(() => {
     function checkHash() {
       if (window.location.hash === `#${slug}`) {
-        setIsOpen(true);
-        setSkipAnimation(true);
-        // Wait a frame for the row to render without animation, then scroll and glow
-        requestAnimationFrame(() => {
-          setHighlight(true);
-          setTimeout(
-            () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
-            50,
-          );
-          setTimeout(() => setHighlight(false), 4000);
-        });
+        // Wait for stagger animation to complete (stagger delay + 200ms animation duration)
+        const staggerDelay = staggerIndex * 20;
+        const animationDuration = 200;
+        const expandDelay = staggerDelay + animationDuration + 100; // +100ms buffer
+
+        // Step 1: Let the row animate in naturally, then expand it
+        setTimeout(() => {
+          setIsOpen(true);
+
+          // Step 2: After expansion renders, scroll into view
+          setTimeout(() => {
+            rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Step 3: After scroll settles, start the glow
+            setTimeout(() => {
+              setHighlight(true);
+              setTimeout(() => setHighlight(false), 4000);
+            }, 400); // allow scroll to settle
+          }, 50); // allow expansion to render
+        }, expandDelay);
       }
     }
 
     checkHash();
     window.addEventListener('hashchange', checkHash);
     return () => window.removeEventListener('hashchange', checkHash);
-  }, [slug]);
+  }, [slug, staggerIndex]);
 
   const pathParts = endpoint.path.split(/(:[\w]+)/g);
 
@@ -229,7 +237,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
     <div
       ref={rowRef}
       id={slug}
-      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''} ${highlight ? styles.epRowHighlight : ''} ${skipAnimation ? styles.epRowNoAnimation : ''}`}
+      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''} ${highlight ? styles.epRowHighlight : ''}`}
       style={
         {
           '--method-color': color,
