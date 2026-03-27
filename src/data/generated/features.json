@@ -193,14 +193,40 @@
       "slug": "follows",
       "name": "Follows",
       "description": "Part of #155 (social/follows parent feature).",
-      "status": "planned",
+      "status": "built",
       "componentCount": 0,
-      "endpointCount": 0,
-      "hookCount": 0,
-      "serviceCount": 0,
-      "entities": [],
-      "journeySlugs": [],
-      "links": []
+      "endpointCount": 4,
+      "hookCount": 4,
+      "serviceCount": 2,
+      "entities": ["follows", "members", "shops"],
+      "journeySlugs": ["member-follow"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "follows",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-follow",
+          "href": "/journeys/member-follow"
+        },
+        {
+          "type": "api-group",
+          "label": "Follows",
+          "href": "/api-map"
+        }
+      ]
     },
     {
       "slug": "listings",

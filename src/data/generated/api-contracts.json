@@ -279,6 +279,77 @@
       ]
     },
     {
+      "name": "Follows",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/follows/count",
+          "label": "List Count",
+          "auth": "none",
+          "access": [],
+          "errorCodes": [400, 500],
+          "requestFields": [],
+          "description": "Get the follower count for a member or shop",
+          "tags": []
+        },
+        {
+          "method": "GET",
+          "path": "/api/follows/following",
+          "label": "List Following",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 500],
+          "requestFields": [],
+          "description": "List members and shops the authenticated user follows",
+          "tags": []
+        },
+        {
+          "method": "POST",
+          "path": "/api/follows",
+          "label": "Create Follow",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 404, 409, 500],
+          "requestFields": [
+            {
+              "name": "target_type",
+              "type": "unknown",
+              "required": true
+            },
+            {
+              "name": "target_id",
+              "type": "unknown",
+              "required": true
+            }
+          ],
+          "description": "Follow a member or shop",
+          "tags": []
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/follows",
+          "label": "Delete Follow",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 404, 409, 500],
+          "requestFields": [],
+          "description": "Unfollow a member or shop",
+          "tags": []
+        },
+        {
+          "method": "GET",
+          "path": "/api/follows/status",
+          "label": "List Statu",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 500],
+          "requestFields": [],
+          "description": "Check if the authenticated user follows a member or shop",
+          "tags": []
+        }
+      ]
+    },
+    {
       "name": "Invites",
       "endpoints": [
         {
