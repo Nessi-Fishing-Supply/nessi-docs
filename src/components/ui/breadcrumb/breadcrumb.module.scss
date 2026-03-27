@@ -71,7 +71,9 @@
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgb(0 0 0 / 60%), 0 8px 40px rgb(0 0 0 / 30%);
+  box-shadow:
+    0 4px 20px rgb(0 0 0 / 60%),
+    0 8px 40px rgb(0 0 0 / 30%);
   z-index: 20;
   padding: 4px;
   animation: fade-in 120ms ease-out;
@@ -109,6 +111,10 @@
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

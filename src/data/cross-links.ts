@@ -301,10 +301,7 @@ export function getBestEndpointForOperation(
 /**
  * Get all endpoints matching a table + RLS operation for linking.
  */
-export function getEndpointsForOperation(
-  tableName: string,
-  operation: string,
-): EndpointRef[] {
+export function getEndpointsForOperation(tableName: string, operation: string): EndpointRef[] {
   const endpoints = getEndpointsForTable(tableName);
   const targetMethod = rlsOperationToMethod(operation);
   return endpoints.filter((ep) => ep.method === targetMethod);

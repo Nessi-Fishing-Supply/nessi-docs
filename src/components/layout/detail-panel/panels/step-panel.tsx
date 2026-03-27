@@ -97,7 +97,9 @@ export function StepPanel({ node, journey }: StepPanelProps) {
           <SectionLabel>See also</SectionLabel>
           <div className={styles.linkList}>
             {crossLinks.map((link, i) => (
-              <CrossLink key={i} href={link.href}>View API Spec</CrossLink>
+              <CrossLink key={i} href={link.href}>
+                View API Spec
+              </CrossLink>
             ))}
           </div>
         </>

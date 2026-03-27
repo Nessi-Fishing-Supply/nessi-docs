@@ -53,9 +53,7 @@ export function BorderTrace({
   }, [active]);
 
   if (!active || dimensions.width === 0) {
-    return active ? (
-      <svg ref={svgRef} className={styles.svg} aria-hidden="true" />
-    ) : null;
+    return active ? <svg ref={svgRef} className={styles.svg} aria-hidden="true" /> : null;
   }
 
   const { width, height } = dimensions;
@@ -69,10 +67,10 @@ export function BorderTrace({
   // Layered strokes — bright core leads, tail trails behind (motion blur effect)
   // Each tail layer is offset backwards so it appears behind the leading tip
   const layers = [
-    { lengthPct: 0.004, opacity: 0.6, width: 1.5, tailOffset: 0 },       // bright core (leading edge)
-    { lengthPct: 0.012, opacity: 0.3, width: 2, tailOffset: 0.004 },     // inner tail
-    { lengthPct: 0.025, opacity: 0.15, width: 2.5, tailOffset: 0.008 },  // mid tail
-    { lengthPct: 0.04, opacity: 0.08, width: 3, tailOffset: 0.012 },     // outermost soft tail
+    { lengthPct: 0.004, opacity: 0.6, width: 1.5, tailOffset: 0 }, // bright core (leading edge)
+    { lengthPct: 0.012, opacity: 0.3, width: 2, tailOffset: 0.004 }, // inner tail
+    { lengthPct: 0.025, opacity: 0.15, width: 2.5, tailOffset: 0.008 }, // mid tail
+    { lengthPct: 0.04, opacity: 0.08, width: 3, tailOffset: 0.012 }, // outermost soft tail
   ];
 
   const rectBase = {
@@ -95,11 +93,13 @@ export function BorderTrace({
       height={height}
       viewBox={`0 0 ${width} ${height}`}
       aria-hidden="true"
-      style={{
-        '--trace-duration': `${duration}s`,
-        '--trace-loops': loops,
-        '--fade-duration': `${totalDuration}s`,
-      } as React.CSSProperties}
+      style={
+        {
+          '--trace-duration': `${duration}s`,
+          '--trace-loops': loops,
+          '--fade-duration': `${totalDuration}s`,
+        } as React.CSSProperties
+      }
     >
       <defs>
         <filter id="trace-soft" x="-50%" y="-50%" width="200%" height="200%">

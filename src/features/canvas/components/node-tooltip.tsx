@@ -85,39 +85,73 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
             >
               {/* Planned/roadmap banner */}
               {node.status === 'planned' && (
-                <div style={{
-                  fontSize: '9px',
-                  fontFamily: 'var(--font-family-mono)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  color: '#6a6860',
-                  padding: '4px 8px',
-                  background: 'rgba(255,255,255,0.03)',
-                  borderRadius: '4px',
-                  border: '1px dashed rgba(255,255,255,0.08)',
-                }}>
+                <div
+                  style={{
+                    fontSize: '9px',
+                    fontFamily: 'var(--font-family-mono)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: '#6a6860',
+                    padding: '4px 8px',
+                    background: 'rgba(255,255,255,0.03)',
+                    borderRadius: '4px',
+                    border: '1px dashed rgba(255,255,255,0.08)',
+                  }}
+                >
                   Roadmap — not yet built
                 </div>
               )}
 
               {/* Header: title + badges */}
               <div>
-                <div style={{ fontSize: '12px', fontWeight: 500, color: node.status === 'planned' ? '#6a6860' : '#e8e6e1', lineHeight: '1.4', marginBottom: '5px' }}>
+                <div
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 500,
+                    color: node.status === 'planned' ? '#6a6860' : '#e8e6e1',
+                    lineHeight: '1.4',
+                    marginBottom: '5px',
+                  }}
+                >
                   {node.label || node.route || 'Step'}
                 </div>
                 <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
                   {layer && (
-                    <span style={{ fontSize: '9px', padding: '1px 7px', borderRadius: '10px', background: `${layer.color}1a`, color: layer.color }}>
+                    <span
+                      style={{
+                        fontSize: '9px',
+                        padding: '1px 7px',
+                        borderRadius: '10px',
+                        background: `${layer.color}1a`,
+                        color: layer.color,
+                      }}
+                    >
                       {layer.label}
                     </span>
                   )}
                   {status && (
-                    <span style={{ fontSize: '9px', padding: '1px 7px', borderRadius: '10px', background: `${status.color}1a`, color: status.color }}>
+                    <span
+                      style={{
+                        fontSize: '9px',
+                        padding: '1px 7px',
+                        borderRadius: '10px',
+                        background: `${status.color}1a`,
+                        color: status.color,
+                      }}
+                    >
                       {status.label}
                     </span>
                   )}
                   {errorCount > 0 && (
-                    <span style={{ fontSize: '9px', padding: '1px 7px', borderRadius: '10px', background: 'rgba(220,60,60,0.15)', color: '#e05555' }}>
+                    <span
+                      style={{
+                        fontSize: '9px',
+                        padding: '1px 7px',
+                        borderRadius: '10px',
+                        background: 'rgba(220,60,60,0.15)',
+                        color: '#e05555',
+                      }}
+                    >
                       {errorCount} error{errorCount !== 1 ? 's' : ''}
                     </span>
                   )}
@@ -130,7 +164,11 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                   <div style={sectionLabel}>{node.layer === 'server' ? 'Endpoint' : 'Page'}</div>
                   {node.layer === 'server' ? (
                     <Link
-                      href={`/api-map#${node.route.replace(/^(GET|POST|PUT|PATCH|DELETE)\s+/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
+                      href={`/api-map#${node.route
+                        .replace(/^(GET|POST|PUT|PATCH|DELETE)\s+/, '')
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/(^-|-$)/g, '')}`}
                       style={{
                         ...monoBlock,
                         color: '#e27739',
@@ -141,14 +179,40 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                         cursor: 'pointer',
                         transition: 'background 150ms ease-out',
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                      }}
                     >
                       <span style={{ flex: 1 }}>{node.route}</span>
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.5 }}>
-                        <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-                        <path d="M7 2.5H9.5V5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M9.5 2.5L5.5 6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        style={{ flexShrink: 0, opacity: 0.5 }}
+                      >
+                        <path
+                          d="M4.5 2.5H2.5V9.5H9.5V7.5"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d="M7 2.5H9.5V5"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M9.5 2.5L5.5 6.5"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                        />
                       </svg>
                     </Link>
                   ) : (
@@ -166,14 +230,40 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                         cursor: 'pointer',
                         transition: 'background 150ms ease-out',
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                      }}
                     >
                       <span style={{ flex: 1 }}>{node.route}</span>
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.5 }}>
-                        <path d="M4.5 2.5H2.5V9.5H9.5V7.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-                        <path d="M7 2.5H9.5V5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M9.5 2.5L5.5 6.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        style={{ flexShrink: 0, opacity: 0.5 }}
+                      >
+                        <path
+                          d="M4.5 2.5H2.5V9.5H9.5V7.5"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d="M7 2.5H9.5V5"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M9.5 2.5L5.5 6.5"
+                          stroke="currentColor"
+                          strokeWidth="1"
+                          strokeLinecap="round"
+                        />
                       </svg>
                     </a>
                   )}
@@ -204,37 +294,51 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                   <div style={sectionLabel}>UX Behavior</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                     {ux!.toast && (
-                      <div style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}>
+                      <div
+                        style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}
+                      >
                         <span style={{ color: '#6b7280', flexShrink: 0 }}>Toast</span>
                         <span>{ux!.toast}</span>
                       </div>
                     )}
                     {ux!.redirect && (
-                      <div style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}>
+                      <div
+                        style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}
+                      >
                         <span style={{ color: '#6b7280', flexShrink: 0 }}>Redirect</span>
-                        <span style={{ fontFamily: 'var(--font-family-mono)' }}>{ux!.redirect}</span>
+                        <span style={{ fontFamily: 'var(--font-family-mono)' }}>
+                          {ux!.redirect}
+                        </span>
                       </div>
                     )}
                     {ux!.modal && (
-                      <div style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}>
+                      <div
+                        style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}
+                      >
                         <span style={{ color: '#6b7280', flexShrink: 0 }}>Modal</span>
                         <span>{ux!.modal}</span>
                       </div>
                     )}
                     {ux!.email && (
-                      <div style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}>
+                      <div
+                        style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}
+                      >
                         <span style={{ color: '#6b7280', flexShrink: 0 }}>Email</span>
                         <span>{ux!.email}</span>
                       </div>
                     )}
                     {ux!.notification && (
-                      <div style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}>
+                      <div
+                        style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}
+                      >
                         <span style={{ color: '#6b7280', flexShrink: 0 }}>Notification</span>
                         <span>{ux!.notification}</span>
                       </div>
                     )}
                     {ux!.stateChange && (
-                      <div style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}>
+                      <div
+                        style={{ fontSize: '10px', color: '#9a9790', display: 'flex', gap: '6px' }}
+                      >
                         <span style={{ color: '#6b7280', flexShrink: 0 }}>State</span>
                         <span>{ux!.stateChange}</span>
                       </div>
@@ -279,10 +383,18 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                           gap: '6px',
                         }}
                       >
-                        <span style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span
+                          style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}
+                        >
                           <span style={{ color: '#e05555' }}>
                             {err.condition}
-                            {err.httpStatus ? <span style={{ color: '#6a6860', marginLeft: '4px' }}>({err.httpStatus})</span> : ''}
+                            {err.httpStatus ? (
+                              <span style={{ color: '#6a6860', marginLeft: '4px' }}>
+                                ({err.httpStatus})
+                              </span>
+                            ) : (
+                              ''
+                            )}
                           </span>
                         </span>
                       </div>
@@ -297,8 +409,25 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
               )}
 
               {/* Down arrow */}
-              <svg width="14" height="7" viewBox="0 0 14 7" style={{ position: 'absolute', bottom: -7, left: '50%', marginLeft: -7, display: 'block' }}>
-                <path d="M0,0 L6,6 Q7,7 8,6 L14,0" fill={TT_BG} stroke={TT_BORDER} strokeWidth="1" strokeLinejoin="round" />
+              <svg
+                width="14"
+                height="7"
+                viewBox="0 0 14 7"
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  left: '50%',
+                  marginLeft: -7,
+                  display: 'block',
+                }}
+              >
+                <path
+                  d="M0,0 L6,6 Q7,7 8,6 L14,0"
+                  fill={TT_BG}
+                  stroke={TT_BORDER}
+                  strokeWidth="1"
+                  strokeLinejoin="round"
+                />
                 <rect x="0" y="0" width="14" height="1" fill={TT_BG} />
               </svg>
             </div>

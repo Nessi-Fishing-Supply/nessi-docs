@@ -47,21 +47,21 @@ For each endpoint, try these strategies (first match wins per table):
 
 **Expected mappings from current data:**
 
-| API Group | Path Pattern | Matched Table(s) |
-|-----------|-------------|-------------------|
-| Addresses | /api/addresses/* | addresses |
-| Auth | /api/auth/* | members |
-| Cart | /api/cart/* | cart_items |
-| Invites | /api/invites/* | shop_invites |
-| Listings | /api/listings/* | listings |
-| Listings | /api/listings/*/upload* | listing_photos |
-| Members | /api/members/* | members |
-| Recently Viewed | /api/recently-viewed/* | recently_viewed |
-| Shops | /api/shops/* | shops |
-| Shops | /api/shops/*/invites/* | shop_invites |
-| Shops | /api/shops/*/members/* | shop_members |
-| Shops | /api/shops/*/roles | shop_roles |
-| Shops | /api/shops/*/ownership* | shop_ownership_transfers |
+| API Group       | Path Pattern            | Matched Table(s)         |
+| --------------- | ----------------------- | ------------------------ |
+| Addresses       | /api/addresses/\*       | addresses                |
+| Auth            | /api/auth/\*            | members                  |
+| Cart            | /api/cart/\*            | cart_items               |
+| Invites         | /api/invites/\*         | shop_invites             |
+| Listings        | /api/listings/\*        | listings                 |
+| Listings        | /api/listings/_/upload_ | listing_photos           |
+| Members         | /api/members/\*         | members                  |
+| Recently Viewed | /api/recently-viewed/\* | recently_viewed          |
+| Shops           | /api/shops/\*           | shops                    |
+| Shops           | /api/shops/_/invites/_  | shop_invites             |
+| Shops           | /api/shops/_/members/_  | shop_members             |
+| Shops           | /api/shops/\*/roles     | shop_roles               |
+| Shops           | /api/shops/_/ownership_ | shop_ownership_transfers |
 
 Auth → members is a special case (auth endpoints are about member authentication).
 This can be handled with a small override map for cases where the path vocabulary
@@ -74,13 +74,13 @@ export interface EndpointRef {
   method: string;
   path: string;
   group: string;
-  anchor: string;  // e.g. "get-api-cart" for deep-link to API Map
+  anchor: string; // e.g. "get-api-cart" for deep-link to API Map
 }
 
 export interface TableRef {
   name: string;
   label: string;
-  badge: string;   // category badge
+  badge: string; // category badge
 }
 
 export function getEndpointsForTable(tableName: string): EndpointRef[];
@@ -94,12 +94,12 @@ replaced with hyphens (matching the `slug` computation in `EndpointRow`).
 
 Map RLS operations to HTTP method colors using `getMethodColors` from `src/constants/colors.ts`:
 
-| RLS Operation | HTTP Method | Color |
-|---------------|-------------|-------|
-| SELECT | GET | green (#3d8c75) |
-| INSERT | POST | orange (#e27739) |
-| UPDATE | PUT | amber (#b86e0a) |
-| DELETE | DELETE | red (#b84040) |
+| RLS Operation | HTTP Method | Color            |
+| ------------- | ----------- | ---------------- |
+| SELECT        | GET         | green (#3d8c75)  |
+| INSERT        | POST        | orange (#e27739) |
+| UPDATE        | PUT         | amber (#b86e0a)  |
+| DELETE        | DELETE      | red (#b84040)    |
 
 ## Immediate Integration Points
 
@@ -114,10 +114,10 @@ Map RLS operations to HTTP method colors using `getMethodColors` from `src/const
 
 ## Files
 
-| File | Change |
-|------|--------|
-| `src/data/cross-links.ts` | New — computed index module |
-| `src/features/data-model/entity-list/index.tsx` | Update RLS section with colors + links |
+| File                                                          | Change                                       |
+| ------------------------------------------------------------- | -------------------------------------------- |
+| `src/data/cross-links.ts`                                     | New — computed index module                  |
+| `src/features/data-model/entity-list/index.tsx`               | Update RLS section with colors + links       |
 | `src/features/data-model/entity-list/entity-list.module.scss` | Update policy badge styles for method colors |
 
 ## Out of Scope

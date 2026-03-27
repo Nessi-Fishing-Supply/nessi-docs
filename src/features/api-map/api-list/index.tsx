@@ -87,9 +87,7 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 
   return (
     <div className={styles.epDetail}>
-      {endpoint.description && (
-        <p className={styles.epDescription}>{endpoint.description}</p>
-      )}
+      {endpoint.description && <p className={styles.epDescription}>{endpoint.description}</p>}
       <div className={hasRequestFields ? styles.detailCols : undefined}>
         {hasRequestFields && (
           <div>

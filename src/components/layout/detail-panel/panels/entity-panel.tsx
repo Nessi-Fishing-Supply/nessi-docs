@@ -29,9 +29,7 @@ export function EntityPanel({ entity }: EntityPanelProps) {
           <KeyValueRow
             key={f.name}
             bordered
-            label={
-              <span className={styles.fieldName}>{f.name}</span>
-            }
+            label={<span className={styles.fieldName}>{f.name}</span>}
             value={
               <span style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                 <span className={styles.fieldType}>{f.type}</span>

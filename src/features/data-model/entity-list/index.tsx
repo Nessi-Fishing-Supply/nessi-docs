@@ -12,8 +12,15 @@ import styles from './entity-list.module.scss';
 /* ── Constants ── */
 
 const CATEGORY_ORDER = [
-  'core', 'lifecycle', 'junction', 'config',
-  'media', 'tracking', 'discovery', 'user', 'system',
+  'core',
+  'lifecycle',
+  'junction',
+  'config',
+  'media',
+  'tracking',
+  'discovery',
+  'user',
+  'system',
 ];
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -127,15 +134,11 @@ function EntityRow({
         <span className={styles.entityName}>{entity.name}</span>
         <span className={styles.categoryBadge}>{entity.badge}</span>
         <span className={styles.entityMeta}>
-          {(entity.rlsPolicies?.length ?? 0) > 0 && (
-            <span className={styles.rlsBadge}>RLS</span>
-          )}
+          {(entity.rlsPolicies?.length ?? 0) > 0 && <span className={styles.rlsBadge}>RLS</span>}
           {(entity.triggers?.length ?? 0) > 0 && (
             <span className={styles.triggerBadge}>Triggers</span>
           )}
-          {fkCount > 0 && (
-            <span className={styles.fkBadge}>FK</span>
-          )}
+          {fkCount > 0 && <span className={styles.fkBadge}>FK</span>}
           <span className={styles.fieldCount}>{entity.fields.length} fields</span>
           <span className={styles.chevron}>&#9656;</span>
         </span>
@@ -148,7 +151,13 @@ function EntityRow({
 
 /* ── Field Table ── */
 
-function FieldTable({ entity, onScrollToEntity }: { entity: Entity; onScrollToEntity: (name: string) => void }) {
+function FieldTable({
+  entity,
+  onScrollToEntity,
+}: {
+  entity: Entity;
+  onScrollToEntity: (name: string) => void;
+}) {
   return (
     <table className={styles.fieldTable}>
       <thead>
@@ -212,26 +221,17 @@ function MetaSections({ entity }: { entity: Entity }) {
                 key={i}
                 className={`${styles.metaRow} ${bestEndpoint ? styles.metaRowLink : ''}`}
               >
-                <span
-                  className={styles.policyOp}
-                  style={{ color, background: bg }}
-                >
+                <span className={styles.policyOp} style={{ color, background: bg }}>
                   {p.operation}
                 </span>
                 <span className={styles.metaText}>{p.name}</span>
-                {bestEndpoint && (
-                  <span className={styles.metaArrow}>→</span>
-                )}
+                {bestEndpoint && <span className={styles.metaArrow}>→</span>}
               </div>
             );
 
             if (bestEndpoint) {
               return (
-                <Link
-                  key={i}
-                  href={`/api-map#${bestEndpoint.anchor}`}
-                  className={styles.metaLink}
-                >
+                <Link key={i} href={`/api-map#${bestEndpoint.anchor}`} className={styles.metaLink}>
                   {row}
                 </Link>
               );
@@ -271,7 +271,13 @@ function MetaSections({ entity }: { entity: Entity }) {
 
 /* ── Entity Expansion ── */
 
-function EntityExpansion({ entity, onScrollToEntity }: { entity: Entity; onScrollToEntity: (name: string) => void }) {
+function EntityExpansion({
+  entity,
+  onScrollToEntity,
+}: {
+  entity: Entity;
+  onScrollToEntity: (name: string) => void;
+}) {
   const hasMeta = hasMetaSections(entity);
 
   return (
@@ -316,18 +322,15 @@ export function EntityList({ entities }: EntityListProps) {
   }, [entities]);
 
   const categories = useMemo(() => {
-    return CATEGORY_ORDER
-      .filter((cat) => allCategoryNames.has(cat))
-      .map((cat) => ({
-        name: cat,
-        label: CATEGORY_LABELS[cat] ?? cat,
-        count: entities.filter((e) => e.badge === cat).length,
-      }));
+    return CATEGORY_ORDER.filter((cat) => allCategoryNames.has(cat)).map((cat) => ({
+      name: cat,
+      label: CATEGORY_LABELS[cat] ?? cat,
+      count: entities.filter((e) => e.badge === cat).length,
+    }));
   }, [entities, allCategoryNames]);
 
   const grouped = useMemo(() => {
-    return CATEGORY_ORDER
-      .filter((cat) => activeCategories.has(cat) && allCategoryNames.has(cat))
+    return CATEGORY_ORDER.filter((cat) => activeCategories.has(cat) && allCategoryNames.has(cat))
       .map((cat) => ({
         category: cat,
         label: CATEGORY_LABELS[cat] ?? cat,
@@ -386,10 +389,7 @@ export function EntityList({ entities }: EntityListProps) {
 
   return (
     <div className={styles.container}>
-      <PageHeader
-        title="Data Model"
-        metrics={[{ value: entities.length, label: 'tables' }]}
-      />
+      <PageHeader title="Data Model" metrics={[{ value: entities.length, label: 'tables' }]} />
 
       <FilterBar
         categories={categories}

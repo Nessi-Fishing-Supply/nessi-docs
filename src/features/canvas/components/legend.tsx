@@ -70,17 +70,44 @@ export function Legend({ visible }: LegendProps) {
           <div key={n.label} style={row}>
             <svg width="14" height="14" viewBox="0 0 14 14">
               {n.shape === 'pill' && (
-                <rect x="1" y="3" width="12" height="8" rx="4" fill={hexToRgba(n.color, 0.2)} stroke={hexToRgba(n.color, 0.5)} strokeWidth="0.8" />
+                <rect
+                  x="1"
+                  y="3"
+                  width="12"
+                  height="8"
+                  rx="4"
+                  fill={hexToRgba(n.color, 0.2)}
+                  stroke={hexToRgba(n.color, 0.5)}
+                  strokeWidth="0.8"
+                />
               )}
               {n.shape === 'rect' && (
                 <>
-                  <rect x="1" y="2" width="12" height="10" rx="2" fill={hexToRgba(n.color, 0.15)} stroke={hexToRgba(n.color, 0.4)} strokeWidth="0.8" />
+                  <rect
+                    x="1"
+                    y="2"
+                    width="12"
+                    height="10"
+                    rx="2"
+                    fill={hexToRgba(n.color, 0.15)}
+                    stroke={hexToRgba(n.color, 0.4)}
+                    strokeWidth="0.8"
+                  />
                   <rect x="1" y="4" width="2" height="6" rx="0.5" fill={n.color} />
                 </>
               )}
               {n.shape === 'diamond' && (
                 <g transform="translate(7,7) rotate(45)">
-                  <rect x="-4" y="-4" width="8" height="8" rx="1" fill={hexToRgba(n.color, 0.2)} stroke={hexToRgba(n.color, 0.5)} strokeWidth="0.8" />
+                  <rect
+                    x="-4"
+                    y="-4"
+                    width="8"
+                    height="8"
+                    rx="1"
+                    fill={hexToRgba(n.color, 0.2)}
+                    stroke={hexToRgba(n.color, 0.5)}
+                    strokeWidth="0.8"
+                  />
                 </g>
               )}
             </svg>
@@ -94,7 +121,9 @@ export function Legend({ visible }: LegendProps) {
         <div style={sectionLabel}>Layers</div>
         {LAYERS.map((l) => (
           <div key={l.label} style={row}>
-            <div style={{ width: 3, height: 10, borderRadius: 1, background: l.color, flexShrink: 0 }} />
+            <div
+              style={{ width: 3, height: 10, borderRadius: 1, background: l.color, flexShrink: 0 }}
+            />
             <span>{l.label}</span>
           </div>
         ))}
@@ -105,7 +134,15 @@ export function Legend({ visible }: LegendProps) {
         <div style={sectionLabel}>Status</div>
         {STATUSES.map((s) => (
           <div key={s.label} style={row}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: s.color, flexShrink: 0 }} />
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: s.color,
+                flexShrink: 0,
+              }}
+            />
             <span>{s.label}</span>
           </div>
         ))}

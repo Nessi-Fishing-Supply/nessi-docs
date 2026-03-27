@@ -27,7 +27,12 @@ function journeyCoverage(journey: Journey): number {
   return steps.length > 0 ? Math.round((built / steps.length) * 100) : 0;
 }
 
-export function DomainJourneyList({ domain, journeys, stats, siblingDomains }: DomainJourneyListProps) {
+export function DomainJourneyList({
+  domain,
+  journeys,
+  stats,
+  siblingDomains,
+}: DomainJourneyListProps) {
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setEntered(true));
@@ -36,10 +41,7 @@ export function DomainJourneyList({ domain, journeys, stats, siblingDomains }: D
   return (
     <div className={styles.container}>
       <Breadcrumb
-        segments={[
-          { label: 'Journeys', href: '/journeys' },
-          { label: domain.label },
-        ]}
+        segments={[{ label: 'Journeys', href: '/journeys' }, { label: domain.label }]}
         switcher={siblingDomains?.map((d) => ({
           label: d.label,
           href: `/journeys/${d.slug}`,
@@ -53,7 +55,9 @@ export function DomainJourneyList({ domain, journeys, stats, siblingDomains }: D
         <div className={styles.domainStats}>
           <span>{journeys.length} journeys</span>
           <span>{stats.stepCount} steps</span>
-          <span style={{ color: coverageColor(stats.builtPercent) }}>{stats.builtPercent}% built</span>
+          <span style={{ color: coverageColor(stats.builtPercent) }}>
+            {stats.builtPercent}% built
+          </span>
         </div>
       </div>
 

@@ -14,12 +14,7 @@ export function PermissionPanel({ role }: { role: Role }) {
           const level = role.permissions[f.key];
           const cfg = LEVEL_CONFIG[level];
           return (
-            <KeyValueRow
-              key={f.key}
-              label={f.label}
-              value={cfg.label}
-              valueColor={cfg.color}
-            />
+            <KeyValueRow key={f.key} label={f.label} value={cfg.label} valueColor={cfg.color} />
           );
         })}
       </div>

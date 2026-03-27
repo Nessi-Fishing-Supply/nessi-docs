@@ -20,8 +20,7 @@ export function AppShell({ topbar, sidebar, detail, children }: AppShellProps) {
     null,
   );
 
-  const pageSupportsDetail =
-    DETAIL_PANEL_PAGES.some((p) => pathname.startsWith(p));
+  const pageSupportsDetail = DETAIL_PANEL_PAGES.some((p) => pathname.startsWith(p));
 
   // Override only applies to the page it was set on
   const activeOverride = manualOverride?.path === pathname ? manualOverride.value : null;
@@ -36,19 +35,21 @@ export function AppShell({ topbar, sidebar, detail, children }: AppShellProps) {
       <aside className={styles.detail}>{detail}</aside>
 
       {/* Toggle sits on the shell grid, not inside main, so overflow:hidden doesn't clip it */}
-      {pageSupportsDetail && <button
-        className={styles.detailToggle}
-        onClick={() =>
-          setManualOverride((prev) => {
-            const current = prev?.path === pathname ? prev.value : null;
-            const next = current !== null ? !current : pageSupportsDetail ? false : true;
-            return { path: pathname, value: next };
-          })
-        }
-        aria-label={detailCollapsed ? 'Show detail panel' : 'Hide detail panel'}
-      >
-        <span className={styles.toggleArrow}>{detailCollapsed ? '‹' : '›'}</span>
-      </button>}
+      {pageSupportsDetail && (
+        <button
+          className={styles.detailToggle}
+          onClick={() =>
+            setManualOverride((prev) => {
+              const current = prev?.path === pathname ? prev.value : null;
+              const next = current !== null ? !current : pageSupportsDetail ? false : true;
+              return { path: pathname, value: next };
+            })
+          }
+          aria-label={detailCollapsed ? 'Show detail panel' : 'Hide detail panel'}
+        >
+          <span className={styles.toggleArrow}>{detailCollapsed ? '‹' : '›'}</span>
+        </button>
+      )}
     </div>
   );
 }

@@ -15,6 +15,7 @@
 ### Task 1: Expand Data Model Types
 
 **Files:**
+
 - Modify: `src/types/data-model.ts` (entire file — currently 15 lines)
 
 - [ ] **Step 1: Replace the types file with enriched interfaces**
@@ -88,6 +89,7 @@ git commit -m "feat(data-model): expand types with RLS, triggers, indexes, FK re
 ### Task 2: Update Data Transform to Pass Through All JSON Fields
 
 **Files:**
+
 - Modify: `src/data/index.ts` (lines 99-104 for `RawEntity`, line 378-383 for `transformEntities`)
 
 - [ ] **Step 1: Expand the `RawEntity` interface**
@@ -156,6 +158,7 @@ git commit -m "feat(data-model): expand RawEntity to pass through all JSON metad
 ### Task 3: Remove Data Model from Detail Panel Pages
 
 **Files:**
+
 - Modify: `src/components/layout/app-shell/index.tsx` (line 8)
 
 - [ ] **Step 1: Remove `/data-model` from DETAIL_PANEL_PAGES**
@@ -177,12 +180,10 @@ Since `/data-model` is no longer in the list, the ERD exclusion on line 25 is de
 ```typescript
 // Old:
 const pageSupportsDetail =
-  DETAIL_PANEL_PAGES.some((p) => pathname.startsWith(p)) &&
-  !pathname.startsWith('/data-model/erd');
+  DETAIL_PANEL_PAGES.some((p) => pathname.startsWith(p)) && !pathname.startsWith('/data-model/erd');
 
 // New:
-const pageSupportsDetail =
-  DETAIL_PANEL_PAGES.some((p) => pathname.startsWith(p));
+const pageSupportsDetail = DETAIL_PANEL_PAGES.some((p) => pathname.startsWith(p));
 ```
 
 - [ ] **Step 3: Run typecheck and verify**
@@ -202,6 +203,7 @@ git commit -m "feat(data-model): remove detail panel from data model page"
 ### Task 4: Promote ERD to Top-Level Route
 
 **Files:**
+
 - Create: `src/app/entity-relationships/page.tsx`
 - Delete: `src/app/data-model/erd/page.tsx`
 - Modify: `src/components/layout/sidebar/index.tsx` (lines 19-29)
@@ -287,6 +289,7 @@ git commit -m "feat(erd): promote entity relationships to top-level route"
 This is the main component rewrite. We'll build incrementally: structure first, then expansion.
 
 **Files:**
+
 - Rewrite: `src/features/data-model/entity-list/index.tsx`
 - Rewrite: `src/features/data-model/entity-list/entity-list.module.scss`
 
@@ -306,8 +309,15 @@ import styles from './entity-list.module.scss';
 /* ── Constants ── */
 
 const CATEGORY_ORDER = [
-  'core', 'lifecycle', 'junction', 'config',
-  'media', 'tracking', 'discovery', 'user', 'system',
+  'core',
+  'lifecycle',
+  'junction',
+  'config',
+  'media',
+  'tracking',
+  'discovery',
+  'user',
+  'system',
 ];
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -400,15 +410,11 @@ function EntityRow({
         <span className={styles.entityName}>{entity.name}</span>
         <span className={styles.categoryBadge}>{entity.badge}</span>
         <span className={styles.entityMeta}>
-          {(entity.rlsPolicies?.length ?? 0) > 0 && (
-            <span className={styles.rlsBadge}>RLS</span>
-          )}
+          {(entity.rlsPolicies?.length ?? 0) > 0 && <span className={styles.rlsBadge}>RLS</span>}
           {(entity.triggers?.length ?? 0) > 0 && (
             <span className={styles.triggerBadge}>Triggers</span>
           )}
-          {fkCount > 0 && (
-            <span className={styles.fkCount}>{fkCount} FK</span>
-          )}
+          {fkCount > 0 && <span className={styles.fkCount}>{fkCount} FK</span>}
           <span className={styles.fieldCount}>{entity.fields.length} fields</span>
           <span className={styles.chevron}>&#9656;</span>
         </span>
@@ -456,18 +462,15 @@ export function EntityList({ entities }: EntityListProps) {
   }, [entities]);
 
   const categories = useMemo(() => {
-    return CATEGORY_ORDER
-      .filter((cat) => allCategoryNames.has(cat))
-      .map((cat) => ({
-        name: cat,
-        label: CATEGORY_LABELS[cat] ?? cat,
-        count: entities.filter((e) => e.badge === cat).length,
-      }));
+    return CATEGORY_ORDER.filter((cat) => allCategoryNames.has(cat)).map((cat) => ({
+      name: cat,
+      label: CATEGORY_LABELS[cat] ?? cat,
+      count: entities.filter((e) => e.badge === cat).length,
+    }));
   }, [entities, allCategoryNames]);
 
   const grouped = useMemo(() => {
-    return CATEGORY_ORDER
-      .filter((cat) => activeCategories.has(cat) && allCategoryNames.has(cat))
+    return CATEGORY_ORDER.filter((cat) => activeCategories.has(cat) && allCategoryNames.has(cat))
       .map((cat) => ({
         category: cat,
         label: CATEGORY_LABELS[cat] ?? cat,
@@ -505,10 +508,7 @@ export function EntityList({ entities }: EntityListProps) {
 
   return (
     <div className={styles.container}>
-      <PageHeader
-        title="Data Model"
-        metrics={[{ value: entities.length, label: 'tables' }]}
-      >
+      <PageHeader title="Data Model" metrics={[{ value: entities.length, label: 'tables' }]}>
         <Link href="/entity-relationships" className={styles.erdLink}>
           View Entity Relationships →
         </Link>
@@ -826,6 +826,7 @@ Run: `pnpm typecheck`
 Expected: PASS
 
 Run: `pnpm dev` — navigate to `/data-model`, verify:
+
 - Filter bar renders with category chips
 - Group dividers use line-through pattern
 - Entity rows show name, category badge, RLS/Trigger badges, FK count, field count
@@ -845,6 +846,7 @@ git commit -m "feat(data-model): rewrite entity list with filters, group divider
 ### Task 6: Build the Expansion View (60/40 Split)
 
 **Files:**
+
 - Modify: `src/features/data-model/entity-list/index.tsx` (replace `EntityExpansion` placeholder)
 - Modify: `src/features/data-model/entity-list/entity-list.module.scss` (add expansion styles)
 
@@ -1078,6 +1080,7 @@ Pass `scrollToAndExpand` through the component tree:
 - `EntityRow` → `EntityExpansion` → `FieldTable` via prop
 
 Update `EntityRow` props:
+
 ```tsx
 function EntityRow({
   entity,
@@ -1095,13 +1098,17 @@ function EntityRow({
 ```
 
 Pass through to expansion:
+
 ```tsx
-{isOpen && <EntityExpansion entity={entity} onScrollToEntity={onScrollToEntity} />}
+{
+  isOpen && <EntityExpansion entity={entity} onScrollToEntity={onScrollToEntity} />;
+}
 ```
 
 Update `EntityExpansion` and `FieldTable` similarly to accept and use `onScrollToEntity`.
 
 In `FieldTable`, the FK link becomes:
+
 ```tsx
 <a
   href={`#${f.references.table}`}
@@ -1163,9 +1170,15 @@ Append to `entity-list.module.scss`:
   z-index: 1;
 }
 
-.fieldThName { width: 150px; }
-.fieldThType { width: 80px; }
-.fieldThDefault { width: 120px; }
+.fieldThName {
+  width: 150px;
+}
+.fieldThType {
+  width: 80px;
+}
+.fieldThDefault {
+  width: 120px;
+}
 
 .fieldRow td {
   padding: 5px 8px;
@@ -1352,6 +1365,7 @@ Run: `pnpm typecheck`
 Expected: PASS
 
 Run: `pnpm dev` — navigate to `/data-model`, verify:
+
 - Expanding `addresses` shows 60/40 split: field table left, RLS + Triggers + Indexes right
 - PK/FK/null tags render correctly on field names
 - FK references show `→ members.id CASCADE` in purple
@@ -1371,6 +1385,7 @@ git commit -m "feat(data-model): add 60/40 expansion view with field table, RLS,
 ### Task 7: Update Page Component and Clean Up
 
 **Files:**
+
 - Modify: `src/app/data-model/page.tsx`
 - Verify: `src/features/search/search-index.ts` (line 59 — search href still points to `/data-model`)
 

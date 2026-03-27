@@ -298,9 +298,15 @@
   z-index: 1;
 }
 
-.fieldThName { width: 150px; }
-.fieldThType { width: 80px; }
-.fieldThDefault { width: 120px; }
+.fieldThName {
+  width: 150px;
+}
+.fieldThType {
+  width: 80px;
+}
+.fieldThDefault {
+  width: 120px;
+}
 
 .fieldRow td {
   padding: 7px 8px;
@@ -484,4 +490,3 @@
   color: #3d8c75;
   background: rgb(61 140 117 / 10%);
 }
-

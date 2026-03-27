@@ -71,7 +71,14 @@ export function EntryNode({ x, y, label, isDimmed, isActive, meta, onClick }: En
         strokeWidth={isActive ? 1.5 : 1}
       />
       {/* Play icon */}
-      <text x={16} y={h / 2 + 1} fill={ENTRY_COLOR} fontSize={11} fontWeight={600} dominantBaseline="central">
+      <text
+        x={16}
+        y={h / 2 + 1}
+        fill={ENTRY_COLOR}
+        fontSize={11}
+        fontWeight={600}
+        dominantBaseline="central"
+      >
         &#9654;
       </text>
       {/* Label */}
@@ -114,17 +121,35 @@ export function EntryNode({ x, y, label, isDimmed, isActive, meta, onClick }: En
               }}
             >
               {/* Title */}
-              <div style={{ fontSize: '12px', fontWeight: 500, color: '#e8e6e1', lineHeight: '1.4' }}>
+              <div
+                style={{ fontSize: '12px', fontWeight: 500, color: '#e8e6e1', lineHeight: '1.4' }}
+              >
                 {label}
               </div>
 
               {/* Badges */}
               <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '9px', padding: '1px 7px', borderRadius: '10px', background: `${ENTRY_COLOR}1a`, color: ENTRY_COLOR }}>
+                <span
+                  style={{
+                    fontSize: '9px',
+                    padding: '1px 7px',
+                    borderRadius: '10px',
+                    background: `${ENTRY_COLOR}1a`,
+                    color: ENTRY_COLOR,
+                  }}
+                >
                   Entry Point
                 </span>
                 {meta?.persona && (
-                  <span style={{ fontSize: '9px', padding: '1px 7px', borderRadius: '10px', background: `${meta.personaColor ?? '#78756f'}1a`, color: meta.personaColor ?? '#78756f' }}>
+                  <span
+                    style={{
+                      fontSize: '9px',
+                      padding: '1px 7px',
+                      borderRadius: '10px',
+                      background: `${meta.personaColor ?? '#78756f'}1a`,
+                      color: meta.personaColor ?? '#78756f',
+                    }}
+                  >
                     {meta.persona}
                   </span>
                 )}
@@ -139,21 +164,52 @@ export function EntryNode({ x, y, label, isDimmed, isActive, meta, onClick }: En
 
               {/* Flow stats */}
               {meta && (meta.stepCount || meta.decisionCount || meta.errorCount) && (
-                <div style={{ display: 'flex', gap: '12px', fontSize: '10px', fontFamily: 'var(--font-family-mono)', color: '#6a6860' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '12px',
+                    fontSize: '10px',
+                    fontFamily: 'var(--font-family-mono)',
+                    color: '#6a6860',
+                  }}
+                >
                   {meta.stepCount != null && <span>{meta.stepCount} steps</span>}
-                  {meta.decisionCount != null && meta.decisionCount > 0 && <span>{meta.decisionCount} decisions</span>}
-                  {meta.errorCount != null && meta.errorCount > 0 && <span style={{ color: '#e05555' }}>{meta.errorCount} errors</span>}
+                  {meta.decisionCount != null && meta.decisionCount > 0 && (
+                    <span>{meta.decisionCount} decisions</span>
+                  )}
+                  {meta.errorCount != null && meta.errorCount > 0 && (
+                    <span style={{ color: '#e05555' }}>{meta.errorCount} errors</span>
+                  )}
                 </div>
               )}
 
               {/* CTA */}
               <div style={{ fontSize: '10px', color: '#4a4840', fontStyle: 'italic' }}>
-                {isActive ? 'Tracing this flow — choose a path at decision nodes' : 'Click to trace this flow'}
+                {isActive
+                  ? 'Tracing this flow — choose a path at decision nodes'
+                  : 'Click to trace this flow'}
               </div>
 
               {/* Down arrow */}
-              <svg width="14" height="7" viewBox="0 0 14 7" style={{ position: 'absolute', bottom: -7, left: '50%', marginLeft: -7, display: 'block' }}>
-                <path d="M0,0 L6,6 Q7,7 8,6 L14,0" fill={TT_BG} stroke={TT_BORDER} strokeWidth="1" strokeLinejoin="round" />
+              <svg
+                width="14"
+                height="7"
+                viewBox="0 0 14 7"
+                style={{
+                  position: 'absolute',
+                  bottom: -7,
+                  left: '50%',
+                  marginLeft: -7,
+                  display: 'block',
+                }}
+              >
+                <path
+                  d="M0,0 L6,6 Q7,7 8,6 L14,0"
+                  fill={TT_BG}
+                  stroke={TT_BORDER}
+                  strokeWidth="1"
+                  strokeLinejoin="round"
+                />
                 <rect x="0" y="0" width="14" height="1" fill={TT_BG} />
               </svg>
             </div>

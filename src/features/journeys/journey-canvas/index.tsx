@@ -35,8 +35,16 @@ export function JourneyCanvas({
   onToggleStatus,
 }: JourneyCanvasProps) {
   const { selectedItem, setSelectedItem, clearSelection } = useDocsContext();
-  const { chosenPath, choosePath, startFromEntry, activeEntryId, resetPath, litNodes, litEdges, hasPath } =
-    usePathTrace(journey.nodes, journey.edges);
+  const {
+    chosenPath,
+    choosePath,
+    startFromEntry,
+    activeEntryId,
+    resetPath,
+    litNodes,
+    litEdges,
+    hasPath,
+  } = usePathTrace(journey.nodes, journey.edges);
   const viewBox = useViewport(journey.nodes);
 
   const [minimapVisible, setMinimapVisible] = useState(true);
@@ -181,7 +189,10 @@ export function JourneyCanvas({
                   personaColor: PERSONA_CONFIG[journey.persona]?.color,
                   stepCount: journey.nodes.filter((n) => n.type === 'step').length,
                   decisionCount: journey.nodes.filter((n) => n.type === 'decision').length,
-                  errorCount: journey.nodes.reduce((sum, n) => sum + (n.errorCases?.length ?? 0), 0),
+                  errorCount: journey.nodes.reduce(
+                    (sum, n) => sum + (n.errorCases?.length ?? 0),
+                    0,
+                  ),
                 }}
                 onClick={() => startFromEntry(node.id)}
               />
