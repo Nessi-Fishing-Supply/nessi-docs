@@ -1,4 +1,4 @@
-import { getPort, bezier } from '../utils/geometry';
+import { getPort, smoothPath } from '../utils/geometry';
 
 interface EdgeProps {
   from: { x: number; y: number; type: string };
@@ -11,7 +11,7 @@ interface EdgeProps {
 export function Edge({ from, to, isDecision, isLit, isDimmed }: EdgeProps) {
   const fp = getPort(from, 'right');
   const tp = getPort(to, 'left');
-  const d = bezier(fp.x, fp.y, tp.x, tp.y);
+  const d = smoothPath(fp.x, fp.y, 'right', tp.x, tp.y, 'left');
 
   // When lit, this edge becomes a subtle track — the AnimatedEdge is the primary visual
   const opacity = isDimmed ? 0.06 : isLit ? 0.2 : 0.25;

@@ -65,6 +65,13 @@ export function JourneyPageClient({ journey, domain, siblings }: JourneyPageClie
           visibleStatuses={visibleStatuses}
           onToggleLayer={toggleLayer}
           onToggleStatus={toggleStatus}
+          onResetFilters={() => {
+            setVisibleLayers(new Set(ALL_LAYERS));
+            setVisibleStatuses(new Set(ALL_STATUSES));
+          }}
+          filtersAreDirty={
+            visibleLayers.size !== ALL_LAYERS.length || visibleStatuses.size !== ALL_STATUSES.length
+          }
         />
       </div>
     </div>

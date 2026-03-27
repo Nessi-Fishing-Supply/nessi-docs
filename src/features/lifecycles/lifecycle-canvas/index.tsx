@@ -10,21 +10,30 @@ import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import {
   LIFECYCLE_NODE_WIDTH,
   LIFECYCLE_NODE_HEIGHT,
-  bezier,
+  smoothPath,
+  type PortSide,
 } from '@/features/canvas/utils/geometry';
 
 interface LifecycleCanvasProps {
   lifecycle: Lifecycle;
 }
 
+const SIDE_TO_DIRS: Record<string, [PortSide, PortSide]> = {
+  'r-l': ['right', 'left'],
+  'b-t': ['bottom', 'top'],
+  't-b': ['top', 'bottom'],
+  'b-l': ['bottom', 'left'],
+};
+
 function getTransitionPath(
   t: LifecycleTransition,
   stateMap: Map<string, { x: number; y: number }>,
 ) {
-  // If explicit coords provided, use them
+  // If explicit coords provided, infer direction from the side hint or default to right→left
   if (t.fx !== undefined && t.fy !== undefined && t.tx !== undefined && t.ty !== undefined) {
+    const [fDir, tDir] = SIDE_TO_DIRS[t.side ?? 'r-l'] ?? (['right', 'left'] as const);
     return {
-      d: bezier(t.fx, t.fy, t.tx, t.ty),
+      d: smoothPath(t.fx, t.fy, fDir, t.tx, t.ty, tDir),
       mx: (t.fx + t.tx) / 2,
       my: (t.fy + t.ty) / 2,
     };
@@ -35,26 +44,40 @@ function getTransitionPath(
   if (!from || !to) return null;
 
   let fx: number, fy: number, tx: number, ty: number;
+  let fDir: PortSide, tDir: PortSide;
 
-  if (t.side === 'r-l') {
-    fx = from.x + LIFECYCLE_NODE_WIDTH;
-    fy = from.y + LIFECYCLE_NODE_HEIGHT / 2;
-    tx = to.x;
-    ty = to.y + LIFECYCLE_NODE_HEIGHT / 2;
-  } else if (t.side === 'b-t') {
+  if (t.side === 'b-t') {
     fx = from.x + LIFECYCLE_NODE_WIDTH / 2;
     fy = from.y + LIFECYCLE_NODE_HEIGHT;
     tx = to.x + LIFECYCLE_NODE_WIDTH / 2;
     ty = to.y;
+    fDir = 'bottom';
+    tDir = 'top';
+  } else if (t.side === 't-b') {
+    fx = from.x + LIFECYCLE_NODE_WIDTH / 2;
+    fy = from.y;
+    tx = to.x + LIFECYCLE_NODE_WIDTH / 2;
+    ty = to.y + LIFECYCLE_NODE_HEIGHT;
+    fDir = 'top';
+    tDir = 'bottom';
+  } else if (t.side === 'b-l') {
+    fx = from.x + LIFECYCLE_NODE_WIDTH / 2;
+    fy = from.y + LIFECYCLE_NODE_HEIGHT;
+    tx = to.x;
+    ty = to.y + LIFECYCLE_NODE_HEIGHT / 2;
+    fDir = 'bottom';
+    tDir = 'left';
   } else {
     // Default: right to left
     fx = from.x + LIFECYCLE_NODE_WIDTH;
     fy = from.y + LIFECYCLE_NODE_HEIGHT / 2;
     tx = to.x;
     ty = to.y + LIFECYCLE_NODE_HEIGHT / 2;
+    fDir = 'right';
+    tDir = 'left';
   }
 
-  return { d: bezier(fx, fy, tx, ty), mx: (fx + tx) / 2, my: (fy + ty) / 2 };
+  return { d: smoothPath(fx, fy, fDir, tx, ty, tDir), mx: (fx + tx) / 2, my: (fy + ty) / 2 };
 }
 
 export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {

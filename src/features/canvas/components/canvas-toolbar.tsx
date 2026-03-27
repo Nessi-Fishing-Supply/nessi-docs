@@ -28,6 +28,23 @@ interface PathControls {
   resetPath: () => void;
 }
 
+interface CategoryItem {
+  key: string;
+  label: string;
+  color: string;
+}
+
+interface CategoryControls {
+  categories: CategoryItem[];
+  visibleCategories: Set<string>;
+  onToggleCategory: (key: string) => void;
+}
+
+interface ResetControls {
+  isDirty: boolean;
+  onReset: () => void;
+}
+
 interface CanvasToolbarProps {
   zoomControls: ZoomControls;
   minimapVisible: boolean;
@@ -35,7 +52,9 @@ interface CanvasToolbarProps {
   legendVisible?: boolean;
   onToggleLegend?: () => void;
   filterControls?: FilterControls;
+  categoryControls?: CategoryControls;
   pathControls?: PathControls;
+  resetControls?: ResetControls;
 }
 
 /* ------------------------------------------------------------------ */
@@ -148,6 +167,33 @@ function LegendIcon() {
   );
 }
 
+function ResetIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path
+        d="M3 8a5 5 0 019.5-1.5M13 8a5 5 0 01-9.5 1.5"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 4l.5 2.5L10 6"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 12l-.5-2.5L6 10"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function ClearIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -239,7 +285,7 @@ function FiltersDropup({ controls }: { controls: FilterControls }) {
     <div
       style={{
         position: 'absolute',
-        bottom: 48,
+        bottom: 70,
         left: '50%',
         transform: 'translateX(-50%)',
         background: 'rgba(15,19,25,0.95)',
@@ -325,6 +371,68 @@ function FiltersDropup({ controls }: { controls: FilterControls }) {
             );
           },
         )}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Category Filters Dropup (ERD / generic)                            */
+/* ------------------------------------------------------------------ */
+
+function CategoryDropup({ controls }: { controls: CategoryControls }) {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 70,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: 'rgba(15,19,25,0.95)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: 8,
+        backdropFilter: 'blur(12px)',
+        padding: '10px 12px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+        zIndex: 11,
+        minWidth: 200,
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+        <span
+          style={{
+            fontSize: 9,
+            color: '#6a6860',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            marginRight: 4,
+          }}
+        >
+          Category
+        </span>
+        {controls.categories.map((cat) => {
+          const active = controls.visibleCategories.has(cat.key);
+          return (
+            <button
+              key={cat.key}
+              onClick={() => controls.onToggleCategory(cat.key)}
+              style={{
+                padding: '3px 10px',
+                borderRadius: 12,
+                fontSize: 10,
+                border: active ? `1px solid ${cat.color}` : '1px solid transparent',
+                background: hexToRgba(cat.color, active ? 0.15 : 0.05),
+                color: active ? cat.color : '#9a9790',
+                opacity: active ? 1 : 0.5,
+                cursor: 'pointer',
+              }}
+            >
+              {cat.label}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -427,7 +535,9 @@ export function CanvasToolbar({
   legendVisible,
   onToggleLegend,
   filterControls,
+  categoryControls,
   pathControls,
+  resetControls,
 }: CanvasToolbarProps) {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const dropupRef = useRef<HTMLDivElement>(null);
@@ -462,6 +572,11 @@ export function CanvasToolbar({
       {filtersOpen && filterControls && (
         <div style={{ pointerEvents: 'auto' }}>
           <FiltersDropup controls={filterControls} />
+        </div>
+      )}
+      {filtersOpen && !filterControls && categoryControls && (
+        <div style={{ pointerEvents: 'auto' }}>
+          <CategoryDropup controls={categoryControls} />
         </div>
       )}
 
@@ -512,8 +627,8 @@ export function CanvasToolbar({
           <FitViewIcon />
         </ToolbarBtn>
 
-        {/* Filters (journey-specific) */}
-        {filterControls && (
+        {/* Filters */}
+        {(filterControls || categoryControls) && (
           <>
             <div style={SEP_STYLE} />
             <ToolbarBtn
@@ -526,12 +641,22 @@ export function CanvasToolbar({
           </>
         )}
 
-        {/* Clear path (journey-specific, only when path active) */}
+        {/* Clear path (only when path/trace active) */}
         {pathControls?.hasPath && (
           <>
             <div style={SEP_STYLE} />
             <ToolbarBtn label="Exit Trace Mode" onClick={pathControls.resetPath}>
               <ClearIcon />
+            </ToolbarBtn>
+          </>
+        )}
+
+        {/* Reset all (filters + trace) */}
+        {resetControls?.isDirty && (
+          <>
+            <div style={SEP_STYLE} />
+            <ToolbarBtn label="Reset All" onClick={resetControls.onReset}>
+              <ResetIcon />
             </ToolbarBtn>
           </>
         )}

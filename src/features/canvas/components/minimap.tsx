@@ -1,22 +1,41 @@
 'use client';
 
 import { useRef, useCallback } from 'react';
-import type { JourneyNode } from '@/types/journey';
 import { LAYER_CONFIG } from '@/types/journey';
 import { NODE_WIDTH, NODE_HEIGHT, DECISION_SIZE } from '../utils/geometry';
 
+interface MinimapNode {
+  id: string;
+  x: number;
+  y: number;
+  type?: string;
+  layer?: string;
+}
+
 interface MinimapProps {
-  nodes: JourneyNode[];
+  nodes: MinimapNode[];
   bounds: { minX: number; minY: number; width: number; height: number };
   viewBoxString: string;
   onPan: (svgX: number, svgY: number) => void;
   visible?: boolean;
+  nodeWidth?: number;
+  nodeHeight?: number;
+  nodeColor?: string;
 }
 
 const MINIMAP_W = 180;
 const MINIMAP_H = 110;
 
-export function Minimap({ nodes, bounds, viewBoxString, onPan, visible = true }: MinimapProps) {
+export function Minimap({
+  nodes,
+  bounds,
+  viewBoxString,
+  onPan,
+  visible = true,
+  nodeWidth,
+  nodeHeight,
+  nodeColor,
+}: MinimapProps) {
   const dragging = useRef(false);
 
   const parts = viewBoxString.split(' ').map(Number);
@@ -104,9 +123,15 @@ export function Minimap({ nodes, bounds, viewBoxString, onPan, visible = true }:
         <svg width={MINIMAP_W} height={MINIMAP_H}>
           {nodes.map((node) => {
             const pos = toMini(node.x, node.y);
-            const color = node.layer ? (LAYER_CONFIG[node.layer]?.color ?? '#78756f') : '#3d8c75';
-            const w = (node.type === 'decision' ? DECISION_SIZE : NODE_WIDTH) * scale;
-            const h = (node.type === 'decision' ? DECISION_SIZE : NODE_HEIGHT) * scale;
+            const color =
+              nodeColor ??
+              (node.layer
+                ? (LAYER_CONFIG[node.layer as keyof typeof LAYER_CONFIG]?.color ?? '#78756f')
+                : '#3d8c75');
+            const defaultW = node.type === 'decision' ? DECISION_SIZE : (nodeWidth ?? NODE_WIDTH);
+            const defaultH = node.type === 'decision' ? DECISION_SIZE : (nodeHeight ?? NODE_HEIGHT);
+            const w = defaultW * scale;
+            const h = defaultH * scale;
             return (
               <rect
                 key={node.id}
