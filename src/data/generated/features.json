@@ -308,7 +308,7 @@
       "name": "Reports",
       "description": "User-generated content and behavior reports. Allows authenticated users to flag listings, members, shops, or messages for review by the platform.",
       "status": "built",
-      "componentCount": 1,
+      "componentCount": 2,
       "endpointCount": 2,
       "hookCount": 2,
       "serviceCount": 2,

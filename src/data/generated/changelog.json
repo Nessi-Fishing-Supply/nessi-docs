@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(reports): #201 integrate report triggers into listing, member, and shop pages",
+      "number": 287,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/287",
+      "mergedAt": "2026-03-27T02:47:05Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "feat(reports): #200 ReportBottomSheet component and useSubmitReport hook",
       "number": 286,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/286",

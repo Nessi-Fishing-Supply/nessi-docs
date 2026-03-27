@@ -1,6 +1,6 @@
 {
-  "extractedAt": "2026-03-26T22:26:22.761Z",
-  "sourceCommit": "55bad6e84c5047f5e87fa7ed3f9dad66027dbfbd",
+  "extractedAt": "2026-03-27T02:47:30.007Z",
+  "sourceCommit": "7bf5adabc81a6b83395761cd09fab39c11d75ec9",
   "sourceRepo": "nessi-fishing-supply/Nessi-Web-App",
   "scriptVersion": "1.0.0",
   "itemCounts": {
@@ -13,7 +13,7 @@
     "lifecycles": 5,
     "journeys": 29,
     "roadmapItems": 191,
-    "changelogEntries": 86,
+    "changelogEntries": 87,
     "enums": 8
   },
   "gaps": [
