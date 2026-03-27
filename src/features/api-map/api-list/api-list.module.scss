@@ -205,10 +205,12 @@
   100% {
     box-shadow: none;
     border-color: transparent;
+    background-color: transparent;
   }
   40% {
-    box-shadow: 0 0 20px rgb(61 140 117 / 20%);
-    border-color: rgb(61 140 117 / 40%);
+    box-shadow: 0 0 30px rgb(61 140 117 / 45%), 0 0 60px rgb(61 140 117 / 15%);
+    border-color: rgb(61 140 117 / 65%);
+    background-color: rgb(61 140 117 / 8%);
   }
 }
 
