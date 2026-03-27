@@ -190,6 +190,19 @@
       ]
     },
     {
+      "slug": "follows",
+      "name": "Follows",
+      "description": "Part of #155 (social/follows parent feature).",
+      "status": "planned",
+      "componentCount": 0,
+      "endpointCount": 0,
+      "hookCount": 0,
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
+    },
+    {
       "slug": "listings",
       "name": "Listings",
       "description": "Listings are the core marketplace entities in Nessi — individual items posted for sale by members or shops. This feature provides the full data layer (types, services, hooks), validations, UI components, and pages for creating, editing, and managing listings. Related tickets: #21 (photo infrastructure), #5 (create wizard), #7 (edit wizard).",

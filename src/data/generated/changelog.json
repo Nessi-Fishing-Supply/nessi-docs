@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(follows): #211 follows table, RLS, follower_count columns, and trigger",
+      "number": 289,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/289",
+      "mergedAt": "2026-03-27T03:22:09Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "refactor: rename reports feature to flags",
       "number": 288,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/288",
