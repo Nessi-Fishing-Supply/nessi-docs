@@ -6,6 +6,7 @@ import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
 import { PageHeader } from '@/components/ui/page-header';
+import { BorderTrace } from '@/components/ui/border-trace';
 import styles from './api-list.module.scss';
 
 const ALL_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const;
@@ -237,7 +238,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
     <div
       ref={rowRef}
       id={slug}
-      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''} ${highlight ? styles.epRowHighlight : ''}`}
+      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''}`}
       style={
         {
           '--method-color': color,
@@ -247,6 +248,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
         } as React.CSSProperties
       }
     >
+      <BorderTrace active={highlight} />
       <button className={styles.epRowHeader} onClick={() => setIsOpen((p) => !p)}>
         <span className={styles.methodBadge}>{endpoint.method}</span>
         <span className={styles.epPath}>

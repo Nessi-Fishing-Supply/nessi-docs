@@ -1,0 +1,28 @@
+.svg {
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+  animation: traceFadeOut var(--fade-duration) ease-in forwards;
+}
+
+.trace {
+  animation: traceMove var(--trace-duration) linear var(--trace-loops);
+}
+
+@keyframes traceMove {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes traceFadeOut {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

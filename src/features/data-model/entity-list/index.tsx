@@ -6,6 +6,7 @@ import type { Entity } from '@/types/data-model';
 import { getMethodColors } from '@/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation } from '@/data/cross-links';
 import { PageHeader } from '@/components/ui/page-header';
+import { BorderTrace } from '@/components/ui/border-trace';
 import styles from './entity-list.module.scss';
 
 /* ── Constants ── */
@@ -86,12 +87,14 @@ function EntityRow({
   entity,
   staggerIndex,
   isOpen,
+  isHighlighted,
   onToggle,
   onScrollToEntity,
 }: {
   entity: Entity;
   staggerIndex: number;
   isOpen: boolean;
+  isHighlighted: boolean;
   onToggle: () => void;
   onScrollToEntity: (name: string) => void;
 }) {
@@ -116,9 +119,10 @@ function EntityRow({
     <div
       ref={rowRef}
       id={entity.name}
-      className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''} ${highlight ? styles.entityRowHighlight : ''}`}
+      className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''}`}
       style={{ '--stagger': `${staggerIndex * 20}ms` } as React.CSSProperties}
     >
+      <BorderTrace active={highlight || isHighlighted} />
       <button className={styles.entityRowHeader} onClick={onToggle}>
         <span className={styles.entityName}>{entity.name}</span>
         <span className={styles.categoryBadge}>{entity.badge}</span>
@@ -294,6 +298,7 @@ interface EntityListProps {
 
 export function EntityList({ entities }: EntityListProps) {
   const [openEntities, setOpenEntities] = useState<Set<string>>(new Set());
+  const [highlightedEntity, setHighlightedEntity] = useState<string | null>(null);
   const [activeCategories, setActiveCategories] = useState<Set<string>>(() => {
     const cats = new Set<string>();
     for (const e of entities) {
@@ -368,10 +373,10 @@ export function EntityList({ entities }: EntityListProps) {
       const el = document.getElementById(entityName);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Step 3: After scroll settles, start the glow
+        // Step 3: After scroll settles, start the trace
         setTimeout(() => {
-          el.classList.add(styles.entityRowHighlight);
-          setTimeout(() => el.classList.remove(styles.entityRowHighlight), 9500);
+          setHighlightedEntity(entityName);
+          setTimeout(() => setHighlightedEntity(null), 9500);
         }, 400);
       }
     }, 50);
@@ -411,6 +416,7 @@ export function EntityList({ entities }: EntityListProps) {
                   entity={entity}
                   staggerIndex={idx}
                   isOpen={openEntities.has(entity.name)}
+                  isHighlighted={highlightedEntity === entity.name}
                   onToggle={() => toggleEntity(entity.name)}
                   onScrollToEntity={scrollToAndExpand}
                 />

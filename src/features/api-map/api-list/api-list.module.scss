@@ -192,55 +192,6 @@
   }
 }
 
-.epRowHighlight {
-  border-color: rgb(61 140 117 / 15%);
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 9px;
-    padding: 1.5px;
-    background: conic-gradient(
-      from var(--trace-angle, 0deg),
-      transparent 0deg,
-      transparent 320deg,
-      rgb(61 140 117 / 50%) 345deg,
-      rgb(61 140 117 / 80%) 360deg
-    );
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    animation:
-      borderTrace 3s linear 3,
-      traceFadeOut 9s ease-in forwards;
-    pointer-events: none;
-  }
-}
-
-@keyframes borderTrace {
-  to {
-    --trace-angle: 360deg;
-  }
-}
-
-@keyframes traceFadeOut {
-  0%,
-  60% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-@property --trace-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
 .methodBadge {
   font-family: var(--font-family-mono);
   font-size: 11px;
