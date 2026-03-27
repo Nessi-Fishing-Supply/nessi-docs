@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(follows): #214 integrate FollowButton into member profile and shop pages",
+      "number": 292,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/292",
+      "mergedAt": "2026-03-27T13:51:01Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "feat(follows): #213 FollowButton component with optimistic toggle",
       "number": 291,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/291",
