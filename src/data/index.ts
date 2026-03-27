@@ -13,6 +13,7 @@ import type { Lifecycle } from '@/types/lifecycle';
 import type { Journey, JourneyNode, JourneyEdge } from '@/types/journey';
 import type { ChangelogEntry, ChangeType } from '@/types/changelog';
 import type { CrossLink } from '@/types/docs-context';
+import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
 import type { ErrorCase } from '@/types/journey';
 import type { RoadmapItem } from '@/types/roadmap';
 import type { ExtractionMeta } from '@/types/extraction-meta';
@@ -403,6 +404,134 @@ function transformEntities(raw: RawEntity[]): Entity[] {
     ...e,
     badge: ENTITY_CATEGORY_MAP[e.name] ?? 'system',
   }));
+}
+
+/* ------------------------------------------------------------------ */
+/*  3b. Feature Domain Mapping                                         */
+/*  Map feature slugs → domain slugs for dashboard grouping            */
+/* ------------------------------------------------------------------ */
+
+const FEATURE_TO_DOMAIN: Record<string, string> = {
+  addresses: 'account',
+  auth: 'auth',
+  cart: 'cart',
+  context: 'identity',
+  dashboard: 'account',
+  editorial: 'listings',
+  email: 'shops',
+  flags: 'shopping',
+  follows: 'shopping',
+  listings: 'listings',
+  members: 'account',
+  messaging: 'shops',
+  orders: 'cart',
+  'recently-viewed': 'shopping',
+  shared: 'shopping',
+  shops: 'shops',
+};
+
+const SCOPE_TO_DOMAIN: Record<string, string> = {
+  auth: 'auth',
+  cart: 'cart',
+  checkout: 'cart',
+  shops: 'shops',
+  shop: 'shops',
+  invites: 'shops',
+  listings: 'listings',
+  listing: 'listings',
+  follows: 'shopping',
+  search: 'shopping',
+  recently: 'shopping',
+  reports: 'shopping',
+  flags: 'shopping',
+  account: 'account',
+  addresses: 'account',
+  members: 'account',
+  context: 'identity',
+  orders: 'cart',
+  email: 'shops',
+};
+
+export function getFeatureDomains(): FeatureDomain[] {
+  const allFeatures = featuresRaw.features as unknown as Feature[];
+  const allJourneys = journeysRaw.journeys as unknown as RawJourney[];
+
+  return DOMAINS.map((d) => {
+    const domainFeatures = allFeatures.filter((f) => FEATURE_TO_DOMAIN[f.slug] === d.slug);
+    if (domainFeatures.length === 0) return null;
+
+    const endpointCount = domainFeatures.reduce((sum, f) => sum + f.endpointCount, 0);
+    const journeyCount = allJourneys.filter((j) => j.domain === d.slug).length;
+    const entityCount = domainFeatures.reduce((sum, f) => {
+      const entities = (f as unknown as { entities?: string[] }).entities ?? [];
+      return sum + entities.length;
+    }, 0);
+
+    const builtCount = domainFeatures.filter((f) => f.status === 'built').length;
+    const inProgressCount = domainFeatures.filter((f) => f.status === 'in-progress').length;
+    const stubbedCount = domainFeatures.filter((f) => f.status === 'stubbed').length;
+    const plannedCount = domainFeatures.filter((f) => f.status === 'planned').length;
+    const total = domainFeatures.length;
+
+    return {
+      slug: d.slug,
+      label: d.label,
+      description: d.description,
+      featureCount: total,
+      endpointCount,
+      journeyCount,
+      entityCount,
+      builtCount,
+      inProgressCount,
+      stubbedCount,
+      plannedCount,
+      buildProgress: total > 0 ? Math.round((builtCount / total) * 100) : 0,
+    } satisfies FeatureDomain;
+  }).filter((d): d is FeatureDomain => d !== null);
+}
+
+export function getFeaturesByDomain(domain: string): Feature[] {
+  const allFeatures = featuresRaw.features as unknown as Feature[];
+  return allFeatures.filter((f) => FEATURE_TO_DOMAIN[f.slug] === domain);
+}
+
+export function getChangelogByDomain(domain: string): ChangelogEntry[] {
+  const raw = changelogRaw.entries as {
+    title?: string;
+    mergedAt?: string;
+    type?: string;
+    area?: string;
+  }[];
+
+  const scopeRegex = /^\w+\(([^)]+)\):/;
+  const matched = raw.filter((entry) => {
+    const match = (entry.title ?? '').match(scopeRegex);
+    if (!match) return false;
+    const scope = match[1].toLowerCase();
+    return SCOPE_TO_DOMAIN[scope] === domain;
+  });
+
+  return transformChangelog(matched);
+}
+
+export function getDashboardMetrics(): DashboardMetrics {
+  const allFeatures = featuresRaw.features as unknown as Feature[];
+  const allJourneys = journeysRaw.journeys as unknown as RawJourney[];
+
+  return {
+    totalFeatures: allFeatures.length,
+    totalEndpoints: (apiContractsRaw.groups as unknown as ApiGroup[]).reduce(
+      (sum, g) => sum + g.endpoints.length,
+      0,
+    ),
+    totalJourneys: allJourneys.length,
+    totalEntities: (dataModelRaw.entities as RawEntity[]).length,
+    totalLifecycles: (lifecyclesRaw.lifecycles as RawLifecycle[]).length,
+    builtCount: allFeatures.filter((f) => f.status === 'built').length,
+    inProgressCount: allFeatures.filter((f) => f.status === 'in-progress').length,
+    stubbedCount: allFeatures.filter((f) => f.status === 'stubbed').length,
+    plannedCount: allFeatures.filter((f) => f.status === 'planned').length,
+  };
 }
 
 /* ------------------------------------------------------------------ */
