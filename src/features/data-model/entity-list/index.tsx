@@ -124,10 +124,7 @@ function EntityRow({
           100,
         );
         // Clear hash after scroll settles so it doesn't stack on next navigation
-        setTimeout(
-          () => history.replaceState(null, '', window.location.pathname),
-          600,
-        );
+        setTimeout(() => history.replaceState(null, '', window.location.pathname), 600);
         setTimeout(() => setHighlight(false), 9500);
       }
     }
@@ -142,7 +139,9 @@ function EntityRow({
       ref={rowRef}
       id={entity.name}
       className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''}`}
-      style={{ '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms` } as React.CSSProperties}
+      style={
+        { '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms` } as React.CSSProperties
+      }
     >
       <BorderTrace active={highlight || isHighlighted} />
       <button className={styles.entityRowHeader} onClick={onToggle}>

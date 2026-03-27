@@ -70,8 +70,7 @@ export function JourneyPageClient({ journey, domain, siblings }: JourneyPageClie
             setVisibleStatuses(new Set(ALL_STATUSES));
           }}
           filtersAreDirty={
-            visibleLayers.size !== ALL_LAYERS.length ||
-            visibleStatuses.size !== ALL_STATUSES.length
+            visibleLayers.size !== ALL_LAYERS.length || visibleStatuses.size !== ALL_STATUSES.length
           }
         />
       </div>

@@ -5,15 +5,15 @@ import { ERD_NODE_WIDTH, ERD_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { ErdNode } from '@/types/entity-relationship';
 
 const BADGE_COLORS: Record<string, string> = {
-  core: '#3d8c75',       // teal — primary business entities
-  user: '#5b9fd6',       // blue — identity / people
-  lifecycle: '#d4923a',  // amber — state transitions
-  junction: '#9b7bd4',   // purple — relationship join tables
-  media: '#d46b8a',      // rose — visual / uploads
-  tracking: '#5bbfcf',   // cyan — analytics / metrics
-  discovery: '#c9b44a',  // gold — search / finding
-  config: '#8a8580',     // warm gray — settings
-  system: '#7a8591',     // cool slate — infrastructure
+  core: '#3d8c75', // teal — primary business entities
+  user: '#5b9fd6', // blue — identity / people
+  lifecycle: '#d4923a', // amber — state transitions
+  junction: '#9b7bd4', // purple — relationship join tables
+  media: '#d46b8a', // rose — visual / uploads
+  tracking: '#5bbfcf', // cyan — analytics / metrics
+  discovery: '#c9b44a', // gold — search / finding
+  config: '#8a8580', // warm gray — settings
+  system: '#7a8591', // cool slate — infrastructure
 };
 
 const DEFAULT_COLOR = '#8a8580';
@@ -103,13 +103,7 @@ export function EntityNode({ node, isSelected, onClick }: EntityNodeProps) {
         height={ERD_NODE_HEIGHT}
         rx={6}
         fill={hexToRgba(color, 0.08)}
-        stroke={
-          isSelected
-            ? color
-            : hovered
-              ? hexToRgba(color, 0.4)
-              : hexToRgba(color, 0.2)
-        }
+        stroke={isSelected ? color : hovered ? hexToRgba(color, 0.4) : hexToRgba(color, 0.2)}
         strokeWidth={isSelected ? 1.5 : 1}
       />
       {/* Left accent bar */}

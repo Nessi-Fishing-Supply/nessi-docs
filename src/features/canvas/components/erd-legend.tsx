@@ -81,14 +81,7 @@ export function ErdLegend({ visible }: ErdLegendProps) {
         <div style={sectionLabel}>Connections</div>
         <div style={row}>
           <svg width="14" height="14" viewBox="0 0 14 14">
-            <line
-              x1="1"
-              y1="7"
-              x2="13"
-              y2="7"
-              stroke="rgba(154,151,144,0.4)"
-              strokeWidth="1.5"
-            />
+            <line x1="1" y1="7" x2="13" y2="7" stroke="rgba(154,151,144,0.4)" strokeWidth="1.5" />
             <polygon points="11,5 13,7 11,9" fill="rgba(61,140,117,0.5)" />
           </svg>
           <span>Foreign key</span>

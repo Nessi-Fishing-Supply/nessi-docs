@@ -51,12 +51,7 @@ export function smoothPath(
   return `M${fx},${fy} C${cp1x},${cp1y} ${cp2x},${cp2y} ${tx},${ty}`;
 }
 
-function cpOffset(
-  x: number,
-  y: number,
-  dir: PortSide,
-  amount: number,
-): [number, number] {
+function cpOffset(x: number, y: number, dir: PortSide, amount: number): [number, number] {
   switch (dir) {
     case 'right':
       return [x + amount, y];

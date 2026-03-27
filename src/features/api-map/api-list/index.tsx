@@ -212,10 +212,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
           100,
         );
         // Clear hash after scroll settles so it doesn't stack on next navigation
-        setTimeout(
-          () => history.replaceState(null, '', window.location.pathname),
-          600,
-        );
+        setTimeout(() => history.replaceState(null, '', window.location.pathname), 600);
         setTimeout(() => setHighlight(false), 9500);
       }
     }
