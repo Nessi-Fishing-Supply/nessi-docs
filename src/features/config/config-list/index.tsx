@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { ConfigEnum } from '@/types/config-ref';
 import type { Role } from '@/types/permission';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
 import { useDocsContext } from '@/providers/docs-provider';
 import { PageHeader } from '@/components/ui/page-header';
+import { BorderTrace } from '@/components/ui/border-trace';
 import styles from './config-list.module.scss';
 
 const ROLES_SLUG = '__roles__';
@@ -18,8 +19,30 @@ interface ConfigListProps {
 export function ConfigList({ enums, roles }: ConfigListProps) {
   const { setSelectedItem } = useDocsContext();
   const [openSlugs, setOpenSlugs] = useState<Set<string>>(new Set());
+  const [highlightSlug, setHighlightSlug] = useState<string | null>(null);
+  const blockRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const totalValues = enums.reduce((sum, e) => sum + e.values.length, 0);
+
+  // Deep-link: detect hash, expand accordion, highlight, scroll
+  useEffect(() => {
+    function checkHash() {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+
+      setOpenSlugs((prev) => new Set(prev).add(hash));
+      setHighlightSlug(hash);
+      setTimeout(() => {
+        blockRefs.current.get(hash)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+      setTimeout(() => history.replaceState(null, '', window.location.pathname), 600);
+      setTimeout(() => setHighlightSlug(null), 9500);
+    }
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    return () => window.removeEventListener('hashchange', checkHash);
+  }, []);
 
   const toggleSlug = (slug: string) => {
     const willOpen = !openSlugs.has(slug);
@@ -82,8 +105,12 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
         {roles && roles.length > 0 && (
           <div
             id={ROLES_SLUG}
+            ref={(el) => {
+              if (el) blockRefs.current.set(ROLES_SLUG, el);
+            }}
             className={`${styles.enumBlock} ${rolesOpen ? styles.enumOpen : ''}`}
           >
+            <BorderTrace active={highlightSlug === ROLES_SLUG} />
             <button className={styles.enumHeader} onClick={() => toggleSlug(ROLES_SLUG)}>
               <span className={styles.enumName}>Roles &amp; Permissions</span>
               <span className={styles.enumCount}>{roles.length} roles</span>
@@ -157,8 +184,12 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
             <div
               key={e.slug}
               id={e.slug}
+              ref={(el) => {
+                if (el) blockRefs.current.set(e.slug, el);
+              }}
               className={`${styles.enumBlock} ${isOpen ? styles.enumOpen : ''}`}
             >
+              <BorderTrace active={highlightSlug === e.slug} />
               <button className={styles.enumHeader} onClick={() => toggleSlug(e.slug)}>
                 <span className={styles.enumName}>{e.name}</span>
                 <span className={styles.enumCount}>{e.values.length} values</span>
