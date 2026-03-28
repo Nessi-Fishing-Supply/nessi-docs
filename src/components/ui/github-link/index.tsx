@@ -7,7 +7,11 @@ interface GitHubLinkProps {
 }
 
 export function GitHubLink({ filePath }: GitHubLinkProps) {
-  const fileName = filePath.split('/').pop() ?? filePath;
+  // Strip common prefixes for a cleaner display while keeping the path code-accurate
+  const displayPath = filePath
+    .replace(/^src\/app\//, '')
+    .replace(/^src\//, '')
+    .replace(/^supabase\/migrations\/\d+_/, '');
 
   return (
     <a
@@ -18,7 +22,7 @@ export function GitHubLink({ filePath }: GitHubLinkProps) {
       title={filePath}
     >
       <VscGithub className={styles.icon} />
-      <span className={styles.fileName}>{fileName}</span>
+      <span className={styles.fileName}>{displayPath}</span>
     </a>
   );
 }
