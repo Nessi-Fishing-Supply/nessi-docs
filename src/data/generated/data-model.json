@@ -983,6 +983,11 @@
           "name": "profiles_shop_name_unique",
           "columns": ["LOWERshop_name"],
           "unique": true
+        },
+        {
+          "name": "members_status_idx",
+          "columns": ["status"],
+          "unique": false
         }
       ],
       "triggers": [
@@ -1794,6 +1799,11 @@
         {
           "name": "shops_subscription_tier_idx",
           "columns": ["subscription_tier"],
+          "unique": false
+        },
+        {
+          "name": "shops_status_idx",
+          "columns": ["status"],
           "unique": false
         }
       ],

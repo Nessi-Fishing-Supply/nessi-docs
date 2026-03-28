@@ -116,9 +116,9 @@
       "source": "enum"
     },
     {
-      "slug": "report",
-      "name": "Report Lifecycle",
-      "description": "Status lifecycle for report entities",
+      "slug": "flag",
+      "name": "Flag Lifecycle",
+      "description": "Status lifecycle for flag entities",
       "states": [
         {
           "id": "pending",
@@ -137,7 +137,135 @@
           "label": "Dismissed"
         }
       ],
-      "transitions": [],
+      "transitions": [
+        {
+          "from": "pending",
+          "to": "reviewed",
+          "label": "Begin review"
+        },
+        {
+          "from": "reviewed",
+          "to": "resolved",
+          "label": "Resolve flag"
+        },
+        {
+          "from": "reviewed",
+          "to": "dismissed",
+          "label": "Dismiss flag"
+        },
+        {
+          "from": "pending",
+          "to": "dismissed",
+          "label": "Dismiss flag"
+        }
+      ],
+      "source": "enum"
+    },
+    {
+      "slug": "member",
+      "name": "Member Lifecycle",
+      "description": "Status lifecycle for member entities",
+      "states": [
+        {
+          "id": "onboarding",
+          "label": "Onboarding"
+        },
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "suspended",
+          "label": "Suspended"
+        },
+        {
+          "id": "deleted",
+          "label": "Deleted"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "onboarding",
+          "to": "active",
+          "label": "Complete onboarding"
+        },
+        {
+          "from": "active",
+          "to": "suspended",
+          "label": "Suspend account"
+        },
+        {
+          "from": "suspended",
+          "to": "active",
+          "label": "Reinstate account"
+        },
+        {
+          "from": "active",
+          "to": "deleted",
+          "label": "Delete account"
+        },
+        {
+          "from": "suspended",
+          "to": "deleted",
+          "label": "Delete account"
+        }
+      ],
+      "source": "enum"
+    },
+    {
+      "slug": "shop",
+      "name": "Shop Lifecycle",
+      "description": "Status lifecycle for shop entities",
+      "states": [
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "suspended",
+          "label": "Suspended"
+        },
+        {
+          "id": "archived",
+          "label": "Archived"
+        },
+        {
+          "id": "deleted",
+          "label": "Deleted"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "active",
+          "to": "suspended",
+          "label": "Suspend shop"
+        },
+        {
+          "from": "suspended",
+          "to": "active",
+          "label": "Reinstate shop"
+        },
+        {
+          "from": "active",
+          "to": "archived",
+          "label": "Archive shop"
+        },
+        {
+          "from": "archived",
+          "to": "active",
+          "label": "Reactivate shop"
+        },
+        {
+          "from": "suspended",
+          "to": "deleted",
+          "label": "Delete shop"
+        },
+        {
+          "from": "archived",
+          "to": "deleted",
+          "label": "Delete shop"
+        }
+      ],
       "source": "enum"
     },
     {

@@ -50,6 +50,14 @@
     {
       "name": "report_status",
       "values": ["pending", "reviewed", "resolved", "dismissed"]
+    },
+    {
+      "name": "member_status",
+      "values": ["onboarding", "active", "suspended", "deleted"]
+    },
+    {
+      "name": "shop_status",
+      "values": ["active", "suspended", "archived", "deleted"]
     }
   ]
 }
