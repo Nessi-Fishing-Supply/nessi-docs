@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Entity } from '@/types/data-model';
 import type { ErdNode } from '@/types/entity-relationship';
 import { getEndpointsForTable, type EndpointRef } from '@/data/cross-links';
+import { GitHubLink } from '@/components/ui/github-link';
 import { ERD_NODE_WIDTH } from '../utils/geometry';
 
 const TT_BG = 'rgba(15,19,25,0.97)';
@@ -369,6 +370,14 @@ export function EntityTooltip({ node, entity, children, suppressTooltip }: Entit
                       </div>
                     )}
                   </div>
+                </div>
+              )}
+
+              {/* Source file */}
+              {entity!.sourceFile && (
+                <div>
+                  <div style={sectionLabel}>Source</div>
+                  <GitHubLink filePath={entity!.sourceFile} />
                 </div>
               )}
 

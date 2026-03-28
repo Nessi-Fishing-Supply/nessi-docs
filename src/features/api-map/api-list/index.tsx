@@ -7,6 +7,7 @@ import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
+import { GitHubLink } from '@/components/ui/github-link';
 import styles from './api-list.module.scss';
 
 const ALL_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const;
@@ -179,6 +180,13 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
                   </Link>
                 ))}
               </div>
+            </div>
+          )}
+
+          {endpoint.sourceFile && (
+            <div className={styles.detailSection}>
+              <div className={styles.detailLabel}>Source</div>
+              <GitHubLink filePath={endpoint.sourceFile} />
             </div>
           )}
         </div>

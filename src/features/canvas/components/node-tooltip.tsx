@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { JourneyNode } from '@/types/journey';
 import Link from 'next/link';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
+import { GitHubLink } from '@/components/ui/github-link';
 import { NODE_WIDTH } from '../utils/geometry';
 
 const TT_BG = 'rgba(15,19,25,0.97)';
@@ -351,7 +352,7 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
               {node.codeRef && (
                 <div>
                   <div style={sectionLabel}>Source</div>
-                  <div style={{ ...monoBlock, color: '#3d8c75' }}>{node.codeRef}</div>
+                  <GitHubLink filePath={node.codeRef} />
                 </div>
               )}
 

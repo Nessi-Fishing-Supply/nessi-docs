@@ -2,6 +2,7 @@
 
 import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
+import { GitHubLink } from '@/components/ui/github-link';
 import { LIFECYCLE_NODE_WIDTH } from '../utils/geometry';
 
 const TT_BG = 'rgba(15,19,25,0.97)';
@@ -132,6 +133,14 @@ export function StateTooltip({ state, lifecycle, onMouseEnter, onMouseLeave }: S
               >
                 {lifecycle.why}
               </div>
+            </div>
+          )}
+
+          {/* Source file */}
+          {lifecycle.sourceFile && (
+            <div>
+              <div style={sectionLabel}>Source</div>
+              <GitHubLink filePath={lifecycle.sourceFile} />
             </div>
           )}
 

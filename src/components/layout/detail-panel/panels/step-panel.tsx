@@ -3,6 +3,7 @@ import type { JourneyNode, Journey } from '@/types/journey';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { getLinksForRoute } from '@/data';
 import { Badge, SectionLabel, InfoBlock, CrossLink } from '@/components/ui';
+import { GitHubLink } from '@/components/ui/github-link';
 import styles from './panel-content.module.scss';
 
 interface StepPanelProps {
@@ -66,7 +67,7 @@ export function StepPanel({ node, journey }: StepPanelProps) {
       {node.codeRef && (
         <>
           <SectionLabel>Code Reference</SectionLabel>
-          <div className={styles.codeBlockPrimary}>{node.codeRef}</div>
+          <GitHubLink filePath={node.codeRef} />
         </>
       )}
 
