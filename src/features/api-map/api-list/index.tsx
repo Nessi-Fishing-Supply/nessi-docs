@@ -144,7 +144,7 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
                 {endpoint.access.map((ctx) => (
                   <Link
                     key={ctx}
-                    href="/permissions"
+                    href="/config#__roles__"
                     className={`${styles.accessBadge} ${ctx === 'Shop' ? styles.accessShop : ''}`}
                   >
                     <span className={styles.accessDot} />
@@ -264,7 +264,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
           {endpoint.access?.map((ctx) => (
             <Link
               key={ctx}
-              href="/permissions"
+              href="/config#__roles__"
               className={`${styles.epAccess} ${ctx === 'Shop' ? styles.epAccessShop : ''}`}
             >
               {ctx}
