@@ -71,6 +71,7 @@
         }
       ],
       "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260325100000_create_addresses.sql",
       "rlsPolicies": [
         {
           "name": "Users can view own addresses",
@@ -177,6 +178,7 @@
         }
       ],
       "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260323000000_create_cart_items.sql",
       "rlsPolicies": [
         {
           "name": "Users can view own cart items",
@@ -314,6 +316,7 @@
         }
       ],
       "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260326200000_create_follows.sql",
       "rlsPolicies": [
         {
           "name": "Follows are viewable by everyone",
@@ -924,6 +927,7 @@
         }
       ],
       "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260319000000_create_profiles_table.sql",
       "rlsPolicies": [
         {
           "name": "Profiles are viewable by everyone",
@@ -1068,6 +1072,7 @@
         }
       ],
       "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260327155304_watchers_and_price_drop_notifications.sql",
       "rlsPolicies": [
         {
           "name": "price_drop_notifications_service_role_select",
@@ -1129,6 +1134,7 @@
         }
       ],
       "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260324000000_create_recently_viewed.sql",
       "rlsPolicies": [
         {
           "name": "Users can view own recently viewed",
@@ -1214,6 +1220,7 @@
         }
       ],
       "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260321100000_listings_schema.sql",
       "rlsPolicies": [
         {
           "name": "Search suggestions are publicly readable",
@@ -1303,6 +1310,7 @@
         }
       ],
       "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260325000000_create_shop_invites.sql",
       "rlsPolicies": [
         {
           "name": "Shop members can view their shop invites",
@@ -1378,6 +1386,7 @@
         }
       ],
       "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260320000003_create_shops_shop_members_slugs_tables.sql",
       "rlsPolicies": [
         {
           "name": "Shop members can view co-members",
@@ -1507,6 +1516,7 @@
         }
       ],
       "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260325200000_create_shop_ownership_transfers.sql",
       "rlsPolicies": [
         {
           "name": "Transfer participants can view their transfers",
@@ -1594,6 +1604,7 @@
         }
       ],
       "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260324100000_create_shop_roles_migrate_role_id.sql",
       "rlsPolicies": [
         {
           "name": "Authenticated users can view system roles",
@@ -1758,6 +1769,7 @@
         }
       ],
       "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260320000003_create_shops_shop_members_slugs_tables.sql",
       "rlsPolicies": [
         {
           "name": "Shops are viewable by everyone",
@@ -1844,6 +1856,7 @@
         }
       ],
       "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260320000003_create_shops_shop_members_slugs_tables.sql",
       "rlsPolicies": [
         {
           "name": "Slugs are viewable by everyone",
@@ -1904,6 +1917,7 @@
         }
       ],
       "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260327155304_watchers_and_price_drop_notifications.sql",
       "rlsPolicies": [
         {
           "name": "watchers_select_own",

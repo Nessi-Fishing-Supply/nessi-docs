@@ -12,7 +12,8 @@
           "errorCodes": [401, 404, 500],
           "requestFields": [],
           "description": "Marks a specific address as the user's default shipping address.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/addresses/[id]/default/route.ts"
         },
         {
           "method": "PUT",
@@ -23,7 +24,8 @@
           "errorCodes": [400, 401, 404, 500],
           "requestFields": [],
           "description": "Updates an existing address on the user's account.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/addresses/[id]/route.ts"
         },
         {
           "method": "DELETE",
@@ -34,7 +36,8 @@
           "errorCodes": [400, 401, 404, 500],
           "requestFields": [],
           "description": "Removes a saved address from the user's account.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/addresses/[id]/route.ts"
         },
         {
           "method": "GET",
@@ -45,7 +48,8 @@
           "errorCodes": [400, 401, 422, 500],
           "requestFields": [],
           "description": "Returns all saved addresses for the currently logged-in user.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/addresses/route.ts"
         },
         {
           "method": "POST",
@@ -56,7 +60,8 @@
           "errorCodes": [400, 401, 422, 500],
           "requestFields": [],
           "description": "Saves a new shipping address to the user's account.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/addresses/route.ts"
         }
       ]
     },
@@ -72,7 +77,8 @@
           "errorCodes": [],
           "requestFields": [],
           "description": "Completes the OAuth or email verification flow and redirects the user.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/auth/callback/route.ts"
         },
         {
           "method": "POST",
@@ -89,7 +95,8 @@
             }
           ],
           "description": "Checks whether an email address is already registered on the platform.",
-          "tags": ["admin-only"]
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/auth/check-email/route.ts"
         },
         {
           "method": "DELETE",
@@ -100,7 +107,8 @@
           "errorCodes": [401, 409, 500],
           "requestFields": [],
           "description": "Permanently deletes the user's account, listings, and all associated data.",
-          "tags": ["admin-only"]
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/auth/delete-account/route.ts"
         },
         {
           "method": "POST",
@@ -137,7 +145,8 @@
             }
           ],
           "description": "Creates a new user account and sends a verification email.",
-          "tags": ["admin-only"]
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/auth/register/route.ts"
         }
       ]
     },
@@ -153,7 +162,8 @@
           "errorCodes": [401, 404, 500],
           "requestFields": [],
           "description": "Extends the hold timer on a cart item to keep it reserved longer.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/cart/[id]/expiry/route.ts"
         },
         {
           "method": "DELETE",
@@ -164,7 +174,8 @@
           "errorCodes": [401, 404, 500],
           "requestFields": [],
           "description": "Removes a single item from the user's cart.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/cart/[id]/route.ts"
         },
         {
           "method": "GET",
@@ -175,7 +186,8 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Returns the number of items currently in the user's cart.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/cart/count/route.ts"
         },
         {
           "method": "POST",
@@ -192,7 +204,8 @@
             }
           ],
           "description": "Merges items browsed as a guest into the user's cart after sign-in.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/cart/merge/route.ts"
         },
         {
           "method": "GET",
@@ -203,7 +216,8 @@
           "errorCodes": [400, 401, 403, 404, 409, 422, 500],
           "requestFields": [],
           "description": "Returns all items currently in the user's cart.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/cart/route.ts"
         },
         {
           "method": "POST",
@@ -225,7 +239,8 @@
             }
           ],
           "description": "Adds a listing to the user's cart and places a temporary hold on it.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/cart/route.ts"
         },
         {
           "method": "DELETE",
@@ -236,7 +251,8 @@
           "errorCodes": [400, 401, 403, 404, 409, 422, 500],
           "requestFields": [],
           "description": "Removes all items from the user's cart at once.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/cart/route.ts"
         },
         {
           "method": "POST",
@@ -247,7 +263,8 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Checks that all cart items are still available and valid before checkout.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/cart/validate/route.ts"
         }
       ]
     },
@@ -263,7 +280,8 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Process price drop notifications and email watchers about reduced prices",
-          "tags": ["admin-only"]
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/cron/price-drops/route.ts"
         }
       ]
     },
@@ -279,7 +297,8 @@
           "errorCodes": [400, 401, 500],
           "requestFields": [],
           "description": "Checks whether the current user has already flagged a specific item.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/flags/check/route.ts"
         },
         {
           "method": "POST",
@@ -290,7 +309,8 @@
           "errorCodes": [400, 401, 409, 500],
           "requestFields": [],
           "description": "Submits a flag reporting a listing or user for review by the Nessi team.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/flags/route.ts"
         }
       ]
     },
@@ -306,7 +326,8 @@
           "errorCodes": [400, 500],
           "requestFields": [],
           "description": "Get the follower count for a member or shop",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/follows/count/route.ts"
         },
         {
           "method": "GET",
@@ -317,7 +338,8 @@
           "errorCodes": [400, 401, 500],
           "requestFields": [],
           "description": "List members and shops the authenticated user follows",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/follows/following/route.ts"
         },
         {
           "method": "POST",
@@ -339,7 +361,8 @@
             }
           ],
           "description": "Follow a member or shop",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/follows/route.ts"
         },
         {
           "method": "DELETE",
@@ -350,7 +373,8 @@
           "errorCodes": [400, 401, 404, 409, 500],
           "requestFields": [],
           "description": "Unfollow a member or shop",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/follows/route.ts"
         },
         {
           "method": "GET",
@@ -361,7 +385,8 @@
           "errorCodes": [400, 401, 500],
           "requestFields": [],
           "description": "Check if the authenticated user follows a member or shop",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/follows/status/route.ts"
         }
       ]
     },
@@ -377,7 +402,8 @@
           "errorCodes": [400, 401, 404, 409, 500],
           "requestFields": [],
           "description": "Accepts a shop invite via token and adds the user as a shop member.",
-          "tags": ["admin-only"]
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/invites/[token]/accept/route.ts"
         }
       ]
     },
@@ -393,7 +419,8 @@
           "errorCodes": [400, 401, 403, 404, 500],
           "requestFields": [],
           "description": "Creates a new draft listing copied from an existing one the seller owns.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/[id]/duplicate/route.ts"
         },
         {
           "method": "GET",
@@ -404,7 +431,8 @@
           "errorCodes": [400, 401, 403, 404, 500],
           "requestFields": [],
           "description": "Returns the full details of a single listing, including photos.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/[id]/route.ts"
         },
         {
           "method": "PUT",
@@ -415,7 +443,8 @@
           "errorCodes": [400, 401, 403, 404, 500],
           "requestFields": [],
           "description": "Updates the details of an existing listing owned by the seller.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/[id]/route.ts"
         },
         {
           "method": "DELETE",
@@ -426,7 +455,8 @@
           "errorCodes": [400, 401, 403, 404, 500],
           "requestFields": [],
           "description": "Permanently removes a listing and its photos from the seller's account.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/[id]/route.ts"
         },
         {
           "method": "PATCH",
@@ -448,7 +478,8 @@
             }
           ],
           "description": "Changes a listing's status — such as publishing, archiving, or marking it sold.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/[id]/status/route.ts"
         },
         {
           "method": "POST",
@@ -459,7 +490,8 @@
           "errorCodes": [404, 500],
           "requestFields": [],
           "description": "Records a listing view and updates the user's recently-viewed history.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/[id]/view/route.ts"
         },
         {
           "method": "GET",
@@ -470,7 +502,8 @@
           "errorCodes": [400, 500],
           "requestFields": [],
           "description": "Returns quick search suggestions combining popular terms, listings, and categories.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/autocomplete/route.ts"
         },
         {
           "method": "GET",
@@ -481,7 +514,8 @@
           "errorCodes": [400, 500],
           "requestFields": [],
           "description": "Fetches multiple listings by ID in a single request, useful for cart and watchlist displays.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/batch/route.ts"
         },
         {
           "method": "GET",
@@ -492,7 +526,8 @@
           "errorCodes": [400, 401, 403, 404, 500],
           "requestFields": [],
           "description": "Returns all draft listings the seller has not yet published.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/drafts/route.ts"
         },
         {
           "method": "POST",
@@ -503,7 +538,8 @@
           "errorCodes": [400, 401, 403, 404, 500],
           "requestFields": [],
           "description": "Creates a new blank draft listing ready for the seller to fill in.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/drafts/route.ts"
         },
         {
           "method": "DELETE",
@@ -514,7 +550,8 @@
           "errorCodes": [400, 401, 403, 404, 500],
           "requestFields": [],
           "description": "Discards a draft listing that was never published.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/drafts/route.ts"
         },
         {
           "method": "GET",
@@ -525,7 +562,8 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Returns recent active listings from members and shops the user follows",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/followed-sellers/route.ts"
         },
         {
           "method": "GET",
@@ -536,7 +574,8 @@
           "errorCodes": [400, 403, 500],
           "requestFields": [],
           "description": "Returns personalized listing recommendations based on context such as similar items or seller listings.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/recommendations/route.ts"
         },
         {
           "method": "GET",
@@ -547,7 +586,8 @@
           "errorCodes": [400, 401, 403, 500],
           "requestFields": [],
           "description": "Returns a paginated list of active listings, with optional filters and sorting.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/route.ts"
         },
         {
           "method": "POST",
@@ -558,7 +598,8 @@
           "errorCodes": [400, 401, 403, 500],
           "requestFields": [],
           "description": "Creates a new listing draft for the seller, in either member or shop context.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/route.ts"
         },
         {
           "method": "POST",
@@ -569,7 +610,8 @@
           "errorCodes": [400, 500],
           "requestFields": [],
           "description": "Records a search term to improve future autocomplete suggestions.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/search-suggestions/route.ts"
         },
         {
           "method": "GET",
@@ -580,7 +622,8 @@
           "errorCodes": [400, 500],
           "requestFields": [],
           "description": "Full-text search for listings with filters for category, condition, price, and location.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/search/route.ts"
         },
         {
           "method": "GET",
@@ -591,7 +634,8 @@
           "errorCodes": [400, 401, 403, 500],
           "requestFields": [],
           "description": "Returns the seller's own listings, optionally filtered by status.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/seller/route.ts"
         },
         {
           "method": "DELETE",
@@ -613,7 +657,8 @@
             }
           ],
           "description": "Removes a previously uploaded listing photo from storage.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/listings/upload/delete/route.ts"
         },
         {
           "method": "POST",
@@ -624,7 +669,8 @@
           "errorCodes": [400, 401, 403, 500],
           "requestFields": [],
           "description": "Uploads a photo for a listing, resizes it, and saves both full and thumbnail versions.",
-          "tags": ["file-upload"]
+          "tags": ["file-upload"],
+          "sourceFile": "src/app/api/listings/upload/route.ts"
         }
       ]
     },
@@ -640,7 +686,8 @@
           "errorCodes": [400, 401, 500],
           "requestFields": [],
           "description": "Uploads and sets a new profile photo for the member's account.",
-          "tags": ["file-upload"]
+          "tags": ["file-upload"],
+          "sourceFile": "src/app/api/members/avatar/route.ts"
         },
         {
           "method": "GET",
@@ -651,7 +698,8 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Checks whether the member has any active listings that would block disabling seller mode.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/members/seller-preconditions/route.ts"
         },
         {
           "method": "POST",
@@ -668,7 +716,8 @@
             }
           ],
           "description": "Enables or disables seller mode on the member's account.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/members/toggle-seller/route.ts"
         }
       ]
     },
@@ -690,7 +739,8 @@
             }
           ],
           "description": "Merges a guest user's browsing history into their account after sign-in.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/recently-viewed/merge/route.ts"
         },
         {
           "method": "GET",
@@ -701,7 +751,8 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Returns listings the user has recently viewed, for display on their dashboard.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/recently-viewed/route.ts"
         },
         {
           "method": "DELETE",
@@ -712,7 +763,8 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Clears the user's entire recently-viewed browsing history.",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/recently-viewed/route.ts"
         }
       ]
     },
@@ -729,6 +781,7 @@
           "requestFields": [],
           "description": "Resends a shop invite email with a refreshed token and expiry.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/invites/[inviteId]/resend/route.ts",
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -744,6 +797,7 @@
           "requestFields": [],
           "description": "Revokes a pending shop invite so it can no longer be accepted.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/invites/[inviteId]/route.ts",
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -759,6 +813,7 @@
           "requestFields": [],
           "description": "Sends a shop invite email to a new member with a specified role.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/invites/route.ts",
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -774,6 +829,7 @@
           "requestFields": [],
           "description": "Returns all pending and past invites for a shop.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/invites/route.ts",
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -789,6 +845,7 @@
           "requestFields": [],
           "description": "Changes the role assigned to a shop member.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/members/[memberId]/role/route.ts",
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -804,6 +861,7 @@
           "requestFields": [],
           "description": "Removes a member from a shop, or allows a member to remove themselves.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/members/[memberId]/route.ts",
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -819,6 +877,7 @@
           "requestFields": [],
           "description": "Adds a member directly to a shop with a specified role, bypassing the invite flow.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/members/route.ts",
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -834,6 +893,7 @@
           "requestFields": [],
           "description": "Returns the pending ownership transfer request for a shop, if one exists.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/ownership-transfer/route.ts",
           "permissions": {
             "feature": "members",
             "level": "view"
@@ -849,6 +909,7 @@
           "requestFields": [],
           "description": "Cancels a pending shop ownership transfer before it is accepted.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/ownership-transfer/route.ts",
           "permissions": {
             "feature": "members",
             "level": "view"
@@ -864,6 +925,7 @@
           "requestFields": [],
           "description": "Initiates a shop ownership transfer by sending a confirmation email to the new owner.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/ownership/route.ts",
           "permissions": {
             "feature": "members",
             "level": "full"
@@ -879,6 +941,7 @@
           "requestFields": [],
           "description": "Returns the list of roles available to assign to members of a shop.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/roles/route.ts",
           "permissions": {
             "feature": "members",
             "level": "view"
@@ -894,6 +957,7 @@
           "requestFields": [],
           "description": "Permanently deletes a shop and all its associated listings and assets.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/route.ts",
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
@@ -909,6 +973,7 @@
           "requestFields": [],
           "description": "Uploads and sets a new avatar image for a shop's profile.",
           "tags": ["file-upload", "admin-only"],
+          "sourceFile": "src/app/api/shops/avatar/route.ts",
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
@@ -924,6 +989,7 @@
           "requestFields": [],
           "description": "Uploads and sets a new hero banner image displayed at the top of a shop's page.",
           "tags": ["file-upload", "admin-only"],
+          "sourceFile": "src/app/api/shops/hero-banner/route.ts",
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
@@ -938,7 +1004,8 @@
           "errorCodes": [401, 403, 404, 410, 500],
           "requestFields": [],
           "description": "Accepts a shop ownership transfer, making the recipient the new owner.",
-          "tags": ["admin-only"]
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/ownership-transfer/[token]/accept/route.ts"
         },
         {
           "method": "GET",
@@ -949,7 +1016,8 @@
           "errorCodes": [401, 403, 404, 410, 500],
           "requestFields": [],
           "description": "Looks up the details of a shop ownership transfer by its invite token.",
-          "tags": ["admin-only"]
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/ownership-transfer/[token]/route.ts"
         },
         {
           "method": "POST",
@@ -960,7 +1028,8 @@
           "errorCodes": [400, 401, 403, 409, 500],
           "requestFields": [],
           "description": "Creates a new shop and registers the creator as its owner.",
-          "tags": ["admin-only"]
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/route.ts"
         },
         {
           "method": "POST",
@@ -972,6 +1041,7 @@
           "requestFields": [],
           "description": "Reserves a new URL slug for a shop, replacing the previous one.",
           "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/slug/route.ts",
           "permissions": {
             "feature": "shop_settings",
             "level": "full"
@@ -991,7 +1061,8 @@
           "errorCodes": [401, 500],
           "requestFields": [],
           "description": "Check if the authenticated user is watching a specific listing",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/watchlist/[listing_id]/route.ts"
         },
         {
           "method": "GET",
@@ -1002,7 +1073,8 @@
           "errorCodes": [400, 401, 404, 409, 500],
           "requestFields": [],
           "description": "List all listings the authenticated user is watching",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/watchlist/route.ts"
         },
         {
           "method": "POST",
@@ -1019,7 +1091,8 @@
             }
           ],
           "description": "Watch a listing for the authenticated user",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/watchlist/route.ts"
         },
         {
           "method": "DELETE",
@@ -1030,7 +1103,8 @@
           "errorCodes": [400, 401, 404, 409, 500],
           "requestFields": [],
           "description": "Stop watching a listing for the authenticated user",
-          "tags": []
+          "tags": [],
+          "sourceFile": "src/app/api/watchlist/route.ts"
         }
       ]
     }
