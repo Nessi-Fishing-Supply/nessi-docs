@@ -1,0 +1,32 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-family: var(--font-family-mono);
+  color: #3d8c75;
+  text-decoration: none;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 3%);
+  transition:
+    background 150ms var(--ease-out),
+    color 150ms var(--ease-out);
+
+  &:hover {
+    background: rgb(61 140 117 / 10%);
+    color: #4aaf8f;
+  }
+}
+
+.icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.fileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

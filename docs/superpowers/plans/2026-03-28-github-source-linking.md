@@ -13,33 +13,36 @@
 ## File Map
 
 ### nessi-web-app (extraction side)
-| File | Action | Purpose |
-|------|--------|---------|
-| `scripts/docs-extract/types.ts` | Modify | Add `sourceFile` to ApiEndpoint, Entity, Lifecycle |
-| `scripts/docs-extract/extract-api-routes.ts` | Modify | Preserve route file path as `sourceFile` |
-| `scripts/docs-extract/extract-database.ts` | Modify | Track migration file per entity as `sourceFile` |
-| `scripts/docs-extract/extract-lifecycles.ts` | Modify | Track source file per lifecycle as `sourceFile` |
+
+| File                                         | Action | Purpose                                            |
+| -------------------------------------------- | ------ | -------------------------------------------------- |
+| `scripts/docs-extract/types.ts`              | Modify | Add `sourceFile` to ApiEndpoint, Entity, Lifecycle |
+| `scripts/docs-extract/extract-api-routes.ts` | Modify | Preserve route file path as `sourceFile`           |
+| `scripts/docs-extract/extract-database.ts`   | Modify | Track migration file per entity as `sourceFile`    |
+| `scripts/docs-extract/extract-lifecycles.ts` | Modify | Track source file per lifecycle as `sourceFile`    |
 
 ### nessi-docs (rendering side)
-| File | Action | Purpose |
-|------|--------|---------|
-| `src/constants/github.ts` | Create | GitHub base URL + `githubUrl()` helper |
-| `src/components/ui/github-link/index.tsx` | Create | Shared `GitHubLink` component |
-| `src/components/ui/github-link/github-link.module.scss` | Create | Styles for GitHubLink |
-| `src/components/ui/index.ts` | Modify | Re-export GitHubLink |
-| `src/types/api-contract.ts` | Modify | Add `sourceFile` to ApiEndpoint |
-| `src/types/data-model.ts` | Modify | Add `sourceFile` to Entity |
-| `src/types/lifecycle.ts` | Modify | Add `sourceFile` to Lifecycle |
-| `src/features/canvas/components/node-tooltip.tsx` | Modify | Replace plain codeRef with GitHubLink |
-| `src/components/layout/detail-panel/panels/step-panel.tsx` | Modify | Replace plain codeRef with GitHubLink |
-| `src/features/canvas/components/entity-tooltip.tsx` | Modify | Add source link section |
-| `src/features/canvas/components/state-tooltip.tsx` | Modify | Add source link section |
+
+| File                                                       | Action | Purpose                                |
+| ---------------------------------------------------------- | ------ | -------------------------------------- |
+| `src/constants/github.ts`                                  | Create | GitHub base URL + `githubUrl()` helper |
+| `src/components/ui/github-link/index.tsx`                  | Create | Shared `GitHubLink` component          |
+| `src/components/ui/github-link/github-link.module.scss`    | Create | Styles for GitHubLink                  |
+| `src/components/ui/index.ts`                               | Modify | Re-export GitHubLink                   |
+| `src/types/api-contract.ts`                                | Modify | Add `sourceFile` to ApiEndpoint        |
+| `src/types/data-model.ts`                                  | Modify | Add `sourceFile` to Entity             |
+| `src/types/lifecycle.ts`                                   | Modify | Add `sourceFile` to Lifecycle          |
+| `src/features/canvas/components/node-tooltip.tsx`          | Modify | Replace plain codeRef with GitHubLink  |
+| `src/components/layout/detail-panel/panels/step-panel.tsx` | Modify | Replace plain codeRef with GitHubLink  |
+| `src/features/canvas/components/entity-tooltip.tsx`        | Modify | Add source link section                |
+| `src/features/canvas/components/state-tooltip.tsx`         | Modify | Add source link section                |
 
 ---
 
 ## Task 1: Add `sourceFile` to extraction types (nessi-web-app)
 
 **Files:**
+
 - Modify: `scripts/docs-extract/types.ts`
 
 - [ ] **Step 1: Add `sourceFile` to ApiEndpoint**
@@ -103,6 +106,7 @@ git commit -m "feat: add sourceFile field to extraction types"
 ## Task 2: Preserve file paths in API route extractor (nessi-web-app)
 
 **Files:**
+
 - Modify: `scripts/docs-extract/extract-api-routes.ts`
 
 - [ ] **Step 1: Read the current endpoint construction**
@@ -136,6 +140,7 @@ npx tsx scripts/docs-extract/extract-api-routes.ts
 ```
 
 Verify the output JSON now includes `sourceFile` fields on endpoints. Spot-check one:
+
 ```bash
 cat _docs-output/api-contracts.json | python3 -c "import json,sys; d=json.load(sys.stdin); print(json.dumps(d['groups'][0]['endpoints'][0], indent=2))"
 ```
@@ -154,11 +159,13 @@ git commit -m "feat: preserve source file path in API route extraction"
 ## Task 3: Track migration files per entity in database extractor (nessi-web-app)
 
 **Files:**
+
 - Modify: `scripts/docs-extract/extract-database.ts`
 
 - [ ] **Step 1: Read `scanMigrations` and `buildEntities` functions**
 
 Read `extract-database.ts` to understand:
+
 - `scanMigrations()` (line ~254): walks migration files, `filePath` is available at line 269
 - `buildEntities()` (line ~522): constructs Entity objects from parsed data
 - Need to connect migration file paths to the entities they define
@@ -218,11 +225,13 @@ git commit -m "feat: track migration source file per entity in database extracti
 ## Task 4: Track source files in lifecycle extractor (nessi-web-app)
 
 **Files:**
+
 - Modify: `scripts/docs-extract/extract-lifecycles.ts`
 
 - [ ] **Step 1: Read the three passes in `extractLifecycles()`**
 
 The function has three passes:
+
 - Pass 1 (enums): iterates `migrations` which is `Array<{ filePath, content }>` from `readMigrationFiles()`
 - Pass 2 (check constraints): same `migrations` array
 - Pass 3 (TS constants): iterates files from `walkFiles('src/features', /\.ts$/)`
@@ -304,6 +313,7 @@ function collectStatusLabelMaps(): Map<string, { labels: Map<string, string>; fi
 ```
 
 Then update all references to `labelMaps` in `extractLifecycles()`:
+
 - `labelMaps.get(slug)` becomes `labelMaps.get(slug)?.labels`
 
 And in Pass 3:
@@ -334,6 +344,7 @@ npx tsx scripts/docs-extract/extract-lifecycles.ts
 ```
 
 Expected output should now show source files:
+
 ```
 Found 7 lifecycle(s)
   - Listing Lifecycle [enum]: 6 states, 8 transitions
@@ -341,6 +352,7 @@ Found 7 lifecycle(s)
 ```
 
 Verify with:
+
 ```bash
 cat _docs-output/lifecycles.json | python3 -c "import json,sys; d=json.load(sys.stdin); [print(l['slug'], l.get('sourceFile', 'MISSING')) for l in d['lifecycles']]"
 ```
@@ -357,6 +369,7 @@ git commit -m "feat: track source file per lifecycle in extraction"
 ## Task 5: Run full extraction, format, push nessi-web-app
 
 **Files:**
+
 - No new files — run extraction pipeline and push
 
 - [ ] **Step 1: Run full extraction**
@@ -367,6 +380,7 @@ npx tsx scripts/docs-extract/run-all.ts
 ```
 
 Verify output includes `sourceFile` fields in:
+
 - `_docs-output/api-contracts.json`
 - `_docs-output/data-model.json`
 - `_docs-output/lifecycles.json`
@@ -410,6 +424,7 @@ Verify `src/data/generated/api-contracts.json`, `data-model.json`, and `lifecycl
 ## Task 6: Add GitHub URL constant and GitHubLink component (nessi-docs)
 
 **Files:**
+
 - Create: `src/constants/github.ts`
 - Create: `src/components/ui/github-link/index.tsx`
 - Create: `src/components/ui/github-link/github-link.module.scss`
@@ -420,8 +435,7 @@ Verify `src/data/generated/api-contracts.json`, `data-model.json`, and `lifecycl
 Create `src/constants/github.ts`:
 
 ```typescript
-export const GITHUB_BASE_URL =
-  'https://github.com/Nessi-Fishing-Supply/nessi-web-app/blob/main/';
+export const GITHUB_BASE_URL = 'https://github.com/Nessi-Fishing-Supply/nessi-web-app/blob/main/';
 
 export function githubUrl(filePath: string): string {
   return `${GITHUB_BASE_URL}${filePath}`;
@@ -528,6 +542,7 @@ git commit -m "feat: add GitHubLink component and GitHub URL constants"
 ## Task 7: Add `sourceFile` to nessi-docs types
 
 **Files:**
+
 - Modify: `src/types/api-contract.ts`
 - Modify: `src/types/data-model.ts`
 - Modify: `src/types/lifecycle.ts`
@@ -576,6 +591,7 @@ git commit -m "feat: add sourceFile to ApiEndpoint, Entity, and Lifecycle types"
 ## Task 8: Integrate GitHubLink into journey tooltips and panels
 
 **Files:**
+
 - Modify: `src/features/canvas/components/node-tooltip.tsx`
 - Modify: `src/components/layout/detail-panel/panels/step-panel.tsx`
 
@@ -655,6 +671,7 @@ git commit -m "feat: replace plain codeRef with clickable GitHub links in journe
 ## Task 9: Integrate GitHubLink into entity tooltip
 
 **Files:**
+
 - Modify: `src/features/canvas/components/entity-tooltip.tsx`
 
 - [ ] **Step 1: Add source link to EntityTooltip**
@@ -692,6 +709,7 @@ git commit -m "feat: add GitHub source link to entity tooltips"
 ## Task 10: Integrate GitHubLink into lifecycle tooltip
 
 **Files:**
+
 - Modify: `src/features/canvas/components/state-tooltip.tsx`
 
 - [ ] **Step 1: Add source link to StateTooltip**
@@ -729,6 +747,7 @@ git commit -m "feat: add GitHub source link to lifecycle state tooltips"
 ## Task 11: Integrate GitHubLink into API Map
 
 **Files:**
+
 - Explore and modify: the API Map endpoint display (likely in `src/features/api-map/`)
 
 - [ ] **Step 1: Find the API endpoint row/panel component**
@@ -788,6 +807,7 @@ Verify all pages generate successfully.
 - [ ] **Step 3: Manual smoke test**
 
 Open the dev server and verify GitHub links work in:
+
 - Journey step tooltips (hover a step with codeRef)
 - Journey step detail panel (click a step)
 - ERD entity tooltips (hover an entity)

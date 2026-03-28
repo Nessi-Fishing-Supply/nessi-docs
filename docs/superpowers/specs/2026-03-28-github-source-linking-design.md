@@ -9,6 +9,7 @@ Every navigable artifact in nessi-docs links to its source code on GitHub. Click
 ## Scope
 
 **In scope:**
+
 - Journey step nodes → link to source file via existing `codeRef`
 - API endpoints → link to the `route.ts` file that defines them
 - Database entities → link to the migration file that creates them
@@ -16,6 +17,7 @@ Every navigable artifact in nessi-docs links to its source code on GitHub. Click
 - A shared `GitHubLink` UI component used consistently across all views
 
 **Out of scope:**
+
 - Inline code preview / embedded file viewer
 - Line-number precision (file-level is sufficient for POC)
 - Architecture diagram nodes (already have `url` field for external links)
@@ -28,6 +30,7 @@ Every navigable artifact in nessi-docs links to its source code on GitHub. Click
 **Pattern:** `{GITHUB_BASE_URL}{sourceFile}`
 
 **Examples:**
+
 - `src/app/api/addresses/[id]/route.ts` → `https://github.com/Nessi-Fishing-Supply/nessi-web-app/blob/main/src/app/api/addresses/[id]/route.ts`
 - `supabase/migrations/20260319000000_create_profiles_table.sql` → `https://github.com/Nessi-Fishing-Supply/nessi-web-app/blob/main/supabase/migrations/20260319000000_create_profiles_table.sql`
 
@@ -57,15 +60,18 @@ sourceFile?: string;  // e.g., "supabase/migrations/20260321100000_listings_sche
 ### 2. nessi-web-app: Extractor Updates
 
 **`extract-api-routes.ts`**
+
 - The extractor walks `src/app/api/` and reads each `route.ts`. The `file` variable holds the relative path.
 - Preserve `file` as `sourceFile` on the endpoint output object.
 
 **`extract-database.ts`**
+
 - The extractor walks `supabase/migrations/*.sql` and parses `CREATE TABLE` statements.
 - Track which migration file defines each table. When building the entity object, include `sourceFile` pointing to the migration file.
 - Use the first migration that creates the table (not later ALTER TABLE migrations).
 
 **`extract-lifecycles.ts`**
+
 - Three discovery passes each have a file path available:
   1. Enum types from migrations → store the migration file path
   2. Check constraints from migrations → store the migration file path
@@ -75,6 +81,7 @@ sourceFile?: string;  // e.g., "supabase/migrations/20260321100000_listings_sche
 ### 3. nessi-docs: Type Updates
 
 Add `sourceFile?: string` to:
+
 - `types/api-contract.ts` → `ApiEndpoint` interface
 - `types/data-model.ts` → `Entity` interface
 - `types/lifecycle.ts` → `Lifecycle` interface
@@ -86,8 +93,7 @@ No change to `types/journey.ts` — `codeRef` already exists.
 Add to `src/constants/github.ts`:
 
 ```typescript
-export const GITHUB_BASE_URL =
-  'https://github.com/Nessi-Fishing-Supply/nessi-web-app/blob/main/';
+export const GITHUB_BASE_URL = 'https://github.com/Nessi-Fishing-Supply/nessi-web-app/blob/main/';
 
 export function githubUrl(filePath: string): string {
   return `${GITHUB_BASE_URL}${filePath}`;
@@ -106,27 +112,34 @@ A small shared component at `src/components/ui/github-link/index.tsx`:
 ### 6. nessi-docs: Integration Points
 
 **NodeTooltip (journey steps):**
+
 - Currently displays `codeRef` as plain monospace text under "Source" label
 - Replace with `GitHubLink` component when `codeRef` is present
 
 **StepPanel (journey step detail):**
+
 - Currently displays `codeRef` as plain text under "Code Reference"
 - Replace with `GitHubLink` component
 
 **API Map endpoint rows / EndpointPanel:**
+
 - Add "Source" section with `GitHubLink` when `sourceFile` is present on the endpoint
 - Display in the endpoint's expandable row or detail panel
 
 **EntityTooltip (ERD hover):**
+
 - Add "Source" row with `GitHubLink` when `sourceFile` is present on the entity
 
 **Data Model rows / EntityPanel:**
+
 - Add "Source" section with `GitHubLink` when `sourceFile` is present
 
 **StateTooltip (lifecycle hover):**
+
 - Add "Source" row with `GitHubLink` when `sourceFile` is present on the lifecycle
 
 **Lifecycle detail (if applicable):**
+
 - Display source link in the canvas or breadcrumb area
 
 All integrations are conditional — only render when `sourceFile` or `codeRef` is present. No empty states needed.

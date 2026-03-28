@@ -18,6 +18,7 @@ export interface ApiEndpoint {
   permissions?: { feature: string; level: string };
   requestFields?: RequestField[];
   tags?: string[];
+  sourceFile?: string;
 }
 
 export interface ApiGroup {

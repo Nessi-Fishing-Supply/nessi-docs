@@ -28,4 +28,5 @@ export interface Lifecycle {
   source?: 'enum' | 'check_constraint' | 'typescript';
   states: LifecycleState[];
   transitions: LifecycleTransition[];
+  sourceFile?: string;
 }

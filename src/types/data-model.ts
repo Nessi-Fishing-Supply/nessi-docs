@@ -44,4 +44,5 @@ export interface Entity {
   rlsPolicies?: RlsPolicy[];
   indexes?: TableIndex[];
   triggers?: TableTrigger[];
+  sourceFile?: string;
 }
