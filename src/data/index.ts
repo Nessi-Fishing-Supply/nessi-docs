@@ -17,6 +17,7 @@ import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
 import type { ErrorCase } from '@/types/journey';
 import type { RoadmapItem } from '@/types/roadmap';
 import type { ExtractionMeta } from '@/types/extraction-meta';
+import type { ArchDiagram } from '@/types/architecture';
 import { DOMAINS } from '@/constants/domains';
 import type { DomainConfig } from '@/constants/domains';
 
@@ -30,6 +31,7 @@ import lifecyclesRaw from './generated/lifecycles.json';
 import journeysRaw from './generated/journeys.json';
 import changelogRaw from './generated/changelog.json';
 import roadmapRaw from './generated/roadmap.json';
+import architectureRaw from './generated/architecture.json';
 import metaRaw from './generated/_meta.json';
 
 /* ------------------------------------------------------------------ */
@@ -711,6 +713,24 @@ export function getLifecycleSlugs(): string[] {
 
 export function getAllLifecycles(): Lifecycle[] {
   return lifecycles;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Architecture helpers                                               */
+/* ------------------------------------------------------------------ */
+
+const archDiagrams: ArchDiagram[] = (architectureRaw as { diagrams: ArchDiagram[] }).diagrams;
+
+export function getAllArchDiagrams(): ArchDiagram[] {
+  return archDiagrams;
+}
+
+export function getArchDiagram(slug: string): ArchDiagram | undefined {
+  return archDiagrams.find((d) => d.slug === slug);
+}
+
+export function getArchDiagramSlugs(): string[] {
+  return archDiagrams.map((d) => d.slug);
 }
 
 /* ------------------------------------------------------------------ */

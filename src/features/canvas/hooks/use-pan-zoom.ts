@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useSyncExternalStore } from 'react';
 
-const ZOOM_FACTOR = 1.12;
+const ZOOM_FACTOR = 1.06;
 const MIN_ZOOM = 0.1;
 const MAX_ZOOM = 20;
 const LEFT_PADDING_SVG = 60;

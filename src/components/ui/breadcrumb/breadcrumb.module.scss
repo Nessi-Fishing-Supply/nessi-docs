@@ -93,7 +93,7 @@
 }
 
 .dropdownItemActive {
-  /* stylelint-disable-next-line property-no-unknown */
+  /* stylelint-disable-next-line property-no-unknown, value-keyword-case */
   composes: dropdownItem;
   background: var(--bg-raised);
 }

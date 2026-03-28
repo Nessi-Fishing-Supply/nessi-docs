@@ -12,6 +12,7 @@ import {
   HiOutlineLightningBolt,
   HiOutlineCog,
   HiOutlineClock,
+  HiOutlineChip,
 } from 'react-icons/hi';
 import type { Lifecycle } from '@/types/lifecycle';
 import styles from './sidebar.module.scss';
@@ -22,6 +23,7 @@ const SYSTEM_ITEMS = [
   { id: 'data', label: 'Data Model', icon: HiOutlineDatabase, href: '/data-model' },
   { id: 'erd', label: 'Relationships', icon: HiOutlineLink, href: '/entity-relationships' },
   { id: 'lifecycles', label: 'Lifecycles', icon: HiOutlineRefresh, href: '/lifecycles' },
+  { id: 'architecture', label: 'Architecture', icon: HiOutlineChip, href: '/architecture' },
 ];
 
 const REFERENCE_ITEMS = [
