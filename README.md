@@ -1,8 +1,8 @@
 # Nessi Docs
 
-Internal documentation and product visualization app for the [Nessi](https://nessifishingsupply.com) fishing marketplace. Provides interactive visualizations of user journeys, API contracts, data model, entity relationships, state machine lifecycles, and feature domain dashboards.
+Internal documentation and product visualization app for the [Nessi](https://nessifishingsupply.com) fishing marketplace. Provides interactive visualizations of user journeys, API contracts, data model, entity relationships, state machine lifecycles, system architecture diagrams, and feature domain dashboards.
 
-Built for the product and engineering teams to review system architecture, track build progress, and navigate cross-cutting concerns across the platform.
+Built for the product and engineering teams to review system architecture, track build progress, navigate cross-cutting concerns across the platform, and deep-link to source code on GitHub.
 
 ## Getting Started
 
@@ -37,21 +37,24 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### Pages
 
-| Route                   | Description                                                     |
-| ----------------------- | --------------------------------------------------------------- |
-| `/`                     | Dashboard — build progress, recent changes, feature domain grid |
-| `/journeys/**`          | Interactive journey flow canvases with path tracing             |
-| `/api-map`              | API endpoint reference with expandable details                  |
-| `/data-model`           | Database entity reference with field tables                     |
-| `/entity-relationships` | ERD canvas with trace mode and entity tooltips                  |
-| `/lifecycles/**`        | State machine canvases per entity lifecycle                     |
-| `/features/**`          | Feature domain dashboards with scoped coverage and deep-links   |
-| `/config`               | Configuration enums + roles/permissions reference               |
-| `/changelog`            | Chronological change feed                                       |
+| Route                   | Description                                                          |
+| ----------------------- | -------------------------------------------------------------------- |
+| `/`                     | Dashboard — build progress, recent changes, feature domain grid      |
+| `/journeys/**`          | Interactive journey flow canvases with path tracing                  |
+| `/api-map`              | API endpoint reference with expandable details                       |
+| `/data-model`           | Database entity reference with field tables                          |
+| `/entity-relationships` | ERD canvas with trace mode and entity tooltips                       |
+| `/lifecycles`           | Lifecycle list with state/transition counts                          |
+| `/lifecycles/**`        | State machine canvases per entity lifecycle                          |
+| `/architecture`         | System architecture diagram list                                     |
+| `/architecture/**`      | Interactive architecture canvases (tech stack, data flow, pipelines) |
+| `/features/**`          | Feature domain dashboards with scoped coverage and deep-links        |
+| `/config`               | Configuration enums + roles/permissions reference (deep-linkable)    |
+| `/changelog`            | Chronological change feed                                            |
 
 ### Shared Canvas System
 
-All graph visualizations (Journeys, ERD, Lifecycles) share a common canvas infrastructure:
+All graph visualizations (Journeys, ERD, Lifecycles, Architecture) share a common canvas infrastructure:
 
 - SVG-based pan/zoom with momentum
 - Frosted glass node effects
@@ -64,7 +67,7 @@ All graph visualizations (Journeys, ERD, Lifecycles) share a common canvas infra
 
 ### Cross-Page Deep-Linking
 
-Pages are deeply interconnected. Clicking an API endpoint in an entity tooltip navigates to the API Map and auto-expands the target row with a border trace animation. The same pattern works across Data Model, API Map, and Feature Domain pages.
+Pages are deeply interconnected. Clicking an API endpoint in an entity tooltip navigates to the API Map and auto-expands the target row with a border trace animation. The same pattern works across Data Model, API Map, Feature Domain, and Config pages. Every artifact with a source file links directly to the code on GitHub.
 
 ### Data Flow
 

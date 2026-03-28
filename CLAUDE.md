@@ -51,9 +51,10 @@ src/
 │   ├── api-map/            # API endpoint reference
 │   ├── data-model/         # Entity table reference
 │   ├── entity-relationships/ # ERD canvas
-│   ├── lifecycles/         # State machine canvases (by slug)
+│   ├── lifecycles/         # State machine canvases (list + by slug)
+│   ├── architecture/       # System architecture diagrams (list + by slug)
 │   ├── features/           # Feature domain pages (by domain)
-│   ├── config/             # Config reference + roles
+│   ├── config/             # Config reference + roles (deep-linkable)
 │   └── changelog/          # Change feed
 ├── data/
 │   ├── generated/          # Raw JSON from nessi-web-app extraction
@@ -64,7 +65,8 @@ src/
 │   ├── journeys/           # Journey canvas, filters, domain grid
 │   ├── canvas/             # Shared canvas infrastructure (provider, nodes, edges, hooks)
 │   ├── data-model/         # Entity list, ERD canvas
-│   ├── lifecycles/         # Lifecycle canvas
+│   ├── lifecycles/         # Lifecycle list + canvas
+│   ├── architecture/       # Architecture list + canvas (tech stack, data flow, pipelines)
 │   ├── api-map/            # API endpoint list
 │   ├── dashboard/          # Dashboard home view
 │   ├── feature-domain/     # Feature domain page view
@@ -73,21 +75,21 @@ src/
 │   └── search/             # Global search dialog
 ├── components/
 │   ├── layout/             # App shell, sidebar, topbar, detail panel
-│   └── ui/                 # Reusable UI primitives (badge, border-trace, breadcrumb, etc.)
+│   └── ui/                 # Reusable UI primitives (badge, border-trace, breadcrumb, github-link, etc.)
 ├── providers/              # React context (DocsProvider for selection state)
-├── constants/              # Domain config, colors
+├── constants/              # Domain config, colors, GitHub URL
 └── styles/                 # Nessi design tokens (variables, mixins, globals)
 ```
 
 ### Shared Canvas System (`src/features/canvas/`)
 
-All graph visualizations (Journeys, ERD, Lifecycles) use a shared canvas infrastructure:
+All graph visualizations (Journeys, ERD, Lifecycles, Architecture) use a shared canvas infrastructure:
 
 - **CanvasProvider** — SVG viewport with pan/zoom, dot grid background, toolbar/legend/minimap slots
 - **Hooks** — `usePanZoom` (external store), `useViewport`, `useStaggerEntry`, `usePathTrace` (journey), `useErdTrace` (ERD/lifecycle)
 - **Shared components** — `Edge`, `AnimatedEdge`, `LabelPill`, `Minimap`, `CanvasToolbar`, `Legend`, `DotGrid`
-- **Domain-specific nodes** — `StepNode`/`EntryNode`/`DecisionNode` (journeys), `EntityNode` (ERD), `StateNode` (lifecycles)
-- **Tooltips** — `NodeTooltip` (journeys, click-to-pin), `EntityTooltip` (ERD, hover with bridging), `StateTooltip` (lifecycles, hover with bridging)
+- **Domain-specific nodes** — `StepNode`/`EntryNode`/`DecisionNode` (journeys), `EntityNode` (ERD), `StateNode` (lifecycles), inline SVG nodes (architecture)
+- **Tooltips** — `NodeTooltip` (journeys, click-to-pin), `EntityTooltip` (ERD, hover with bridging), `StateTooltip` (lifecycles, hover with bridging), `ArchTooltip` (architecture, hover with bridging)
 - **Geometry** — `smoothPath()` for direction-aware bezier curves, port helpers, node dimension constants
 
 ### Canvas Features (shared across all canvases)
@@ -116,7 +118,7 @@ Cross-page navigation uses hash anchors with a consistent animation sequence:
 6. Highlight fades at 9500ms
 7. Deep-link target rows skip CSS stagger delay (`--stagger: 0ms`)
 
-Used by: Data Model rows, API Map endpoint rows, Feature domain feature rows.
+Used by: Data Model rows, API Map endpoint rows, Feature domain feature rows, Config reference blocks.
 
 ### Data Layer (`src/data/index.ts`)
 
@@ -127,8 +129,28 @@ Single file that imports all raw JSON from `src/data/generated/`, transforms it,
 - **Domain mapping** — `FEATURE_TO_DOMAIN` map for grouping features into domains
 - **Cross-links** — `cross-links.ts` builds bidirectional indexes between entities and API endpoints
 - **Changelog parsing** — Groups by date, maps conventional commit types, parses scopes for domain filtering
-- **Static exports** — `features`, `entities`, `journeys`, `lifecycles`, `apiGroups`, `roles`, `configEnums`, `changelog`, `erdNodes`, `erdEdges`
-- **Helper functions** — `getDomains()`, `getFeatureDomains()`, `getFeaturesByDomain()`, `getChangelogByDomain()`, `getDashboardMetrics()`, `getAllJourneys()`, `getEndpointsForTable()`, etc.
+- **Static exports** — `features`, `entities`, `journeys`, `lifecycles`, `archDiagrams`, `apiGroups`, `roles`, `configEnums`, `changelog`, `erdNodes`, `erdEdges`
+- **Helper functions** — `getDomains()`, `getFeatureDomains()`, `getFeaturesByDomain()`, `getChangelogByDomain()`, `getDashboardMetrics()`, `getAllJourneys()`, `getEndpointsForTable()`, `getAllArchDiagrams()`, `getArchDiagram()`, `getAllLifecycles()`, etc.
+
+### GitHub Source Linking
+
+All artifacts link to their source code on GitHub via the `GitHubLink` component (`src/components/ui/github-link/`):
+
+- **Journey steps** — `codeRef` field links to feature code (e.g., `src/features/cart/hooks/use-cart-merge.ts`)
+- **API endpoints** — `sourceFile` field links to route file (e.g., `src/app/api/addresses/[id]/route.ts`)
+- **Data model entities** — `sourceFile` field links to migration file (e.g., `supabase/migrations/20260319000000_create_profiles_table.sql`)
+- **Lifecycle states** — `sourceFile` field links to enum definition or constants file
+
+URL construction: `githubUrl()` from `src/constants/github.ts` builds `https://github.com/Nessi-Fishing-Supply/nessi-web-app/blob/main/{path}`. Links open in new tab. Display shows a trimmed path (strips `src/app/`, `src/`, `supabase/migrations/` prefix + timestamp) with full path on hover.
+
+### Architecture Diagrams (`src/features/architecture/`)
+
+System architecture visualizations rendered as interactive canvases:
+
+- **Categories** — `stack` (layered dependency graphs), `flow` (directional data movement), `pipeline` (sequential workflows with branching)
+- **Data** — JSON files extracted from `nessi-web-app/docs/architecture/` with layers, nodes, and connections
+- **Canvas** — `ArchitectureCanvas` uses the shared canvas infrastructure with trace mode, hover tooltips, frosted glass nodes, direction-aware bezier curves, and animated flow edges
+- **Layout** — auto-computed from layers/nodes with configurable spacing constants
 
 ### App Shell
 

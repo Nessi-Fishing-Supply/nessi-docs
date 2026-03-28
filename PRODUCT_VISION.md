@@ -77,7 +77,7 @@ Archway isn't theoretical. The proof-of-concept exists and is in daily use.
 - **User journey canvases** — interactive pan/zoom graph visualizations showing complete user flows across client, server, background processes, and integrations. Entry nodes, step nodes, decision nodes with direction-aware edge routing, animated trace mode, and frosted glass node styling.
 - **API map** — auto-extracted endpoint reference with method, path, domain grouping, and deep-link targets.
 - **Data model / ERD** — entity table reference with full field definitions, plus interactive entity relationship diagram canvas with category-colored nodes and relationship edges.
-- **Lifecycle state machines** — auto-generated state machine canvases showing entity state transitions.
+- **Lifecycle state machines** — auto-generated state machine canvases showing entity state transitions with list page, switcher navigation, and 7 lifecycles (member, shop, listing, invite, flag, subscription, ownership transfers).
 - **Feature domain pages** — feature grouping by business domain with coverage metrics and accordion drill-down.
 - **Deep-linking system** — cross-page navigation with hash anchors, auto-expand, highlight animation, and scroll-into-view. Journey node → data model row → API endpoint → source code.
 - **Global search** — search across all extracted data (journeys, entities, endpoints, features).
@@ -91,6 +91,8 @@ Archway isn't theoretical. The proof-of-concept exists and is in daily use.
   - **Cross-links engine** (`cross-links.ts`) — a computed bidirectional index that maps entities ↔ endpoints. `getEndpointsForTable()` returns all endpoints touching a table; `getTablesForEndpoint()` returns all tables an endpoint touches. Path-to-table matching uses compound matching, direct matches, and prefix/suffix matching to resolve the relationships automatically.
 
   The combination of trace mode (visual isolation of connected nodes) and rich tooltips (forward connections with deep-links to every related artifact) means impact analysis is already a working feature — "click anything, see everything it connects to, click through to the source."
+
+- **GitHub source linking** — every artifact links directly to its source code on GitHub. Journey steps link to feature code, API endpoints link to route files, data model entities link to migration files, lifecycle states link to enum definitions. The final stop on the deep-dive chain: journey → data model → endpoint → source code on GitHub. Links open in a new tab showing the exact file on the `main` branch.
 
 ### How the Current Pipeline Works
 
