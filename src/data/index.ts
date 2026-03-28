@@ -709,6 +709,10 @@ export function getLifecycleSlugs(): string[] {
   return lifecycles.map((l) => l.slug);
 }
 
+export function getAllLifecycles(): Lifecycle[] {
+  return lifecycles;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Cross-link helpers                                                 */
 /* ------------------------------------------------------------------ */

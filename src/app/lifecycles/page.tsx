@@ -1,6 +1,7 @@
-import { redirect } from 'next/navigation';
-import { getLifecycleSlugs } from '@/data';
+import { getAllLifecycles } from '@/data';
+import { LifecycleList } from '@/features/lifecycles/lifecycle-list';
 
 export default function LifecyclesIndex() {
-  redirect(`/lifecycles/${getLifecycleSlugs()[0]}`);
+  const lifecycles = getAllLifecycles();
+  return <LifecycleList lifecycles={lifecycles} />;
 }
