@@ -67,9 +67,9 @@
 }
 
 .enumBlock {
+  position: relative;
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
-  overflow: hidden;
   transition: border-color 150ms ease;
 
   &:hover {
