@@ -335,25 +335,26 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
       const n = nodeById.get(nodeId);
       if (n?.type === 'decision' && children.length > 1) {
         // Decision fork: first option inherits parent's y (happy path),
-        // alternates stack below
+        // alternates stack below with V_GAP spacing.
+        // Compute y-values in forward order, then push to stack in reverse
+        // so the first child (happy path) is processed first by stack.pop().
+        const childYValues: number[] = [];
         let branchY = y;
-        // Process in reverse so first child ends up on top of the stack (processed first)
-        for (let i = children.length - 1; i >= 0; i--) {
-          const childY = i === 0 ? y : branchY;
-          stack.push({ nodeId: children[i], y: childY });
-          if (i > 0) {
-            // Stack next branch below
-            const ext = subtreeExtent(children[i]);
-            branchY = Math.max(branchY + ext + V_GAP, branchY + NODE_H + V_GAP);
-          }
-          if (i === 0 && children.length > 1) {
-            // After first child (happy path), start alternates below
-            branchY = y + subtreeExtent(children[0]) + V_GAP;
+        for (let i = 0; i < children.length; i++) {
+          if (i === 0) {
+            // Happy path: same y as decision
+            childYValues.push(y);
+            branchY = y + Math.max(subtreeExtent(children[0]), NODE_H) + V_GAP;
+          } else {
+            // Alternate branch: below previous branch's extent
+            childYValues.push(branchY);
+            branchY += Math.max(subtreeExtent(children[i]), NODE_H) + V_GAP;
           }
         }
-        // Re-do: place first at y, then stack remaining below
-        // Clear the stack entries we just added and redo correctly
-        // (The loop above already handles this: i=0 gets y, others get stacked branchY)
+        // Push in reverse so first child is on top of stack (processed first)
+        for (let i = children.length - 1; i >= 0; i--) {
+          stack.push({ nodeId: children[i], y: childYValues[i] });
+        }
       } else {
         // Linear flow: all children get same y as parent
         for (let i = children.length - 1; i >= 0; i--) {
