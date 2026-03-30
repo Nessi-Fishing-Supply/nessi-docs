@@ -19,10 +19,13 @@ import {
   type PortSide,
 } from '@/features/canvas/utils/geometry';
 
+import type { ErdCategoryGroup } from '@/data/index';
+
 interface ErdCanvasProps {
   nodes: ErdNode[];
   edges: ErdEdge[];
   entities: Entity[];
+  categoryGroups?: ErdCategoryGroup[];
 }
 
 /** Spread between sibling edges sharing the same node pair */
@@ -214,7 +217,7 @@ const CATEGORY_DEFS = [
 
 const ALL_CATEGORIES = new Set(CATEGORY_DEFS.map((c) => c.key));
 
-export function ErdCanvas({ nodes, edges, entities }: ErdCanvasProps) {
+export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasProps) {
   const [minimapVisible, setMinimapVisible] = useState(false);
   const [legendVisible, setLegendVisible] = useState(false);
   const [pinnedNodeId, setPinnedNodeId] = useState<string | null>(null);
@@ -307,7 +310,35 @@ export function ErdCanvas({ nodes, edges, entities }: ErdCanvasProps) {
         />
       )}
     >
-      {/* Edge lines — rendered first (lowest z-layer) */}
+      {/* Category group containers — lowest z-layer */}
+      {categoryGroups?.map((group) => (
+        <g key={group.key}>
+          <rect
+            x={group.x}
+            y={group.y}
+            width={group.width}
+            height={group.height}
+            rx={12}
+            fill="rgba(255,255,255,0.02)"
+            stroke={group.color}
+            strokeWidth={1}
+            strokeOpacity={0.2}
+          />
+          <text
+            x={group.x + 16}
+            y={group.y + 20}
+            fill={group.color}
+            fontSize={11}
+            fontWeight={600}
+            fontFamily="var(--font-family-mono)"
+            opacity={0.6}
+          >
+            {group.label}
+          </text>
+        </g>
+      ))}
+
+      {/* Edge lines */}
       {edges.map((edge, i) => {
         const fromNode = nodeMap.get(edge.from);
         const toNode = nodeMap.get(edge.to);
