@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(messaging): #306 text safety filter utility",
+      "number": 326,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/326",
+      "mergedAt": "2026-03-30T19:20:05Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "messaging",
+      "type": "feature"
+    },
+    {
       "title": "feat(blocks): #324 block enforcement — prevent blocked users from viewing profiles, shops, listings, and purchasing",
       "number": 325,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/325",
