@@ -253,11 +253,17 @@ function normalizeNodes(rawNodes: RawJourneyNode[]): RawJourneyNode[] {
   }));
 }
 
+/** Map extracted domain slugs to current domain slugs (for renamed/merged domains). */
+const DOMAIN_ALIASES: Record<string, string> = {
+  identity: 'auth',
+};
+
 function transformJourneys(raw: RawJourney[]): Journey[] {
   return raw.map((j) => {
     const normalizedNodes = normalizeNodes(j.nodes);
     return {
       ...j,
+      domain: DOMAIN_ALIASES[j.domain] ?? j.domain,
       title: cleanJourneyTitle(j.title),
       nodes: layoutJourneyNodes(normalizedNodes, j.edges),
       edges: j.edges as JourneyEdge[],
@@ -416,8 +422,9 @@ function transformEntities(raw: RawEntity[]): Entity[] {
 const FEATURE_TO_DOMAIN: Record<string, string> = {
   addresses: 'account',
   auth: 'auth',
+  blocks: 'shopping',
   cart: 'cart',
-  context: 'identity',
+  context: 'auth',
   dashboard: 'account',
   editorial: 'listings',
   email: 'shops',
@@ -425,16 +432,18 @@ const FEATURE_TO_DOMAIN: Record<string, string> = {
   follows: 'shopping',
   listings: 'listings',
   members: 'account',
-  messaging: 'shops',
+  messaging: 'shopping',
   orders: 'cart',
   'recently-viewed': 'shopping',
   shared: 'shopping',
   shops: 'shops',
+  watchlist: 'shopping',
 };
 
 const SCOPE_TO_DOMAIN: Record<string, string> = {
   auth: 'auth',
   onboarding: 'auth',
+  context: 'auth',
   cart: 'cart',
   checkout: 'cart',
   orders: 'cart',
@@ -442,7 +451,6 @@ const SCOPE_TO_DOMAIN: Record<string, string> = {
   shop: 'shops',
   invites: 'shops',
   email: 'shops',
-  messaging: 'shops',
   listings: 'listings',
   listing: 'listings',
   editorial: 'listings',
@@ -454,20 +462,29 @@ const SCOPE_TO_DOMAIN: Record<string, string> = {
   flags: 'shopping',
   recommendations: 'shopping',
   watchlist: 'shopping',
+  blocks: 'shopping',
+  messaging: 'shopping',
   account: 'account',
   addresses: 'account',
   members: 'account',
   profiles: 'account',
-  context: 'identity',
   dashboard: 'account',
 };
+
+/** A feature with no components, endpoints, or entities is a utility — not a product feature. */
+function hasProductSurface(f: Feature): boolean {
+  const entities = (f as unknown as { entities?: string[] }).entities ?? [];
+  return f.componentCount > 0 || f.endpointCount > 0 || entities.length > 0;
+}
 
 export function getFeatureDomains(): FeatureDomain[] {
   const allFeatures = featuresRaw.features as unknown as Feature[];
   const allJourneys = journeysRaw.journeys as unknown as RawJourney[];
 
   return DOMAINS.map((d) => {
-    const domainFeatures = allFeatures.filter((f) => FEATURE_TO_DOMAIN[f.slug] === d.slug);
+    const domainFeatures = allFeatures
+      .filter((f) => FEATURE_TO_DOMAIN[f.slug] === d.slug)
+      .filter(hasProductSurface);
     if (domainFeatures.length === 0) return null;
 
     const endpointCount = domainFeatures.reduce((sum, f) => sum + f.endpointCount, 0);
@@ -491,7 +508,7 @@ export function getFeatureDomains(): FeatureDomain[] {
 
 export function getFeaturesByDomain(domain: string): Feature[] {
   const allFeatures = featuresRaw.features as unknown as Feature[];
-  return allFeatures.filter((f) => FEATURE_TO_DOMAIN[f.slug] === domain);
+  return allFeatures.filter((f) => FEATURE_TO_DOMAIN[f.slug] === domain).filter(hasProductSurface);
 }
 
 export function getDomainForScope(scope: string): string | undefined {

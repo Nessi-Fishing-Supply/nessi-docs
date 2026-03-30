@@ -9,13 +9,13 @@ export const DOMAINS: DomainConfig[] = [
   {
     slug: 'auth',
     label: 'Authentication',
-    description: 'Signup, login, password management, route protection',
+    description: 'Signup, login, password management, context switching, route protection',
     order: 0,
   },
   {
     slug: 'shopping',
-    label: 'Shopping',
-    description: 'Browse, search, discovery, recently viewed',
+    label: 'Shopping & Social',
+    description: 'Browse, search, discovery, follows, messaging, watchlist',
     order: 1,
   },
   {
@@ -26,8 +26,8 @@ export const DOMAINS: DomainConfig[] = [
   },
   {
     slug: 'account',
-    label: 'Account',
-    description: 'Settings, addresses, deletion, onboarding',
+    label: 'Members',
+    description: 'Profiles, settings, addresses, deletion, onboarding',
     order: 3,
   },
   {
@@ -41,12 +41,6 @@ export const DOMAINS: DomainConfig[] = [
     label: 'Listings',
     description: 'Lifecycle management, social sharing',
     order: 5,
-  },
-  {
-    slug: 'identity',
-    label: 'Identity',
-    description: 'Context switching, seller context',
-    order: 6,
   },
 ];
 
