@@ -1305,6 +1305,674 @@
       ]
     },
     {
+      "slug": "buyer-seller-messaging",
+      "domain": "shopping",
+      "title": "Buyer-Seller Messaging",
+      "persona": "buyer",
+      "description": "Buyers and sellers exchange messages in typed threads (inquiry, direct, offer, custom request) with safety filtering, unread tracking, and archiving.",
+      "relatedIssues": [307],
+      "nodes": [
+        {
+          "id": "messaging-hub--entry",
+          "type": "entry",
+          "label": "Open Messaging"
+        },
+        {
+          "id": "messaging-hub--open-messaging",
+          "type": "step",
+          "label": "Open Messaging",
+          "layer": "client",
+          "status": "planned",
+          "notes": "Entry point for all messaging flows. Accessible from the nav inbox badge or from a listing detail page CTA. Full inbox UI is Phase 3 — API layer is built. See planned inbox-page step in view-inbox flow."
+        },
+        {
+          "id": "messaging-hub--decision-open-messaging",
+          "type": "decision",
+          "label": "What action?",
+          "options": [
+            {
+              "label": "View Inbox",
+              "to": "messaging-hub--fetch-threads"
+            },
+            {
+              "label": "Start Thread",
+              "to": "messaging-hub--create-thread"
+            },
+            {
+              "label": "Open Thread",
+              "to": "messaging-hub--fetch-thread"
+            },
+            {
+              "label": "Send Message",
+              "to": "messaging-hub--compose-message"
+            }
+          ]
+        },
+        {
+          "id": "view-inbox--entry",
+          "type": "entry",
+          "label": "View Thread Inbox"
+        },
+        {
+          "id": "view-inbox--fetch-threads",
+          "type": "step",
+          "label": "Fetch Thread List",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/threads",
+          "codeRef": "src/app/api/messaging/threads/route.ts",
+          "why": "Returns all threads where user is a participant, joined with participant member details and my_unread_count. Optional ?type= filter accepts: inquiry, direct, offer, custom_request.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Invalid type filter value",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "view-inbox--decision-fetch-threads",
+          "type": "decision",
+          "label": "Has threads?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "view-inbox--inbox-page"
+            },
+            {
+              "label": "No",
+              "to": "view-inbox--inbox-empty"
+            }
+          ]
+        },
+        {
+          "id": "view-inbox--fetch-unread-count",
+          "type": "step",
+          "label": "Fetch Unread Count",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/unread-count",
+          "codeRef": "src/app/api/messaging/unread-count/route.ts",
+          "why": "Sum of unread_count across all active participant rows for this user. Drives the inbox badge in the navigation header. Query key: ['messaging', 'unread'].",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "view-inbox--inbox-page",
+          "type": "step",
+          "label": "Show Inbox",
+          "layer": "client",
+          "status": "planned",
+          "notes": "Inbox page UI is Phase 3. Renders thread list with participant avatars, last message preview, unread badge per thread, and type filter tabs (All / Inquiries / Offers / Direct). ThreadWithParticipants already carries my_unread_count and last_message_preview from the API."
+        },
+        {
+          "id": "view-inbox--inbox-empty",
+          "type": "step",
+          "label": "Show Empty Inbox",
+          "layer": "client",
+          "status": "planned",
+          "notes": "Empty state when user has no threads. Should show encouraging CTA to browse listings. Distinct from filtered-empty state (all threads exist but the active filter shows none)."
+        },
+        {
+          "id": "start-thread--entry",
+          "type": "entry",
+          "label": "Start a New Thread"
+        },
+        {
+          "id": "start-thread--create-thread",
+          "type": "step",
+          "label": "Create Thread",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/threads",
+          "codeRef": "src/app/api/messaging/threads/route.ts",
+          "why": "Body: { type, participantIds, roles, listingId?, shopId? }. Returns 201 for new thread, 409 if a thread with the same participants and type already exists (client should redirect to the existing thread). type must be one of: inquiry, direct, offer, custom_request. listingId required for inquiry; shopId required for custom_request.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Missing or invalid type",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "participantIds has fewer than 2 members",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "roles length does not match participantIds",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "inquiry type without listingId",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "custom_request type without shopId",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Requesting user not in participantIds",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Thread already exists",
+              "result": "Returns 409 — client redirects to existing thread",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "start-thread--thread-created",
+          "type": "step",
+          "label": "Open New Thread",
+          "layer": "client",
+          "status": "planned",
+          "notes": "On 201: navigate to the new thread view. On 409: redirect to the existing thread (the response body contains the existing ThreadWithParticipants). The client service createThread() returns the thread in both cases — callers should differentiate via HTTP status if needed."
+        },
+        {
+          "id": "view-thread--entry",
+          "type": "entry",
+          "label": "Open a Thread"
+        },
+        {
+          "id": "view-thread--fetch-thread",
+          "type": "step",
+          "label": "Fetch Thread Details",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/threads/[thread_id]",
+          "codeRef": "src/app/api/messaging/threads/[thread_id]/route.ts",
+          "why": "Returns ThreadWithParticipants: thread row joined with participant member details (name, avatar, slug) and my_unread_count. Returns 404 if the thread does not exist or user is not a participant (participant check is in getThreadByIdServer).",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Thread not found or user not a participant",
+              "result": "Returns 404 Not Found",
+              "httpStatus": 404
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "view-thread--fetch-messages",
+          "type": "step",
+          "label": "Fetch Messages",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/threads/[thread_id]/messages",
+          "codeRef": "src/app/api/messaging/threads/[thread_id]/messages/route.ts",
+          "why": "Cursor-based pagination. Query params: ?cursor={messageId}&limit={1-100, default 50}. Returns { messages: MessageWithSender[], nextCursor: string | null }. Messages ordered newest-first. Non-participant request returns 403.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "User is not a thread participant",
+              "result": "Returns 403 Forbidden",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "view-thread--mark-read",
+          "type": "step",
+          "label": "Mark Thread Read",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/threads/[thread_id]/read",
+          "codeRef": "src/app/api/messaging/threads/[thread_id]/read/route.ts",
+          "why": "Resets unread_count to 0 on the user's message_thread_participants row. Called automatically on thread open. Drives the unread badge update in the nav — client should invalidate ['messaging', 'unread'] after success.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "User is not a thread participant",
+              "result": "Returns 403 Forbidden",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "view-thread--thread-view",
+          "type": "step",
+          "label": "Render Thread View",
+          "layer": "client",
+          "status": "planned",
+          "notes": "MessageThread component scaffold exists at src/features/messaging/components/message-thread/index.tsx. Full UI is Phase 3. Should render participant header, paginated message list (infinite scroll via useMessages hook), and the compose input."
+        },
+        {
+          "id": "send-message--entry",
+          "type": "entry",
+          "label": "Send a Message"
+        },
+        {
+          "id": "send-message--compose-message",
+          "type": "step",
+          "label": "Compose Message",
+          "layer": "client",
+          "status": "planned",
+          "notes": "Message compose input in the thread view. Phase 3 UI. Should show character count and send button. Optimistic insert via useSendMessage hook — message appears immediately before server confirm."
+        },
+        {
+          "id": "send-message--send-message-api",
+          "type": "step",
+          "label": "Send Message",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/threads/[thread_id]/messages",
+          "codeRef": "src/app/api/messaging/threads/[thread_id]/messages/route.ts",
+          "why": "Body: { content, type? }. type defaults to 'text'. Runs participant check, block check, and safety filter (block → 422, redact → stored filtered, nudge → nudge system message appended, pass → as-is). Returns 201 MessageWithSender.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Empty or missing content",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "User is not a thread participant",
+              "result": "Returns 403 Forbidden",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Recipient has blocked the sender",
+              "result": "Returns 403 — cannot send to this user",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Safety filter: block action (explicit content)",
+              "result": "Returns 422 — message violates community guidelines",
+              "httpStatus": 422
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "send-message--safety-filter",
+          "type": "step",
+          "label": "Apply Safety Filter",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/messaging/utils/safety-filter.ts",
+          "why": "Processing order: block → redact → nudge → pass. Block: explicit/profane content → 422 rejected. Redact: PII (phone, email, credit card via Luhn) → replaced with [removed], original stored in original_content with is_filtered=true. Nudge: off-platform dealing or price negotiation → message passes but a nudge system message is inserted after it. Pass: no match → stored as-is."
+        },
+        {
+          "id": "send-message--decision-safety-filter",
+          "type": "decision",
+          "label": "Filter result?",
+          "options": [
+            {
+              "label": "Block",
+              "to": "send-message--message-delivered"
+            },
+            {
+              "label": "Redact",
+              "to": "send-message--update-thread-meta"
+            },
+            {
+              "label": "Nudge",
+              "to": "send-message--update-thread-meta"
+            },
+            {
+              "label": "Pass",
+              "to": "send-message--update-thread-meta"
+            }
+          ]
+        },
+        {
+          "id": "send-message--update-thread-meta",
+          "type": "step",
+          "label": "Update Thread Preview",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/messaging/services/messaging-server.ts",
+          "why": "createMessageServer() updates last_message_at and last_message_preview on the message_threads row, and increments unread_count on all other participants' message_thread_participants rows."
+        },
+        {
+          "id": "send-message--message-delivered",
+          "type": "step",
+          "label": "Message Appears",
+          "layer": "client",
+          "status": "planned",
+          "notes": "On 201: optimistic message confirmed, cache invalidated. On 422: show inline error 'Message blocked — violates community guidelines'. On 403 (block): show inline error 'You cannot send messages to this user'. useSendMessage hook handles rollback on error."
+        },
+        {
+          "id": "send-message--nudge-system-message",
+          "type": "step",
+          "label": "Show Nudge Message",
+          "layer": "client",
+          "status": "planned",
+          "notes": "When the safety filter returns nudge_off_platform or nudge_negotiation, the API inserts a second message with type='nudge' after the user's message. The UI should render nudge messages distinctly (system message style, not attributed to the sender) to guide the user back to platform-native flows like the offer system."
+        },
+        {
+          "id": "manage-thread--entry",
+          "type": "entry",
+          "label": "Archive a Thread"
+        },
+        {
+          "id": "manage-thread--archive-thread",
+          "type": "step",
+          "label": "Archive Thread",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/threads/[thread_id]/archive",
+          "codeRef": "src/app/api/messaging/threads/[thread_id]/archive/route.ts",
+          "why": "Sets thread_status = 'archived' on the message_threads row. Archived threads are excluded from the default inbox view. Returns { success: true }. Non-participant request returns 403.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "User is not a thread participant",
+              "result": "Returns 403 Forbidden",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "manage-thread--thread-archived",
+          "type": "step",
+          "label": "Thread Removed",
+          "layer": "client",
+          "status": "planned",
+          "notes": "On success: optimistic removal from the active inbox list, toast 'Conversation archived'. Thread should reappear if the user opens an Archived filter tab. useArchiveThread mutation should invalidate ['messaging', 'threads']."
+        },
+        {
+          "id": "offer-flow--entry",
+          "type": "entry",
+          "label": "Make an Offer"
+        },
+        {
+          "id": "offer-flow--open-offer-form",
+          "type": "step",
+          "label": "Open Offer Form",
+          "layer": "client",
+          "status": "planned",
+          "notes": "Offer entry UI is Phase 3. OfferBubble component scaffold exists at src/features/messaging/components/offer-bubble/index.tsx. Should show listing price, min offer floor (70% of price), default prefill (80%), and offer amount input. Uses calculateMinOffer() and calculateDefaultOffer() from offer-validation.ts."
+        },
+        {
+          "id": "offer-flow--validate-offer-amount",
+          "type": "step",
+          "label": "Validate Offer Amount",
+          "layer": "client",
+          "status": "planned",
+          "notes": "Client-side pre-validation using validateOfferAmount(amountCents, listingPriceCents) before submitting. Minimum is 70% of listing price. Shows inline error if below floor."
+        },
+        {
+          "id": "offer-flow--create-offer-api",
+          "type": "step",
+          "label": "Submit Offer",
+          "layer": "server",
+          "status": "planned",
+          "route": "/api/offers",
+          "notes": "Offer API routes are not yet built (Phase 3). Server service createOfferServer() is built at src/features/messaging/services/offers-server.ts. It validates: listing is active, buyer is not the seller, amount >= 70% of price, seller is valid; expires stale offers; creates inquiry thread + offer row in one operation."
+        },
+        {
+          "id": "offer-flow--offer-thread-created",
+          "type": "step",
+          "label": "Offer Thread Opens",
+          "layer": "client",
+          "status": "planned",
+          "notes": "createOfferServer() creates a thread of type='offer' as part of the offer creation. The buyer should be navigated into that thread where the offer appears as an offer_node message rendered by OfferBubble."
+        },
+        {
+          "id": "offer-flow--seller-reviews-offer",
+          "type": "step",
+          "label": "Seller Reviews Offer",
+          "layer": "client",
+          "status": "planned",
+          "notes": "Seller sees the offer_node message in the thread. OfferBubble renders offer amount, listing thumbnail, and Accept / Decline / Counter actions. acceptOfferServer(), declineOfferServer(), and counterOfferServer() are built in offers-server.ts but the API routes (/api/offers/[id]/accept etc.) are Phase 3."
+        },
+        {
+          "id": "offer-flow--offer-expires",
+          "type": "step",
+          "label": "Expire Stale Offers",
+          "layer": "external",
+          "status": "planned",
+          "notes": "expirePendingOffersServer() is built but the cron route /api/cron/expire-offers is not yet created. Pending offers expire after 24h; accepted offers (awaiting checkout) expire after 4h. The cron should run every 15 minutes via vercel.json."
+        },
+        {
+          "id": "unread-badge--entry",
+          "type": "entry",
+          "label": "Unread Count in Nav"
+        },
+        {
+          "id": "unread-badge--poll-unread",
+          "type": "step",
+          "label": "Poll Unread Count",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/unread-count",
+          "codeRef": "src/app/api/messaging/unread-count/route.ts",
+          "why": "Sums unread_count across all active participant rows. Designed to be called by useUnreadCount() hook on a polling interval or query invalidation. Query key: ['messaging', 'unread']."
+        },
+        {
+          "id": "unread-badge--render-badge",
+          "type": "step",
+          "label": "Render Unread Badge",
+          "layer": "client",
+          "status": "planned",
+          "notes": "Nav inbox icon badge showing total unread count. Should be driven by useUnreadCount() hook. Badge should be hidden at 0 and cap display at 99+. Needs to invalidate when markThreadRead succeeds."
+        }
+      ],
+      "edges": [
+        {
+          "from": "messaging-hub--entry",
+          "to": "messaging-hub--open-messaging"
+        },
+        {
+          "from": "messaging-hub--open-messaging",
+          "to": "messaging-hub--decision-open-messaging"
+        },
+        {
+          "from": "view-inbox--entry",
+          "to": "view-inbox--fetch-threads"
+        },
+        {
+          "from": "view-inbox--fetch-threads",
+          "to": "view-inbox--decision-fetch-threads"
+        },
+        {
+          "from": "view-inbox--decision-fetch-threads",
+          "to": "view-inbox--inbox-page",
+          "opt": "Yes"
+        },
+        {
+          "from": "view-inbox--decision-fetch-threads",
+          "to": "view-inbox--inbox-empty",
+          "opt": "No"
+        },
+        {
+          "from": "view-inbox--fetch-unread-count",
+          "to": "view-inbox--inbox-page"
+        },
+        {
+          "from": "view-inbox--inbox-page",
+          "to": "view-inbox--inbox-empty"
+        },
+        {
+          "from": "start-thread--entry",
+          "to": "start-thread--create-thread"
+        },
+        {
+          "from": "start-thread--create-thread",
+          "to": "start-thread--thread-created"
+        },
+        {
+          "from": "view-thread--entry",
+          "to": "view-thread--fetch-thread"
+        },
+        {
+          "from": "view-thread--fetch-thread",
+          "to": "view-thread--fetch-messages"
+        },
+        {
+          "from": "view-thread--fetch-messages",
+          "to": "view-thread--mark-read"
+        },
+        {
+          "from": "view-thread--mark-read",
+          "to": "view-thread--thread-view"
+        },
+        {
+          "from": "send-message--entry",
+          "to": "send-message--compose-message"
+        },
+        {
+          "from": "send-message--compose-message",
+          "to": "send-message--send-message-api"
+        },
+        {
+          "from": "send-message--send-message-api",
+          "to": "send-message--safety-filter"
+        },
+        {
+          "from": "send-message--safety-filter",
+          "to": "send-message--decision-safety-filter"
+        },
+        {
+          "from": "send-message--decision-safety-filter",
+          "to": "send-message--message-delivered",
+          "opt": "Block"
+        },
+        {
+          "from": "send-message--decision-safety-filter",
+          "to": "send-message--update-thread-meta",
+          "opt": "Redact"
+        },
+        {
+          "from": "send-message--decision-safety-filter",
+          "to": "send-message--update-thread-meta",
+          "opt": "Nudge"
+        },
+        {
+          "from": "send-message--decision-safety-filter",
+          "to": "send-message--update-thread-meta",
+          "opt": "Pass"
+        },
+        {
+          "from": "send-message--update-thread-meta",
+          "to": "send-message--message-delivered"
+        },
+        {
+          "from": "send-message--message-delivered",
+          "to": "send-message--nudge-system-message"
+        },
+        {
+          "from": "manage-thread--entry",
+          "to": "manage-thread--archive-thread"
+        },
+        {
+          "from": "manage-thread--archive-thread",
+          "to": "manage-thread--thread-archived"
+        },
+        {
+          "from": "offer-flow--entry",
+          "to": "offer-flow--open-offer-form"
+        },
+        {
+          "from": "offer-flow--open-offer-form",
+          "to": "offer-flow--validate-offer-amount"
+        },
+        {
+          "from": "offer-flow--validate-offer-amount",
+          "to": "offer-flow--create-offer-api"
+        },
+        {
+          "from": "offer-flow--create-offer-api",
+          "to": "offer-flow--offer-thread-created"
+        },
+        {
+          "from": "offer-flow--offer-thread-created",
+          "to": "offer-flow--seller-reviews-offer"
+        },
+        {
+          "from": "offer-flow--seller-reviews-offer",
+          "to": "offer-flow--offer-expires"
+        },
+        {
+          "from": "unread-badge--entry",
+          "to": "unread-badge--poll-unread"
+        },
+        {
+          "from": "unread-badge--poll-unread",
+          "to": "unread-badge--render-badge"
+        }
+      ]
+    },
+    {
       "slug": "cart",
       "domain": "cart",
       "title": "Cart (Guest + Authenticated)",

@@ -751,6 +751,107 @@
       ]
     },
     {
+      "name": "Messaging",
+      "endpoints": [
+        {
+          "method": "PATCH",
+          "path": "/api/messaging/threads/:thread_id/archive",
+          "label": "Archive :Thread Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 403, 500],
+          "requestFields": [],
+          "description": "Archive a message thread",
+          "tags": [],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/archive/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/messaging/threads/:thread_id/messages",
+          "label": "List Message",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 403, 422, 500],
+          "requestFields": [],
+          "description": "List messages in a thread with cursor-based pagination",
+          "tags": [],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/messages/route.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/messaging/threads/:thread_id/messages",
+          "label": "Messages :Thread Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 403, 422, 500],
+          "requestFields": [],
+          "description": "Send a message in a thread (applies safety filter before storage)",
+          "tags": [],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/messages/route.ts"
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/messaging/threads/:thread_id/read",
+          "label": "Read :Thread Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 403, 500],
+          "requestFields": [],
+          "description": "Mark a thread as read for the authenticated user",
+          "tags": [],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/read/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/messaging/threads/:thread_id",
+          "label": "List :Thread Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 404, 500],
+          "requestFields": [],
+          "description": "Get thread details including participants and context",
+          "tags": [],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/messaging/threads",
+          "label": "List Thread",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 409, 500],
+          "requestFields": [],
+          "description": "List the authenticated user's message threads with optional type filter",
+          "tags": [],
+          "sourceFile": "src/app/api/messaging/threads/route.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/messaging/threads",
+          "label": "Threads Messaging",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 409, 500],
+          "requestFields": [],
+          "description": "Create a new message thread between two members",
+          "tags": [],
+          "sourceFile": "src/app/api/messaging/threads/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/messaging/unread-count",
+          "label": "List Unread Count",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Get the total unread message count for the authenticated user",
+          "tags": [],
+          "sourceFile": "src/app/api/messaging/unread-count/route.ts"
+        }
+      ]
+    },
+    {
       "name": "Recently Viewed",
       "endpoints": [
         {

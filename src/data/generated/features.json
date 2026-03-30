@@ -369,7 +369,7 @@
       "name": "Messaging",
       "description": "Real-time messaging between buyers and sellers. Supports inquiry threads on listings, direct member-to-member messages, offer negotiations, and custom gear requests. Messages pass through a safety filter before delivery.",
       "componentCount": 4,
-      "endpointCount": 0,
+      "endpointCount": 6,
       "hookCount": 0,
       "serviceCount": 4,
       "entities": [
@@ -381,7 +381,7 @@
         "messages",
         "offers"
       ],
-      "journeySlugs": [],
+      "journeySlugs": ["buyer-seller-messaging"],
       "links": [
         {
           "type": "entity",
@@ -417,6 +417,16 @@
           "type": "entity",
           "label": "offers",
           "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "buyer-seller-messaging",
+          "href": "/journeys/buyer-seller-messaging"
+        },
+        {
+          "type": "api-group",
+          "label": "Messaging",
+          "href": "/api-map"
         }
       ]
     },
