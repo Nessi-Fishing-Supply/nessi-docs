@@ -45,6 +45,7 @@ export function DotGrid() {
     const drawBase = () => {
       // Draw all base dots to an offscreen canvas, then cache as ImageBitmap
       const { w, h } = sizeRef.current;
+      if (w === 0 || h === 0) return null;
       const offscreen = new OffscreenCanvas(w * dpr, h * dpr);
       const offCtx = offscreen.getContext('2d');
       if (!offCtx) return;

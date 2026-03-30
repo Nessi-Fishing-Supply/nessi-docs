@@ -195,26 +195,17 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
     if (!visited.has(node.id)) detectBackEdges(node.id);
   }
 
-  // ── Build DAG adjacency (outgoing minus back-edges) ──
-  const dagOutgoing = new Map<string, string[]>();
-  const dagIncoming = new Map<string, string[]>();
-  for (const node of rawNodes) {
-    dagOutgoing.set(node.id, []);
-    dagIncoming.set(node.id, []);
-  }
-  rawEdges.forEach((edge, i) => {
-    if (!backEdgeSet.has(i)) {
-      dagOutgoing.get(edge.from)?.push(edge.to);
-      dagIncoming.get(edge.to)?.push(edge.from);
-    }
-  });
-
   // ── Longest-path column assignment ──
+  // Uses raw incoming adjacency with back-edge filtering (before DAG is built).
   const colMemo = new Map<string, number>();
 
   function longestPathTo(nodeId: string): number {
     if (colMemo.has(nodeId)) return colMemo.get(nodeId)!;
-    const parents = dagIncoming.get(nodeId) ?? [];
+    // Filter to non-back-edge parents
+    const parents = (incoming.get(nodeId) ?? []).filter((p) => {
+      const ei = rawEdges.findIndex((e) => e.from === p && e.to === nodeId);
+      return ei >= 0 && !backEdgeSet.has(ei);
+    });
     if (parents.length === 0) {
       colMemo.set(nodeId, 0);
       return 0;
@@ -229,6 +220,43 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
   for (const node of rawNodes) {
     column.set(node.id, longestPathTo(node.id));
   }
+
+  // ── Decision branch column capping ──
+  // When a node is a direct decision option target but has been pushed far
+  // right by a merge edge from a long parallel chain, demote those non-decision
+  // incoming edges to back-edges and reset the column. This keeps decision
+  // branches visually close to their decision node.
+  for (const node of rawNodes) {
+    if (node.type !== 'decision' || !node.options) continue;
+    const decCol = column.get(node.id) ?? 0;
+    for (const opt of node.options) {
+      const targetCol = column.get(opt.to) ?? 0;
+      if (targetCol > decCol + 1) {
+        // This target was pushed far right — demote non-decision incoming edges
+        rawEdges.forEach((edge, i) => {
+          if (backEdgeSet.has(i)) return;
+          if (edge.to !== opt.to) return;
+          if (edge.from === node.id) return; // Keep the decision's own edge
+          backEdgeSet.add(i);
+        });
+        column.set(opt.to, decCol + 1);
+      }
+    }
+  }
+
+  // Rebuild DAG adjacency after adding new back-edges
+  const dagOutgoing = new Map<string, string[]>();
+  const dagIncoming = new Map<string, string[]>();
+  for (const n of rawNodes) {
+    dagOutgoing.set(n.id, []);
+    dagIncoming.set(n.id, []);
+  }
+  rawEdges.forEach((edge, i) => {
+    if (!backEdgeSet.has(i)) {
+      dagOutgoing.get(edge.from)?.push(edge.to);
+      dagIncoming.get(edge.to)?.push(edge.from);
+    }
+  });
 
   // ── Identify sub-journeys ──
   // BFS from each entry node through DAG edges to assign nodes to entry groups
@@ -408,12 +436,13 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
 }
 
 /**
- * Detect back-edges (cycle edges) in a journey's edge list.
- * Returns a Set of edge indices that are back-edges.
- * Used by JourneyCanvas to render back-edges with distinct visual treatment.
+ * Detect back-edges in a journey's edge list.
+ * Includes both DFS cycle edges AND merge-back edges to decision branch targets
+ * (edges from later-in-flow nodes to a decision's direct branch target).
+ * Returns a Set of edge indices.
  */
 export function detectJourneyBackEdges(
-  nodes: { id: string; type: string }[],
+  nodes: { id: string; type: string; options?: { label: string; to: string }[] }[],
   edges: { from: string; to: string }[],
 ): Set<number> {
   const outgoing = new Map<string, string[]>();
@@ -427,6 +456,7 @@ export function detectJourneyBackEdges(
     incoming.get(edge.to)?.push(edge.from);
   }
 
+  // Step 1: DFS cycle detection
   const backEdges = new Set<number>();
   const visited = new Set<string>();
   const inStack = new Set<string>();
@@ -453,6 +483,41 @@ export function detectJourneyBackEdges(
   }
   for (const node of nodes) {
     if (!visited.has(node.id)) dfs(node.id);
+  }
+
+  // Step 2: Longest-path columns (excluding cycle back-edges)
+  const colMemo = new Map<string, number>();
+  function longestPath(nodeId: string): number {
+    if (colMemo.has(nodeId)) return colMemo.get(nodeId)!;
+    const parents = (incoming.get(nodeId) ?? []).filter((p) => {
+      const ei = edges.findIndex((e) => e.from === p && e.to === nodeId);
+      return ei >= 0 && !backEdges.has(ei);
+    });
+    if (parents.length === 0) {
+      colMemo.set(nodeId, 0);
+      return 0;
+    }
+    const maxP = Math.max(...parents.map((p) => longestPath(p)));
+    colMemo.set(nodeId, maxP + 1);
+    return maxP + 1;
+  }
+  const col = new Map<string, number>();
+  for (const node of nodes) col.set(node.id, longestPath(node.id));
+
+  // Step 3: Mark merge-back edges to decision branch targets
+  for (const node of nodes) {
+    if (node.type !== 'decision' || !node.options) continue;
+    const decCol = col.get(node.id) ?? 0;
+    for (const opt of node.options) {
+      if ((col.get(opt.to) ?? 0) > decCol + 1) {
+        edges.forEach((edge, i) => {
+          if (backEdges.has(i)) return;
+          if (edge.to !== opt.to) return;
+          if (edge.from === node.id) return;
+          backEdges.add(i);
+        });
+      }
+    }
   }
 
   return backEdges;
