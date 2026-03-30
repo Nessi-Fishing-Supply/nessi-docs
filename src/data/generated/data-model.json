@@ -785,6 +785,77 @@
       ]
     },
     {
+      "name": "member_blocks",
+      "label": "Member Blocks",
+      "fields": [
+        {
+          "name": "blocked_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "blocker_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        }
+      ],
+      "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260330000001_create_offers_and_blocks.sql",
+      "rlsPolicies": [
+        {
+          "name": "member_blocks_select_own",
+          "operation": "SELECT",
+          "using": "blocker_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "member_blocks_insert_own",
+          "operation": "INSERT",
+          "withCheck": "blocker_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "member_blocks_delete_own",
+          "operation": "DELETE",
+          "using": "blocker_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_member_blocks_blocker_id",
+          "columns": ["blocker_id"],
+          "unique": false
+        },
+        {
+          "name": "idx_member_blocks_blocked_id",
+          "columns": ["blocked_id"],
+          "unique": false
+        }
+      ],
+      "triggers": []
+    },
+    {
       "name": "members",
       "label": "Members",
       "fields": [
@@ -1343,6 +1414,141 @@
           "event": "INSERT",
           "timing": "AFTER",
           "function": "public.increment_unread_count"
+        }
+      ]
+    },
+    {
+      "name": "offers",
+      "label": "Offers",
+      "fields": [
+        {
+          "name": "amount_cents",
+          "type": "number",
+          "nullable": false
+        },
+        {
+          "name": "buyer_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        },
+        {
+          "name": "expires_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "listing_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "listings",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "parent_offer_id",
+          "type": "string",
+          "nullable": true,
+          "references": {
+            "table": "offers",
+            "column": "id",
+            "onDelete": "SET NULL"
+          }
+        },
+        {
+          "name": "seller_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "status",
+          "type": "enum:offer_status",
+          "nullable": false,
+          "default": "'pending'"
+        },
+        {
+          "name": "thread_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "message_threads",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        }
+      ],
+      "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260330000001_create_offers_and_blocks.sql",
+      "rlsPolicies": [
+        {
+          "name": "offers_select_buyer_seller",
+          "operation": "SELECT",
+          "using": "buyer_id = (SELECT auth.uid()) OR seller_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "offers_insert_buyer",
+          "operation": "INSERT",
+          "withCheck": "buyer_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "offers_update_seller",
+          "operation": "UPDATE",
+          "using": "seller_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_offers_listing_buyer_status",
+          "columns": ["listing_id", "buyer_id", "status"],
+          "unique": false
+        },
+        {
+          "name": "idx_offers_thread_id",
+          "columns": ["thread_id"],
+          "unique": false
+        },
+        {
+          "name": "idx_offers_status_expires_at",
+          "columns": ["status", "expires_at"],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "trg_update_offers_timestamp",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "public.update_offers_timestamp"
         }
       ]
     },

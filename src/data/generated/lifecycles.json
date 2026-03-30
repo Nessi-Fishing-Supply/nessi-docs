@@ -296,6 +296,36 @@
       "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql"
     },
     {
+      "slug": "offer",
+      "name": "Offer Lifecycle",
+      "description": "Status lifecycle for offer entities",
+      "states": [
+        {
+          "id": "pending",
+          "label": "Pending"
+        },
+        {
+          "id": "accepted",
+          "label": "Accepted"
+        },
+        {
+          "id": "declined",
+          "label": "Declined"
+        },
+        {
+          "id": "countered",
+          "label": "Countered"
+        },
+        {
+          "id": "expired",
+          "label": "Expired"
+        }
+      ],
+      "transitions": [],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260330000001_create_offers_and_blocks.sql"
+    },
+    {
       "slug": "subscription",
       "name": "Subscription Lifecycle",
       "description": "Status lifecycle for subscription entities",

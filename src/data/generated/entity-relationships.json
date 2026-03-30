@@ -25,6 +25,10 @@
       "label": "Listings"
     },
     {
+      "id": "member_blocks",
+      "label": "Member Blocks"
+    },
+    {
       "id": "members",
       "label": "Members"
     },
@@ -39,6 +43,10 @@
     {
       "id": "messages",
       "label": "Messages"
+    },
+    {
+      "id": "offers",
+      "label": "Offers"
     },
     {
       "id": "price_drop_notifications",
@@ -123,6 +131,16 @@
       "label": "shop_id"
     },
     {
+      "from": "member_blocks",
+      "to": "members",
+      "label": "blocked_id"
+    },
+    {
+      "from": "member_blocks",
+      "to": "members",
+      "label": "blocker_id"
+    },
+    {
       "from": "message_thread_participants",
       "to": "members",
       "label": "member_id"
@@ -154,6 +172,31 @@
     },
     {
       "from": "messages",
+      "to": "message_threads",
+      "label": "thread_id"
+    },
+    {
+      "from": "offers",
+      "to": "members",
+      "label": "buyer_id"
+    },
+    {
+      "from": "offers",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "offers",
+      "to": "offers",
+      "label": "parent_offer_id"
+    },
+    {
+      "from": "offers",
+      "to": "members",
+      "label": "seller_id"
+    },
+    {
+      "from": "offers",
       "to": "message_threads",
       "label": "thread_id"
     },

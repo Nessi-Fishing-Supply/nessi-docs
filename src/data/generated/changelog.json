@@ -1,13 +1,23 @@
 {
   "entries": [
     {
+      "title": "feat(messaging): #303 offers and member_blocks database migration",
+      "number": 321,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/321",
+      "mergedAt": "2026-03-30T14:28:39Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "messaging",
+      "type": "feature"
+    },
+    {
       "title": "feat(messaging): #302 create messaging database schema",
       "number": 320,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/320",
       "mergedAt": "2026-03-30T14:05:36Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "messaging",
       "type": "feature"
     },
     {
@@ -17,7 +27,7 @@
       "mergedAt": "2026-03-27T18:33:53Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "watchlist",
       "type": "feature"
     },
     {
@@ -27,7 +37,7 @@
       "mergedAt": "2026-03-27T15:15:36Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -37,7 +47,7 @@
       "mergedAt": "2026-03-27T14:41:20Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "follows",
       "type": "feature"
     },
     {
@@ -47,7 +57,7 @@
       "mergedAt": "2026-03-27T13:51:01Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "follows",
       "type": "feature"
     },
     {
@@ -57,7 +67,7 @@
       "mergedAt": "2026-03-27T13:32:17Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "follows",
       "type": "feature"
     },
     {
@@ -67,7 +77,7 @@
       "mergedAt": "2026-03-27T03:52:58Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "follows",
       "type": "feature"
     },
     {
@@ -77,7 +87,7 @@
       "mergedAt": "2026-03-27T03:22:09Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "follows",
       "type": "feature"
     },
     {
@@ -87,7 +97,7 @@
       "mergedAt": "2026-03-27T02:54:40Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "general",
       "type": "refactor"
     },
     {
@@ -97,7 +107,7 @@
       "mergedAt": "2026-03-27T02:47:05Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "reports",
       "type": "feature"
     },
     {
@@ -107,7 +117,7 @@
       "mergedAt": "2026-03-26T21:41:59Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "reports",
       "type": "feature"
     },
     {
@@ -117,7 +127,7 @@
       "mergedAt": "2026-03-26T21:16:46Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "reports",
       "type": "feature"
     },
     {
@@ -127,7 +137,7 @@
       "mergedAt": "2026-03-26T21:01:50Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "reports",
       "type": "feature"
     },
     {
@@ -137,7 +147,7 @@
       "mergedAt": "2026-03-26T20:27:20Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "recommendations",
       "type": "feature"
     },
     {
@@ -147,7 +157,7 @@
       "mergedAt": "2026-03-26T20:08:07Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "recommendations",
       "type": "feature"
     },
     {
@@ -157,7 +167,7 @@
       "mergedAt": "2026-03-26T17:55:29Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "recommendations",
       "type": "feature"
     },
     {
@@ -167,7 +177,7 @@
       "mergedAt": "2026-03-26T17:30:50Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "recommendations",
       "type": "feature"
     },
     {
@@ -177,7 +187,7 @@
       "mergedAt": "2026-03-25T22:08:12Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -187,7 +197,7 @@
       "mergedAt": "2026-03-25T21:25:18Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -197,7 +207,7 @@
       "mergedAt": "2026-03-25T20:46:30Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -207,7 +217,7 @@
       "mergedAt": "2026-03-25T19:44:05Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -217,7 +227,7 @@
       "mergedAt": "2026-03-25T19:01:32Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -227,7 +237,7 @@
       "mergedAt": "2026-03-25T17:33:37Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -237,7 +247,7 @@
       "mergedAt": "2026-03-25T16:25:43Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -247,7 +257,7 @@
       "mergedAt": "2026-03-25T15:24:51Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -257,7 +267,7 @@
       "mergedAt": "2026-03-25T15:11:20Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "addresses",
       "type": "feature"
     },
     {
@@ -267,7 +277,7 @@
       "mergedAt": "2026-03-25T14:11:50Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -277,7 +287,7 @@
       "mergedAt": "2026-03-25T13:52:43Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -287,7 +297,7 @@
       "mergedAt": "2026-03-25T13:15:27Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -297,7 +307,7 @@
       "mergedAt": "2026-03-25T03:46:26Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -307,7 +317,7 @@
       "mergedAt": "2026-03-25T02:58:29Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -317,7 +327,7 @@
       "mergedAt": "2026-03-25T02:12:33Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -327,7 +337,7 @@
       "mergedAt": "2026-03-25T01:44:27Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -337,7 +347,7 @@
       "mergedAt": "2026-03-25T01:20:07Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -347,7 +357,7 @@
       "mergedAt": "2026-03-25T00:17:12Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -357,7 +367,7 @@
       "mergedAt": "2026-03-24T23:32:38Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -367,7 +377,7 @@
       "mergedAt": "2026-03-24T22:48:29Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "recently-viewed",
       "type": "feature"
     },
     {
@@ -377,7 +387,7 @@
       "mergedAt": "2026-03-24T19:39:15Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "recommendations",
       "type": "feature"
     },
     {
@@ -387,7 +397,7 @@
       "mergedAt": "2026-03-24T17:58:51Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "recently-viewed",
       "type": "feature"
     },
     {
@@ -397,7 +407,7 @@
       "mergedAt": "2026-03-24T16:30:18Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "search",
       "type": "feature"
     },
     {
@@ -407,7 +417,7 @@
       "mergedAt": "2026-03-24T15:01:03Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -417,7 +427,7 @@
       "mergedAt": "2026-03-24T13:57:53Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "auth",
       "type": "feature"
     },
     {
@@ -427,7 +437,7 @@
       "mergedAt": "2026-03-24T13:35:38Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "auth",
       "type": "feature"
     },
     {
@@ -437,7 +447,7 @@
       "mergedAt": "2026-03-24T02:54:57Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "auth",
       "type": "feature"
     },
     {
@@ -447,7 +457,7 @@
       "mergedAt": "2026-03-24T02:38:08Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -457,7 +467,7 @@
       "mergedAt": "2026-03-24T02:23:41Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -467,7 +477,7 @@
       "mergedAt": "2026-03-23T21:55:58Z",
       "author": "AlexHHolloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "general",
       "type": "feature"
     },
     {
@@ -477,7 +487,7 @@
       "mergedAt": "2026-03-23T21:22:47Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "cart",
       "type": "feature"
     },
     {
@@ -487,7 +497,7 @@
       "mergedAt": "2026-03-23T20:55:18Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "cart",
       "type": "feature"
     },
     {
@@ -497,7 +507,7 @@
       "mergedAt": "2026-03-23T19:34:00Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "cart",
       "type": "feature"
     },
     {
@@ -507,7 +517,7 @@
       "mergedAt": "2026-03-23T18:59:52Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "cart",
       "type": "feature"
     },
     {
@@ -517,7 +527,7 @@
       "mergedAt": "2026-03-23T18:46:30Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "cart",
       "type": "feature"
     },
     {
@@ -527,7 +537,7 @@
       "mergedAt": "2026-03-23T18:26:10Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "cart",
       "type": "feature"
     },
     {
@@ -537,7 +547,7 @@
       "mergedAt": "2026-03-23T18:07:45Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "cart",
       "type": "feature"
     },
     {
@@ -547,7 +557,7 @@
       "mergedAt": "2026-03-23T17:26:46Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "cart",
       "type": "feature"
     },
     {
@@ -557,7 +567,7 @@
       "mergedAt": "2026-03-23T16:25:13Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -567,7 +577,7 @@
       "mergedAt": "2026-03-23T16:17:39Z",
       "author": "AlexHHolloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "general",
       "type": "refactor"
     },
     {
@@ -577,7 +587,7 @@
       "mergedAt": "2026-03-23T15:22:27Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -587,7 +597,7 @@
       "mergedAt": "2026-03-23T02:07:16Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "general",
       "type": "fix"
     },
     {
@@ -597,7 +607,7 @@
       "mergedAt": "2026-03-23T00:00:08Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -607,7 +617,7 @@
       "mergedAt": "2026-03-22T22:48:54Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -617,7 +627,7 @@
       "mergedAt": "2026-03-22T17:18:31Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -627,7 +637,7 @@
       "mergedAt": "2026-03-22T15:09:50Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -637,7 +647,7 @@
       "mergedAt": "2026-03-22T14:16:27Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -647,7 +657,7 @@
       "mergedAt": "2026-03-21T18:30:37Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "listings",
       "type": "feature"
     },
     {
@@ -657,7 +667,7 @@
       "mergedAt": "2026-03-21T17:42:54Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "db",
       "type": "feature"
     },
     {
@@ -667,7 +677,7 @@
       "mergedAt": "2026-03-21T17:17:38Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "context",
       "type": "feature"
     },
     {
@@ -677,7 +687,7 @@
       "mergedAt": "2026-03-21T17:02:21Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "members",
       "type": "feature"
     },
     {
@@ -687,7 +697,7 @@
       "mergedAt": "2026-03-21T16:47:22Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -697,7 +707,7 @@
       "mergedAt": "2026-03-21T16:26:54Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "general",
       "type": "refactor"
     },
     {
@@ -707,7 +717,7 @@
       "mergedAt": "2026-03-21T15:44:54Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "pages",
       "type": "feature"
     },
     {
@@ -717,7 +727,7 @@
       "mergedAt": "2026-03-21T15:16:00Z",
       "author": "AlexHHolloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "general",
       "type": "chore"
     },
     {
@@ -727,7 +737,7 @@
       "mergedAt": "2026-03-21T14:55:13Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "members",
       "type": "feature"
     },
     {
@@ -737,7 +747,7 @@
       "mergedAt": "2026-03-21T14:33:21Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "infra",
       "type": "chore"
     },
     {
@@ -747,7 +757,7 @@
       "mergedAt": "2026-03-21T14:18:43Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "account",
       "type": "feature"
     },
     {
@@ -757,7 +767,7 @@
       "mergedAt": "2026-03-21T14:05:42Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -767,7 +777,7 @@
       "mergedAt": "2026-03-21T13:55:11Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -777,7 +787,7 @@
       "mergedAt": "2026-03-21T13:42:30Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "auth",
       "type": "fix"
     },
     {
@@ -787,7 +797,7 @@
       "mergedAt": "2026-03-21T04:41:14Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "db",
       "type": "fix"
     },
     {
@@ -797,7 +807,7 @@
       "mergedAt": "2026-03-21T04:38:06Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -807,7 +817,7 @@
       "mergedAt": "2026-03-21T04:00:39Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "context",
       "type": "feature"
     },
     {
@@ -817,7 +827,7 @@
       "mergedAt": "2026-03-21T03:35:09Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "onboarding",
       "type": "feature"
     },
     {
@@ -827,7 +837,7 @@
       "mergedAt": "2026-03-21T03:20:13Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "members",
       "type": "feature"
     },
     {
@@ -837,7 +847,7 @@
       "mergedAt": "2026-03-21T02:57:56Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "shops",
       "type": "feature"
     },
     {
@@ -847,7 +857,7 @@
       "mergedAt": "2026-03-21T02:41:34Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "database",
       "type": "feature"
     },
     {
@@ -857,7 +867,7 @@
       "mergedAt": "2026-03-21T02:23:54Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "database",
       "type": "feature"
     },
     {
@@ -867,7 +877,7 @@
       "mergedAt": "2026-03-21T02:08:36Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "members",
       "type": "refactor"
     },
     {
@@ -877,7 +887,7 @@
       "mergedAt": "2026-03-21T01:42:31Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "database",
       "type": "chore"
     },
     {
@@ -887,7 +897,7 @@
       "mergedAt": "2026-03-20T21:52:51Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "profiles",
       "type": "feature"
     },
     {
@@ -897,7 +907,7 @@
       "mergedAt": "2026-03-20T20:32:29Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "profiles",
       "type": "feature"
     },
     {
@@ -907,7 +917,7 @@
       "mergedAt": "2026-03-19T21:07:59Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "profiles",
       "type": "feature"
     },
     {
@@ -917,7 +927,7 @@
       "mergedAt": "2026-03-19T20:56:27Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "db",
       "type": "feature"
     },
     {
@@ -927,7 +937,7 @@
       "mergedAt": "2026-03-19T18:56:27Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "auth",
       "type": "feature"
     },
     {
@@ -937,7 +947,7 @@
       "mergedAt": "2026-03-19T18:25:41Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "auth",
       "type": "feature"
     },
     {
@@ -947,7 +957,7 @@
       "mergedAt": "2026-03-19T17:56:55Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "auth",
       "type": "feature"
     },
     {
@@ -957,7 +967,7 @@
       "mergedAt": "2026-03-19T17:38:30Z",
       "author": "kylepholloway",
       "labels": [],
-      "area": "full-stack",
+      "area": "auth",
       "type": "feature"
     }
   ]

@@ -74,6 +74,10 @@
     {
       "name": "message_type",
       "values": ["text", "system", "offer_node", "custom_request_node", "listing_node", "nudge"]
+    },
+    {
+      "name": "offer_status",
+      "values": ["pending", "accepted", "declined", "countered", "expired"]
     }
   ]
 }
