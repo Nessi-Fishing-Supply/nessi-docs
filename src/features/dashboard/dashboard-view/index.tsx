@@ -91,10 +91,16 @@ export function DashboardView({ metrics, domains, recentChanges }: DashboardView
         <span className={styles.domainLabel}>Feature Domains</span>
         <div className={styles.domainGrid}>
           {domains.map((d) => (
-            <Link key={d.slug} href={`/features/${d.slug}`} className={styles.domainTile}>
-              <div className={styles.domainName}>{d.label}</div>
-              <div className={styles.domainMeta}>
-                {d.featureCount} features &middot; {d.endpointCount} endpoints
+            <Link key={d.slug} href={`/features/${d.slug}`} className={styles.domainCard}>
+              <div className={styles.domainCardHeader}>
+                <span className={styles.domainCardName}>{d.label}</span>
+                <span className={styles.domainCardCount}>{d.featureCount}</span>
+              </div>
+              <div className={styles.domainCardDesc}>{d.description}</div>
+              <div className={styles.domainCardStats}>
+                <span>{d.featureCount} features</span>
+                <span>{d.endpointCount} endpoints</span>
+                {d.journeyCount > 0 && <span>{d.journeyCount} journeys</span>}
               </div>
             </Link>
           ))}

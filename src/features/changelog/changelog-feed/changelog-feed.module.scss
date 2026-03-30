@@ -90,6 +90,52 @@
   flex-shrink: 0;
   font-size: 10px;
   font-family: var(--font-family-mono);
+  color: #3d8c75;
+  margin-left: auto;
+  text-decoration: none;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgb(61 140 117 / 8%);
+  transition:
+    background 150ms ease,
+    color 150ms ease;
+
+  &:hover {
+    background: rgb(61 140 117 / 15%);
+    color: #4ca88d;
+  }
+}
+
+.areaText {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-family: var(--font-family-mono);
   color: var(--text-dim);
   margin-left: auto;
+}
+
+.areaUnscoped {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-family: var(--font-family-mono);
+  color: var(--text-dim);
+  margin-left: auto;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px dashed rgb(255 255 255 / 8%);
+  cursor: help;
+}
+
+.prLink {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-family: var(--font-family-mono);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 150ms ease;
+
+  &:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
+  }
 }

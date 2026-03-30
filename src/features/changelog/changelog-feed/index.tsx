@@ -1,8 +1,11 @@
 'use client';
 
+import Link from 'next/link';
 import type { ChangelogEntry } from '@/types/changelog';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
+import { getDomainForScope } from '@/data';
 import { PageHeader } from '@/components/ui/page-header';
+import { Tooltip } from '@/components/ui';
 import styles from './changelog-feed.module.scss';
 
 interface ChangelogFeedProps {
@@ -33,6 +36,8 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
             <ul className={styles.changeList}>
               {(entry.changes ?? []).map((change, i) => {
                 const config = CHANGE_TYPE_CONFIG[change.type];
+                const domain = change.area ? getDomainForScope(change.area) : undefined;
+
                 return (
                   <li key={i} className={styles.changeItem}>
                     <span
@@ -42,7 +47,27 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
                       {config.label}
                     </span>
                     <span className={styles.description}>{change.description}</span>
-                    {change.area && <span className={styles.area}>{change.area}</span>}
+                    {change.area && domain ? (
+                      <Link href={`/features/${domain}`} className={styles.area}>
+                        {change.area}
+                      </Link>
+                    ) : change.area && change.area !== 'general' ? (
+                      <span className={styles.areaText}>{change.area}</span>
+                    ) : (
+                      <Tooltip text="This PR didn't use a scoped commit message, e.g. feat(scope): ...">
+                        <span className={styles.areaUnscoped}>unscoped</span>
+                      </Tooltip>
+                    )}
+                    {change.prUrl && (
+                      <a
+                        href={change.prUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.prLink}
+                      >
+                        #{change.prNumber}
+                      </a>
+                    )}
                   </li>
                 );
               })}

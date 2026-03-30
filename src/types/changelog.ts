@@ -1,5 +1,13 @@
 export type ChangeType = 'added' | 'changed' | 'fixed' | 'removed';
 
+export interface ChangelogChange {
+  type: ChangeType;
+  description: string;
+  area?: string;
+  prNumber?: number;
+  prUrl?: string;
+}
+
 export interface ChangelogEntry {
   date?: string;
   title?: string;
@@ -10,11 +18,7 @@ export interface ChangelogEntry {
   labels?: string[];
   area?: string;
   type?: string;
-  changes?: {
-    type: ChangeType;
-    description: string;
-    area?: string;
-  }[];
+  changes?: ChangelogChange[];
 }
 
 export const CHANGE_TYPE_CONFIG: Record<ChangeType, { label: string; color: string }> = {

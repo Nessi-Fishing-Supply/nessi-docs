@@ -20,10 +20,11 @@
 // ─── Metrics Card ───
 
 .metricsCard {
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
   padding: 20px;
+  backdrop-filter: blur(8px);
 }
 
 .metricsLabel {
@@ -68,10 +69,11 @@
 // ─── Changelog Card ───
 
 .changelogCard {
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
   padding: 20px;
+  backdrop-filter: blur(8px);
 }
 
 .changelogHeader {
@@ -166,32 +168,57 @@
   gap: 12px;
 }
 
-.domainTile {
-  display: block;
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  padding: 16px 18px;
+.domainCard {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  padding: 18px 20px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
   text-decoration: none;
+  display: block;
   transition:
-    border-color var(--transition-fast),
-    background var(--transition-fast);
+    border-color 200ms var(--ease-out),
+    transform 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
 
   &:hover {
-    border-color: var(--border-medium);
-    background: rgb(255 255 255 / 3%);
+    border-color: var(--border-strong);
+    transform: scale(1.01);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 30%);
   }
 }
 
-.domainName {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
+.domainCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
 }
 
-.domainMeta {
-  font-size: 11px;
+.domainCardName {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.domainCardCount {
+  font-size: 12px;
+  font-family: var(--font-family-mono);
+  color: var(--text-muted);
+}
+
+.domainCardDesc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.domainCardStats {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
   font-family: var(--font-family-mono);
   color: var(--text-muted);
 }

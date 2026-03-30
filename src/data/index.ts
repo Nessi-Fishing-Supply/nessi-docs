@@ -11,7 +11,7 @@ import type { ConfigEnum } from '@/types/config-ref';
 import type { Feature } from '@/types/feature';
 import type { Lifecycle } from '@/types/lifecycle';
 import type { Journey, JourneyNode, JourneyEdge } from '@/types/journey';
-import type { ChangelogEntry, ChangeType } from '@/types/changelog';
+import type { ChangelogEntry, ChangelogChange, ChangeType } from '@/types/changelog';
 import type { CrossLink } from '@/types/docs-context';
 import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
 import type { ErrorCase } from '@/types/journey';
@@ -434,24 +434,32 @@ const FEATURE_TO_DOMAIN: Record<string, string> = {
 
 const SCOPE_TO_DOMAIN: Record<string, string> = {
   auth: 'auth',
+  onboarding: 'auth',
   cart: 'cart',
   checkout: 'cart',
+  orders: 'cart',
   shops: 'shops',
   shop: 'shops',
   invites: 'shops',
+  email: 'shops',
+  messaging: 'shops',
   listings: 'listings',
   listing: 'listings',
+  editorial: 'listings',
   follows: 'shopping',
   search: 'shopping',
   recently: 'shopping',
+  'recently-viewed': 'shopping',
   reports: 'shopping',
   flags: 'shopping',
+  recommendations: 'shopping',
+  watchlist: 'shopping',
   account: 'account',
   addresses: 'account',
   members: 'account',
+  profiles: 'account',
   context: 'identity',
-  orders: 'cart',
-  email: 'shops',
+  dashboard: 'account',
 };
 
 export function getFeatureDomains(): FeatureDomain[] {
@@ -486,12 +494,18 @@ export function getFeaturesByDomain(domain: string): Feature[] {
   return allFeatures.filter((f) => FEATURE_TO_DOMAIN[f.slug] === domain);
 }
 
+export function getDomainForScope(scope: string): string | undefined {
+  return SCOPE_TO_DOMAIN[scope.toLowerCase()];
+}
+
 export function getChangelogByDomain(domain: string): ChangelogEntry[] {
   const raw = changelogRaw.entries as {
     title?: string;
     mergedAt?: string;
     type?: string;
     area?: string;
+    number?: number;
+    url?: string;
   }[];
 
   const scopeRegex = /^\w+\(([^)]+)\):/;
@@ -567,10 +581,17 @@ const TYPE_TO_CHANGE_TYPE: Record<string, ChangeType> = {
 };
 
 function transformChangelog(
-  raw: { title?: string; mergedAt?: string; type?: string; area?: string }[],
+  raw: {
+    title?: string;
+    mergedAt?: string;
+    type?: string;
+    area?: string;
+    number?: number;
+    url?: string;
+  }[],
 ): ChangelogEntry[] {
   // Group entries by date (YYYY-MM-DD from mergedAt)
-  const byDate = new Map<string, { type: ChangeType; description: string; area?: string }[]>();
+  const byDate = new Map<string, ChangelogChange[]>();
 
   for (const entry of raw) {
     const date = entry.mergedAt ? entry.mergedAt.slice(0, 10) : 'unknown';
@@ -588,6 +609,8 @@ function transformChangelog(
       type: TYPE_TO_CHANGE_TYPE[entry.type ?? ''] ?? 'changed',
       description: description || entry.title || 'No description',
       area: entry.area,
+      prNumber: entry.number,
+      prUrl: entry.url,
     });
   }
 
@@ -622,7 +645,14 @@ export const lifecycles = transformLifecycles(lifecyclesRaw.lifecycles as RawLif
 const journeys: Journey[] = transformJourneys(journeysRaw.journeys as unknown as RawJourney[]);
 
 export const changelog = transformChangelog(
-  changelogRaw.entries as { title?: string; mergedAt?: string; type?: string; area?: string }[],
+  changelogRaw.entries as {
+    title?: string;
+    mergedAt?: string;
+    type?: string;
+    area?: string;
+    number?: number;
+    url?: string;
+  }[],
 );
 
 export const roadmapItems = roadmapRaw.items as unknown as RoadmapItem[];

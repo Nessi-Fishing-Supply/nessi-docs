@@ -6,3 +6,4 @@ export { CrossLink } from './cross-link';
 export { Breadcrumb } from './breadcrumb';
 export { PageHeader } from './page-header';
 export { GitHubLink } from './github-link';
+export { Tooltip } from './tooltip';
