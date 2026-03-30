@@ -6,11 +6,6 @@ export interface FeatureDomain {
   endpointCount: number;
   journeyCount: number;
   entityCount: number;
-  builtCount: number;
-  inProgressCount: number;
-  stubbedCount: number;
-  plannedCount: number;
-  buildProgress: number;
 }
 
 export interface DashboardMetrics {
@@ -19,8 +14,4 @@ export interface DashboardMetrics {
   totalJourneys: number;
   totalEntities: number;
   totalLifecycles: number;
-  builtCount: number;
-  inProgressCount: number;
-  stubbedCount: number;
-  plannedCount: number;
 }

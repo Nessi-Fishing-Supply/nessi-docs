@@ -1,7 +1,7 @@
 'use client';
 
 import type { Journey } from '@/types/journey';
-import { PERSONA_CONFIG, LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
+import { PERSONA_CONFIG, LAYER_CONFIG } from '@/types/journey';
 import { useDocsContext } from '@/providers/docs-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import styles from './coverage-list.module.scss';
@@ -36,10 +36,6 @@ export function CoverageList({ journeys }: CoverageListProps) {
         {journeys.map((journey) => {
           const steps = journey.nodes.filter((n) => n.type === 'step');
           const total = steps.length;
-          const built = steps.filter((s) => s.status === 'built' || s.status === 'tested').length;
-          const tested = steps.filter((s) => s.status === 'tested').length;
-          const builtPct = total > 0 ? Math.round((built / total) * 100) : 0;
-          const testedPct = total > 0 ? Math.round((tested / total) * 100) : 0;
           const personaCfg = PERSONA_CONFIG[journey.persona];
           const isSelected =
             selectedItem?.type === 'coverage' && selectedItem.journey.slug === journey.slug;
@@ -63,16 +59,6 @@ export function CoverageList({ journeys }: CoverageListProps) {
               </div>
               <div className={styles.stats}>
                 <span>{total} steps</span>
-                <span>·</span>
-                <span style={{ color: STATUS_CONFIG.built.color }}>{builtPct}% built</span>
-                <span>·</span>
-                <span style={{ color: STATUS_CONFIG.tested.color }}>{testedPct}% tested</span>
-              </div>
-              <div className={styles.bar}>
-                <div
-                  className={styles.barFill}
-                  style={{ width: `${builtPct}%`, background: STATUS_CONFIG.built.color }}
-                />
               </div>
               <div className={styles.layers}>
                 {Array.from(layerCounts.entries()).map(([layer, count]) => (

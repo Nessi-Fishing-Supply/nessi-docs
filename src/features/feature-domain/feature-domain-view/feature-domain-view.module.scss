@@ -54,57 +54,6 @@
   font-family: var(--font-family-mono);
 }
 
-.progressSection {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.progressPercent {
-  font-size: 28px;
-  font-weight: 700;
-  color: #3d8c75;
-  font-family: var(--font-family-mono);
-  min-width: 60px;
-}
-
-.progressBarTrack {
-  flex: 1;
-  height: 6px;
-  border-radius: 3px;
-  background: rgb(255 255 255 / 6%);
-  overflow: hidden;
-}
-
-.progressBarFill {
-  height: 100%;
-  border-radius: 3px;
-  background: #3d8c75;
-  transition: width 400ms ease-out;
-}
-
-.statusBreakdown {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.statusItem {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.statusDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
 // ─── Feature Rows ───
 
 .featureContainer {
@@ -164,13 +113,6 @@
   &:hover {
     background: rgb(255 255 255 / 2%);
   }
-}
-
-.featureStatusDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
 }
 
 .featureName {

@@ -469,25 +469,14 @@ export function getFeatureDomains(): FeatureDomain[] {
       return sum + entities.length;
     }, 0);
 
-    const builtCount = domainFeatures.filter((f) => f.status === 'built').length;
-    const inProgressCount = domainFeatures.filter((f) => f.status === 'in-progress').length;
-    const stubbedCount = domainFeatures.filter((f) => f.status === 'stubbed').length;
-    const plannedCount = domainFeatures.filter((f) => f.status === 'planned').length;
-    const total = domainFeatures.length;
-
     return {
       slug: d.slug,
       label: d.label,
       description: d.description,
-      featureCount: total,
+      featureCount: domainFeatures.length,
       endpointCount,
       journeyCount,
       entityCount,
-      builtCount,
-      inProgressCount,
-      stubbedCount,
-      plannedCount,
-      buildProgress: total > 0 ? Math.round((builtCount / total) * 100) : 0,
     } satisfies FeatureDomain;
   }).filter((d): d is FeatureDomain => d !== null);
 }
@@ -529,10 +518,6 @@ export function getDashboardMetrics(): DashboardMetrics {
     totalJourneys: allJourneys.length,
     totalEntities: (dataModelRaw.entities as RawEntity[]).length,
     totalLifecycles: (lifecyclesRaw.lifecycles as RawLifecycle[]).length,
-    builtCount: allFeatures.filter((f) => f.status === 'built').length,
-    inProgressCount: allFeatures.filter((f) => f.status === 'in-progress').length,
-    stubbedCount: allFeatures.filter((f) => f.status === 'stubbed').length,
-    plannedCount: allFeatures.filter((f) => f.status === 'planned').length,
   };
 }
 
@@ -671,7 +656,6 @@ export interface DomainWithStats extends DomainConfig {
   journeyCount: number;
   stepCount: number;
   decisionCount: number;
-  builtPercent: number;
 }
 
 export function getDomains(): DomainWithStats[] {
@@ -679,14 +663,11 @@ export function getDomains(): DomainWithStats[] {
     const dJourneys = journeys.filter((j) => j.domain === d.slug);
     const allNodes = dJourneys.flatMap((j) => j.nodes);
     const steps = allNodes.filter((n) => n.type === 'step');
-    const built = steps.filter((s) => s.status === 'built' || s.status === 'tested').length;
-    const total = steps.length;
     return {
       ...d,
       journeyCount: dJourneys.length,
-      stepCount: total,
+      stepCount: steps.length,
       decisionCount: allNodes.filter((n) => n.type === 'decision').length,
-      builtPercent: total > 0 ? Math.round((built / total) * 100) : 0,
     };
   }).filter((d) => d.journeyCount > 0);
 }

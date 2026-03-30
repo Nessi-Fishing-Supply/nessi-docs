@@ -10,12 +10,6 @@ interface DomainGridProps {
   domains: DomainWithStats[];
 }
 
-function coverageColor(percent: number): string {
-  if (percent >= 75) return 'rgba(61,140,117,0.7)';
-  if (percent >= 50) return 'rgba(226,119,57,0.7)';
-  return 'rgba(106,104,96,0.5)';
-}
-
 export function DomainGrid({ domains }: DomainGridProps) {
   const [entered, setEntered] = useState(false);
   useEffect(() => {
@@ -54,22 +48,6 @@ export function DomainGrid({ domains }: DomainGridProps) {
                 <span>{d.stepCount} steps</span>
                 <span>{d.decisionCount} decisions</span>
               </div>
-              <span
-                className={styles.coveragePercent}
-                style={{ color: coverageColor(d.builtPercent) }}
-              >
-                {d.builtPercent}%
-              </span>
-            </div>
-            <div className={styles.progressTrack}>
-              <div
-                className={styles.progressFill}
-                style={{
-                  width: entered ? `${d.builtPercent}%` : '0%',
-                  background: coverageColor(d.builtPercent),
-                  transitionDelay: `${i * 50 + 300}ms`,
-                }}
-              />
             </div>
           </Link>
         ))}

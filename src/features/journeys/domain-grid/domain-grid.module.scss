@@ -70,22 +70,3 @@
   font-family: var(--font-family-mono);
   color: var(--text-muted);
 }
-
-.coveragePercent {
-  font-size: 12px;
-  font-family: var(--font-family-mono);
-}
-
-.progressTrack {
-  height: 2px;
-  background: rgb(255 255 255 / 6%);
-  border-radius: 1px;
-  margin-top: 8px;
-  overflow: hidden;
-}
-
-.progressFill {
-  height: 100%;
-  border-radius: 1px;
-  transition: width 600ms var(--ease-out);
-}

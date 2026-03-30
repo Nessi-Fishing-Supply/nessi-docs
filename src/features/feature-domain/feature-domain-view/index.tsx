@@ -5,7 +5,6 @@ import Link from 'next/link';
 import type { Feature } from '@/types/feature';
 import type { FeatureDomain } from '@/types/dashboard';
 import type { ChangelogEntry, ChangeType } from '@/types/changelog';
-import { STATUS_COLORS } from '@/types/feature';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
 import { BorderTrace } from '@/components/ui/border-trace';
 import styles from './feature-domain-view.module.scss';
@@ -66,10 +65,6 @@ function FeatureRow({
     >
       <BorderTrace active={highlight} />
       <button className={styles.featureRowHeader} onClick={onToggle}>
-        <span
-          className={styles.featureStatusDot}
-          style={{ background: STATUS_COLORS[feature.status] }}
-        />
         <span className={styles.featureName}>{feature.name}</span>
         <span className={styles.featureMeta}>
           <span className={styles.endpointCount}>
@@ -195,35 +190,6 @@ export function FeatureDomainView({
             <span className={styles.heroBadge}>{domain.journeyCount} journeys</span>
             <span className={styles.heroBadge}>{domain.entityCount} entities</span>
           </div>
-        </div>
-
-        <div className={styles.progressSection}>
-          <span className={styles.progressPercent}>{domain.buildProgress}%</span>
-          <div className={styles.progressBarTrack}>
-            <div className={styles.progressBarFill} style={{ width: `${domain.buildProgress}%` }} />
-          </div>
-        </div>
-
-        <div className={styles.statusBreakdown}>
-          <span className={styles.statusItem}>
-            <span className={styles.statusDot} style={{ background: STATUS_COLORS.built }} />
-            {domain.builtCount} built
-          </span>
-          <span className={styles.statusItem}>
-            <span
-              className={styles.statusDot}
-              style={{ background: STATUS_COLORS['in-progress'] }}
-            />
-            {domain.inProgressCount} in-progress
-          </span>
-          <span className={styles.statusItem}>
-            <span className={styles.statusDot} style={{ background: STATUS_COLORS.stubbed }} />
-            {domain.stubbedCount} stubbed
-          </span>
-          <span className={styles.statusItem}>
-            <span className={styles.statusDot} style={{ background: STATUS_COLORS.planned }} />
-            {domain.plannedCount} planned
-          </span>
         </div>
       </div>
 

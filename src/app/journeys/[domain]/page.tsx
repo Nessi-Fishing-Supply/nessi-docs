@@ -20,8 +20,6 @@ export default async function DomainPage({ params }: { params: Promise<{ domain:
 
   const journeys = getJourneysByDomain(domain);
   const allSteps = journeys.flatMap((j) => j.nodes.filter((n) => n.type === 'step'));
-  const built = allSteps.filter((s) => s.status === 'built' || s.status === 'tested').length;
-  const builtPercent = allSteps.length > 0 ? Math.round((built / allSteps.length) * 100) : 0;
 
   const allDomains = getDomains().map((d) => ({
     slug: d.slug,
@@ -32,7 +30,7 @@ export default async function DomainPage({ params }: { params: Promise<{ domain:
     <DomainJourneyList
       domain={config}
       journeys={journeys}
-      stats={{ stepCount: allSteps.length, builtPercent }}
+      stats={{ stepCount: allSteps.length }}
       siblingDomains={allDomains}
     />
   );

@@ -11,46 +11,25 @@ interface DashboardViewProps {
 }
 
 export function DashboardView({ metrics, domains, recentChanges }: DashboardViewProps) {
-  const total =
-    metrics.builtCount + metrics.inProgressCount + metrics.stubbedCount + metrics.plannedCount;
-  const builtPct = total > 0 ? Math.round((metrics.builtCount / total) * 100) : 0;
-  const ipPct = total > 0 ? Math.round((metrics.inProgressCount / total) * 100) : 0;
-
   const flatChanges = recentChanges
     .flatMap((entry) => (entry.changes ?? []).map((c) => ({ ...c, date: entry.date })))
     .slice(0, 8);
 
   return (
     <div className={styles.container}>
-      {/* ── Hero: Progress + Changelog ── */}
+      {/* ── Hero: Metrics + Changelog ── */}
       <div className={styles.hero}>
-        {/* Left — Progress */}
-        <div className={styles.progressCard}>
-          <div className={styles.progressLabel}>Build Progress</div>
-
-          <div
-            className={styles.progressBar}
-            style={{
-              background: `linear-gradient(90deg, #3d8c75 ${builtPct}%, #d4923a ${builtPct}% ${builtPct + ipPct}%, #78756f ${builtPct + ipPct}% 100%)`,
-            }}
-          />
-
-          <div className={styles.statsRow}>
-            <span className={styles.stat}>
-              <span className={styles.statDot} style={{ background: '#3d8c75' }} />
-              {metrics.builtCount} built
-            </span>
-            <span className={styles.stat}>
-              <span className={styles.statDot} style={{ background: '#d4923a' }} />
-              {metrics.inProgressCount} in progress
-            </span>
-            <span className={styles.stat}>
-              <span className={styles.statDot} style={{ background: '#78756f' }} />
-              {metrics.stubbedCount + metrics.plannedCount} remaining
-            </span>
-          </div>
+        {/* Left — Metrics */}
+        <div className={styles.metricsCard}>
+          <div className={styles.metricsLabel}>System Overview</div>
 
           <div className={styles.metricGrid}>
+            <div className={styles.metricCard}>
+              <span className={styles.metricValue} style={{ color: '#3d8c75' }}>
+                {metrics.totalFeatures}
+              </span>
+              <span className={styles.metricLabel}>Features</span>
+            </div>
             <div className={styles.metricCard}>
               <span className={styles.metricValue} style={{ color: '#3d8c75' }}>
                 {metrics.totalJourneys}

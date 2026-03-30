@@ -4,107 +4,6 @@
   height: 100%;
 }
 
-// ─── Summary ───
-
-.summary {
-  margin-bottom: 28px;
-}
-
-.progressBar {
-  display: flex;
-  height: 6px;
-  border-radius: 3px;
-  overflow: hidden;
-  background: var(--bg-raised);
-  margin-bottom: 10px;
-  gap: 2px;
-}
-
-.progressSegment {
-  height: 100%;
-  border-radius: 2px;
-  transition: width 300ms ease;
-}
-
-.statsRow {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.statItem {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.statDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.statLabel {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.statCount {
-  font-family: var(--font-family-mono);
-  font-size: 10px;
-  color: var(--text-dim);
-}
-
-.statPct {
-  font-family: var(--font-family-mono);
-  font-size: 10px;
-  color: var(--text-secondary);
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
-  margin-left: 4px;
-}
-
-// ─── Groups ───
-
-.group {
-  margin-bottom: 28px;
-}
-
-.groupHeader {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-bottom: 10px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.groupDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.groupName {
-  font-size: 12px;
-  color: var(--text-primary);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.groupCount {
-  font-family: var(--font-family-mono);
-  font-size: 10px;
-  color: var(--text-dim);
-  margin-left: 2px;
-}
-
 // ─── Cards ───
 
 .cards {
@@ -141,19 +40,6 @@
   font-size: 13px;
   color: var(--text-primary);
   font-weight: 500;
-}
-
-.statusBadge {
-  font-family: var(--font-family-mono);
-  font-size: 9px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  flex-shrink: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .cardDesc {

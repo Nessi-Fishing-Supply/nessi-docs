@@ -11,20 +11,8 @@ import styles from './domain-journey-list.module.scss';
 interface DomainJourneyListProps {
   domain: DomainConfig;
   journeys: Journey[];
-  stats: { stepCount: number; builtPercent: number };
+  stats: { stepCount: number };
   siblingDomains?: { slug: string; label: string }[];
-}
-
-function coverageColor(percent: number): string {
-  if (percent >= 75) return 'rgba(61,140,117,0.7)';
-  if (percent >= 50) return 'rgba(226,119,57,0.7)';
-  return 'rgba(106,104,96,0.5)';
-}
-
-function journeyCoverage(journey: Journey): number {
-  const steps = journey.nodes.filter((n) => n.type === 'step');
-  const built = steps.filter((s) => s.status === 'built' || s.status === 'tested').length;
-  return steps.length > 0 ? Math.round((built / steps.length) * 100) : 0;
 }
 
 export function DomainJourneyList({
@@ -55,9 +43,6 @@ export function DomainJourneyList({
         <div className={styles.domainStats}>
           <span>{journeys.length} journeys</span>
           <span>{stats.stepCount} steps</span>
-          <span style={{ color: coverageColor(stats.builtPercent) }}>
-            {stats.builtPercent}% built
-          </span>
         </div>
       </div>
 
@@ -65,7 +50,6 @@ export function DomainJourneyList({
         {journeys.map((j, i) => {
           const persona = PERSONA_CONFIG[j.persona];
           const stepCount = j.nodes.filter((n) => n.type === 'step').length;
-          const coverage = journeyCoverage(j);
 
           return (
             <Link
@@ -89,16 +73,6 @@ export function DomainJourneyList({
                 {persona.label}
               </span>
               <span className={styles.stepCount}>{stepCount} steps</span>
-              <div className={styles.progressTrack}>
-                <div
-                  className={styles.progressFill}
-                  style={{
-                    width: entered ? `${coverage}%` : '0%',
-                    background: coverageColor(coverage),
-                    transitionDelay: `${i * 30 + 200}ms`,
-                  }}
-                />
-              </div>
               <span className={styles.chevron}>&rsaquo;</span>
             </Link>
           );

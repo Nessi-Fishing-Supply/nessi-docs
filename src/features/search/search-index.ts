@@ -90,7 +90,7 @@ function buildIndex(): SearchResult[] {
     results.push({
       type: 'feature',
       title: f.name,
-      subtitle: `Feature · ${f.status} · ${f.componentCount} components`,
+      subtitle: `Feature · ${f.componentCount} components · ${f.endpointCount} endpoints`,
       href: '/features',
       color: '#3d8c75',
       icon: '⬢',
