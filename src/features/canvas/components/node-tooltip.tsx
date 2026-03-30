@@ -188,15 +188,15 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                       }}
                     >
                       <span
-                      style={{
-                        flex: 1,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {node.route}
-                    </span>
+                        style={{
+                          flex: 1,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {node.route}
+                      </span>
                       <svg
                         width="12"
                         height="12"
@@ -248,15 +248,15 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                       }}
                     >
                       <span
-                      style={{
-                        flex: 1,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {node.route}
-                    </span>
+                        style={{
+                          flex: 1,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {node.route}
+                      </span>
                       <svg
                         width="12"
                         height="12"

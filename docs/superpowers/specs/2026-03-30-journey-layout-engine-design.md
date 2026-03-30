@@ -30,6 +30,7 @@ The current BFS-based layout engine for journey canvases produces layouts that d
 Replace BFS with longest-path-from-entry. Each node's column = the longest path from any entry to that node.
 
 Guarantees:
+
 - Every node is strictly right of all its predecessors
 - Decision branches that reconverge get proper spacing
 - No backward flow possible
@@ -72,12 +73,12 @@ Any edge where `to` is an ancestor of `from` in the DAG is a back-edge. Back-edg
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `src/data/index.ts` | Replace `layoutJourneyNodes()` with new topological layering algorithm |
-| `src/features/canvas/utils/geometry.ts` | Add `journeyPortSides()` for journey-specific port logic (keep `autoPortSides` for ERD/lifecycle) |
-| `src/features/canvas/components/edge.tsx` | Use `journeyPortSides` for journey edges; back-edge arc routing |
-| `src/features/journeys/journey-canvas/index.tsx` | Pass back-edge set to Edge components for visual treatment |
+| File                                             | Change                                                                                            |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| `src/data/index.ts`                              | Replace `layoutJourneyNodes()` with new topological layering algorithm                            |
+| `src/features/canvas/utils/geometry.ts`          | Add `journeyPortSides()` for journey-specific port logic (keep `autoPortSides` for ERD/lifecycle) |
+| `src/features/canvas/components/edge.tsx`        | Use `journeyPortSides` for journey edges; back-edge arc routing                                   |
+| `src/features/journeys/journey-canvas/index.tsx` | Pass back-edge set to Edge components for visual treatment                                        |
 
 ## Files NOT Changed
 

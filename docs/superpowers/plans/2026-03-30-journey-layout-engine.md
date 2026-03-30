@@ -17,6 +17,7 @@
 Journey edges should always flow left-to-right. This function replaces `autoPortSides` for journey canvases specifically.
 
 **Files:**
+
 - Modify: `src/features/canvas/utils/geometry.ts`
 
 - [ ] **Step 1: Add `journeyPortSides` function after `autoPortSides` (after line 69)**
@@ -70,12 +71,7 @@ Back-edges need a distinct curved arc that goes above the flow (negative y) so t
  * Back-edge arc: curves above the flow from a later node back to an earlier one.
  * Uses a large vertical offset to arc above intervening nodes.
  */
-export function backEdgeArc(
-  fx: number,
-  fy: number,
-  tx: number,
-  ty: number,
-): string {
+export function backEdgeArc(fx: number, fy: number, tx: number, ty: number): string {
   const dx = Math.abs(tx - fx);
   const arcHeight = Math.max(dx * 0.3, 60);
   const midX = (fx + tx) / 2;
@@ -103,6 +99,7 @@ git commit -m "feat(canvas): add journey-specific port selection and back-edge a
 This is the core algorithm change. Replace the BFS-based layout with topological layering.
 
 **Files:**
+
 - Modify: `src/data/index.ts:135-315` (replace `layoutJourneyNodes` function entirely)
 
 - [ ] **Step 1: Replace the layout constants and function signature (lines 135-151)**
@@ -135,60 +132,60 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
 Replace the old BFS seeding + back-edge detection (lines 153-212) with:
 
 ```typescript
-  // Build adjacency from edges
-  const outgoing = new Map<string, string[]>();
-  const incoming = new Map<string, string[]>();
-  for (const node of rawNodes) {
-    outgoing.set(node.id, []);
-    incoming.set(node.id, []);
-  }
-  for (const edge of rawEdges) {
-    outgoing.get(edge.from)?.push(edge.to);
-    incoming.get(edge.to)?.push(edge.from);
-  }
+// Build adjacency from edges
+const outgoing = new Map<string, string[]>();
+const incoming = new Map<string, string[]>();
+for (const node of rawNodes) {
+  outgoing.set(node.id, []);
+  incoming.set(node.id, []);
+}
+for (const edge of rawEdges) {
+  outgoing.get(edge.from)?.push(edge.to);
+  incoming.get(edge.to)?.push(edge.from);
+}
 
-  // Detect back-edges via DFS (edges that form cycles)
-  const backEdgeSet = new Set<number>();
-  const visited = new Set<string>();
-  const inStack = new Set<string>();
+// Detect back-edges via DFS (edges that form cycles)
+const backEdgeSet = new Set<number>();
+const visited = new Set<string>();
+const inStack = new Set<string>();
 
-  function dfsDetectBack(nodeId: string) {
-    visited.add(nodeId);
-    inStack.add(nodeId);
-    for (const next of outgoing.get(nodeId) ?? []) {
-      if (inStack.has(next)) {
-        // This edge forms a cycle — mark it as a back-edge
-        const ei = rawEdges.findIndex((e) => e.from === nodeId && e.to === next);
-        if (ei >= 0) backEdgeSet.add(ei);
-      } else if (!visited.has(next)) {
-        dfsDetectBack(next);
-      }
+function dfsDetectBack(nodeId: string) {
+  visited.add(nodeId);
+  inStack.add(nodeId);
+  for (const next of outgoing.get(nodeId) ?? []) {
+    if (inStack.has(next)) {
+      // This edge forms a cycle — mark it as a back-edge
+      const ei = rawEdges.findIndex((e) => e.from === nodeId && e.to === next);
+      if (ei >= 0) backEdgeSet.add(ei);
+    } else if (!visited.has(next)) {
+      dfsDetectBack(next);
     }
-    inStack.delete(nodeId);
   }
+  inStack.delete(nodeId);
+}
 
-  // Find entry/root nodes
-  const entryIds = rawNodes
-    .filter((n) => n.type === 'entry' || (incoming.get(n.id) ?? []).length === 0)
-    .map((n) => n.id);
-  const roots = entryIds.length > 0 ? entryIds : [rawNodes[0]?.id].filter(Boolean);
+// Find entry/root nodes
+const entryIds = rawNodes
+  .filter((n) => n.type === 'entry' || (incoming.get(n.id) ?? []).length === 0)
+  .map((n) => n.id);
+const roots = entryIds.length > 0 ? entryIds : [rawNodes[0]?.id].filter(Boolean);
 
-  for (const r of roots) {
-    if (!visited.has(r)) dfsDetectBack(r);
+for (const r of roots) {
+  if (!visited.has(r)) dfsDetectBack(r);
+}
+// Visit any remaining unreachable nodes
+for (const node of rawNodes) {
+  if (!visited.has(node.id)) dfsDetectBack(node.id);
+}
+
+// Build DAG adjacency (excluding back-edges)
+const dagOutgoing = new Map<string, string[]>();
+for (const node of rawNodes) dagOutgoing.set(node.id, []);
+rawEdges.forEach((edge, i) => {
+  if (!backEdgeSet.has(i)) {
+    dagOutgoing.get(edge.from)?.push(edge.to);
   }
-  // Visit any remaining unreachable nodes
-  for (const node of rawNodes) {
-    if (!visited.has(node.id)) dfsDetectBack(node.id);
-  }
-
-  // Build DAG adjacency (excluding back-edges)
-  const dagOutgoing = new Map<string, string[]>();
-  for (const node of rawNodes) dagOutgoing.set(node.id, []);
-  rawEdges.forEach((edge, i) => {
-    if (!backEdgeSet.has(i)) {
-      dagOutgoing.get(edge.from)?.push(edge.to);
-    }
-  });
+});
 ```
 
 - [ ] **Step 3: Longest-path column assignment**
@@ -196,36 +193,36 @@ Replace the old BFS seeding + back-edge detection (lines 153-212) with:
 Replace the old BFS leveling + merge promotion + cascade (lines 165-252) with:
 
 ```typescript
-  // ── Longest-path column assignment ──
-  // Each node's column = longest path from any root to that node in the DAG.
-  // This guarantees every node is strictly right of ALL predecessors.
-  const column = new Map<string, number>();
-  const memo = new Map<string, number>();
+// ── Longest-path column assignment ──
+// Each node's column = longest path from any root to that node in the DAG.
+// This guarantees every node is strictly right of ALL predecessors.
+const column = new Map<string, number>();
+const memo = new Map<string, number>();
 
-  function longestPathTo(nodeId: string): number {
-    if (memo.has(nodeId)) return memo.get(nodeId)!;
-    // Prevent infinite recursion on missed cycles
+function longestPathTo(nodeId: string): number {
+  if (memo.has(nodeId)) return memo.get(nodeId)!;
+  // Prevent infinite recursion on missed cycles
+  memo.set(nodeId, 0);
+
+  const parents = (incoming.get(nodeId) ?? []).filter((p) => {
+    const ei = rawEdges.findIndex((e) => e.from === p && e.to === nodeId);
+    return !backEdgeSet.has(ei);
+  });
+
+  if (parents.length === 0) {
     memo.set(nodeId, 0);
-
-    const parents = (incoming.get(nodeId) ?? []).filter((p) => {
-      const ei = rawEdges.findIndex((e) => e.from === p && e.to === nodeId);
-      return !backEdgeSet.has(ei);
-    });
-
-    if (parents.length === 0) {
-      memo.set(nodeId, 0);
-      return 0;
-    }
-
-    const maxParent = Math.max(...parents.map((p) => longestPathTo(p)));
-    const result = maxParent + 1;
-    memo.set(nodeId, result);
-    return result;
+    return 0;
   }
 
-  for (const node of rawNodes) {
-    column.set(node.id, longestPathTo(node.id));
-  }
+  const maxParent = Math.max(...parents.map((p) => longestPathTo(p)));
+  const result = maxParent + 1;
+  memo.set(nodeId, result);
+  return result;
+}
+
+for (const node of rawNodes) {
+  column.set(node.id, longestPathTo(node.id));
+}
 ```
 
 - [ ] **Step 4: Group entries and identify sub-journeys**
@@ -233,33 +230,31 @@ Replace the old BFS leveling + merge promotion + cascade (lines 165-252) with:
 For multi-entry journeys (like cart), group nodes by which entry they're reachable from.
 
 ```typescript
-  // ── Identify sub-journeys (connected components from each entry) ──
-  // Each entry node roots a sub-journey. Nodes reachable from multiple entries
-  // are assigned to the first entry that reaches them.
-  const nodeEntry = new Map<string, string>(); // nodeId → entryId
+// ── Identify sub-journeys (connected components from each entry) ──
+// Each entry node roots a sub-journey. Nodes reachable from multiple entries
+// are assigned to the first entry that reaches them.
+const nodeEntry = new Map<string, string>(); // nodeId → entryId
 
-  function assignEntry(entryId: string) {
-    const queue = [entryId];
-    while (queue.length > 0) {
-      const cur = queue.shift()!;
-      if (nodeEntry.has(cur)) continue;
-      nodeEntry.set(cur, entryId);
-      for (const next of dagOutgoing.get(cur) ?? []) {
-        if (!nodeEntry.has(next)) queue.push(next);
-      }
+function assignEntry(entryId: string) {
+  const queue = [entryId];
+  while (queue.length > 0) {
+    const cur = queue.shift()!;
+    if (nodeEntry.has(cur)) continue;
+    nodeEntry.set(cur, entryId);
+    for (const next of dagOutgoing.get(cur) ?? []) {
+      if (!nodeEntry.has(next)) queue.push(next);
     }
   }
+}
 
-  for (const r of roots) assignEntry(r);
-  // Assign any orphans
-  for (const node of rawNodes) {
-    if (!nodeEntry.has(node.id)) nodeEntry.set(node.id, node.id);
-  }
+for (const r of roots) assignEntry(r);
+// Assign any orphans
+for (const node of rawNodes) {
+  if (!nodeEntry.has(node.id)) nodeEntry.set(node.id, node.id);
+}
 
-  // Group entries in order of appearance
-  const entryOrder = roots.filter((r) =>
-    rawNodes.some((n) => nodeEntry.get(n.id) === r),
-  );
+// Group entries in order of appearance
+const entryOrder = roots.filter((r) => rawNodes.some((n) => nodeEntry.get(n.id) === r));
 ```
 
 - [ ] **Step 5: Decision-aware vertical positioning with branch isolation**
@@ -488,6 +483,7 @@ git commit -m "feat(layout): replace BFS journey layout with topological layerin
 ### Task 3: Update Edge and AnimatedEdge to support journey port selection and back-edges
 
 **Files:**
+
 - Modify: `src/features/canvas/components/edge.tsx`
 - Modify: `src/features/canvas/components/animated-edge.tsx`
 
@@ -647,6 +643,7 @@ git commit -m "feat(canvas): add journey port selection and back-edge rendering 
 ### Task 4: Update JourneyCanvas to pass back-edge and decision-branch info to edges
 
 **Files:**
+
 - Modify: `src/features/journeys/journey-canvas/index.tsx`
 
 - [ ] **Step 1: Import `detectJourneyBackEdges` and compute back-edges + decision branch info**
@@ -660,21 +657,21 @@ import { detectJourneyBackEdges } from '@/data/index';
 Add computation inside the component, after the `nodeMap` line (after line 81):
 
 ```typescript
-  // Detect back-edges and decision branch edges for visual treatment
-  const backEdges = detectJourneyBackEdges(journey.nodes, journey.edges);
+// Detect back-edges and decision branch edges for visual treatment
+const backEdges = detectJourneyBackEdges(journey.nodes, journey.edges);
 
-  // Build set of decision option target IDs for identifying decision branches
-  const decisionBranchTargets = new Map<string, Set<string>>();
-  for (const node of journey.nodes) {
-    if (node.type === 'decision' && node.options) {
-      const targets = new Set<string>();
-      // Skip first option (happy path exits right, not bottom)
-      for (let i = 1; i < node.options.length; i++) {
-        targets.add(node.options[i].to);
-      }
-      decisionBranchTargets.set(node.id, targets);
+// Build set of decision option target IDs for identifying decision branches
+const decisionBranchTargets = new Map<string, Set<string>>();
+for (const node of journey.nodes) {
+  if (node.type === 'decision' && node.options) {
+    const targets = new Set<string>();
+    // Skip first option (happy path exits right, not bottom)
+    for (let i = 1; i < node.options.length; i++) {
+      targets.add(node.options[i].to);
     }
+    decisionBranchTargets.set(node.id, targets);
   }
+}
 ```
 
 - [ ] **Step 2: Pass new props to Edge and AnimatedEdge in the edges render block**
@@ -729,20 +726,21 @@ Replace the edge rendering section (lines 141-171) with:
 In `src/features/canvas/canvas-provider/index.tsx`, add a new marker after the `arrow-decision` marker (after line 75, before the closing `</defs>`):
 
 ```tsx
-          <marker
-            id="arrow-back"
-            viewBox="0 0 10 10"
-            refX="10"
-            refY="5"
-            markerWidth="5"
-            markerHeight="5"
-            orient="auto"
-          >
-            <path d="M2,2 L10,5 L2,8 Z" fill="rgba(234,179,8,0.5)" />
-          </marker>
+<marker
+  id="arrow-back"
+  viewBox="0 0 10 10"
+  refX="10"
+  refY="5"
+  markerWidth="5"
+  markerHeight="5"
+  orient="auto"
+>
+  <path d="M2,2 L10,5 L2,8 Z" fill="rgba(234,179,8,0.5)" />
+</marker>
 ```
 
 **Files:**
+
 - Modify: `src/features/canvas/canvas-provider/index.tsx:75` (add after `arrow-decision` marker)
 
 - [ ] **Step 4: Verify build passes**
@@ -762,6 +760,7 @@ git commit -m "feat(journeys): wire back-edge detection and journey port selecti
 ### Task 5: Visual verification and tuning
 
 **Files:**
+
 - Possibly tune: `src/data/index.ts` (constants), `src/features/canvas/utils/geometry.ts` (arc params)
 
 - [ ] **Step 1: Start dev server and check key journeys**
