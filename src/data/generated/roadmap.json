@@ -1,6 +1,18 @@
 {
   "items": [
     {
+      "title": "Blocked Members — settings page with list and unblock",
+      "number": 322,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/322",
+      "state": "CLOSED",
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
+      "status": "Done",
+      "priority": "P2 - medium",
+      "area": "Full-stack",
+      "executor": "Conductor",
+      "feature": ""
+    },
+    {
       "title": "Messaging — Database migration for message_threads, participants, and messages tables",
       "number": 302,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/302",

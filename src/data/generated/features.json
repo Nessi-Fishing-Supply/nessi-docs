@@ -52,6 +52,39 @@
       ]
     },
     {
+      "slug": "blocks",
+      "name": "Blocks",
+      "description": "Blocked members management — lets authenticated users view and unblock members they have previously blocked. Surfaces in account settings so users have full control over who can interact with them. Blocking itself is triggered from messaging/profiles; this feature owns only the management view (list + unblock).",
+      "componentCount": 1,
+      "endpointCount": 1,
+      "hookCount": 1,
+      "serviceCount": 2,
+      "entities": ["member_blocks", "members"],
+      "journeySlugs": ["member-block-management"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "member_blocks",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
+        },
+        {
+          "type": "api-group",
+          "label": "Blocks",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
       "slug": "cart",
       "name": "Cart",
       "description": "The cart provides authenticated users with a persistent shopping cart backed by the cart_items database table. Items are capped at 25 per user, expire after 30 days, and snapshot the listing price at the time of addition for price-change detection. Guest users use a localStorage-based cart that merges into the authenticated cart on login.",

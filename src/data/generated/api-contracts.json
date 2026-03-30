@@ -151,6 +151,35 @@
       ]
     },
     {
+      "name": "Blocks",
+      "endpoints": [
+        {
+          "method": "GET",
+          "path": "/api/blocks",
+          "label": "List Block",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 404, 500],
+          "requestFields": [],
+          "description": "List all members blocked by the authenticated user",
+          "tags": [],
+          "sourceFile": "src/app/api/blocks/route.ts"
+        },
+        {
+          "method": "DELETE",
+          "path": "/api/blocks",
+          "label": "Delete Block",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 404, 500],
+          "requestFields": [],
+          "description": "Unblock a member by removing the block record",
+          "tags": [],
+          "sourceFile": "src/app/api/blocks/route.ts"
+        }
+      ]
+    },
+    {
       "name": "Cart",
       "endpoints": [
         {

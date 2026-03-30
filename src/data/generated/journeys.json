@@ -228,7 +228,7 @@
       "title": "Account Settings & Profile Completeness",
       "persona": "account",
       "description": "Account settings page with sections for personal info, fishing identity, notifications, seller settings, shipping addresses, linked accounts, and profile completeness tracking.",
-      "relatedIssues": [],
+      "relatedIssues": [322],
       "nodes": [
         {
           "id": "settings-sections--entry",
@@ -290,6 +290,15 @@
           "layer": "client",
           "status": "planned",
           "why": "Stripe Connect placeholder"
+        },
+        {
+          "id": "settings-sections--blocked-members-link",
+          "type": "step",
+          "label": "Blocked Members",
+          "layer": "client",
+          "status": "built",
+          "route": "/dashboard/account/blocked-members",
+          "why": "Sidebar link to blocked members management page. See member-block-management.json for the full flow."
         },
         {
           "id": "settings-sections--danger-zone",
@@ -389,6 +398,10 @@
         },
         {
           "from": "settings-sections--linked-accounts",
+          "to": "settings-sections--blocked-members-link"
+        },
+        {
+          "from": "settings-sections--blocked-members-link",
           "to": "settings-sections--danger-zone"
         },
         {
@@ -2976,6 +2989,291 @@
         {
           "from": "logout--reset-context",
           "to": "logout--redirect-home"
+        }
+      ]
+    },
+    {
+      "slug": "member-block-management",
+      "domain": "account",
+      "title": "Blocked Members",
+      "persona": "account",
+      "description": "View and manage blocked members — authenticated users can see who they have blocked and unblock them from the account settings page.",
+      "relatedIssues": [322],
+      "nodes": [
+        {
+          "id": "view-blocked-members--entry",
+          "type": "entry",
+          "label": "View Blocked Members List"
+        },
+        {
+          "id": "view-blocked-members--open-blocked-page",
+          "type": "step",
+          "label": "Open Blocked Members",
+          "layer": "client",
+          "status": "built",
+          "route": "/dashboard/account/blocked-members",
+          "codeRef": "src/app/(frontend)/dashboard/account/blocked-members/page.tsx"
+        },
+        {
+          "id": "view-blocked-members--fetch-blocked-list",
+          "type": "step",
+          "label": "Fetch Blocked Members",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/blocks",
+          "codeRef": "src/app/api/blocks/route.ts",
+          "why": "Auth check via Supabase session. Returns all member_blocks rows where blocker_id = current user, joined with members table to resolve name, avatar_url, and slug. Ordered by created_at DESC.",
+          "errorCases": [
+            {
+              "condition": "User is not authenticated",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Database query fails",
+              "result": "Returns 500 with error message",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "view-blocked-members--decision-fetch-blocked-list",
+          "type": "decision",
+          "label": "Fetch successful?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "view-blocked-members--check-empty"
+            },
+            {
+              "label": "Error",
+              "to": "view-blocked-members--show-error-state"
+            }
+          ]
+        },
+        {
+          "id": "view-blocked-members--resolve-member-details",
+          "type": "step",
+          "label": "Resolve Member Details",
+          "layer": "database",
+          "status": "built",
+          "codeRef": "src/features/blocks/services/block-server.ts",
+          "why": "Server service joins member_blocks with members table in two queries: first fetches block rows, then fetches member rows by blocked_id array. Builds a map of id → {name, avatar_url, slug} to avoid N+1 queries."
+        },
+        {
+          "id": "view-blocked-members--show-skeleton",
+          "type": "step",
+          "label": "Show Loading Skeleton",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/app/(frontend)/dashboard/account/blocked-members/page.tsx",
+          "why": "Four skeleton cards rendered while useBlockedMembers query is in-flight. role=status with aria-label for screen readers."
+        },
+        {
+          "id": "unblock-member--entry",
+          "type": "entry",
+          "label": "Unblock a Member"
+        },
+        {
+          "id": "unblock-member--click-unblock",
+          "type": "step",
+          "label": "Click Unblock",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/blocks/components/blocked-member-card/index.tsx",
+          "why": "Unblock button has aria-label='Unblock {name}'. Triggers useUnblockMember mutation. Button shows loading spinner while isPending."
+        },
+        {
+          "id": "unblock-member--optimistic-remove",
+          "type": "step",
+          "label": "Remove from Cache",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/blocks/hooks/use-blocked-members.ts",
+          "why": "onMutate: cancels in-flight ['blocks', userId] queries, snapshots previous data, filters the unblocked member out of cache immediately. Rolled back on error."
+        },
+        {
+          "id": "unblock-member--delete-block",
+          "type": "step",
+          "label": "Delete Block Record",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/blocks",
+          "codeRef": "src/app/api/blocks/route.ts",
+          "why": "blocked_id passed as query param (?blocked_id={uuid}). Auth check via session. Deletes from member_blocks where blocker_id = current user AND blocked_id = param. Returns 404 if no matching row found.",
+          "errorCases": [
+            {
+              "condition": "User is not authenticated",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "blocked_id param is missing or empty",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Block record not found (already unblocked or wrong user)",
+              "result": "Returns 404 Block not found",
+              "httpStatus": 404
+            },
+            {
+              "condition": "Database delete fails",
+              "result": "Returns 500 with error message",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "unblock-member--decision-delete-block",
+          "type": "decision",
+          "label": "Unblock succeeded?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "unblock-member--invalidate-cache"
+            },
+            {
+              "label": "No",
+              "to": "unblock-member--show-error-toast"
+            }
+          ]
+        },
+        {
+          "id": "unblock-member--db-delete-row",
+          "type": "step",
+          "label": "Delete Row",
+          "layer": "database",
+          "status": "built",
+          "codeRef": "src/features/blocks/services/block-server.ts",
+          "why": "DELETE from member_blocks WHERE blocker_id = blockerId AND blocked_id = blockedId. RLS policy enforces blocker_id = auth.uid(). Unique constraint on (blocker_id, blocked_id) means at most one row deleted."
+        },
+        {
+          "id": "unblock-member--invalidate-cache",
+          "type": "step",
+          "label": "Invalidate Query Cache",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/blocks/hooks/use-blocked-members.ts",
+          "why": "onSettled always invalidates ['blocks', userId] to sync the server state after optimistic update."
+        },
+        {
+          "id": "unblock-member--show-success-toast",
+          "type": "step",
+          "label": "Show Success Toast",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/blocks/components/blocked-member-card/index.tsx",
+          "why": "Toast: title 'Unblocked', description 'You unblocked {name}.' type=success."
+        },
+        {
+          "id": "unblock-member--show-error-toast",
+          "type": "step",
+          "label": "Show Error Toast",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/blocks/components/blocked-member-card/index.tsx",
+          "why": "Toast: title 'Something went wrong', description 'Could not unblock this member. Please try again.' type=error. Optimistic cache removal is rolled back via onError snapshot restore."
+        },
+        {
+          "id": "view-blocked-profile--entry",
+          "type": "entry",
+          "label": "View Blocked Member Profile"
+        },
+        {
+          "id": "view-blocked-profile--click-member-link",
+          "type": "step",
+          "label": "Click Member Profile",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/blocks/components/blocked-member-card/index.tsx",
+          "why": "Both avatar and name are wrapped in AppLink. Href resolves to /member/{slug} if slug exists, otherwise /member/{blocked_id}."
+        },
+        {
+          "id": "view-blocked-profile--navigate-to-profile",
+          "type": "step",
+          "label": "Navigate to Profile",
+          "layer": "client",
+          "status": "built",
+          "route": "/member/[slug]",
+          "why": "Standard member profile page. Block relationship is not surfaced here yet — a 'Blocked' indicator on the profile page is a planned improvement."
+        },
+        {
+          "id": "view-blocked-profile--blocked-indicator-on-profile",
+          "type": "step",
+          "label": "Show Blocked Badge",
+          "layer": "client",
+          "status": "planned",
+          "route": "/member/[slug]",
+          "notes": "When viewing a member profile from the blocked list (or any profile of a member you have blocked), show a 'Blocked' indicator. This would let users confirm the block is active and access the unblock action without navigating to account settings."
+        }
+      ],
+      "edges": [
+        {
+          "from": "view-blocked-members--entry",
+          "to": "view-blocked-members--open-blocked-page"
+        },
+        {
+          "from": "view-blocked-members--open-blocked-page",
+          "to": "view-blocked-members--fetch-blocked-list"
+        },
+        {
+          "from": "view-blocked-members--fetch-blocked-list",
+          "to": "view-blocked-members--decision-fetch-blocked-list"
+        },
+        {
+          "from": "view-blocked-members--resolve-member-details",
+          "to": "view-blocked-members--show-skeleton"
+        },
+        {
+          "from": "unblock-member--entry",
+          "to": "unblock-member--click-unblock"
+        },
+        {
+          "from": "unblock-member--click-unblock",
+          "to": "unblock-member--optimistic-remove"
+        },
+        {
+          "from": "unblock-member--optimistic-remove",
+          "to": "unblock-member--delete-block"
+        },
+        {
+          "from": "unblock-member--delete-block",
+          "to": "unblock-member--decision-delete-block"
+        },
+        {
+          "from": "unblock-member--decision-delete-block",
+          "to": "unblock-member--invalidate-cache",
+          "opt": "Yes"
+        },
+        {
+          "from": "unblock-member--decision-delete-block",
+          "to": "unblock-member--show-error-toast",
+          "opt": "No"
+        },
+        {
+          "from": "unblock-member--db-delete-row",
+          "to": "unblock-member--invalidate-cache"
+        },
+        {
+          "from": "unblock-member--invalidate-cache",
+          "to": "unblock-member--show-success-toast"
+        },
+        {
+          "from": "unblock-member--show-success-toast",
+          "to": "unblock-member--show-error-toast"
+        },
+        {
+          "from": "view-blocked-profile--entry",
+          "to": "view-blocked-profile--click-member-link"
+        },
+        {
+          "from": "view-blocked-profile--click-member-link",
+          "to": "view-blocked-profile--navigate-to-profile"
+        },
+        {
+          "from": "view-blocked-profile--navigate-to-profile",
+          "to": "view-blocked-profile--blocked-indicator-on-profile"
         }
       ]
     },
