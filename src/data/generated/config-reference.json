@@ -452,6 +452,62 @@
       ]
     },
     {
+      "slug": "message-type",
+      "name": "Message Type",
+      "description": "Database enum Message Type with 6 values",
+      "source": "supabase/migrations/20260330000000_create_messaging.sql",
+      "values": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "system",
+          "label": "System"
+        },
+        {
+          "value": "offer_node",
+          "label": "Offer Node"
+        },
+        {
+          "value": "custom_request_node",
+          "label": "Custom Request Node"
+        },
+        {
+          "value": "listing_node",
+          "label": "Listing Node"
+        },
+        {
+          "value": "nudge",
+          "label": "Nudge"
+        }
+      ]
+    },
+    {
+      "slug": "participant-role",
+      "name": "Participant Role",
+      "description": "Database enum Participant Role with 4 values",
+      "source": "supabase/migrations/20260330000000_create_messaging.sql",
+      "values": [
+        {
+          "value": "buyer",
+          "label": "Buyer"
+        },
+        {
+          "value": "seller",
+          "label": "Seller"
+        },
+        {
+          "value": "initiator",
+          "label": "Initiator"
+        },
+        {
+          "value": "recipient",
+          "label": "Recipient"
+        }
+      ]
+    },
+    {
       "slug": "report-target-type",
       "name": "Report Target Type",
       "description": "Database enum Report Target Type with 4 values",
@@ -492,6 +548,30 @@
         {
           "value": "split",
           "label": "Split"
+        }
+      ]
+    },
+    {
+      "slug": "thread-type",
+      "name": "Thread Type",
+      "description": "Database enum Thread Type with 4 values",
+      "source": "supabase/migrations/20260330000000_create_messaging.sql",
+      "values": [
+        {
+          "value": "inquiry",
+          "label": "Inquiry"
+        },
+        {
+          "value": "direct",
+          "label": "Direct"
+        },
+        {
+          "value": "offer",
+          "label": "Offer"
+        },
+        {
+          "value": "custom_request",
+          "label": "Custom Request"
         }
       ]
     }

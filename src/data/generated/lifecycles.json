@@ -274,6 +274,28 @@
       "sourceFile": "supabase/migrations/20260328000000_add_member_and_shop_status.sql"
     },
     {
+      "slug": "thread",
+      "name": "Thread Lifecycle",
+      "description": "Status lifecycle for thread entities",
+      "states": [
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "archived",
+          "label": "Archived"
+        },
+        {
+          "id": "closed",
+          "label": "Closed"
+        }
+      ],
+      "transitions": [],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql"
+    },
+    {
       "slug": "subscription",
       "name": "Subscription Lifecycle",
       "description": "Status lifecycle for subscription entities",

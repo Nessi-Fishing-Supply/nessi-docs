@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(messaging): #302 create messaging database schema",
+      "number": 320,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/320",
+      "mergedAt": "2026-03-30T14:05:36Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "full-stack",
+      "type": "feature"
+    },
+    {
       "title": "feat(watchlist): #36 watchlist + price drop alerts",
       "number": 300,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/300",

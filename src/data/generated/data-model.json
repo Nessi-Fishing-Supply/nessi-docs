@@ -898,6 +898,11 @@
           "isUnique": true
         },
         {
+          "name": "status",
+          "type": "enum:member_status",
+          "nullable": false
+        },
+        {
           "name": "stripe_account_id",
           "type": "string",
           "nullable": true
@@ -1024,6 +1029,320 @@
           "event": "DELETE",
           "timing": "BEFORE",
           "function": "public.handle_member_deletion"
+        }
+      ]
+    },
+    {
+      "name": "message_thread_participants",
+      "label": "Message Thread Participants",
+      "fields": [
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "is_blocked",
+          "type": "boolean",
+          "nullable": false,
+          "default": "false"
+        },
+        {
+          "name": "joined_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        },
+        {
+          "name": "last_read_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "member_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "role",
+          "type": "enum:participant_role",
+          "nullable": false
+        },
+        {
+          "name": "thread_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "message_threads",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "unread_count",
+          "type": "number",
+          "nullable": false,
+          "default": "0"
+        }
+      ],
+      "badges": ["RLS"],
+      "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql",
+      "rlsPolicies": [
+        {
+          "name": "message_thread_participants_select_own",
+          "operation": "SELECT",
+          "using": "member_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "message_thread_participants_update_own",
+          "operation": "UPDATE",
+          "using": "member_id = (SELECT auth.uid())"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_message_thread_participants_member_thread",
+          "columns": ["member_id", "thread_id"],
+          "unique": false
+        },
+        {
+          "name": "idx_message_thread_participants_member_id",
+          "columns": ["member_id"],
+          "unique": false
+        }
+      ],
+      "triggers": []
+    },
+    {
+      "name": "message_threads",
+      "label": "Message Threads",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        },
+        {
+          "name": "created_by",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "last_message_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "last_message_preview",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "listing_id",
+          "type": "string",
+          "nullable": true,
+          "references": {
+            "table": "listings",
+            "column": "id",
+            "onDelete": "SET NULL"
+          }
+        },
+        {
+          "name": "shop_id",
+          "type": "string",
+          "nullable": true,
+          "references": {
+            "table": "shops",
+            "column": "id",
+            "onDelete": "SET NULL"
+          }
+        },
+        {
+          "name": "status",
+          "type": "enum:thread_status",
+          "nullable": false,
+          "default": "'active'"
+        },
+        {
+          "name": "type",
+          "type": "enum:thread_type",
+          "nullable": false
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        }
+      ],
+      "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql",
+      "rlsPolicies": [
+        {
+          "name": "message_threads_select_participants",
+          "operation": "SELECT",
+          "using": "EXISTS (\n    SELECT 1 FROM public.message_thread_participants\n    WHERE thread_id = message_threads.id AND member_id = (SELECT auth.uid())\n  )"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_message_threads_type",
+          "columns": ["type"],
+          "unique": false
+        },
+        {
+          "name": "idx_message_threads_listing_id",
+          "columns": ["listing_id"],
+          "unique": false
+        },
+        {
+          "name": "idx_message_threads_shop_id",
+          "columns": ["shop_id"],
+          "unique": false
+        },
+        {
+          "name": "idx_message_threads_last_message_at",
+          "columns": ["last_message_at"],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "trg_update_thread_timestamp",
+          "event": "UPDATE",
+          "timing": "BEFORE",
+          "function": "public.update_thread_timestamp"
+        }
+      ]
+    },
+    {
+      "name": "messages",
+      "label": "Messages",
+      "fields": [
+        {
+          "name": "content",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false,
+          "default": "now()"
+        },
+        {
+          "name": "edited_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "is_filtered",
+          "type": "boolean",
+          "nullable": false,
+          "default": "false"
+        },
+        {
+          "name": "metadata",
+          "type": "Json",
+          "nullable": true
+        },
+        {
+          "name": "original_content",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "sender_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "members",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "thread_id",
+          "type": "string",
+          "nullable": false,
+          "references": {
+            "table": "message_threads",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "type",
+          "type": "enum:message_type",
+          "nullable": false,
+          "default": "'text'"
+        }
+      ],
+      "badges": ["RLS", "Triggers"],
+      "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql",
+      "rlsPolicies": [
+        {
+          "name": "messages_select_participants",
+          "operation": "SELECT",
+          "using": "EXISTS (\n    SELECT 1 FROM public.message_thread_participants\n    WHERE thread_id = messages.thread_id AND member_id = (SELECT auth.uid())\n  )"
+        },
+        {
+          "name": "messages_insert_participants",
+          "operation": "INSERT",
+          "withCheck": "sender_id = (SELECT auth.uid())\n    AND EXISTS (\n      SELECT 1 FROM public.message_thread_participants\n      WHERE thread_id = messages.thread_id AND member_id = (SELECT auth.uid())\n    )"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_messages_thread_created_at",
+          "columns": ["thread_id", "created_at"],
+          "unique": false
+        },
+        {
+          "name": "idx_messages_sender_id",
+          "columns": ["sender_id"],
+          "unique": false
+        }
+      ],
+      "triggers": [
+        {
+          "name": "trg_update_thread_last_message",
+          "event": "INSERT",
+          "timing": "AFTER",
+          "function": "public.update_thread_last_message"
+        },
+        {
+          "name": "trg_increment_unread_count",
+          "event": "INSERT",
+          "timing": "AFTER",
+          "function": "public.increment_unread_count"
         }
       ]
     },
@@ -1726,6 +2045,11 @@
           "type": "string",
           "nullable": false,
           "isUnique": true
+        },
+        {
+          "name": "status",
+          "type": "enum:shop_status",
+          "nullable": false
         },
         {
           "name": "stripe_account_id",

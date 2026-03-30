@@ -29,6 +29,18 @@
       "label": "Members"
     },
     {
+      "id": "message_thread_participants",
+      "label": "Message Thread Participants"
+    },
+    {
+      "id": "message_threads",
+      "label": "Message Threads"
+    },
+    {
+      "id": "messages",
+      "label": "Messages"
+    },
+    {
       "id": "price_drop_notifications",
       "label": "Price Drop Notifications"
     },
@@ -109,6 +121,41 @@
       "from": "listings",
       "to": "shops",
       "label": "shop_id"
+    },
+    {
+      "from": "message_thread_participants",
+      "to": "members",
+      "label": "member_id"
+    },
+    {
+      "from": "message_thread_participants",
+      "to": "message_threads",
+      "label": "thread_id"
+    },
+    {
+      "from": "message_threads",
+      "to": "members",
+      "label": "created_by"
+    },
+    {
+      "from": "message_threads",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "message_threads",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "messages",
+      "to": "members",
+      "label": "sender_id"
+    },
+    {
+      "from": "messages",
+      "to": "message_threads",
+      "label": "thread_id"
     },
     {
       "from": "price_drop_notifications",
