@@ -50,7 +50,7 @@
           "options": [
             {
               "label": "Yes",
-              "to": "END"
+              "to": "delete-account--show-shops-warning"
             },
             {
               "label": "No",
@@ -139,6 +139,14 @@
           "why": "CASCADE: cart items, recently viewed, shop memberships deleted"
         },
         {
+          "id": "delete-account--show-shops-warning",
+          "type": "step",
+          "label": "Show Shops Warning",
+          "layer": "client",
+          "status": "built",
+          "why": "409 OWNS_SHOPS: Modal shows warning with list of active shop names as clickable links to /dashboard/shop/settings. User must delete or transfer shops before account deletion."
+        },
+        {
           "id": "delete-account--clear-session",
           "type": "step",
           "label": "Clear Session",
@@ -170,6 +178,11 @@
         {
           "from": "delete-account--check-shops",
           "to": "delete-account--decision-check-shops"
+        },
+        {
+          "from": "delete-account--decision-check-shops",
+          "to": "delete-account--show-shops-warning",
+          "opt": "Yes"
         },
         {
           "from": "delete-account--decision-check-shops",
@@ -214,6 +227,10 @@
         },
         {
           "from": "delete-account--cascade-fk",
+          "to": "delete-account--show-shops-warning"
+        },
+        {
+          "from": "delete-account--show-shops-warning",
           "to": "delete-account--clear-session"
         },
         {
@@ -437,6 +454,447 @@
       ]
     },
     {
+      "slug": "browse-and-search",
+      "domain": "shopping",
+      "title": "Browse & Search Listings",
+      "persona": "buyer",
+      "description": "Users discover listings via category browsing, keyword search with autocomplete, or featured/homepage. Includes filters, infinite scroll, view tracking, and recently viewed. Guest and authenticated paths diverge at view tracking and watchlist access.",
+      "relatedIssues": [],
+      "nodes": [
+        {
+          "id": "discover--entry",
+          "type": "entry",
+          "label": "Discover Listings"
+        },
+        {
+          "id": "discover--land-on-site",
+          "type": "step",
+          "label": "Land on Homepage",
+          "layer": "client",
+          "status": "built",
+          "why": "User arrives at Nessi homepage. Sees featured listings, categories, and search bar."
+        },
+        {
+          "id": "discover--decision-land-on-site",
+          "type": "decision",
+          "label": "How do they discover?",
+          "options": [
+            {
+              "label": "Browse Category",
+              "to": "discover--land-homepage"
+            },
+            {
+              "label": "Search",
+              "to": "discover--type-query"
+            },
+            {
+              "label": "View Profile",
+              "to": "discover--click-seller"
+            }
+          ]
+        },
+        {
+          "id": "browse-by-category--entry",
+          "type": "entry",
+          "label": "Browse by Category"
+        },
+        {
+          "id": "browse-by-category--land-homepage",
+          "type": "step",
+          "label": "Land on Homepage",
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "browse-by-category--click-category",
+          "type": "step",
+          "label": "Click Category",
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "browse-by-category--category-page",
+          "type": "step",
+          "label": "View Category Page",
+          "layer": "client",
+          "status": "built",
+          "route": "/category/[slug]"
+        },
+        {
+          "id": "browse-by-category--apply-filters",
+          "type": "step",
+          "label": "Apply Filters",
+          "layer": "client",
+          "status": "built",
+          "why": "Filter: condition, price, state, species, listing type. All filters stored in URL params (shareable)."
+        },
+        {
+          "id": "browse-by-category--infinite-scroll",
+          "type": "step",
+          "label": "Scroll Results",
+          "layer": "client",
+          "status": "built",
+          "why": "Infinite scroll pagination"
+        },
+        {
+          "id": "browse-by-category--click-listing",
+          "type": "step",
+          "label": "Click Listing Card",
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "browse-by-category--listing-detail",
+          "type": "step",
+          "label": "View Listing Detail",
+          "layer": "client",
+          "status": "built",
+          "route": "/listing/[id]"
+        },
+        {
+          "id": "browse-by-category--view-count",
+          "type": "step",
+          "label": "Increment View Count",
+          "layer": "server",
+          "status": "built",
+          "why": "View count incremented on listing detail page load"
+        },
+        {
+          "id": "search--entry",
+          "type": "entry",
+          "label": "Search with Autocomplete"
+        },
+        {
+          "id": "search--type-query",
+          "type": "step",
+          "label": "Type Search Query",
+          "layer": "client",
+          "status": "built",
+          "why": "Type 3+ chars triggers autocomplete with 200ms debounce"
+        },
+        {
+          "id": "search--suggestion-sources",
+          "type": "step",
+          "label": "Fetch Suggestions",
+          "layer": "server",
+          "status": "built",
+          "why": "Suggestions from popular search terms, listing titles, category names"
+        },
+        {
+          "id": "search--select-or-enter",
+          "type": "step",
+          "label": "Select or Submit",
+          "layer": "client",
+          "status": "built",
+          "why": "Select suggestion or press Enter"
+        },
+        {
+          "id": "search--search-page",
+          "type": "step",
+          "label": "View Search Results",
+          "layer": "client",
+          "status": "built",
+          "route": "/search"
+        },
+        {
+          "id": "search--track-suggestion",
+          "type": "step",
+          "label": "Track Suggestion",
+          "layer": "background",
+          "status": "built",
+          "why": "trackSearchSuggestion() — fire and forget"
+        },
+        {
+          "id": "filter-and-browse--entry",
+          "type": "entry",
+          "label": "Filter & Browse Results"
+        },
+        {
+          "id": "filter-and-browse--filter-panel",
+          "type": "step",
+          "label": "Open Filter Panel",
+          "layer": "client",
+          "status": "built",
+          "why": "Filter: category, condition (6 tiers), price range, state, species, listing type, free shipping"
+        },
+        {
+          "id": "filter-and-browse--url-params",
+          "type": "step",
+          "label": "Sync Filters to URL",
+          "layer": "client",
+          "status": "built",
+          "why": "All filters stored in URL params (shareable)"
+        },
+        {
+          "id": "filter-and-browse--results-found",
+          "type": "step",
+          "label": "Check Results",
+          "layer": "client",
+          "status": "built",
+          "why": "Determines whether to show the results grid or an empty state"
+        },
+        {
+          "id": "filter-and-browse--decision-results-found",
+          "type": "decision",
+          "label": "Results found?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "filter-and-browse--scroll-results"
+            },
+            {
+              "label": "No (with filters)",
+              "to": "END"
+            },
+            {
+              "label": "No (no filters)",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "filter-and-browse-results--entry",
+          "type": "entry",
+          "label": "Browse Result Grid"
+        },
+        {
+          "id": "filter-and-browse-results--scroll-results",
+          "type": "step",
+          "label": "Scroll Results",
+          "layer": "client",
+          "status": "built",
+          "why": "Infinite scroll pagination"
+        },
+        {
+          "id": "filter-and-browse-results--watch-from-card",
+          "type": "step",
+          "label": "Watch from Card",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/listings/components/listing-card/index.tsx",
+          "why": "WatchButton overlaid on listing card image. Auth-gated — unauthenticated users are redirected to ?login=true. See member-watchlist.json for the full watch/unwatch flow."
+        },
+        {
+          "id": "filter-and-browse-results--listing-card-click",
+          "type": "step",
+          "label": "Click Listing Card",
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "filter-and-browse-results--listing-detail-page",
+          "type": "step",
+          "label": "View Listing Detail",
+          "layer": "client",
+          "status": "built",
+          "route": "/listing/[id]"
+        },
+        {
+          "id": "filter-and-browse-results--listing-view-count",
+          "type": "step",
+          "label": "Increment View Count",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/listings/[id]/view"
+        },
+        {
+          "id": "filter-and-browse-results--recently-viewed",
+          "type": "step",
+          "label": "Track Recently Viewed",
+          "layer": "background",
+          "status": "built",
+          "why": "Recently viewed tracked in background"
+        },
+        {
+          "id": "view-profiles--entry",
+          "type": "entry",
+          "label": "View Seller & Shop Profiles"
+        },
+        {
+          "id": "view-profiles--click-seller",
+          "type": "step",
+          "label": "Click Seller Link",
+          "layer": "client",
+          "status": "built",
+          "why": "Click seller profile link on listing detail"
+        },
+        {
+          "id": "view-profiles--member-page",
+          "type": "step",
+          "label": "View Seller Profile",
+          "layer": "client",
+          "status": "built",
+          "route": "/member/[slug]"
+        },
+        {
+          "id": "view-profiles--seller-listings",
+          "type": "step",
+          "label": "Browse Seller Items",
+          "layer": "client",
+          "status": "built",
+          "why": "See seller's other listings"
+        },
+        {
+          "id": "view-profiles--click-shop",
+          "type": "step",
+          "label": "Click Shop Link",
+          "layer": "client",
+          "status": "built",
+          "why": "Click shop page link on listing detail"
+        },
+        {
+          "id": "view-profiles--shop-page",
+          "type": "step",
+          "label": "View Shop Page",
+          "layer": "client",
+          "status": "built",
+          "route": "/shop/[slug]"
+        },
+        {
+          "id": "view-profiles--shop-listings",
+          "type": "step",
+          "label": "Browse Shop Items",
+          "layer": "client",
+          "status": "built",
+          "why": "Shop's listings grid + hero banner"
+        }
+      ],
+      "edges": [
+        {
+          "from": "discover--entry",
+          "to": "discover--land-on-site"
+        },
+        {
+          "from": "discover--land-on-site",
+          "to": "discover--decision-land-on-site"
+        },
+        {
+          "from": "browse-by-category--entry",
+          "to": "browse-by-category--land-homepage"
+        },
+        {
+          "from": "browse-by-category--land-homepage",
+          "to": "browse-by-category--click-category"
+        },
+        {
+          "from": "browse-by-category--click-category",
+          "to": "browse-by-category--category-page"
+        },
+        {
+          "from": "browse-by-category--category-page",
+          "to": "browse-by-category--apply-filters"
+        },
+        {
+          "from": "browse-by-category--apply-filters",
+          "to": "browse-by-category--infinite-scroll"
+        },
+        {
+          "from": "browse-by-category--infinite-scroll",
+          "to": "browse-by-category--click-listing"
+        },
+        {
+          "from": "browse-by-category--click-listing",
+          "to": "browse-by-category--listing-detail"
+        },
+        {
+          "from": "browse-by-category--listing-detail",
+          "to": "browse-by-category--view-count"
+        },
+        {
+          "from": "search--entry",
+          "to": "search--type-query"
+        },
+        {
+          "from": "search--type-query",
+          "to": "search--suggestion-sources"
+        },
+        {
+          "from": "search--suggestion-sources",
+          "to": "search--select-or-enter"
+        },
+        {
+          "from": "search--select-or-enter",
+          "to": "search--search-page"
+        },
+        {
+          "from": "search--search-page",
+          "to": "search--track-suggestion"
+        },
+        {
+          "from": "filter-and-browse--entry",
+          "to": "filter-and-browse--filter-panel"
+        },
+        {
+          "from": "filter-and-browse--filter-panel",
+          "to": "filter-and-browse--url-params"
+        },
+        {
+          "from": "filter-and-browse--url-params",
+          "to": "filter-and-browse--results-found"
+        },
+        {
+          "from": "filter-and-browse--results-found",
+          "to": "filter-and-browse--decision-results-found"
+        },
+        {
+          "from": "filter-and-browse--scroll-results",
+          "to": "filter-and-browse--watch-from-card"
+        },
+        {
+          "from": "filter-and-browse--scroll-results",
+          "to": "filter-and-browse--listing-card-click"
+        },
+        {
+          "from": "filter-and-browse-results--entry",
+          "to": "filter-and-browse-results--scroll-results"
+        },
+        {
+          "from": "filter-and-browse-results--scroll-results",
+          "to": "filter-and-browse-results--watch-from-card"
+        },
+        {
+          "from": "filter-and-browse-results--watch-from-card",
+          "to": "filter-and-browse-results--listing-card-click"
+        },
+        {
+          "from": "filter-and-browse-results--listing-card-click",
+          "to": "filter-and-browse-results--listing-detail-page"
+        },
+        {
+          "from": "filter-and-browse-results--listing-detail-page",
+          "to": "filter-and-browse-results--listing-view-count"
+        },
+        {
+          "from": "filter-and-browse-results--listing-view-count",
+          "to": "filter-and-browse-results--recently-viewed"
+        },
+        {
+          "from": "view-profiles--entry",
+          "to": "view-profiles--click-seller"
+        },
+        {
+          "from": "view-profiles--click-seller",
+          "to": "view-profiles--member-page"
+        },
+        {
+          "from": "view-profiles--member-page",
+          "to": "view-profiles--seller-listings"
+        },
+        {
+          "from": "view-profiles--seller-listings",
+          "to": "view-profiles--click-shop"
+        },
+        {
+          "from": "view-profiles--click-shop",
+          "to": "view-profiles--shop-page"
+        },
+        {
+          "from": "view-profiles--shop-page",
+          "to": "view-profiles--shop-listings"
+        }
+      ]
+    },
+    {
       "slug": "buyer-addresses",
       "domain": "account",
       "title": "Saved Shipping Addresses",
@@ -444,6 +902,38 @@
       "description": "Buyer manages up to 5 saved shipping addresses with CRUD operations, default address management, and auto-promotion on delete.",
       "relatedIssues": [],
       "nodes": [
+        {
+          "id": "address-hub--entry",
+          "type": "entry",
+          "label": "Navigate to Addresses"
+        },
+        {
+          "id": "address-hub--open-addresses",
+          "type": "step",
+          "label": "Open Addresses Page",
+          "layer": "client",
+          "status": "built",
+          "why": "User navigates to Account Settings → Shipping Addresses section"
+        },
+        {
+          "id": "address-hub--decision-open-addresses",
+          "type": "decision",
+          "label": "What does user do?",
+          "options": [
+            {
+              "label": "View List",
+              "to": "address-hub--fetch-addresses"
+            },
+            {
+              "label": "Add New",
+              "to": "address-hub--check-cap"
+            },
+            {
+              "label": "Edit/Delete",
+              "to": "address-hub--edit-address"
+            }
+          ]
+        },
         {
           "id": "view-addresses--entry",
           "type": "entry",
@@ -468,7 +958,7 @@
             },
             {
               "label": "No",
-              "to": "END"
+              "to": "view-addresses--empty-state"
             }
           ]
         },
@@ -479,6 +969,14 @@
           "layer": "client",
           "status": "built",
           "why": "AddressList: cards with label, address, default badge"
+        },
+        {
+          "id": "view-addresses--empty-state",
+          "type": "step",
+          "label": "Show Empty State",
+          "layer": "client",
+          "status": "built",
+          "why": "\"No saved addresses yet\" text displayed, Add Address button still active"
         },
         {
           "id": "add-address--entry",
@@ -500,13 +998,21 @@
           "options": [
             {
               "label": "Yes",
-              "to": "END"
+              "to": "add-address--cap-reached"
             },
             {
               "label": "No",
               "to": "add-address--open-modal"
             }
           ]
+        },
+        {
+          "id": "add-address--cap-reached",
+          "type": "step",
+          "label": "Show Cap Message",
+          "layer": "client",
+          "status": "built",
+          "why": "Add Address button disabled. Note: \"You've reached the 5-address limit.\""
         },
         {
           "id": "add-address--open-modal",
@@ -587,6 +1093,14 @@
       ],
       "edges": [
         {
+          "from": "address-hub--entry",
+          "to": "address-hub--open-addresses"
+        },
+        {
+          "from": "address-hub--open-addresses",
+          "to": "address-hub--decision-open-addresses"
+        },
+        {
           "from": "view-addresses--entry",
           "to": "view-addresses--fetch-addresses"
         },
@@ -600,6 +1114,15 @@
           "opt": "Yes"
         },
         {
+          "from": "view-addresses--decision-fetch-addresses",
+          "to": "view-addresses--empty-state",
+          "opt": "No"
+        },
+        {
+          "from": "view-addresses--show-list",
+          "to": "view-addresses--empty-state"
+        },
+        {
           "from": "add-address--entry",
           "to": "add-address--check-cap"
         },
@@ -609,8 +1132,17 @@
         },
         {
           "from": "add-address--decision-check-cap",
+          "to": "add-address--cap-reached",
+          "opt": "Yes"
+        },
+        {
+          "from": "add-address--decision-check-cap",
           "to": "add-address--open-modal",
           "opt": "No"
+        },
+        {
+          "from": "add-address--cap-reached",
+          "to": "add-address--open-modal"
         },
         {
           "from": "add-address--open-modal",
@@ -639,295 +1171,6 @@
         {
           "from": "manage-addresses--auto-promote-default",
           "to": "manage-addresses--set-default"
-        }
-      ]
-    },
-    {
-      "slug": "buyer-cart",
-      "domain": "cart",
-      "title": "Authenticated Cart (DB-Backed)",
-      "persona": "buyer",
-      "description": "Authenticated buyer adds items to DB-backed cart with price snapshots, 30-day expiry, seller grouping, and pre-checkout validation. Block enforcement prevents adding items from sellers who have blocked the buyer.",
-      "relatedIssues": [324],
-      "nodes": [
-        {
-          "id": "add-to-cart--entry",
-          "type": "entry",
-          "label": "Add Item to Cart"
-        },
-        {
-          "id": "add-to-cart--click-add",
-          "type": "step",
-          "label": "Click Add to Cart",
-          "layer": "client",
-          "status": "built",
-          "errorCases": [
-            {
-              "condition": "Own listing",
-              "result": "Button disabled"
-            },
-            {
-              "condition": "Already in cart",
-              "result": "Button shows 'In Cart'"
-            },
-            {
-              "condition": "Cart has 25 items",
-              "result": "Toast: cart full"
-            }
-          ]
-        },
-        {
-          "id": "add-to-cart--post-cart",
-          "type": "step",
-          "label": "Add to Cart",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/cart",
-          "codeRef": "src/app/api/cart/route.ts",
-          "why": "Send listingId + priceCents. Server checks: listing exists + active, block check (isBlockedByServer), not own listing, no duplicate, cart cap.",
-          "errorCases": [
-            {
-              "condition": "Seller has blocked the buyer",
-              "result": "Returns 403 'You cannot purchase this listing'",
-              "httpStatus": 403
-            },
-            {
-              "condition": "Listing not found or inactive",
-              "result": "Returns 404",
-              "httpStatus": 404
-            },
-            {
-              "condition": "Own listing",
-              "result": "Returns 403",
-              "httpStatus": 403
-            },
-            {
-              "condition": "Already in cart",
-              "result": "Returns 409",
-              "httpStatus": 409
-            },
-            {
-              "condition": "Cart full (25 items)",
-              "result": "Returns 422",
-              "httpStatus": 422
-            }
-          ]
-        },
-        {
-          "id": "add-to-cart--price-snapshot",
-          "type": "step",
-          "label": "Save Price Snapshot",
-          "layer": "database",
-          "status": "built",
-          "why": "Price snapshot saved as price_at_add"
-        },
-        {
-          "id": "add-to-cart--set-expiry",
-          "type": "step",
-          "label": "Set 30-Day Expiry",
-          "layer": "database",
-          "status": "built"
-        },
-        {
-          "id": "add-to-cart--optimistic-update",
-          "type": "step",
-          "label": "Update Cache",
-          "layer": "client",
-          "status": "built",
-          "why": "Optimistic cache update"
-        },
-        {
-          "id": "add-to-cart--show-toast",
-          "type": "step",
-          "label": "Show Added Toast",
-          "layer": "client",
-          "status": "built",
-          "why": "Toast: Added to cart"
-        },
-        {
-          "id": "view-cart--entry",
-          "type": "entry",
-          "label": "View Cart"
-        },
-        {
-          "id": "view-cart--fetch-cart",
-          "type": "step",
-          "label": "Fetch Cart Items",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/cart",
-          "why": "Returns cart items joined with listing data"
-        },
-        {
-          "id": "view-cart--group-by-seller",
-          "type": "step",
-          "label": "Group by Seller",
-          "layer": "client",
-          "status": "built"
-        },
-        {
-          "id": "view-cart--show-item-states",
-          "type": "step",
-          "label": "Show Item States",
-          "layer": "client",
-          "status": "built",
-          "why": "States: valid, price changed (old vs new), removed/sold (warning)"
-        },
-        {
-          "id": "view-cart--cart-actions",
-          "type": "step",
-          "label": "Show Cart Actions",
-          "layer": "client",
-          "status": "built",
-          "why": "Actions: remove item, clear all, refresh expiry"
-        },
-        {
-          "id": "cart-actions--entry",
-          "type": "entry",
-          "label": "Cart Item Actions"
-        },
-        {
-          "id": "cart-actions--remove-item",
-          "type": "step",
-          "label": "Remove Item",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/cart/[id]"
-        },
-        {
-          "id": "cart-actions--clear-all",
-          "type": "step",
-          "label": "Clear All Items",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/cart"
-        },
-        {
-          "id": "cart-actions--refresh-expiry",
-          "type": "step",
-          "label": "Refresh Expiry",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/cart/[id]/expiry"
-        },
-        {
-          "id": "pre-checkout-validation--entry",
-          "type": "entry",
-          "label": "Pre-Checkout Validation"
-        },
-        {
-          "id": "pre-checkout-validation--validate-cart",
-          "type": "step",
-          "label": "Validate Cart",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/cart/validate",
-          "codeRef": "src/features/cart/services/cart-server.ts",
-          "why": "Validates all cart items. Batch block check: single IN query on member_blocks for all unique seller IDs. Blocked items moved to removed[] with reason: 'blocked'."
-        },
-        {
-          "id": "pre-checkout-validation--decision-validate-cart",
-          "type": "decision",
-          "label": "Validation result?",
-          "options": [
-            {
-              "label": "Valid",
-              "to": "END"
-            },
-            {
-              "label": "Price Changed",
-              "to": "END"
-            },
-            {
-              "label": "Removed (sold/deleted/deactivated/blocked)",
-              "to": "END"
-            }
-          ]
-        },
-        {
-          "id": "pre-checkout-validation--handle-result",
-          "type": "step",
-          "label": "Handle Result",
-          "layer": "client",
-          "status": "built",
-          "why": "Handle validation result"
-        }
-      ],
-      "edges": [
-        {
-          "from": "add-to-cart--entry",
-          "to": "add-to-cart--click-add"
-        },
-        {
-          "from": "add-to-cart--click-add",
-          "to": "add-to-cart--post-cart"
-        },
-        {
-          "from": "add-to-cart--post-cart",
-          "to": "add-to-cart--price-snapshot"
-        },
-        {
-          "from": "add-to-cart--price-snapshot",
-          "to": "add-to-cart--set-expiry"
-        },
-        {
-          "from": "add-to-cart--set-expiry",
-          "to": "add-to-cart--optimistic-update"
-        },
-        {
-          "from": "add-to-cart--optimistic-update",
-          "to": "add-to-cart--show-toast"
-        },
-        {
-          "from": "view-cart--entry",
-          "to": "view-cart--fetch-cart"
-        },
-        {
-          "from": "view-cart--fetch-cart",
-          "to": "view-cart--group-by-seller"
-        },
-        {
-          "from": "view-cart--group-by-seller",
-          "to": "view-cart--show-item-states"
-        },
-        {
-          "from": "view-cart--show-item-states",
-          "to": "view-cart--cart-actions"
-        },
-        {
-          "from": "view-cart--cart-actions",
-          "to": "view-cart--remove-item",
-          "opt": "Remove"
-        },
-        {
-          "from": "view-cart--cart-actions",
-          "to": "view-cart--clear-all",
-          "opt": "Clear"
-        },
-        {
-          "from": "view-cart--cart-actions",
-          "to": "view-cart--refresh-expiry",
-          "opt": "Refresh"
-        },
-        {
-          "from": "cart-actions--entry",
-          "to": "cart-actions--remove-item"
-        },
-        {
-          "from": "cart-actions--remove-item",
-          "to": "cart-actions--clear-all"
-        },
-        {
-          "from": "cart-actions--clear-all",
-          "to": "cart-actions--refresh-expiry"
-        },
-        {
-          "from": "pre-checkout-validation--entry",
-          "to": "pre-checkout-validation--validate-cart"
-        },
-        {
-          "from": "pre-checkout-validation--validate-cart",
-          "to": "pre-checkout-validation--decision-validate-cart"
         }
       ]
     },
@@ -1062,463 +1305,695 @@
       ]
     },
     {
-      "slug": "buyer-recently-viewed",
-      "domain": "shopping",
-      "title": "Recently Viewed (Dual-Source)",
+      "slug": "cart",
+      "domain": "cart",
+      "title": "Cart (Guest + Authenticated)",
       "persona": "buyer",
-      "description": "Recently viewed listings use dual-source storage: localStorage for guests, DB-backed API for authenticated users. Includes merge on login and clear history.",
-      "relatedIssues": [],
+      "description": "Cart system with dual storage: localStorage for guests, DB-backed with price snapshots for authenticated users. Includes merge on login, seller grouping, pre-checkout validation, and block enforcement.",
+      "relatedIssues": [128, 129, 130, 324],
       "nodes": [
         {
-          "id": "track-view--entry",
+          "id": "add-to-cart--entry",
           "type": "entry",
-          "label": "Track Listing View"
+          "label": "Add Item to Cart"
         },
         {
-          "id": "track-view--view-listing",
+          "id": "add-to-cart--click-add",
           "type": "step",
-          "label": "View Listing Detail",
+          "label": "Click Add to Cart",
           "layer": "client",
-          "status": "built"
+          "status": "built",
+          "codeRef": "src/features/cart/components/add-to-cart-button/index.tsx",
+          "errorCases": [
+            {
+              "condition": "Own listing",
+              "result": "Button disabled"
+            },
+            {
+              "condition": "Already in cart",
+              "result": "Button shows 'In Cart'"
+            },
+            {
+              "condition": "Cart has 25 items",
+              "result": "Toast: cart full"
+            }
+          ]
         },
         {
-          "id": "track-view--decision-view-listing",
+          "id": "add-to-cart--validate-client",
+          "type": "step",
+          "label": "Validate Cart State",
+          "layer": "client",
+          "status": "built",
+          "why": "Client-side validation: own listing, already in cart, cart full",
+          "errorCases": [
+            {
+              "condition": "User's own listing",
+              "result": "Button disabled"
+            },
+            {
+              "condition": "Already in cart",
+              "result": "Button shows 'In Cart'"
+            },
+            {
+              "condition": "Cart has 25 items",
+              "result": "Toast: cart full"
+            }
+          ]
+        },
+        {
+          "id": "add-to-cart--decision-validate-client",
           "type": "decision",
           "label": "Authenticated?",
           "options": [
             {
               "label": "Yes",
-              "to": "track-view--track-authenticated"
+              "to": "add-to-cart--post-cart"
             },
             {
               "label": "No",
-              "to": "track-view--track-guest"
+              "to": "add-to-cart--write-localstorage"
             }
           ]
         },
         {
-          "id": "track-view--track-authenticated",
+          "id": "add-to-cart--post-cart",
           "type": "step",
-          "label": "Track View in DB",
+          "label": "Add to Cart (DB)",
           "layer": "server",
           "status": "built",
-          "route": "/api/recently-viewed"
+          "route": "/api/cart",
+          "codeRef": "src/app/api/cart/route.ts",
+          "why": "Send listingId + priceCents. Server checks: listing exists + active, block check (isBlockedByServer), not own listing, no duplicate, cart cap.",
+          "errorCases": [
+            {
+              "condition": "Seller has blocked the buyer",
+              "result": "Returns 403 'You cannot purchase this listing'",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Listing not found or inactive",
+              "result": "Returns 404",
+              "httpStatus": 404
+            },
+            {
+              "condition": "Own listing",
+              "result": "Returns 403",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Already in cart",
+              "result": "Returns 409",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Cart full (25 items)",
+              "result": "Returns 422",
+              "httpStatus": 422
+            }
+          ]
         },
         {
-          "id": "track-view--track-guest",
+          "id": "add-to-cart--price-snapshot",
           "type": "step",
-          "label": "Track View Locally",
+          "label": "Save Price Snapshot",
+          "layer": "database",
+          "status": "built",
+          "why": "Price snapshot saved as price_at_add"
+        },
+        {
+          "id": "add-to-cart--set-expiry",
+          "type": "step",
+          "label": "Set 30-Day Expiry",
+          "layer": "database",
+          "status": "built"
+        },
+        {
+          "id": "add-to-cart--decision-set-expiry",
+          "type": "decision",
+          "label": "Auth path continues",
+          "options": [
+            {
+              "label": "Continue",
+              "to": "add-to-cart--optimistic-update"
+            }
+          ]
+        },
+        {
+          "id": "add-to-cart--optimistic-update",
+          "type": "step",
+          "label": "Update Cache",
+          "layer": "client",
+          "status": "built",
+          "why": "Optimistic cache update"
+        },
+        {
+          "id": "add-to-cart--decision-optimistic-update",
+          "type": "decision",
+          "label": "Auth path continues",
+          "options": [
+            {
+              "label": "Continue",
+              "to": "add-to-cart--show-toast"
+            }
+          ]
+        },
+        {
+          "id": "add-to-cart--write-localstorage",
+          "type": "step",
+          "label": "Save to localStorage",
           "layer": "background",
           "status": "built",
-          "why": "addRecentlyViewed() saves to localStorage"
+          "why": "Add item to localStorage cart (listingId + priceCents snapshot). No API calls."
         },
         {
-          "id": "browse-history--entry",
+          "id": "add-to-cart--decision-write-localstorage",
+          "type": "decision",
+          "label": "Guest path continues",
+          "options": [
+            {
+              "label": "Continue",
+              "to": "add-to-cart--update-badge"
+            }
+          ]
+        },
+        {
+          "id": "add-to-cart--update-badge",
+          "type": "step",
+          "label": "Update Cart Badge",
+          "layer": "client",
+          "status": "built",
+          "why": "CartIcon badge count updates via Zustand store"
+        },
+        {
+          "id": "add-to-cart--decision-update-badge",
+          "type": "decision",
+          "label": "Guest path continues",
+          "options": [
+            {
+              "label": "Continue",
+              "to": "add-to-cart--show-toast"
+            }
+          ]
+        },
+        {
+          "id": "add-to-cart--show-toast",
+          "type": "step",
+          "label": "Show Added Toast",
+          "layer": "client",
+          "status": "built",
+          "why": "Toast: 'Added to cart'"
+        },
+        {
+          "id": "view-cart--entry",
           "type": "entry",
-          "label": "Browse Recently Viewed"
+          "label": "View Cart"
         },
         {
-          "id": "browse-history--fetch-authenticated",
+          "id": "view-cart--check-auth",
           "type": "step",
-          "label": "Fetch from API",
+          "label": "Check Auth State",
+          "layer": "client",
+          "status": "built",
+          "why": "Determine storage strategy: DB-backed for authenticated users, localStorage for guests"
+        },
+        {
+          "id": "view-cart--decision-check-auth",
+          "type": "decision",
+          "label": "Authenticated?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "view-cart--fetch-cart"
+            },
+            {
+              "label": "No",
+              "to": "view-cart--load-cart"
+            }
+          ]
+        },
+        {
+          "id": "view-cart--fetch-cart",
+          "type": "step",
+          "label": "Fetch Cart Items (DB)",
           "layer": "server",
           "status": "built",
-          "route": "/api/recently-viewed",
-          "why": "Returns recently viewed with listing data"
+          "route": "/api/cart",
+          "why": "Returns cart items joined with listing data"
         },
         {
-          "id": "browse-history--fetch-guest",
+          "id": "view-cart--decision-fetch-cart",
+          "type": "decision",
+          "label": "Has items?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "view-cart--group-by-seller"
+            },
+            {
+              "label": "No",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "view-cart--load-cart",
           "type": "step",
-          "label": "Fetch from Storage",
+          "label": "Read localStorage Cart",
           "layer": "background",
+          "status": "built"
+        },
+        {
+          "id": "view-cart--decision-load-cart",
+          "type": "decision",
+          "label": "Has items?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "view-cart--show-items"
+            },
+            {
+              "label": "No",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "view-cart--group-by-seller",
+          "type": "step",
+          "label": "Group by Seller",
+          "layer": "client",
           "status": "built",
-          "why": "getRecentlyViewed() from localStorage"
+          "codeRef": "src/app/(frontend)/cart/page.tsx",
+          "why": "Items grouped by seller for display"
+        },
+        {
+          "id": "view-cart--decision-group-by-seller",
+          "type": "decision",
+          "label": "Auth path continues",
+          "options": [
+            {
+              "label": "Continue",
+              "to": "view-cart--show-item-states"
+            }
+          ]
+        },
+        {
+          "id": "view-cart--show-item-states",
+          "type": "step",
+          "label": "Show Item States",
+          "layer": "client",
+          "status": "built",
+          "why": "States: valid, price changed (old vs new), removed/sold (warning)"
+        },
+        {
+          "id": "view-cart--decision-show-item-states",
+          "type": "decision",
+          "label": "Auth path continues",
+          "options": [
+            {
+              "label": "Continue",
+              "to": "view-cart--cart-actions"
+            }
+          ]
+        },
+        {
+          "id": "view-cart--show-items",
+          "type": "step",
+          "label": "Render Cart Items",
+          "layer": "client",
+          "status": "built",
+          "why": "Cart items with remove/clear actions. Checkout button disabled in MVP."
+        },
+        {
+          "id": "view-cart--cart-actions",
+          "type": "step",
+          "label": "Show Cart Actions",
+          "layer": "client",
+          "status": "built",
+          "why": "Actions: remove item, clear all, refresh expiry"
+        },
+        {
+          "id": "cart-actions--entry",
+          "type": "entry",
+          "label": "Cart Item Actions"
+        },
+        {
+          "id": "cart-actions--remove-item",
+          "type": "step",
+          "label": "Remove Item",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/cart/[id]"
+        },
+        {
+          "id": "cart-actions--clear-all",
+          "type": "step",
+          "label": "Clear All Items",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/cart"
+        },
+        {
+          "id": "cart-actions--refresh-expiry",
+          "type": "step",
+          "label": "Refresh Expiry",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/cart/[id]/expiry"
         },
         {
           "id": "merge-on-login--entry",
           "type": "entry",
-          "label": "Merge on Login"
+          "label": "Cart Merge on Login"
         },
         {
-          "id": "merge-on-login--detect-login",
+          "id": "merge-on-login--login-detected",
           "type": "step",
-          "label": "Detect Login",
+          "label": "Detect Auth Change",
           "layer": "background",
           "status": "built",
-          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts",
-          "why": "useRecentlyViewedMerge() detects login"
+          "codeRef": "src/features/cart/hooks/use-cart-merge.ts",
+          "why": "useCartMerge() detects auth state change. Background hook — user sees nothing."
+        },
+        {
+          "id": "merge-on-login--read-guest-cart",
+          "type": "step",
+          "label": "Read Guest Cart",
+          "layer": "background",
+          "status": "built",
+          "why": "Read localStorage cart items"
         },
         {
           "id": "merge-on-login--post-merge",
           "type": "step",
-          "label": "Merge Views to DB",
+          "label": "Merge Cart to DB",
           "layer": "server",
           "status": "built",
-          "route": "/api/recently-viewed/merge"
+          "route": "/api/cart/merge",
+          "why": "Server validates every guest item: listing exists, not sold, not own listing, not already in DB cart."
         },
         {
-          "id": "merge-on-login--dedup-merge",
+          "id": "merge-on-login--server-validate",
           "type": "step",
-          "label": "Dedup and Insert",
+          "label": "Skip Invalid Items",
+          "layer": "server",
+          "status": "built",
+          "why": "Invalid/duplicate/own-listing items silently dropped. No errors surfaced to user."
+        },
+        {
+          "id": "merge-on-login--insert-valid",
+          "type": "step",
+          "label": "Insert Valid Items",
           "layer": "database",
           "status": "built",
-          "why": "Dedup + merge to DB"
+          "why": "Insert valid items into cart table"
         },
         {
-          "id": "merge-on-login--silent-complete",
+          "id": "merge-on-login--clear-localstorage",
           "type": "step",
-          "label": "Silent Complete",
+          "label": "Clear Guest Cart",
           "layer": "background",
           "status": "built",
-          "why": "No toast — silent merge"
+          "why": "Clear localStorage guest cart. No toast, no redirect. Cart page now shows DB-backed items."
         },
         {
-          "id": "display-strip--entry",
+          "id": "pre-checkout-validation--entry",
           "type": "entry",
-          "label": "Display Recently Viewed Strip"
+          "label": "Pre-Checkout Validation"
         },
         {
-          "id": "display-strip--hook-reads-ids",
+          "id": "pre-checkout-validation--validate-cart",
           "type": "step",
-          "label": "Read View IDs",
-          "layer": "background",
-          "status": "built",
-          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-listings.ts",
-          "why": "useRecentlyViewedListings() reads IDs from useRecentlyViewed()"
-        },
-        {
-          "id": "display-strip--batch-fetch",
-          "type": "step",
-          "label": "Fetch Listing Data",
+          "label": "Validate Cart",
           "layer": "server",
           "status": "built",
-          "route": "/api/listings/batch",
-          "why": "Only returns active, non-deleted listings. Stale IDs silently filtered. Max 30 IDs.",
-          "errorCases": [
-            {
-              "condition": "No IDs provided",
-              "result": "400 Bad Request",
-              "httpStatus": 400
-            },
-            {
-              "condition": "More than 30 IDs",
-              "result": "400 Bad Request",
-              "httpStatus": 400
-            }
-          ]
+          "route": "/api/cart/validate",
+          "codeRef": "src/features/cart/services/cart-server.ts",
+          "why": "Validates all cart items. Batch block check: single IN query on member_blocks for all unique seller IDs. Blocked items moved to removed[] with reason: 'blocked'."
         },
         {
-          "id": "display-strip--decision-batch-fetch",
+          "id": "pre-checkout-validation--decision-validate-cart",
           "type": "decision",
-          "label": "Listings found?",
+          "label": "Validation result?",
           "options": [
             {
-              "label": "Yes",
-              "to": "display-strip--render-strip"
+              "label": "Valid",
+              "to": "pre-checkout-validation--ready-for-checkout"
             },
             {
-              "label": "No",
-              "to": "display-strip--strip-empty"
+              "label": "Price Changed",
+              "to": "pre-checkout-validation--price-change-notice"
+            },
+            {
+              "label": "Removed (sold/deleted/deactivated/blocked)",
+              "to": "pre-checkout-validation--show-removed-banner"
             }
           ]
         },
         {
-          "id": "display-strip--render-strip",
+          "id": "pre-checkout-validation--handle-result",
           "type": "step",
-          "label": "Render Strip",
+          "label": "Handle Result",
           "layer": "client",
           "status": "built",
-          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx",
-          "why": "Horizontal scroll of ListingCards. CSS scroll-snap, 160px mobile / 220px desktop. role=region + aria-label."
+          "why": "Handle validation result"
         },
         {
-          "id": "display-strip--strip-empty",
+          "id": "pre-checkout-validation--ready-for-checkout",
           "type": "step",
-          "label": "Render Nothing",
+          "label": "Cart Ready",
           "layer": "client",
           "status": "built",
-          "why": "Strip returns null — no recently viewed items or all stale/deleted"
+          "why": "Items render in seller-grouped sections. Checkout button enabled."
         },
         {
-          "id": "clear-history--entry",
-          "type": "entry",
-          "label": "Clear History"
-        },
-        {
-          "id": "clear-history--clear-authenticated",
+          "id": "pre-checkout-validation--price-change-notice",
           "type": "step",
-          "label": "Clear from DB",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/recently-viewed"
+          "label": "Show Price Change",
+          "layer": "client",
+          "status": "planned",
+          "why": "Price change UI not yet implemented. Validation detects changes but cart page does not display them."
         },
         {
-          "id": "clear-history--clear-guest",
+          "id": "pre-checkout-validation--show-removed-banner",
           "type": "step",
-          "label": "Clear localStorage",
-          "layer": "background",
+          "label": "Show Removed Banner",
+          "layer": "client",
           "status": "built",
-          "why": "clearRecentlyViewed() — clear localStorage"
+          "why": "Stale banner: \"{count} items were removed\" with per-item reasons (Sold, Deactivated, Unavailable). Dismiss button. Items auto-removed from cart."
         }
       ],
       "edges": [
         {
-          "from": "track-view--entry",
-          "to": "track-view--view-listing"
+          "from": "add-to-cart--entry",
+          "to": "add-to-cart--click-add"
         },
         {
-          "from": "track-view--view-listing",
-          "to": "track-view--decision-view-listing"
+          "from": "add-to-cart--click-add",
+          "to": "add-to-cart--validate-client"
         },
         {
-          "from": "track-view--decision-view-listing",
-          "to": "track-view--track-authenticated",
+          "from": "add-to-cart--validate-client",
+          "to": "add-to-cart--decision-validate-client"
+        },
+        {
+          "from": "add-to-cart--decision-validate-client",
+          "to": "add-to-cart--post-cart",
           "opt": "Yes"
         },
         {
-          "from": "track-view--decision-view-listing",
-          "to": "track-view--track-guest",
+          "from": "add-to-cart--decision-validate-client",
+          "to": "add-to-cart--write-localstorage",
           "opt": "No"
         },
         {
-          "from": "track-view--track-authenticated",
-          "to": "track-view--track-guest"
+          "from": "add-to-cart--post-cart",
+          "to": "add-to-cart--price-snapshot"
         },
         {
-          "from": "browse-history--entry",
-          "to": "browse-history--fetch-authenticated"
+          "from": "add-to-cart--price-snapshot",
+          "to": "add-to-cart--set-expiry"
         },
         {
-          "from": "browse-history--fetch-authenticated",
-          "to": "browse-history--fetch-guest"
+          "from": "add-to-cart--set-expiry",
+          "to": "add-to-cart--decision-set-expiry"
+        },
+        {
+          "from": "add-to-cart--decision-set-expiry",
+          "to": "add-to-cart--optimistic-update",
+          "opt": "Continue"
+        },
+        {
+          "from": "add-to-cart--optimistic-update",
+          "to": "add-to-cart--decision-optimistic-update"
+        },
+        {
+          "from": "add-to-cart--decision-optimistic-update",
+          "to": "add-to-cart--show-toast",
+          "opt": "Continue"
+        },
+        {
+          "from": "add-to-cart--write-localstorage",
+          "to": "add-to-cart--decision-write-localstorage"
+        },
+        {
+          "from": "add-to-cart--decision-write-localstorage",
+          "to": "add-to-cart--update-badge",
+          "opt": "Continue"
+        },
+        {
+          "from": "add-to-cart--update-badge",
+          "to": "add-to-cart--decision-update-badge"
+        },
+        {
+          "from": "add-to-cart--decision-update-badge",
+          "to": "add-to-cart--show-toast",
+          "opt": "Continue"
+        },
+        {
+          "from": "view-cart--entry",
+          "to": "view-cart--check-auth"
+        },
+        {
+          "from": "view-cart--check-auth",
+          "to": "view-cart--decision-check-auth"
+        },
+        {
+          "from": "view-cart--decision-check-auth",
+          "to": "view-cart--fetch-cart",
+          "opt": "Yes"
+        },
+        {
+          "from": "view-cart--decision-check-auth",
+          "to": "view-cart--load-cart",
+          "opt": "No"
+        },
+        {
+          "from": "view-cart--fetch-cart",
+          "to": "view-cart--decision-fetch-cart"
+        },
+        {
+          "from": "view-cart--decision-fetch-cart",
+          "to": "view-cart--group-by-seller",
+          "opt": "Yes"
+        },
+        {
+          "from": "view-cart--load-cart",
+          "to": "view-cart--decision-load-cart"
+        },
+        {
+          "from": "view-cart--decision-load-cart",
+          "to": "view-cart--show-items",
+          "opt": "Yes"
+        },
+        {
+          "from": "view-cart--group-by-seller",
+          "to": "view-cart--decision-group-by-seller"
+        },
+        {
+          "from": "view-cart--decision-group-by-seller",
+          "to": "view-cart--show-item-states",
+          "opt": "Continue"
+        },
+        {
+          "from": "view-cart--show-item-states",
+          "to": "view-cart--decision-show-item-states"
+        },
+        {
+          "from": "view-cart--decision-show-item-states",
+          "to": "view-cart--cart-actions",
+          "opt": "Continue"
+        },
+        {
+          "from": "view-cart--show-items",
+          "to": "view-cart--cart-actions"
+        },
+        {
+          "from": "view-cart--cart-actions",
+          "to": "view-cart--remove-item",
+          "opt": "Remove"
+        },
+        {
+          "from": "view-cart--cart-actions",
+          "to": "view-cart--clear-all",
+          "opt": "Clear"
+        },
+        {
+          "from": "view-cart--cart-actions",
+          "to": "view-cart--refresh-expiry",
+          "opt": "Refresh"
+        },
+        {
+          "from": "cart-actions--entry",
+          "to": "cart-actions--remove-item"
+        },
+        {
+          "from": "cart-actions--remove-item",
+          "to": "cart-actions--clear-all"
+        },
+        {
+          "from": "cart-actions--clear-all",
+          "to": "cart-actions--refresh-expiry"
         },
         {
           "from": "merge-on-login--entry",
-          "to": "merge-on-login--detect-login"
+          "to": "merge-on-login--login-detected"
         },
         {
-          "from": "merge-on-login--detect-login",
+          "from": "merge-on-login--login-detected",
+          "to": "merge-on-login--read-guest-cart"
+        },
+        {
+          "from": "merge-on-login--read-guest-cart",
           "to": "merge-on-login--post-merge"
         },
         {
           "from": "merge-on-login--post-merge",
-          "to": "merge-on-login--dedup-merge"
+          "to": "merge-on-login--server-validate"
         },
         {
-          "from": "merge-on-login--dedup-merge",
-          "to": "merge-on-login--silent-complete"
+          "from": "merge-on-login--server-validate",
+          "to": "merge-on-login--insert-valid"
         },
         {
-          "from": "display-strip--entry",
-          "to": "display-strip--hook-reads-ids"
+          "from": "merge-on-login--insert-valid",
+          "to": "merge-on-login--clear-localstorage"
         },
         {
-          "from": "display-strip--hook-reads-ids",
-          "to": "display-strip--batch-fetch"
+          "from": "pre-checkout-validation--entry",
+          "to": "pre-checkout-validation--validate-cart"
         },
         {
-          "from": "display-strip--batch-fetch",
-          "to": "display-strip--decision-batch-fetch"
+          "from": "pre-checkout-validation--validate-cart",
+          "to": "pre-checkout-validation--decision-validate-cart"
         },
         {
-          "from": "display-strip--decision-batch-fetch",
-          "to": "display-strip--render-strip",
-          "opt": "Yes"
+          "from": "pre-checkout-validation--decision-validate-cart",
+          "to": "pre-checkout-validation--ready-for-checkout",
+          "opt": "Valid"
         },
         {
-          "from": "display-strip--decision-batch-fetch",
-          "to": "display-strip--strip-empty",
-          "opt": "No"
+          "from": "pre-checkout-validation--decision-validate-cart",
+          "to": "pre-checkout-validation--price-change-notice",
+          "opt": "Price Changed"
         },
         {
-          "from": "display-strip--render-strip",
-          "to": "display-strip--strip-empty"
+          "from": "pre-checkout-validation--decision-validate-cart",
+          "to": "pre-checkout-validation--show-removed-banner",
+          "opt": "Removed (sold/deleted/deactivated/blocked)"
         },
         {
-          "from": "clear-history--entry",
-          "to": "clear-history--clear-authenticated"
+          "from": "pre-checkout-validation--handle-result",
+          "to": "pre-checkout-validation--ready-for-checkout"
         },
         {
-          "from": "clear-history--clear-authenticated",
-          "to": "clear-history--clear-guest"
-        }
-      ]
-    },
-    {
-      "slug": "buyer-search",
-      "domain": "shopping",
-      "title": "Buyer Search & Discovery",
-      "persona": "buyer",
-      "description": "Authenticated buyer discovers listings via search with autocomplete, category browsing, or homepage featured. Includes filters, infinite scroll, view tracking, and recently viewed.",
-      "relatedIssues": [],
-      "nodes": [
-        {
-          "id": "search--entry",
-          "type": "entry",
-          "label": "Search with Autocomplete"
+          "from": "pre-checkout-validation--ready-for-checkout",
+          "to": "pre-checkout-validation--price-change-notice"
         },
         {
-          "id": "search--type-query",
-          "type": "step",
-          "label": "Type Search Query",
-          "layer": "client",
-          "status": "built",
-          "why": "Type 3+ chars triggers autocomplete with 200ms debounce"
-        },
-        {
-          "id": "search--suggestion-sources",
-          "type": "step",
-          "label": "Fetch Suggestions",
-          "layer": "server",
-          "status": "built",
-          "why": "Suggestions from popular search terms, listing titles, category names"
-        },
-        {
-          "id": "search--select-or-enter",
-          "type": "step",
-          "label": "Select or Submit",
-          "layer": "client",
-          "status": "built",
-          "why": "Select suggestion or press Enter"
-        },
-        {
-          "id": "search--search-page",
-          "type": "step",
-          "label": "View Search Results",
-          "layer": "client",
-          "status": "built",
-          "route": "/search"
-        },
-        {
-          "id": "search--track-suggestion",
-          "type": "step",
-          "label": "Track Suggestion",
-          "layer": "background",
-          "status": "built",
-          "why": "trackSearchSuggestion() — fire and forget"
-        },
-        {
-          "id": "filter-results--entry",
-          "type": "entry",
-          "label": "Filter & Browse Results"
-        },
-        {
-          "id": "filter-results--filter-panel",
-          "type": "step",
-          "label": "Open Filter Panel",
-          "layer": "client",
-          "status": "built",
-          "why": "Filter: category, condition (6 tiers), price range, state, species, listing type, free shipping"
-        },
-        {
-          "id": "filter-results--url-params",
-          "type": "step",
-          "label": "Sync Filters to URL",
-          "layer": "client",
-          "status": "built",
-          "why": "All filters stored in URL params (shareable)"
-        },
-        {
-          "id": "filter-results--infinite-scroll",
-          "type": "step",
-          "label": "Scroll Results",
-          "layer": "client",
-          "status": "built",
-          "why": "Infinite scroll pagination"
-        },
-        {
-          "id": "filter-results--watch-from-card",
-          "type": "step",
-          "label": "Watch from Card",
-          "layer": "client",
-          "status": "built",
-          "codeRef": "src/features/listings/components/listing-card/index.tsx",
-          "why": "WatchButton overlaid on listing card image. Auth-gated — unauthenticated users are redirected to ?login=true. See member-watchlist.json for the full watch/unwatch flow."
-        },
-        {
-          "id": "filter-results--click-listing",
-          "type": "step",
-          "label": "Click Listing Card",
-          "layer": "client",
-          "status": "built"
-        },
-        {
-          "id": "filter-results--listing-detail",
-          "type": "step",
-          "label": "View Listing Detail",
-          "layer": "client",
-          "status": "built",
-          "route": "/listing/[id]"
-        },
-        {
-          "id": "filter-results--view-count",
-          "type": "step",
-          "label": "Increment View Count",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/listings/[id]/view"
-        },
-        {
-          "id": "filter-results--recently-viewed",
-          "type": "step",
-          "label": "Track Recently Viewed",
-          "layer": "background",
-          "status": "built",
-          "why": "Recently viewed tracked in background"
-        }
-      ],
-      "edges": [
-        {
-          "from": "search--entry",
-          "to": "search--type-query"
-        },
-        {
-          "from": "search--type-query",
-          "to": "search--suggestion-sources"
-        },
-        {
-          "from": "search--suggestion-sources",
-          "to": "search--select-or-enter"
-        },
-        {
-          "from": "search--select-or-enter",
-          "to": "search--search-page"
-        },
-        {
-          "from": "search--search-page",
-          "to": "search--track-suggestion"
-        },
-        {
-          "from": "filter-results--entry",
-          "to": "filter-results--filter-panel"
-        },
-        {
-          "from": "filter-results--filter-panel",
-          "to": "filter-results--url-params"
-        },
-        {
-          "from": "filter-results--url-params",
-          "to": "filter-results--infinite-scroll"
-        },
-        {
-          "from": "filter-results--infinite-scroll",
-          "to": "filter-results--watch-from-card"
-        },
-        {
-          "from": "filter-results--watch-from-card",
-          "to": "filter-results--click-listing"
-        },
-        {
-          "from": "filter-results--click-listing",
-          "to": "filter-results--listing-detail"
-        },
-        {
-          "from": "filter-results--listing-detail",
-          "to": "filter-results--view-count"
-        },
-        {
-          "from": "filter-results--view-count",
-          "to": "filter-results--recently-viewed"
+          "from": "pre-checkout-validation--price-change-notice",
+          "to": "pre-checkout-validation--show-removed-banner"
         }
       ]
     },
@@ -1527,7 +2002,7 @@
       "domain": "identity",
       "title": "Context Switching (Member / Shop Identity)",
       "persona": "context",
-      "description": "Identity system overview: member/shop context switching via Zustand store, X-Nessi-Context header on every request, localStorage persistence, page load rehydration, and edge case handling.",
+      "description": "Identity system overview: member/shop context switching via Zustand store, X-Nessi-Context header on every request with server-side validation, localStorage persistence, page load rehydration, and edge case handling.",
       "relatedIssues": [],
       "nodes": [
         {
@@ -1558,7 +2033,7 @@
           "options": [
             {
               "label": "No",
-              "to": "END"
+              "to": "identity-system--member-only"
             },
             {
               "label": "Yes",
@@ -1599,25 +2074,56 @@
           "why": "Persisted to localStorage — survives refresh, tab close, re-open"
         },
         {
+          "id": "identity-system--member-only",
+          "type": "step",
+          "label": "Member-Only Mode",
+          "layer": "client",
+          "status": "built",
+          "why": "No context switcher shown. Navbar dropdown hides Profiles section entirely. User operates in member context only."
+        },
+        {
           "id": "context-effects--entry",
           "type": "entry",
           "label": "How Context Affects Operations"
         },
         {
+          "id": "context-effects--check-active-context",
+          "type": "step",
+          "label": "Check Active Context",
+          "layer": "background",
+          "status": "built",
+          "why": "Operation reads active context from Zustand store to determine behavior"
+        },
+        {
+          "id": "context-effects--decision-check-active-context",
+          "type": "decision",
+          "label": "Active context?",
+          "options": [
+            {
+              "label": "Member",
+              "to": "context-effects--create-listing-member"
+            },
+            {
+              "label": "Shop",
+              "to": "context-effects--create-listing-shop"
+            }
+          ]
+        },
+        {
           "id": "context-effects--create-listing-member",
           "type": "step",
-          "label": "Create as Member",
+          "label": "Assign to Member",
           "layer": "server",
           "status": "built",
-          "why": "member_id = user.id, shop_id = null — appears on /member/[slug]"
+          "why": "seller_id = user.id, member_id = user.id, shop_id = null — appears on /member/[slug]"
         },
         {
           "id": "context-effects--create-listing-shop",
           "type": "step",
-          "label": "Create as Shop",
+          "label": "Assign to Shop",
           "layer": "server",
           "status": "built",
-          "why": "shop_id = shopId, member_id = null — appears on /shop/[slug]"
+          "why": "seller_id = user.id, member_id = null, shop_id = activeShopId — appears on /shop/[slug]"
         },
         {
           "id": "context-effects--dashboard-member",
@@ -1738,18 +2244,65 @@
           "options": [
             {
               "label": "Yes",
-              "to": "END"
+              "to": "page-load--continue-shop"
             },
             {
               "label": "No",
-              "to": "END"
+              "to": "page-load--revoke-context"
             }
           ]
+        },
+        {
+          "id": "page-load--continue-shop",
+          "type": "step",
+          "label": "Continue in Shop",
+          "layer": "background",
+          "status": "built",
+          "why": "Membership valid. User continues operating in shop context."
+        },
+        {
+          "id": "page-load--revoke-context",
+          "type": "step",
+          "label": "Revoke Shop Access",
+          "layer": "background",
+          "status": "built",
+          "why": "handleContextRevocation(): switch to member, cancel queries, invalidate cache. Toast: \"Access to [shopName] was revoked\". Redirect to /dashboard."
         },
         {
           "id": "edge-cases--entry",
           "type": "entry",
           "label": "Edge Cases"
+        },
+        {
+          "id": "edge-cases--edge-trigger",
+          "type": "step",
+          "label": "Edge Case Occurs",
+          "layer": "background",
+          "status": "built",
+          "why": "An unusual state transition triggers edge case handling"
+        },
+        {
+          "id": "edge-cases--decision-edge-trigger",
+          "type": "decision",
+          "label": "Which edge case?",
+          "options": [
+            {
+              "label": "Shop Deleted",
+              "to": "edge-cases--shop-deleted"
+            },
+            {
+              "label": "Role Changed",
+              "to": "edge-cases--role-changed"
+            },
+            {
+              "label": "Multi-Tab",
+              "to": "edge-cases--multiple-tabs"
+            },
+            {
+              "label": "Storage Cleared",
+              "to": "edge-cases--localstorage-cleared"
+            }
+          ]
         },
         {
           "id": "edge-cases--shop-deleted",
@@ -1782,6 +2335,50 @@
           "layer": "background",
           "status": "built",
           "why": "localStorage cleared or incognito — defaults to member context"
+        },
+        {
+          "id": "context-header--entry",
+          "type": "entry",
+          "label": "X-Nessi-Context Header Validation"
+        },
+        {
+          "id": "context-header--send-header",
+          "type": "step",
+          "label": "Send Context Header",
+          "layer": "background",
+          "status": "built",
+          "why": "X-Nessi-Context header sent with every fetch"
+        },
+        {
+          "id": "context-header--decision-send-header",
+          "type": "decision",
+          "label": "Header value?",
+          "options": [
+            {
+              "label": "Member",
+              "to": "context-header--validate-member"
+            },
+            {
+              "label": "Shop",
+              "to": "context-header--validate-shop"
+            }
+          ]
+        },
+        {
+          "id": "context-header--validate-member",
+          "type": "step",
+          "label": "Validate as Member",
+          "layer": "server",
+          "status": "built",
+          "why": "member — API validates: user owns listing"
+        },
+        {
+          "id": "context-header--validate-shop",
+          "type": "step",
+          "label": "Validate as Shop",
+          "layer": "server",
+          "status": "built",
+          "why": "shop:{id} — API validates: user is member of shop"
         }
       ],
       "edges": [
@@ -1796,6 +2393,11 @@
         {
           "from": "identity-system--check-shops",
           "to": "identity-system--decision-check-shops"
+        },
+        {
+          "from": "identity-system--decision-check-shops",
+          "to": "identity-system--member-only",
+          "opt": "No"
         },
         {
           "from": "identity-system--decision-check-shops",
@@ -1815,8 +2417,26 @@
           "to": "identity-system--persist-localstorage"
         },
         {
+          "from": "identity-system--persist-localstorage",
+          "to": "identity-system--member-only"
+        },
+        {
           "from": "context-effects--entry",
-          "to": "context-effects--create-listing-member"
+          "to": "context-effects--check-active-context"
+        },
+        {
+          "from": "context-effects--check-active-context",
+          "to": "context-effects--decision-check-active-context"
+        },
+        {
+          "from": "context-effects--decision-check-active-context",
+          "to": "context-effects--create-listing-member",
+          "opt": "Member"
+        },
+        {
+          "from": "context-effects--decision-check-active-context",
+          "to": "context-effects--create-listing-shop",
+          "opt": "Shop"
         },
         {
           "from": "context-effects--create-listing-member",
@@ -1844,6 +2464,30 @@
         },
         {
           "from": "context-effects--upload-member",
+          "to": "context-effects--upload-shop"
+        },
+        {
+          "from": "context-effects--create-listing-member",
+          "to": "context-effects--dashboard-member"
+        },
+        {
+          "from": "context-effects--create-listing-shop",
+          "to": "context-effects--dashboard-shop"
+        },
+        {
+          "from": "context-effects--dashboard-member",
+          "to": "context-effects--settings-member"
+        },
+        {
+          "from": "context-effects--dashboard-shop",
+          "to": "context-effects--settings-shop"
+        },
+        {
+          "from": "context-effects--settings-member",
+          "to": "context-effects--upload-member"
+        },
+        {
+          "from": "context-effects--settings-shop",
           "to": "context-effects--upload-shop"
         },
         {
@@ -1886,8 +2530,46 @@
           "to": "page-load--decision-validate-membership"
         },
         {
+          "from": "page-load--decision-validate-membership",
+          "to": "page-load--continue-shop",
+          "opt": "Yes"
+        },
+        {
+          "from": "page-load--decision-validate-membership",
+          "to": "page-load--revoke-context",
+          "opt": "No"
+        },
+        {
+          "from": "page-load--continue-shop",
+          "to": "page-load--revoke-context"
+        },
+        {
           "from": "edge-cases--entry",
-          "to": "edge-cases--shop-deleted"
+          "to": "edge-cases--edge-trigger"
+        },
+        {
+          "from": "edge-cases--edge-trigger",
+          "to": "edge-cases--decision-edge-trigger"
+        },
+        {
+          "from": "edge-cases--decision-edge-trigger",
+          "to": "edge-cases--shop-deleted",
+          "opt": "Shop Deleted"
+        },
+        {
+          "from": "edge-cases--decision-edge-trigger",
+          "to": "edge-cases--role-changed",
+          "opt": "Role Changed"
+        },
+        {
+          "from": "edge-cases--decision-edge-trigger",
+          "to": "edge-cases--multiple-tabs",
+          "opt": "Multi-Tab"
+        },
+        {
+          "from": "edge-cases--decision-edge-trigger",
+          "to": "edge-cases--localstorage-cleared",
+          "opt": "Storage Cleared"
         },
         {
           "from": "edge-cases--shop-deleted",
@@ -1900,6 +2582,28 @@
         {
           "from": "edge-cases--multiple-tabs",
           "to": "edge-cases--localstorage-cleared"
+        },
+        {
+          "from": "context-header--entry",
+          "to": "context-header--send-header"
+        },
+        {
+          "from": "context-header--send-header",
+          "to": "context-header--decision-send-header"
+        },
+        {
+          "from": "context-header--decision-send-header",
+          "to": "context-header--validate-member",
+          "opt": "Member"
+        },
+        {
+          "from": "context-header--decision-send-header",
+          "to": "context-header--validate-shop",
+          "opt": "Shop"
+        },
+        {
+          "from": "context-header--validate-member",
+          "to": "context-header--validate-shop"
         }
       ]
     },
@@ -1956,9 +2660,17 @@
             },
             {
               "label": "No",
-              "to": "END"
+              "to": "change-email--email-taken-error"
             }
           ]
+        },
+        {
+          "id": "change-email--email-taken-error",
+          "type": "step",
+          "label": "Show Taken Error",
+          "layer": "client",
+          "status": "built",
+          "why": "Alert: \"An account with that email already exists\" (role=\"alert\"). Form stays on email step, user can retry with different email."
         },
         {
           "id": "change-email--send-change-request",
@@ -2037,6 +2749,15 @@
           "opt": "Yes"
         },
         {
+          "from": "change-email--decision-check-availability",
+          "to": "change-email--email-taken-error",
+          "opt": "No"
+        },
+        {
+          "from": "change-email--email-taken-error",
+          "to": "change-email--send-change-request"
+        },
+        {
           "from": "change-email--send-change-request",
           "to": "change-email--enter-otp"
         },
@@ -2057,698 +2778,6 @@
           "from": "change-email--decision-verify-otp",
           "to": "change-email--enter-otp",
           "opt": "No"
-        }
-      ]
-    },
-    {
-      "slug": "guest-browse",
-      "domain": "shopping",
-      "title": "Guest Browse & Discover",
-      "persona": "guest",
-      "description": "Unauthenticated user browses the marketplace by category, keyword search, or featured listings. Views listing details, seller profiles, and shop pages.",
-      "relatedIssues": [],
-      "nodes": [
-        {
-          "id": "browse-by-category--entry",
-          "type": "entry",
-          "label": "Browse by Category"
-        },
-        {
-          "id": "browse-by-category--land-homepage",
-          "type": "step",
-          "label": "Land on Homepage",
-          "layer": "client",
-          "status": "built"
-        },
-        {
-          "id": "browse-by-category--click-category",
-          "type": "step",
-          "label": "Click Category",
-          "layer": "client",
-          "status": "built"
-        },
-        {
-          "id": "browse-by-category--category-page",
-          "type": "step",
-          "label": "View Category Page",
-          "layer": "client",
-          "status": "built",
-          "route": "/category/[slug]"
-        },
-        {
-          "id": "browse-by-category--apply-filters",
-          "type": "step",
-          "label": "Apply Filters",
-          "layer": "client",
-          "status": "built",
-          "why": "Filter: condition, price, state, species, listing type. All filters stored in URL params (shareable)."
-        },
-        {
-          "id": "browse-by-category--infinite-scroll",
-          "type": "step",
-          "label": "Scroll Results",
-          "layer": "client",
-          "status": "built",
-          "why": "Infinite scroll pagination"
-        },
-        {
-          "id": "browse-by-category--click-listing",
-          "type": "step",
-          "label": "Click Listing Card",
-          "layer": "client",
-          "status": "built"
-        },
-        {
-          "id": "browse-by-category--listing-detail",
-          "type": "step",
-          "label": "View Listing Detail",
-          "layer": "client",
-          "status": "built",
-          "route": "/listing/[id]"
-        },
-        {
-          "id": "browse-by-category--view-count",
-          "type": "step",
-          "label": "Increment View Count",
-          "layer": "server",
-          "status": "built",
-          "why": "View count incremented on listing detail page load"
-        },
-        {
-          "id": "search-by-keyword--entry",
-          "type": "entry",
-          "label": "Search by Keyword"
-        },
-        {
-          "id": "search-by-keyword--type-search",
-          "type": "step",
-          "label": "Type Search Query",
-          "layer": "client",
-          "status": "built"
-        },
-        {
-          "id": "search-by-keyword--autocomplete",
-          "type": "step",
-          "label": "Show Autocomplete",
-          "layer": "client",
-          "status": "built",
-          "why": "Suggestions appear after 3+ chars with 200ms debounce"
-        },
-        {
-          "id": "search-by-keyword--select-or-enter",
-          "type": "step",
-          "label": "Select or Submit",
-          "layer": "client",
-          "status": "built",
-          "why": "Select suggestion or press Enter"
-        },
-        {
-          "id": "search-by-keyword--search-results",
-          "type": "step",
-          "label": "View Search Results",
-          "layer": "client",
-          "status": "built",
-          "route": "/search"
-        },
-        {
-          "id": "search-by-keyword--filter-results",
-          "type": "step",
-          "label": "Apply Filters",
-          "layer": "client",
-          "status": "built",
-          "why": "Filter: condition, price, state, species, listing type"
-        },
-        {
-          "id": "search-by-keyword--scroll-results",
-          "type": "step",
-          "label": "Scroll Results",
-          "layer": "client",
-          "status": "built",
-          "why": "Infinite scroll pagination"
-        },
-        {
-          "id": "view-profiles--entry",
-          "type": "entry",
-          "label": "View Seller & Shop Profiles"
-        },
-        {
-          "id": "view-profiles--click-seller",
-          "type": "step",
-          "label": "Click Seller Link",
-          "layer": "client",
-          "status": "built",
-          "why": "Click seller profile link on listing detail"
-        },
-        {
-          "id": "view-profiles--member-page",
-          "type": "step",
-          "label": "View Seller Profile",
-          "layer": "client",
-          "status": "built",
-          "route": "/member/[slug]"
-        },
-        {
-          "id": "view-profiles--seller-listings",
-          "type": "step",
-          "label": "Browse Seller Items",
-          "layer": "client",
-          "status": "built",
-          "why": "See seller's other listings"
-        },
-        {
-          "id": "view-profiles--click-shop",
-          "type": "step",
-          "label": "Click Shop Link",
-          "layer": "client",
-          "status": "built",
-          "why": "Click shop page link on listing detail"
-        },
-        {
-          "id": "view-profiles--shop-page",
-          "type": "step",
-          "label": "View Shop Page",
-          "layer": "client",
-          "status": "built",
-          "route": "/shop/[slug]"
-        },
-        {
-          "id": "view-profiles--shop-listings",
-          "type": "step",
-          "label": "Browse Shop Items",
-          "layer": "client",
-          "status": "built",
-          "why": "Shop's listings grid + hero banner"
-        }
-      ],
-      "edges": [
-        {
-          "from": "browse-by-category--entry",
-          "to": "browse-by-category--land-homepage"
-        },
-        {
-          "from": "browse-by-category--land-homepage",
-          "to": "browse-by-category--click-category"
-        },
-        {
-          "from": "browse-by-category--click-category",
-          "to": "browse-by-category--category-page"
-        },
-        {
-          "from": "browse-by-category--category-page",
-          "to": "browse-by-category--apply-filters"
-        },
-        {
-          "from": "browse-by-category--apply-filters",
-          "to": "browse-by-category--infinite-scroll"
-        },
-        {
-          "from": "browse-by-category--infinite-scroll",
-          "to": "browse-by-category--click-listing"
-        },
-        {
-          "from": "browse-by-category--click-listing",
-          "to": "browse-by-category--listing-detail"
-        },
-        {
-          "from": "browse-by-category--listing-detail",
-          "to": "browse-by-category--view-count"
-        },
-        {
-          "from": "search-by-keyword--entry",
-          "to": "search-by-keyword--type-search"
-        },
-        {
-          "from": "search-by-keyword--type-search",
-          "to": "search-by-keyword--autocomplete"
-        },
-        {
-          "from": "search-by-keyword--autocomplete",
-          "to": "search-by-keyword--select-or-enter"
-        },
-        {
-          "from": "search-by-keyword--select-or-enter",
-          "to": "search-by-keyword--search-results"
-        },
-        {
-          "from": "search-by-keyword--search-results",
-          "to": "search-by-keyword--filter-results"
-        },
-        {
-          "from": "search-by-keyword--filter-results",
-          "to": "search-by-keyword--scroll-results"
-        },
-        {
-          "from": "view-profiles--entry",
-          "to": "view-profiles--click-seller"
-        },
-        {
-          "from": "view-profiles--click-seller",
-          "to": "view-profiles--member-page"
-        },
-        {
-          "from": "view-profiles--member-page",
-          "to": "view-profiles--seller-listings"
-        },
-        {
-          "from": "view-profiles--seller-listings",
-          "to": "view-profiles--click-shop"
-        },
-        {
-          "from": "view-profiles--click-shop",
-          "to": "view-profiles--shop-page"
-        },
-        {
-          "from": "view-profiles--shop-page",
-          "to": "view-profiles--shop-listings"
-        }
-      ]
-    },
-    {
-      "slug": "guest-cart",
-      "domain": "cart",
-      "title": "Guest Cart → Login → Merge",
-      "persona": "guest",
-      "description": "Guest adds items to localStorage cart, logs in, and cart silently merges to the database.",
-      "relatedIssues": [128, 129, 130],
-      "nodes": [
-        {
-          "id": "add-to-cart--entry",
-          "type": "entry",
-          "label": "Add Item to Guest Cart"
-        },
-        {
-          "id": "add-to-cart--click-add",
-          "type": "step",
-          "label": "Click Add to Cart",
-          "layer": "client",
-          "status": "built",
-          "codeRef": "src/features/cart/components/add-to-cart-button/index.tsx"
-        },
-        {
-          "id": "add-to-cart--validate-client",
-          "type": "step",
-          "label": "Validate Cart State",
-          "layer": "client",
-          "status": "built",
-          "why": "Client-side validation: own listing, already in cart, cart full",
-          "errorCases": [
-            {
-              "condition": "User's own listing",
-              "result": "Button disabled"
-            },
-            {
-              "condition": "Already in cart",
-              "result": "Button shows 'In Cart'"
-            },
-            {
-              "condition": "Cart has 25 items",
-              "result": "Toast: cart full"
-            }
-          ]
-        },
-        {
-          "id": "add-to-cart--write-localstorage",
-          "type": "step",
-          "label": "Save to localStorage",
-          "layer": "background",
-          "status": "built",
-          "why": "Add item to localStorage cart (listingId + priceCents snapshot). No API calls."
-        },
-        {
-          "id": "add-to-cart--update-badge",
-          "type": "step",
-          "label": "Update Cart Badge",
-          "layer": "client",
-          "status": "built",
-          "why": "CartIcon badge count updates via Zustand store"
-        },
-        {
-          "id": "add-to-cart--show-toast",
-          "type": "step",
-          "label": "Show Added Toast",
-          "layer": "client",
-          "status": "built",
-          "why": "Toast: 'Added to cart'"
-        },
-        {
-          "id": "view-cart--entry",
-          "type": "entry",
-          "label": "View Guest Cart"
-        },
-        {
-          "id": "view-cart--load-cart",
-          "type": "step",
-          "label": "Read localStorage Cart",
-          "layer": "background",
-          "status": "built"
-        },
-        {
-          "id": "view-cart--decision-load-cart",
-          "type": "decision",
-          "label": "Has items?",
-          "options": [
-            {
-              "label": "Yes",
-              "to": "view-cart--group-by-seller"
-            },
-            {
-              "label": "No",
-              "to": "END"
-            }
-          ]
-        },
-        {
-          "id": "view-cart--group-by-seller",
-          "type": "step",
-          "label": "Group by Seller",
-          "layer": "client",
-          "status": "built",
-          "codeRef": "src/app/(frontend)/cart/page.tsx",
-          "why": "Items grouped by seller for display"
-        },
-        {
-          "id": "view-cart--show-items",
-          "type": "step",
-          "label": "Render Cart Items",
-          "layer": "client",
-          "status": "built",
-          "why": "Cart items with remove/clear actions. Checkout button disabled in MVP."
-        },
-        {
-          "id": "merge-on-login--entry",
-          "type": "entry",
-          "label": "Cart Merge on Login"
-        },
-        {
-          "id": "merge-on-login--login-detected",
-          "type": "step",
-          "label": "Detect Auth Change",
-          "layer": "background",
-          "status": "built",
-          "codeRef": "src/features/cart/hooks/use-cart-merge.ts",
-          "why": "useCartMerge() detects auth state change. Background hook — user sees nothing."
-        },
-        {
-          "id": "merge-on-login--read-guest-cart",
-          "type": "step",
-          "label": "Read Guest Cart",
-          "layer": "background",
-          "status": "built",
-          "why": "Read localStorage cart items"
-        },
-        {
-          "id": "merge-on-login--post-merge",
-          "type": "step",
-          "label": "Merge Cart to DB",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/cart/merge",
-          "why": "Server validates every guest item: listing exists, not sold, not own listing, not already in DB cart."
-        },
-        {
-          "id": "merge-on-login--server-validate",
-          "type": "step",
-          "label": "Skip Invalid Items",
-          "layer": "server",
-          "status": "built",
-          "why": "Invalid/duplicate/own-listing items silently dropped. No errors surfaced to user."
-        },
-        {
-          "id": "merge-on-login--insert-valid",
-          "type": "step",
-          "label": "Insert Valid Items",
-          "layer": "database",
-          "status": "built",
-          "why": "Insert valid items into cart table"
-        },
-        {
-          "id": "merge-on-login--clear-localstorage",
-          "type": "step",
-          "label": "Clear Guest Cart",
-          "layer": "background",
-          "status": "built",
-          "why": "Clear localStorage guest cart. No toast, no redirect. Cart page now shows DB-backed items."
-        }
-      ],
-      "edges": [
-        {
-          "from": "add-to-cart--entry",
-          "to": "add-to-cart--click-add"
-        },
-        {
-          "from": "add-to-cart--click-add",
-          "to": "add-to-cart--validate-client"
-        },
-        {
-          "from": "add-to-cart--validate-client",
-          "to": "add-to-cart--write-localstorage"
-        },
-        {
-          "from": "add-to-cart--write-localstorage",
-          "to": "add-to-cart--update-badge"
-        },
-        {
-          "from": "add-to-cart--update-badge",
-          "to": "add-to-cart--show-toast"
-        },
-        {
-          "from": "view-cart--entry",
-          "to": "view-cart--load-cart"
-        },
-        {
-          "from": "view-cart--load-cart",
-          "to": "view-cart--decision-load-cart"
-        },
-        {
-          "from": "view-cart--decision-load-cart",
-          "to": "view-cart--group-by-seller",
-          "opt": "Yes"
-        },
-        {
-          "from": "view-cart--group-by-seller",
-          "to": "view-cart--show-items"
-        },
-        {
-          "from": "merge-on-login--entry",
-          "to": "merge-on-login--login-detected"
-        },
-        {
-          "from": "merge-on-login--login-detected",
-          "to": "merge-on-login--read-guest-cart"
-        },
-        {
-          "from": "merge-on-login--read-guest-cart",
-          "to": "merge-on-login--post-merge"
-        },
-        {
-          "from": "merge-on-login--post-merge",
-          "to": "merge-on-login--server-validate"
-        },
-        {
-          "from": "merge-on-login--server-validate",
-          "to": "merge-on-login--insert-valid"
-        },
-        {
-          "from": "merge-on-login--insert-valid",
-          "to": "merge-on-login--clear-localstorage"
-        }
-      ]
-    },
-    {
-      "slug": "guest-recently-viewed",
-      "domain": "shopping",
-      "title": "Guest Recently Viewed",
-      "persona": "guest",
-      "description": "Guest's listing views are tracked in localStorage, deduped and capped at 30 items. On login, views silently merge to the database.",
-      "relatedIssues": [],
-      "nodes": [
-        {
-          "id": "track-view--entry",
-          "type": "entry",
-          "label": "Track Listing View"
-        },
-        {
-          "id": "track-view--view-listing",
-          "type": "step",
-          "label": "View Listing Detail",
-          "layer": "client",
-          "status": "built"
-        },
-        {
-          "id": "track-view--add-recently-viewed",
-          "type": "step",
-          "label": "Track View Locally",
-          "layer": "background",
-          "status": "built",
-          "why": "addRecentlyViewed(listingId) called"
-        },
-        {
-          "id": "track-view--store-localstorage",
-          "type": "step",
-          "label": "Save to localStorage",
-          "layer": "background",
-          "status": "built"
-        },
-        {
-          "id": "track-view--dedup-reorder",
-          "type": "step",
-          "label": "Dedup and Reorder",
-          "layer": "background",
-          "status": "built",
-          "why": "Deduped + reordered, max 30 items"
-        },
-        {
-          "id": "display-strip--entry",
-          "type": "entry",
-          "label": "Display Recently Viewed Strip"
-        },
-        {
-          "id": "display-strip--hook-reads-localstorage",
-          "type": "step",
-          "label": "Read View IDs",
-          "layer": "background",
-          "status": "built",
-          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-listings.ts",
-          "why": "useRecentlyViewedListings() reads IDs from localStorage via useRecentlyViewed()"
-        },
-        {
-          "id": "display-strip--batch-fetch",
-          "type": "step",
-          "label": "Fetch Listing Data",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/listings/batch",
-          "why": "No auth required. Only returns active, non-deleted listings. Stale IDs silently filtered."
-        },
-        {
-          "id": "display-strip--decision-batch-fetch",
-          "type": "decision",
-          "label": "Listings found?",
-          "options": [
-            {
-              "label": "Yes",
-              "to": "display-strip--render-strip"
-            },
-            {
-              "label": "No",
-              "to": "display-strip--strip-empty"
-            }
-          ]
-        },
-        {
-          "id": "display-strip--render-strip",
-          "type": "step",
-          "label": "Render Strip",
-          "layer": "client",
-          "status": "built",
-          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx",
-          "why": "RecentlyViewedStrip renders horizontal scroll of ListingCards. CSS scroll-snap, 160px mobile / 220px desktop."
-        },
-        {
-          "id": "display-strip--strip-empty",
-          "type": "step",
-          "label": "Render Nothing",
-          "layer": "client",
-          "status": "built",
-          "why": "Strip returns null — no recently viewed items or all stale/deleted"
-        },
-        {
-          "id": "merge-on-login--entry",
-          "type": "entry",
-          "label": "Merge Recently Viewed on Login"
-        },
-        {
-          "id": "merge-on-login--login-detected",
-          "type": "step",
-          "label": "Detect Login",
-          "layer": "background",
-          "status": "built",
-          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts",
-          "why": "useRecentlyViewedMerge() detects login"
-        },
-        {
-          "id": "merge-on-login--post-merge",
-          "type": "step",
-          "label": "Merge Views to DB",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/recently-viewed/merge"
-        },
-        {
-          "id": "merge-on-login--merge-to-db",
-          "type": "step",
-          "label": "Dedup and Insert",
-          "layer": "database",
-          "status": "built",
-          "why": "Guest views merged to DB, deduped on server"
-        },
-        {
-          "id": "merge-on-login--silent-complete",
-          "type": "step",
-          "label": "Silent Complete",
-          "layer": "background",
-          "status": "built",
-          "why": "No toast — silent merge"
-        }
-      ],
-      "edges": [
-        {
-          "from": "track-view--entry",
-          "to": "track-view--view-listing"
-        },
-        {
-          "from": "track-view--view-listing",
-          "to": "track-view--add-recently-viewed"
-        },
-        {
-          "from": "track-view--add-recently-viewed",
-          "to": "track-view--store-localstorage"
-        },
-        {
-          "from": "track-view--store-localstorage",
-          "to": "track-view--dedup-reorder"
-        },
-        {
-          "from": "display-strip--entry",
-          "to": "display-strip--hook-reads-localstorage"
-        },
-        {
-          "from": "display-strip--hook-reads-localstorage",
-          "to": "display-strip--batch-fetch"
-        },
-        {
-          "from": "display-strip--batch-fetch",
-          "to": "display-strip--decision-batch-fetch"
-        },
-        {
-          "from": "display-strip--decision-batch-fetch",
-          "to": "display-strip--render-strip",
-          "opt": "Yes"
-        },
-        {
-          "from": "display-strip--decision-batch-fetch",
-          "to": "display-strip--strip-empty",
-          "opt": "No"
-        },
-        {
-          "from": "display-strip--render-strip",
-          "to": "display-strip--strip-empty"
-        },
-        {
-          "from": "merge-on-login--entry",
-          "to": "merge-on-login--login-detected"
-        },
-        {
-          "from": "merge-on-login--login-detected",
-          "to": "merge-on-login--post-merge"
-        },
-        {
-          "from": "merge-on-login--post-merge",
-          "to": "merge-on-login--merge-to-db"
-        },
-        {
-          "from": "merge-on-login--merge-to-db",
-          "to": "merge-on-login--silent-complete"
         }
       ]
     },
@@ -2806,11 +2835,11 @@
           "options": [
             {
               "label": "Unconfirmed",
-              "to": "END"
+              "to": "login--show-resend-button"
             },
             {
               "label": "Invalid",
-              "to": "END"
+              "to": "login--show-error"
             },
             {
               "label": "Success",
@@ -2841,6 +2870,14 @@
           "layer": "client",
           "status": "built",
           "why": "User stays on current page after login"
+        },
+        {
+          "id": "login--show-error",
+          "type": "step",
+          "label": "Show Login Error",
+          "layer": "client",
+          "status": "built",
+          "why": "Error banner with role=\"alert\": \"Invalid login credentials\". Form fields preserved for retry."
         },
         {
           "id": "post-login-side-effects--entry",
@@ -2914,6 +2951,11 @@
         },
         {
           "from": "login--decision-sign-in",
+          "to": "login--show-error",
+          "opt": "Invalid"
+        },
+        {
+          "from": "login--decision-sign-in",
           "to": "login--session-set",
           "opt": "Success"
         },
@@ -2924,6 +2966,10 @@
         {
           "from": "login--close-modal",
           "to": "login--stay-on-page"
+        },
+        {
+          "from": "login--stay-on-page",
+          "to": "login--show-error"
         },
         {
           "from": "post-login-side-effects--entry",
@@ -3878,7 +3924,7 @@
             },
             {
               "label": "No",
-              "to": "END"
+              "to": "view-following--empty-following"
             }
           ]
         },
@@ -3890,6 +3936,14 @@
           "status": "built",
           "codeRef": "src/features/follows/components/following-card/index.tsx",
           "why": "Renders FollowingCard for each item — avatar, linked name, type pill, relative date, Unfollow button. Each card manages its own useFollowToggle mutation with toast feedback. Empty state shows heart icon + 'You are not following anyone yet' + Browse CTA."
+        },
+        {
+          "id": "view-following--empty-following",
+          "type": "step",
+          "label": "Show Empty State",
+          "layer": "client",
+          "status": "built",
+          "why": "Heart icon. Heading: \"You are not following anyone yet\". CTA: \"Browse listings\" link."
         },
         {
           "id": "homepage-strip--entry",
@@ -3938,7 +3992,7 @@
             },
             {
               "label": "No",
-              "to": "END"
+              "to": "homepage-strip--hide-strip"
             }
           ]
         },
@@ -3950,6 +4004,14 @@
           "status": "built",
           "codeRef": "src/features/listings/components/followed-sellers-strip/index.tsx",
           "why": "ListingScrollStrip renders horizontally scrollable listing cards under the title 'From Sellers You Follow'. Component returns null when listings.length === 0 and isLoading is false — strip is invisible when the user follows no one or all followed sellers have no active listings."
+        },
+        {
+          "id": "homepage-strip--hide-strip",
+          "type": "step",
+          "label": "Hide Strip Section",
+          "layer": "client",
+          "status": "built",
+          "why": "Strip section not rendered. No visible UI when user follows no one."
         }
       ],
       "edges": [
@@ -4033,6 +4095,15 @@
           "opt": "Yes"
         },
         {
+          "from": "view-following--decision-view-following-2",
+          "to": "view-following--empty-following",
+          "opt": "No"
+        },
+        {
+          "from": "view-following--view-following-3",
+          "to": "view-following--empty-following"
+        },
+        {
           "from": "homepage-strip--entry",
           "to": "homepage-strip--homepage-strip-1"
         },
@@ -4048,6 +4119,15 @@
           "from": "homepage-strip--decision-homepage-strip-2",
           "to": "homepage-strip--homepage-strip-3",
           "opt": "Yes"
+        },
+        {
+          "from": "homepage-strip--decision-homepage-strip-2",
+          "to": "homepage-strip--hide-strip",
+          "opt": "No"
+        },
+        {
+          "from": "homepage-strip--homepage-strip-3",
+          "to": "homepage-strip--hide-strip"
         }
       ]
     },
@@ -4301,7 +4381,7 @@
           "options": [
             {
               "label": "Empty",
-              "to": "END"
+              "to": "watchlist-page--empty-watchlist"
             },
             {
               "label": "Has items",
@@ -4317,6 +4397,14 @@
           "status": "built",
           "codeRef": "src/app/(frontend)/watchlist/watchlist-page.tsx",
           "why": "Renders ListingCard for each WatchedListing. Sold listings show a 'Sold' overlay badge. Skeleton shown while loading (count: 8)."
+        },
+        {
+          "id": "watchlist-page--empty-watchlist",
+          "type": "step",
+          "label": "Show Empty State",
+          "layer": "client",
+          "status": "built",
+          "why": "Heart icon. \"Your watchlist is empty\". \"Watch listings to get notified when prices drop.\" CTA: \"Browse listings\" → /listings"
         },
         {
           "id": "price-drop-notification--entry",
@@ -4530,8 +4618,17 @@
         },
         {
           "from": "watchlist-page--decision-fetch-watchlist",
+          "to": "watchlist-page--empty-watchlist",
+          "opt": "Empty"
+        },
+        {
+          "from": "watchlist-page--decision-fetch-watchlist",
           "to": "watchlist-page--render-grid",
           "opt": "Has items"
+        },
+        {
+          "from": "watchlist-page--render-grid",
+          "to": "watchlist-page--empty-watchlist"
         },
         {
           "from": "price-drop-notification--entry",
@@ -5027,6 +5124,289 @@
       ]
     },
     {
+      "slug": "recently-viewed",
+      "domain": "shopping",
+      "title": "Recently Viewed (Dual-Source)",
+      "persona": "buyer",
+      "description": "Recently viewed listings use dual-source storage: localStorage for guests, DB-backed API for authenticated users. Includes merge on login, display strip, and clear history.",
+      "relatedIssues": [],
+      "nodes": [
+        {
+          "id": "track-view--entry",
+          "type": "entry",
+          "label": "Track Listing View"
+        },
+        {
+          "id": "track-view--view-listing",
+          "type": "step",
+          "label": "View Listing Detail",
+          "layer": "client",
+          "status": "built"
+        },
+        {
+          "id": "track-view--decision-view-listing",
+          "type": "decision",
+          "label": "Authenticated?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "track-view--track-authenticated"
+            },
+            {
+              "label": "No",
+              "to": "track-view--track-guest"
+            }
+          ]
+        },
+        {
+          "id": "track-view--track-authenticated",
+          "type": "step",
+          "label": "Track View in DB",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/recently-viewed"
+        },
+        {
+          "id": "track-view--track-guest",
+          "type": "step",
+          "label": "Track View Locally",
+          "layer": "background",
+          "status": "built",
+          "why": "addRecentlyViewed(listingId) saves to localStorage. Existing entry for the same listing is removed and reinserted at the front (dedup + reorder). List is capped at 30 items."
+        },
+        {
+          "id": "browse-history--entry",
+          "type": "entry",
+          "label": "Browse Recently Viewed"
+        },
+        {
+          "id": "browse-history--fetch-authenticated",
+          "type": "step",
+          "label": "Fetch from API",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/recently-viewed",
+          "why": "Returns recently viewed with listing data"
+        },
+        {
+          "id": "browse-history--fetch-guest",
+          "type": "step",
+          "label": "Fetch from Storage",
+          "layer": "background",
+          "status": "built",
+          "why": "getRecentlyViewed() from localStorage"
+        },
+        {
+          "id": "merge-on-login--entry",
+          "type": "entry",
+          "label": "Merge on Login"
+        },
+        {
+          "id": "merge-on-login--detect-login",
+          "type": "step",
+          "label": "Detect Login",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts",
+          "why": "useRecentlyViewedMerge() detects login event and reads pending IDs from localStorage"
+        },
+        {
+          "id": "merge-on-login--post-merge",
+          "type": "step",
+          "label": "Merge Views to DB",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/recently-viewed/merge"
+        },
+        {
+          "id": "merge-on-login--dedup-merge",
+          "type": "step",
+          "label": "Dedup and Insert",
+          "layer": "database",
+          "status": "built",
+          "why": "Guest views merged to DB, deduped on server — existing DB entries for the same listings are not duplicated"
+        },
+        {
+          "id": "merge-on-login--silent-complete",
+          "type": "step",
+          "label": "Silent Complete",
+          "layer": "background",
+          "status": "built",
+          "why": "No toast — silent merge. localStorage recently viewed cleared after successful merge."
+        },
+        {
+          "id": "display-strip--entry",
+          "type": "entry",
+          "label": "Display Recently Viewed Strip"
+        },
+        {
+          "id": "display-strip--hook-reads-ids",
+          "type": "step",
+          "label": "Read View IDs",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-listings.ts",
+          "why": "useRecentlyViewedListings() reads IDs from useRecentlyViewed() — for guests this reads directly from localStorage; for authenticated users it reads from the DB-backed API response"
+        },
+        {
+          "id": "display-strip--batch-fetch",
+          "type": "step",
+          "label": "Fetch Listing Data",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/listings/batch",
+          "why": "No auth required. Only returns active, non-deleted listings. Stale IDs silently filtered. Max 30 IDs.",
+          "errorCases": [
+            {
+              "condition": "No IDs provided",
+              "result": "400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "More than 30 IDs",
+              "result": "400 Bad Request",
+              "httpStatus": 400
+            }
+          ]
+        },
+        {
+          "id": "display-strip--decision-batch-fetch",
+          "type": "decision",
+          "label": "Listings found?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "display-strip--render-strip"
+            },
+            {
+              "label": "No",
+              "to": "display-strip--strip-empty"
+            }
+          ]
+        },
+        {
+          "id": "display-strip--render-strip",
+          "type": "step",
+          "label": "Render Strip",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/recently-viewed/components/recently-viewed-strip/index.tsx",
+          "why": "Horizontal scroll of ListingCards. CSS scroll-snap, 160px mobile / 220px desktop. role=region + aria-label."
+        },
+        {
+          "id": "display-strip--strip-empty",
+          "type": "step",
+          "label": "Render Nothing",
+          "layer": "client",
+          "status": "built",
+          "why": "Strip returns null — no recently viewed items or all stale/deleted"
+        },
+        {
+          "id": "clear-history--entry",
+          "type": "entry",
+          "label": "Clear History"
+        },
+        {
+          "id": "clear-history--clear-authenticated",
+          "type": "step",
+          "label": "Clear from DB",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/recently-viewed"
+        },
+        {
+          "id": "clear-history--clear-guest",
+          "type": "step",
+          "label": "Clear localStorage",
+          "layer": "background",
+          "status": "built",
+          "why": "clearRecentlyViewed() — clear localStorage"
+        }
+      ],
+      "edges": [
+        {
+          "from": "track-view--entry",
+          "to": "track-view--view-listing"
+        },
+        {
+          "from": "track-view--view-listing",
+          "to": "track-view--decision-view-listing"
+        },
+        {
+          "from": "track-view--decision-view-listing",
+          "to": "track-view--track-authenticated",
+          "opt": "Yes"
+        },
+        {
+          "from": "track-view--decision-view-listing",
+          "to": "track-view--track-guest",
+          "opt": "No"
+        },
+        {
+          "from": "track-view--track-authenticated",
+          "to": "track-view--track-guest"
+        },
+        {
+          "from": "browse-history--entry",
+          "to": "browse-history--fetch-authenticated"
+        },
+        {
+          "from": "browse-history--fetch-authenticated",
+          "to": "browse-history--fetch-guest"
+        },
+        {
+          "from": "merge-on-login--entry",
+          "to": "merge-on-login--detect-login"
+        },
+        {
+          "from": "merge-on-login--detect-login",
+          "to": "merge-on-login--post-merge"
+        },
+        {
+          "from": "merge-on-login--post-merge",
+          "to": "merge-on-login--dedup-merge"
+        },
+        {
+          "from": "merge-on-login--dedup-merge",
+          "to": "merge-on-login--silent-complete"
+        },
+        {
+          "from": "display-strip--entry",
+          "to": "display-strip--hook-reads-ids"
+        },
+        {
+          "from": "display-strip--hook-reads-ids",
+          "to": "display-strip--batch-fetch"
+        },
+        {
+          "from": "display-strip--batch-fetch",
+          "to": "display-strip--decision-batch-fetch"
+        },
+        {
+          "from": "display-strip--decision-batch-fetch",
+          "to": "display-strip--render-strip",
+          "opt": "Yes"
+        },
+        {
+          "from": "display-strip--decision-batch-fetch",
+          "to": "display-strip--strip-empty",
+          "opt": "No"
+        },
+        {
+          "from": "display-strip--render-strip",
+          "to": "display-strip--strip-empty"
+        },
+        {
+          "from": "clear-history--entry",
+          "to": "clear-history--clear-authenticated"
+        },
+        {
+          "from": "clear-history--clear-authenticated",
+          "to": "clear-history--clear-guest"
+        }
+      ]
+    },
+    {
       "slug": "route-protection",
       "domain": "auth",
       "title": "Route Protection (proxy.ts)",
@@ -5233,182 +5613,6 @@
         {
           "from": "route-protection--allow-dashboard",
           "to": "route-protection--refresh-public"
-        }
-      ]
-    },
-    {
-      "slug": "seller-context",
-      "domain": "identity",
-      "title": "Seller Context (Member vs Shop)",
-      "persona": "seller",
-      "description": "Listings are created under either member or shop context, controlled by the X-Nessi-Context header. Determines where the listing appears publicly.",
-      "relatedIssues": [],
-      "nodes": [
-        {
-          "id": "context-assignment--entry",
-          "type": "entry",
-          "label": "Listing Context Assignment"
-        },
-        {
-          "id": "context-assignment--check-context",
-          "type": "step",
-          "label": "Check Active Context",
-          "layer": "background",
-          "status": "built",
-          "why": "Read active context from Zustand store"
-        },
-        {
-          "id": "context-assignment--decision-check-context",
-          "type": "decision",
-          "label": "Active context?",
-          "options": [
-            {
-              "label": "Member",
-              "to": "context-assignment--member-context"
-            },
-            {
-              "label": "Shop",
-              "to": "context-assignment--shop-context"
-            }
-          ]
-        },
-        {
-          "id": "context-assignment--member-context",
-          "type": "step",
-          "label": "Assign to Member",
-          "layer": "server",
-          "status": "built",
-          "why": "seller_id = user.id, member_id = user.id, shop_id = null"
-        },
-        {
-          "id": "context-assignment--shop-context",
-          "type": "step",
-          "label": "Assign to Shop",
-          "layer": "server",
-          "status": "built",
-          "why": "seller_id = user.id, member_id = null, shop_id = activeShopId"
-        },
-        {
-          "id": "context-assignment--member-public",
-          "type": "step",
-          "label": "Show on Member Page",
-          "layer": "client",
-          "status": "built",
-          "why": "Listing appears on member's public profile at /member/[slug]"
-        },
-        {
-          "id": "context-assignment--shop-public",
-          "type": "step",
-          "label": "Show on Shop Page",
-          "layer": "client",
-          "status": "built",
-          "why": "Listing appears on shop's public page at /shop/[slug]"
-        },
-        {
-          "id": "context-header--entry",
-          "type": "entry",
-          "label": "X-Nessi-Context Header Validation"
-        },
-        {
-          "id": "context-header--send-header",
-          "type": "step",
-          "label": "Send Context Header",
-          "layer": "background",
-          "status": "built",
-          "why": "X-Nessi-Context header sent with every fetch"
-        },
-        {
-          "id": "context-header--decision-send-header",
-          "type": "decision",
-          "label": "Header value?",
-          "options": [
-            {
-              "label": "Member",
-              "to": "context-header--validate-member"
-            },
-            {
-              "label": "Shop",
-              "to": "context-header--validate-shop"
-            }
-          ]
-        },
-        {
-          "id": "context-header--validate-member",
-          "type": "step",
-          "label": "Validate as Member",
-          "layer": "server",
-          "status": "built",
-          "why": "member — API validates: user owns listing"
-        },
-        {
-          "id": "context-header--validate-shop",
-          "type": "step",
-          "label": "Validate as Shop",
-          "layer": "server",
-          "status": "built",
-          "why": "shop:{id} — API validates: user is member of shop"
-        }
-      ],
-      "edges": [
-        {
-          "from": "context-assignment--entry",
-          "to": "context-assignment--check-context"
-        },
-        {
-          "from": "context-assignment--check-context",
-          "to": "context-assignment--decision-check-context"
-        },
-        {
-          "from": "context-assignment--decision-check-context",
-          "to": "context-assignment--member-context",
-          "opt": "Member"
-        },
-        {
-          "from": "context-assignment--decision-check-context",
-          "to": "context-assignment--shop-context",
-          "opt": "Shop"
-        },
-        {
-          "from": "context-assignment--member-context",
-          "to": "context-assignment--shop-context"
-        },
-        {
-          "from": "context-assignment--shop-context",
-          "to": "context-assignment--member-public"
-        },
-        {
-          "from": "context-assignment--member-public",
-          "to": "context-assignment--shop-public"
-        },
-        {
-          "from": "context-assignment--member-context",
-          "to": "context-assignment--member-public"
-        },
-        {
-          "from": "context-assignment--shop-context",
-          "to": "context-assignment--shop-public"
-        },
-        {
-          "from": "context-header--entry",
-          "to": "context-header--send-header"
-        },
-        {
-          "from": "context-header--send-header",
-          "to": "context-header--decision-send-header"
-        },
-        {
-          "from": "context-header--decision-send-header",
-          "to": "context-header--validate-member",
-          "opt": "Member"
-        },
-        {
-          "from": "context-header--decision-send-header",
-          "to": "context-header--validate-shop",
-          "opt": "Shop"
-        },
-        {
-          "from": "context-header--validate-member",
-          "to": "context-header--validate-shop"
         }
       ]
     },
@@ -5897,7 +6101,7 @@
             },
             {
               "label": "Denied",
-              "to": "share-listing--copy-denied"
+              "to": "share-listing--clipboard-denied"
             }
           ]
         },
@@ -5910,12 +6114,12 @@
           "why": "Toast: 'Link copied!'"
         },
         {
-          "id": "share-listing--copy-denied",
+          "id": "share-listing--clipboard-denied",
           "type": "step",
-          "label": "Show Error Toast",
+          "label": "Show Copy Error",
           "layer": "client",
           "status": "built",
-          "why": "Toast: 'Unable to copy link' (clipboard access denied)"
+          "why": "Error toast: \"Unable to copy link\" — \"Please copy the URL from your browser address bar.\" No retry, user copies manually."
         }
       ],
       "edges": [
@@ -5956,12 +6160,12 @@
         },
         {
           "from": "share-listing--decision-clipboard-copy",
-          "to": "share-listing--copy-denied",
+          "to": "share-listing--clipboard-denied",
           "opt": "Denied"
         },
         {
           "from": "share-listing--copy-success",
-          "to": "share-listing--copy-denied"
+          "to": "share-listing--clipboard-denied"
         }
       ]
     },
@@ -6029,7 +6233,7 @@
           "options": [
             {
               "label": "Yes",
-              "to": "toggle-off--show-warning"
+              "to": "toggle-off--toggle-blocked"
             },
             {
               "label": "No",
@@ -6038,12 +6242,12 @@
           ]
         },
         {
-          "id": "toggle-off--show-warning",
+          "id": "toggle-off--toggle-blocked",
           "type": "step",
-          "label": "Show Warning",
+          "label": "Show Precondition",
           "layer": "client",
           "status": "built",
-          "why": "X active listings, Y orders — must resolve first"
+          "why": "Toggle disabled. Message: \"You have X active listing(s) that must be closed before disabling seller mode.\" (role=\"status\", aria-live=\"polite\"). Also shows active order count if applicable."
         },
         {
           "id": "toggle-off--post-toggle-off",
@@ -6098,7 +6302,7 @@
         },
         {
           "from": "toggle-off--decision-check-preconditions",
-          "to": "toggle-off--show-warning",
+          "to": "toggle-off--toggle-blocked",
           "opt": "Yes"
         },
         {
@@ -6107,7 +6311,7 @@
           "opt": "No"
         },
         {
-          "from": "toggle-off--show-warning",
+          "from": "toggle-off--toggle-blocked",
           "to": "toggle-off--post-toggle-off"
         },
         {
@@ -6182,7 +6386,7 @@
             },
             {
               "label": "No",
-              "to": "END"
+              "to": "create-shop--slug-taken"
             }
           ]
         },
@@ -6247,6 +6451,14 @@
           "layer": "client",
           "status": "built",
           "why": "Redirect to /dashboard/shop/settings"
+        },
+        {
+          "id": "create-shop--slug-taken",
+          "type": "step",
+          "label": "Show Slug Error",
+          "layer": "client",
+          "status": "built",
+          "why": "Red X icon. Error: \"That handle is already taken\" (role=\"alert\"). Input error styling. Submit disabled. User can edit slug and re-check."
         }
       ],
       "edges": [
@@ -6276,6 +6488,11 @@
           "opt": "Yes"
         },
         {
+          "from": "create-shop--decision-check-slug",
+          "to": "create-shop--slug-taken",
+          "opt": "No"
+        },
+        {
           "from": "create-shop--enter-description",
           "to": "create-shop--post-shop"
         },
@@ -6298,47 +6515,96 @@
         {
           "from": "create-shop--set-seller-flag",
           "to": "create-shop--redirect-settings"
+        },
+        {
+          "from": "create-shop--redirect-settings",
+          "to": "create-shop--slug-taken"
         }
       ]
     },
     {
-      "slug": "shop-invite-acceptance",
+      "slug": "shop-members",
       "domain": "shops",
-      "title": "Shop Invite → Accept (or Register & Auto-Accept)",
-      "persona": "shop-member",
-      "description": "A user receives a shop invite email, lands on the invite page, and either accepts directly (if authenticated) or registers a new account with auto-accept.",
+      "title": "Shop Members (Full Lifecycle)",
+      "persona": "shop-owner",
+      "description": "Full shop member lifecycle: owner invites via email, invitee accepts (or registers & auto-accepts), member works in shop context with role-based permissions, member leaves or is removed with context revocation.",
       "relatedIssues": [250, 251, 252, 253, 254, 255],
       "nodes": [
         {
-          "id": "invite-sent--entry",
+          "id": "lifecycle-hub--entry",
           "type": "entry",
-          "label": "Owner Sends Invite"
+          "label": "Member Lifecycle"
         },
         {
-          "id": "invite-sent--open-modal",
+          "id": "lifecycle-hub--lifecycle-start",
           "type": "step",
-          "label": "Click Invite Button",
+          "label": "Shop Members Page",
           "layer": "client",
           "status": "built",
-          "codeRef": "src/features/shops/components/invite-member-modal/index.tsx"
+          "why": "Owner or member navigates to shop members section. Shows member list, pending invites, and role assignments."
         },
         {
-          "id": "invite-sent--enter-details",
+          "id": "lifecycle-hub--decision-lifecycle-start",
+          "type": "decision",
+          "label": "What phase?",
+          "options": [
+            {
+              "label": "Invite Member",
+              "to": "lifecycle-hub--enter-invite"
+            },
+            {
+              "label": "Accept Invite",
+              "to": "lifecycle-hub--land-on-page"
+            },
+            {
+              "label": "Work in Shop",
+              "to": "lifecycle-hub--switch-to-shop"
+            },
+            {
+              "label": "Manage Members",
+              "to": "lifecycle-hub--choose-action"
+            },
+            {
+              "label": "Leave Shop",
+              "to": "lifecycle-hub--click-leave"
+            }
+          ]
+        },
+        {
+          "id": "invite-member--entry",
+          "type": "entry",
+          "label": "Invite New Member"
+        },
+        {
+          "id": "invite-member--enter-invite",
           "type": "step",
           "label": "Enter Invite Details",
           "layer": "client",
           "status": "built",
-          "why": "Enter recipient email + select role. RoleSelect filters out Owner. Validates via validateInviteInput()."
+          "codeRef": "src/features/shops/components/invite-member-modal/index.tsx",
+          "why": "Enter email + select role. RoleSelect filters out Owner. Validates via validateInviteInput()."
         },
         {
-          "id": "invite-sent--create-invite",
+          "id": "invite-member--validate-invite",
           "type": "step",
-          "label": "Create Invite",
+          "label": "Validate Input",
+          "layer": "client",
+          "status": "built",
+          "errorCases": [
+            {
+              "condition": "Invalid email/role",
+              "result": "400 error",
+              "httpStatus": 400
+            }
+          ]
+        },
+        {
+          "id": "invite-member--server-checks",
+          "type": "step",
+          "label": "Check Limits",
           "layer": "server",
           "status": "built",
-          "route": "/api/shops/[id]/invites",
-          "codeRef": "src/app/api/shops/[id]/invites/route.ts",
-          "why": "Requires requireShopPermission('members', 'full'). Enforces 5-member cap.",
+          "why": "Server-side checks: member cap, existing member, duplicate invite",
           "errorCases": [
             {
               "condition": "Members + pending invites >= 5",
@@ -6346,19 +6612,29 @@
               "httpStatus": 409
             },
             {
-              "condition": "Email already a shop member",
+              "condition": "Already a member",
               "result": "ALREADY_MEMBER",
               "httpStatus": 409
             },
             {
-              "condition": "Duplicate pending invite for same email",
+              "condition": "Duplicate pending invite",
               "result": "DUPLICATE_INVITE",
               "httpStatus": 409
             }
           ]
         },
         {
-          "id": "invite-sent--insert-row",
+          "id": "invite-member--create-invite",
+          "type": "step",
+          "label": "Create Invite",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/shops/[id]/invites",
+          "codeRef": "src/app/api/shops/[id]/invites/route.ts",
+          "why": "Requires requireShopPermission('members', 'full'). Enforces 5-member cap."
+        },
+        {
+          "id": "invite-member--insert-invite-row",
           "type": "step",
           "label": "Insert Invite Row",
           "layer": "database",
@@ -6366,7 +6642,7 @@
           "why": "shop_invites row with 7-day expiry token"
         },
         {
-          "id": "invite-sent--send-email",
+          "id": "invite-member--send-email",
           "type": "step",
           "label": "Send Invite Email",
           "layer": "email",
@@ -6400,17 +6676,41 @@
             },
             {
               "label": "Expired",
-              "to": "END"
+              "to": "accept-authenticated--show-expired"
             },
             {
               "label": "Revoked",
-              "to": "END"
+              "to": "accept-authenticated--show-revoked"
             },
             {
               "label": "Accepted",
-              "to": "END"
+              "to": "accept-authenticated--show-already-accepted"
             }
           ]
+        },
+        {
+          "id": "accept-authenticated--show-expired",
+          "type": "step",
+          "label": "Show Expired Error",
+          "layer": "client",
+          "status": "built",
+          "why": "Invite page shows expired state. User cannot accept."
+        },
+        {
+          "id": "accept-authenticated--show-revoked",
+          "type": "step",
+          "label": "Show Revoked Error",
+          "layer": "client",
+          "status": "built",
+          "why": "Invite page shows revoked state. User cannot accept."
+        },
+        {
+          "id": "accept-authenticated--show-already-accepted",
+          "type": "step",
+          "label": "Show Already Accepted",
+          "layer": "client",
+          "status": "built",
+          "why": "Invite page shows already accepted state."
         },
         {
           "id": "accept-authenticated--check-auth",
@@ -6580,7 +6880,7 @@
             },
             {
               "label": "Failure",
-              "to": "END"
+              "to": "accept-new-user--auto-accept-failure"
             }
           ]
         },
@@ -6591,117 +6891,201 @@
           "layer": "client",
           "status": "built",
           "why": "Toast: 'You've joined {shopName}!' + redirect to /dashboard. onInviteAccepted callback fires."
-        }
-      ],
-      "edges": [
-        {
-          "from": "invite-sent--entry",
-          "to": "invite-sent--open-modal"
         },
         {
-          "from": "invite-sent--open-modal",
-          "to": "invite-sent--enter-details"
+          "id": "accept-new-user--auto-accept-failure",
+          "type": "step",
+          "label": "Show Manual Accept",
+          "layer": "client",
+          "status": "built",
+          "why": "Toast suggests navigating to invite page to accept manually. Account creation always succeeds regardless."
         },
         {
-          "from": "invite-sent--enter-details",
-          "to": "invite-sent--create-invite"
+          "id": "manage-members--entry",
+          "type": "entry",
+          "label": "Manage Shop Members"
         },
         {
-          "from": "invite-sent--create-invite",
-          "to": "invite-sent--insert-row"
+          "id": "manage-members--open-members",
+          "type": "step",
+          "label": "Open Members Page",
+          "layer": "client",
+          "status": "built",
+          "why": "Owner navigates to Shop Settings → Members tab. Shows member list and pending invites."
         },
         {
-          "from": "invite-sent--insert-row",
-          "to": "invite-sent--send-email"
+          "id": "manage-members--choose-action",
+          "type": "step",
+          "label": "Choose Action",
+          "layer": "client",
+          "status": "built",
+          "why": "Owner sees member list with role dropdowns, remove buttons, and pending invites with resend/revoke options. Plus Invite button."
         },
         {
-          "from": "accept-authenticated--entry",
-          "to": "accept-authenticated--land-on-page"
+          "id": "manage-members--decision-choose-action",
+          "type": "decision",
+          "label": "What action?",
+          "options": [
+            {
+              "label": "Invite New",
+              "to": "manage-members--enter-invite"
+            },
+            {
+              "label": "Resend Invite",
+              "to": "manage-members--click-resend"
+            },
+            {
+              "label": "Revoke Invite",
+              "to": "manage-members--delete-invite"
+            },
+            {
+              "label": "Remove Member",
+              "to": "manage-members--delete-member"
+            },
+            {
+              "label": "Change Role",
+              "to": "manage-members--show-dropdown"
+            }
+          ]
         },
         {
-          "from": "accept-authenticated--land-on-page",
-          "to": "accept-authenticated--decision-land-on-page"
+          "id": "resend-invite--entry",
+          "type": "entry",
+          "label": "Resend Invite"
         },
         {
-          "from": "accept-authenticated--decision-land-on-page",
-          "to": "accept-authenticated--check-auth",
-          "opt": "Pending"
+          "id": "resend-invite--click-resend",
+          "type": "step",
+          "label": "Resend Invite",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/shops/[id]/invites/[inviteId]/resend"
         },
         {
-          "from": "accept-authenticated--check-auth",
-          "to": "accept-authenticated--show-accept-button"
+          "id": "resend-invite--regenerate-token",
+          "type": "step",
+          "label": "Regenerate Token",
+          "layer": "database",
+          "status": "built",
+          "why": "Regenerate token + reset expiry to 7 days"
         },
         {
-          "from": "accept-authenticated--show-accept-button",
-          "to": "accept-authenticated--click-accept"
+          "id": "resend-invite--resend-email",
+          "type": "step",
+          "label": "Resend Email",
+          "layer": "email",
+          "status": "built",
+          "why": "Resend invite email with new token"
         },
         {
-          "from": "accept-authenticated--click-accept",
-          "to": "accept-authenticated--accept-api"
+          "id": "revoke-invite--entry",
+          "type": "entry",
+          "label": "Revoke Invite"
         },
         {
-          "from": "accept-authenticated--accept-api",
-          "to": "accept-authenticated--insert-membership"
+          "id": "revoke-invite--delete-invite",
+          "type": "step",
+          "label": "Revoke Invite",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/shops/[id]/invites/[inviteId]"
         },
         {
-          "from": "accept-authenticated--insert-membership",
-          "to": "accept-authenticated--mark-accepted"
+          "id": "revoke-invite--set-revoked",
+          "type": "step",
+          "label": "Mark as Revoked",
+          "layer": "database",
+          "status": "built",
+          "why": "Set status = 'revoked'"
         },
         {
-          "from": "accept-authenticated--mark-accepted",
-          "to": "accept-authenticated--redirect-success"
+          "id": "remove-member--entry",
+          "type": "entry",
+          "label": "Remove Member"
         },
         {
-          "from": "accept-new-user--entry",
-          "to": "accept-new-user--land-unauthenticated"
+          "id": "remove-member--delete-member",
+          "type": "step",
+          "label": "Remove Member",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/shops/[id]/members/[memberId]"
         },
         {
-          "from": "accept-new-user--land-unauthenticated",
-          "to": "accept-new-user--show-auth-options"
+          "id": "remove-member--member-removed",
+          "type": "step",
+          "label": "Delete Membership Row",
+          "layer": "database",
+          "status": "built",
+          "why": "Member removed from shop_members"
         },
         {
-          "from": "accept-new-user--show-auth-options",
-          "to": "accept-new-user--click-signup"
+          "id": "remove-member--context-revocation",
+          "type": "step",
+          "label": "Trigger Revocation",
+          "layer": "background",
+          "status": "built",
+          "why": "If member was in shop context: 403 on next API call triggers revocation. See context-switching.json."
         },
         {
-          "from": "accept-new-user--click-signup",
-          "to": "accept-new-user--navbar-detects-params"
+          "id": "assign-role--entry",
+          "type": "entry",
+          "label": "Assign Role"
         },
         {
-          "from": "accept-new-user--navbar-detects-params",
-          "to": "accept-new-user--register"
+          "id": "assign-role--show-dropdown",
+          "type": "step",
+          "label": "Show Role Dropdown",
+          "layer": "client",
+          "status": "built",
+          "why": "Each member row has RoleSelect dropdown (disabled for owner)"
         },
         {
-          "from": "accept-new-user--register",
-          "to": "accept-new-user--otp-verify"
+          "id": "assign-role--select-role",
+          "type": "step",
+          "label": "Select New Role",
+          "layer": "client",
+          "status": "built"
         },
         {
-          "from": "accept-new-user--otp-verify",
-          "to": "accept-new-user--session-established"
+          "id": "assign-role--patch-role",
+          "type": "step",
+          "label": "Update Role",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/shops/[id]/members/[memberId]/role",
+          "errorCases": [
+            {
+              "condition": "Cannot assign Owner role",
+              "result": "400 error",
+              "httpStatus": 400
+            }
+          ]
         },
         {
-          "from": "accept-new-user--session-established",
-          "to": "accept-new-user--auto-accept"
+          "id": "assign-role--optimistic-update",
+          "type": "step",
+          "label": "Update Cache",
+          "layer": "client",
+          "status": "built",
+          "why": "Optimistic cache update"
         },
         {
-          "from": "accept-new-user--auto-accept",
-          "to": "accept-new-user--decision-auto-accept"
+          "id": "assign-role--show-toast",
+          "type": "step",
+          "label": "Show Role Toast",
+          "layer": "client",
+          "status": "built",
+          "why": "Toast: 'Role updated to {roleName}'"
         },
         {
-          "from": "accept-new-user--decision-auto-accept",
-          "to": "accept-new-user--auto-accept-success",
-          "opt": "Success"
-        }
-      ]
-    },
-    {
-      "slug": "shop-member-journey",
-      "domain": "shops",
-      "title": "Shop Member Journey (Join, Work, Leave)",
-      "persona": "shop-member",
-      "description": "Shop member lifecycle: switch to shop context, work within role-based permissions, leave shop with confirmation, and handle context revocation when removed by owner.",
-      "relatedIssues": [],
-      "nodes": [
+          "id": "assign-role--permissions-change",
+          "type": "step",
+          "label": "Apply Permissions",
+          "layer": "server",
+          "status": "built",
+          "why": "Member's permissions change immediately"
+        },
         {
           "id": "work-in-shop--entry",
           "type": "entry",
@@ -6801,9 +7185,17 @@
             },
             {
               "label": "No",
-              "to": "END"
+              "to": "leave-shop--submit-disabled"
             }
           ]
+        },
+        {
+          "id": "leave-shop--submit-disabled",
+          "type": "step",
+          "label": "Submit Disabled",
+          "layer": "client",
+          "status": "built",
+          "why": "Confirm button disabled until phrase matches exactly."
         },
         {
           "id": "leave-shop--remove-self",
@@ -6970,6 +7362,220 @@
       ],
       "edges": [
         {
+          "from": "lifecycle-hub--entry",
+          "to": "lifecycle-hub--lifecycle-start"
+        },
+        {
+          "from": "lifecycle-hub--lifecycle-start",
+          "to": "lifecycle-hub--decision-lifecycle-start"
+        },
+        {
+          "from": "invite-member--entry",
+          "to": "invite-member--enter-invite"
+        },
+        {
+          "from": "invite-member--enter-invite",
+          "to": "invite-member--validate-invite"
+        },
+        {
+          "from": "invite-member--validate-invite",
+          "to": "invite-member--server-checks"
+        },
+        {
+          "from": "invite-member--server-checks",
+          "to": "invite-member--create-invite"
+        },
+        {
+          "from": "invite-member--create-invite",
+          "to": "invite-member--insert-invite-row"
+        },
+        {
+          "from": "invite-member--insert-invite-row",
+          "to": "invite-member--send-email"
+        },
+        {
+          "from": "accept-authenticated--entry",
+          "to": "accept-authenticated--land-on-page"
+        },
+        {
+          "from": "accept-authenticated--land-on-page",
+          "to": "accept-authenticated--decision-land-on-page"
+        },
+        {
+          "from": "accept-authenticated--decision-land-on-page",
+          "to": "accept-authenticated--check-auth",
+          "opt": "Pending"
+        },
+        {
+          "from": "accept-authenticated--decision-land-on-page",
+          "to": "accept-authenticated--show-expired",
+          "opt": "Expired"
+        },
+        {
+          "from": "accept-authenticated--decision-land-on-page",
+          "to": "accept-authenticated--show-revoked",
+          "opt": "Revoked"
+        },
+        {
+          "from": "accept-authenticated--decision-land-on-page",
+          "to": "accept-authenticated--show-already-accepted",
+          "opt": "Accepted"
+        },
+        {
+          "from": "accept-authenticated--show-expired",
+          "to": "accept-authenticated--show-revoked"
+        },
+        {
+          "from": "accept-authenticated--show-revoked",
+          "to": "accept-authenticated--show-already-accepted"
+        },
+        {
+          "from": "accept-authenticated--show-already-accepted",
+          "to": "accept-authenticated--check-auth"
+        },
+        {
+          "from": "accept-authenticated--check-auth",
+          "to": "accept-authenticated--show-accept-button"
+        },
+        {
+          "from": "accept-authenticated--show-accept-button",
+          "to": "accept-authenticated--click-accept"
+        },
+        {
+          "from": "accept-authenticated--click-accept",
+          "to": "accept-authenticated--accept-api"
+        },
+        {
+          "from": "accept-authenticated--accept-api",
+          "to": "accept-authenticated--insert-membership"
+        },
+        {
+          "from": "accept-authenticated--insert-membership",
+          "to": "accept-authenticated--mark-accepted"
+        },
+        {
+          "from": "accept-authenticated--mark-accepted",
+          "to": "accept-authenticated--redirect-success"
+        },
+        {
+          "from": "accept-new-user--entry",
+          "to": "accept-new-user--land-unauthenticated"
+        },
+        {
+          "from": "accept-new-user--land-unauthenticated",
+          "to": "accept-new-user--show-auth-options"
+        },
+        {
+          "from": "accept-new-user--show-auth-options",
+          "to": "accept-new-user--click-signup"
+        },
+        {
+          "from": "accept-new-user--click-signup",
+          "to": "accept-new-user--navbar-detects-params"
+        },
+        {
+          "from": "accept-new-user--navbar-detects-params",
+          "to": "accept-new-user--register"
+        },
+        {
+          "from": "accept-new-user--register",
+          "to": "accept-new-user--otp-verify"
+        },
+        {
+          "from": "accept-new-user--otp-verify",
+          "to": "accept-new-user--session-established"
+        },
+        {
+          "from": "accept-new-user--session-established",
+          "to": "accept-new-user--auto-accept"
+        },
+        {
+          "from": "accept-new-user--auto-accept",
+          "to": "accept-new-user--decision-auto-accept"
+        },
+        {
+          "from": "accept-new-user--decision-auto-accept",
+          "to": "accept-new-user--auto-accept-success",
+          "opt": "Success"
+        },
+        {
+          "from": "accept-new-user--decision-auto-accept",
+          "to": "accept-new-user--auto-accept-failure",
+          "opt": "Failure"
+        },
+        {
+          "from": "accept-new-user--auto-accept-success",
+          "to": "accept-new-user--auto-accept-failure"
+        },
+        {
+          "from": "manage-members--entry",
+          "to": "manage-members--open-members"
+        },
+        {
+          "from": "manage-members--open-members",
+          "to": "manage-members--choose-action"
+        },
+        {
+          "from": "manage-members--choose-action",
+          "to": "manage-members--decision-choose-action"
+        },
+        {
+          "from": "resend-invite--entry",
+          "to": "resend-invite--click-resend"
+        },
+        {
+          "from": "resend-invite--click-resend",
+          "to": "resend-invite--regenerate-token"
+        },
+        {
+          "from": "resend-invite--regenerate-token",
+          "to": "resend-invite--resend-email"
+        },
+        {
+          "from": "revoke-invite--entry",
+          "to": "revoke-invite--delete-invite"
+        },
+        {
+          "from": "revoke-invite--delete-invite",
+          "to": "revoke-invite--set-revoked"
+        },
+        {
+          "from": "remove-member--entry",
+          "to": "remove-member--delete-member"
+        },
+        {
+          "from": "remove-member--delete-member",
+          "to": "remove-member--member-removed"
+        },
+        {
+          "from": "remove-member--member-removed",
+          "to": "remove-member--context-revocation"
+        },
+        {
+          "from": "assign-role--entry",
+          "to": "assign-role--show-dropdown"
+        },
+        {
+          "from": "assign-role--show-dropdown",
+          "to": "assign-role--select-role"
+        },
+        {
+          "from": "assign-role--select-role",
+          "to": "assign-role--patch-role"
+        },
+        {
+          "from": "assign-role--patch-role",
+          "to": "assign-role--optimistic-update"
+        },
+        {
+          "from": "assign-role--optimistic-update",
+          "to": "assign-role--show-toast"
+        },
+        {
+          "from": "assign-role--show-toast",
+          "to": "assign-role--permissions-change"
+        },
+        {
           "from": "work-in-shop--entry",
           "to": "work-in-shop--switch-to-shop"
         },
@@ -7019,6 +7625,15 @@
           "from": "leave-shop--decision-type-phrase",
           "to": "leave-shop--remove-self",
           "opt": "Yes"
+        },
+        {
+          "from": "leave-shop--decision-type-phrase",
+          "to": "leave-shop--submit-disabled",
+          "opt": "No"
+        },
+        {
+          "from": "leave-shop--submit-disabled",
+          "to": "leave-shop--remove-self"
         },
         {
           "from": "leave-shop--remove-self",
@@ -7091,312 +7706,6 @@
         {
           "from": "multi-shop--set-context",
           "to": "multi-shop--persist-context"
-        }
-      ]
-    },
-    {
-      "slug": "shop-member-management",
-      "domain": "shops",
-      "title": "Shop Member Management (Invite, Remove, Roles)",
-      "persona": "shop-owner",
-      "description": "Owner manages shop members: invite via email, resend/revoke invites, remove members, and assign roles with permission enforcement.",
-      "relatedIssues": [],
-      "nodes": [
-        {
-          "id": "invite-member--entry",
-          "type": "entry",
-          "label": "Invite New Member"
-        },
-        {
-          "id": "invite-member--enter-invite",
-          "type": "step",
-          "label": "Enter Invite Details",
-          "layer": "client",
-          "status": "built",
-          "why": "Enter email + select role"
-        },
-        {
-          "id": "invite-member--validate-invite",
-          "type": "step",
-          "label": "Validate Input",
-          "layer": "client",
-          "status": "built",
-          "errorCases": [
-            {
-              "condition": "Invalid email/role",
-              "result": "400 error",
-              "httpStatus": 400
-            }
-          ]
-        },
-        {
-          "id": "invite-member--server-checks",
-          "type": "step",
-          "label": "Check Limits",
-          "layer": "server",
-          "status": "built",
-          "why": "Server-side checks: member cap, existing member, duplicate invite",
-          "errorCases": [
-            {
-              "condition": "Members + pending invites >= 5",
-              "result": "MEMBER_LIMIT_REACHED",
-              "httpStatus": 409
-            },
-            {
-              "condition": "Already a member",
-              "result": "409 already a member",
-              "httpStatus": 409
-            },
-            {
-              "condition": "Duplicate pending invite",
-              "result": "409 duplicate invite",
-              "httpStatus": 409
-            }
-          ]
-        },
-        {
-          "id": "invite-member--create-invite",
-          "type": "step",
-          "label": "Create Invite",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/shops/[id]/invites"
-        },
-        {
-          "id": "invite-member--insert-invite-row",
-          "type": "step",
-          "label": "Insert Invite Row",
-          "layer": "database",
-          "status": "built",
-          "why": "shop_invites row with 7-day expiry"
-        },
-        {
-          "id": "invite-member--send-email",
-          "type": "step",
-          "label": "Send Invite Email",
-          "layer": "email",
-          "status": "built",
-          "why": "Send via Resend with /invite/{token} link"
-        },
-        {
-          "id": "resend-invite--entry",
-          "type": "entry",
-          "label": "Resend Invite"
-        },
-        {
-          "id": "resend-invite--click-resend",
-          "type": "step",
-          "label": "Resend Invite",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/shops/[id]/invites/[inviteId]/resend"
-        },
-        {
-          "id": "resend-invite--regenerate-token",
-          "type": "step",
-          "label": "Regenerate Token",
-          "layer": "database",
-          "status": "built",
-          "why": "Regenerate token + reset expiry to 7 days"
-        },
-        {
-          "id": "resend-invite--resend-email",
-          "type": "step",
-          "label": "Resend Email",
-          "layer": "email",
-          "status": "built",
-          "why": "Resend invite email with new token"
-        },
-        {
-          "id": "revoke-invite--entry",
-          "type": "entry",
-          "label": "Revoke Invite"
-        },
-        {
-          "id": "revoke-invite--delete-invite",
-          "type": "step",
-          "label": "Revoke Invite",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/shops/[id]/invites/[inviteId]"
-        },
-        {
-          "id": "revoke-invite--set-revoked",
-          "type": "step",
-          "label": "Mark as Revoked",
-          "layer": "database",
-          "status": "built",
-          "why": "Set status = 'revoked'"
-        },
-        {
-          "id": "remove-member--entry",
-          "type": "entry",
-          "label": "Remove Member"
-        },
-        {
-          "id": "remove-member--delete-member",
-          "type": "step",
-          "label": "Remove Member",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/shops/[id]/members/[memberId]"
-        },
-        {
-          "id": "remove-member--member-removed",
-          "type": "step",
-          "label": "Delete Membership Row",
-          "layer": "database",
-          "status": "built",
-          "why": "Member removed from shop_members"
-        },
-        {
-          "id": "remove-member--context-revocation",
-          "type": "step",
-          "label": "Trigger Revocation",
-          "layer": "background",
-          "status": "built",
-          "why": "If member was in shop context: 403 on next API call triggers revocation. See context-switching.json."
-        },
-        {
-          "id": "assign-role--entry",
-          "type": "entry",
-          "label": "Assign Role"
-        },
-        {
-          "id": "assign-role--show-dropdown",
-          "type": "step",
-          "label": "Show Role Dropdown",
-          "layer": "client",
-          "status": "built",
-          "why": "Each member row has RoleSelect dropdown (disabled for owner)"
-        },
-        {
-          "id": "assign-role--select-role",
-          "type": "step",
-          "label": "Select New Role",
-          "layer": "client",
-          "status": "built"
-        },
-        {
-          "id": "assign-role--patch-role",
-          "type": "step",
-          "label": "Update Role",
-          "layer": "server",
-          "status": "built",
-          "route": "/api/shops/[id]/members/[memberId]/role",
-          "errorCases": [
-            {
-              "condition": "Cannot assign Owner role",
-              "result": "400 error",
-              "httpStatus": 400
-            }
-          ]
-        },
-        {
-          "id": "assign-role--optimistic-update",
-          "type": "step",
-          "label": "Update Cache",
-          "layer": "client",
-          "status": "built",
-          "why": "Optimistic cache update"
-        },
-        {
-          "id": "assign-role--show-toast",
-          "type": "step",
-          "label": "Show Role Toast",
-          "layer": "client",
-          "status": "built",
-          "why": "Toast: 'Role updated to {roleName}'"
-        },
-        {
-          "id": "assign-role--permissions-change",
-          "type": "step",
-          "label": "Apply Permissions",
-          "layer": "server",
-          "status": "built",
-          "why": "Member's permissions change immediately"
-        }
-      ],
-      "edges": [
-        {
-          "from": "invite-member--entry",
-          "to": "invite-member--enter-invite"
-        },
-        {
-          "from": "invite-member--enter-invite",
-          "to": "invite-member--validate-invite"
-        },
-        {
-          "from": "invite-member--validate-invite",
-          "to": "invite-member--server-checks"
-        },
-        {
-          "from": "invite-member--server-checks",
-          "to": "invite-member--create-invite"
-        },
-        {
-          "from": "invite-member--create-invite",
-          "to": "invite-member--insert-invite-row"
-        },
-        {
-          "from": "invite-member--insert-invite-row",
-          "to": "invite-member--send-email"
-        },
-        {
-          "from": "resend-invite--entry",
-          "to": "resend-invite--click-resend"
-        },
-        {
-          "from": "resend-invite--click-resend",
-          "to": "resend-invite--regenerate-token"
-        },
-        {
-          "from": "resend-invite--regenerate-token",
-          "to": "resend-invite--resend-email"
-        },
-        {
-          "from": "revoke-invite--entry",
-          "to": "revoke-invite--delete-invite"
-        },
-        {
-          "from": "revoke-invite--delete-invite",
-          "to": "revoke-invite--set-revoked"
-        },
-        {
-          "from": "remove-member--entry",
-          "to": "remove-member--delete-member"
-        },
-        {
-          "from": "remove-member--delete-member",
-          "to": "remove-member--member-removed"
-        },
-        {
-          "from": "remove-member--member-removed",
-          "to": "remove-member--context-revocation"
-        },
-        {
-          "from": "assign-role--entry",
-          "to": "assign-role--show-dropdown"
-        },
-        {
-          "from": "assign-role--show-dropdown",
-          "to": "assign-role--select-role"
-        },
-        {
-          "from": "assign-role--select-role",
-          "to": "assign-role--patch-role"
-        },
-        {
-          "from": "assign-role--patch-role",
-          "to": "assign-role--optimistic-update"
-        },
-        {
-          "from": "assign-role--optimistic-update",
-          "to": "assign-role--show-toast"
-        },
-        {
-          "from": "assign-role--show-toast",
-          "to": "assign-role--permissions-change"
         }
       ]
     },
@@ -7840,6 +8149,38 @@
       "relatedIssues": [],
       "nodes": [
         {
+          "id": "settings-hub--entry",
+          "type": "entry",
+          "label": "Open Shop Settings"
+        },
+        {
+          "id": "settings-hub--open-settings",
+          "type": "step",
+          "label": "Open Settings Page",
+          "layer": "client",
+          "status": "built",
+          "why": "Owner navigates to Shop Settings. Sees shop details form, hero banner section, and danger zone."
+        },
+        {
+          "id": "settings-hub--decision-open-settings",
+          "type": "decision",
+          "label": "Which section?",
+          "options": [
+            {
+              "label": "Edit Details",
+              "to": "settings-hub--visit-settings"
+            },
+            {
+              "label": "Upload Banner",
+              "to": "settings-hub--upload-banner"
+            },
+            {
+              "label": "Delete Shop",
+              "to": "settings-hub--type-confirmation"
+            }
+          ]
+        },
+        {
           "id": "shop-details--entry",
           "type": "entry",
           "label": "Edit Shop Details"
@@ -7974,6 +8315,14 @@
         }
       ],
       "edges": [
+        {
+          "from": "settings-hub--entry",
+          "to": "settings-hub--open-settings"
+        },
+        {
+          "from": "settings-hub--open-settings",
+          "to": "settings-hub--decision-open-settings"
+        },
         {
           "from": "shop-details--entry",
           "to": "shop-details--visit-settings"

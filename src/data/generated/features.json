@@ -93,7 +93,7 @@
       "hookCount": 3,
       "serviceCount": 2,
       "entities": ["cart_items", "listings", "member_blocks", "members", "shops"],
-      "journeySlugs": ["buyer-cart", "guest-cart", "login", "member-block-management", "signup"],
+      "journeySlugs": ["cart", "login", "member-block-management", "signup"],
       "links": [
         {
           "type": "entity",
@@ -122,13 +122,8 @@
         },
         {
           "type": "journey",
-          "label": "buyer-cart",
-          "href": "/journeys/buyer-cart"
-        },
-        {
-          "type": "journey",
-          "label": "guest-cart",
-          "href": "/journeys/guest-cart"
+          "label": "cart",
+          "href": "/journeys/cart"
         },
         {
           "type": "journey",
@@ -197,7 +192,7 @@
       "hookCount": 0,
       "serviceCount": 2,
       "entities": [],
-      "journeySlugs": ["member-watchlist", "shop-invite-acceptance"],
+      "journeySlugs": ["member-watchlist", "shop-members"],
       "links": [
         {
           "type": "journey",
@@ -206,8 +201,8 @@
         },
         {
           "type": "journey",
-          "label": "shop-invite-acceptance",
-          "href": "/journeys/shop-invite-acceptance"
+          "label": "shop-members",
+          "href": "/journeys/shop-members"
         }
       ]
     },
@@ -282,7 +277,7 @@
       "serviceCount": 7,
       "entities": ["follows", "listings", "members", "shops"],
       "journeySlugs": [
-        "buyer-search",
+        "browse-and-search",
         "member-block-management",
         "member-follow",
         "member-watchlist",
@@ -311,8 +306,8 @@
         },
         {
           "type": "journey",
-          "label": "buyer-search",
-          "href": "/journeys/buyer-search"
+          "label": "browse-and-search",
+          "href": "/journeys/browse-and-search"
         },
         {
           "type": "journey",
@@ -402,7 +397,7 @@
       "hookCount": 5,
       "serviceCount": 2,
       "entities": ["members", "recently_viewed", "shops"],
-      "journeySlugs": ["buyer-recently-viewed", "guest-recently-viewed", "login", "signup"],
+      "journeySlugs": ["login", "recently-viewed", "signup"],
       "links": [
         {
           "type": "entity",
@@ -421,18 +416,13 @@
         },
         {
           "type": "journey",
-          "label": "buyer-recently-viewed",
-          "href": "/journeys/buyer-recently-viewed"
-        },
-        {
-          "type": "journey",
-          "label": "guest-recently-viewed",
-          "href": "/journeys/guest-recently-viewed"
-        },
-        {
-          "type": "journey",
           "label": "login",
           "href": "/journeys/login"
+        },
+        {
+          "type": "journey",
+          "label": "recently-viewed",
+          "href": "/journeys/recently-viewed"
         },
         {
           "type": "journey",
@@ -467,7 +457,7 @@
       "hookCount": 5,
       "serviceCount": 5,
       "entities": ["shop_members", "shops", "slugs"],
-      "journeySlugs": ["member-block-management", "shop-invite-acceptance", "signup"],
+      "journeySlugs": ["member-block-management", "shop-members", "signup"],
       "links": [
         {
           "type": "entity",
@@ -491,8 +481,8 @@
         },
         {
           "type": "journey",
-          "label": "shop-invite-acceptance",
-          "href": "/journeys/shop-invite-acceptance"
+          "label": "shop-members",
+          "href": "/journeys/shop-members"
         },
         {
           "type": "journey",
