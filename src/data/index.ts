@@ -133,13 +133,14 @@ interface RawEntity {
 
 /* ------------------------------------------------------------------ */
 /*  1. Journey Horizontal Layout Engine                                */
-/*  BFS from entry nodes → left-to-right column assignment            */
+/*  Topological layering with decision-aware vertical positioning      */
 /* ------------------------------------------------------------------ */
 
 const NODE_W = 200;
 const NODE_H = 80;
 const H_GAP = 100;
 const V_GAP = 100;
+const MULTI_ENTRY_GAP = 200; // Extra vertical gap between sub-journeys
 
 function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge[]): JourneyNode[] {
   // If all nodes already have x/y, use them as-is (backwards compat)
@@ -150,7 +151,7 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
     return rawNodes as JourneyNode[];
   }
 
-  // Build adjacency from edges
+  // ── Build adjacency ──
   const outgoing = new Map<string, string[]>();
   const incoming = new Map<string, string[]>();
   for (const node of rawNodes) {
@@ -162,147 +163,238 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
     incoming.get(edge.to)?.push(edge.from);
   }
 
-  // ── BFS with merge-aware leveling ──
-  // Standard BFS gives the earliest possible column (shortest path from root).
-  // After BFS, bump merge nodes (multiple incoming edges) so they sit at
-  // max(predecessor levels) + 1. This keeps the branching layout compact
-  // but prevents backward-flowing edges at merge points.
-  const level = new Map<string, number>();
-  const queue: string[] = [];
+  // ── Detect back-edges via DFS ──
+  const backEdgeSet = new Set<number>();
+  const visited = new Set<string>();
+  const inStack = new Set<string>();
 
-  // Seed from entry/root nodes
+  function detectBackEdges(nodeId: string) {
+    visited.add(nodeId);
+    inStack.add(nodeId);
+    for (const next of outgoing.get(nodeId) ?? []) {
+      if (inStack.has(next)) {
+        const ei = rawEdges.findIndex((e) => e.from === nodeId && e.to === next);
+        if (ei >= 0) backEdgeSet.add(ei);
+      } else if (!visited.has(next)) {
+        detectBackEdges(next);
+      }
+    }
+    inStack.delete(nodeId);
+  }
+
   const entryIds = rawNodes
     .filter((n) => n.type === 'entry' || (incoming.get(n.id) ?? []).length === 0)
     .map((n) => n.id);
   const roots = entryIds.length > 0 ? entryIds : [rawNodes[0]?.id].filter(Boolean);
 
   for (const r of roots) {
-    level.set(r, 0);
-    queue.push(r);
+    if (!visited.has(r)) detectBackEdges(r);
   }
-
-  while (queue.length > 0) {
-    const current = queue.shift()!;
-    const currentLevel = level.get(current)!;
-    for (const next of outgoing.get(current) ?? []) {
-      if (!level.has(next)) {
-        level.set(next, currentLevel + 1);
-        queue.push(next);
-      }
-    }
-  }
-
-  // Assign any unreachable nodes to column 0
+  // Visit any remaining disconnected nodes
   for (const node of rawNodes) {
-    if (!level.has(node.id)) level.set(node.id, 0);
+    if (!visited.has(node.id)) detectBackEdges(node.id);
   }
 
-  // ── Identify back-edges (cycles) ──
-  // Back-edges point from a later BFS level to an earlier one. These are
-  // cycle edges and must be excluded from merge promotion and cascading
-  // to prevent infinite loops.
-  const backEdges = new Set<number>();
+  // ── Build DAG adjacency (outgoing minus back-edges) ──
+  const dagOutgoing = new Map<string, string[]>();
+  const dagIncoming = new Map<string, string[]>();
+  for (const node of rawNodes) {
+    dagOutgoing.set(node.id, []);
+    dagIncoming.set(node.id, []);
+  }
   rawEdges.forEach((edge, i) => {
-    const fromLvl = level.get(edge.from) ?? 0;
-    const toLvl = level.get(edge.to) ?? 0;
-    if (toLvl <= fromLvl && (incoming.get(edge.to) ?? []).length > 0) {
-      // Only mark as back-edge if it actually goes backward in BFS order
-      if (toLvl < fromLvl) backEdges.add(i);
+    if (!backEdgeSet.has(i)) {
+      dagOutgoing.get(edge.from)?.push(edge.to);
+      dagIncoming.get(edge.to)?.push(edge.from);
     }
   });
 
-  // ── Merge-point promotion ──
-  // Push merge nodes right so all predecessors are strictly to their left.
-  // Iterate until stable (cascading merges may need multiple passes).
-  // Skip back-edges to avoid infinite promotion loops on cycles.
-  let changed = true;
-  while (changed) {
-    changed = false;
-    for (const node of rawNodes) {
-      const parents = (incoming.get(node.id) ?? []).filter((p) => {
-        const ei = rawEdges.findIndex((e) => e.from === p && e.to === node.id);
-        return !backEdges.has(ei);
-      });
-      if (parents.length < 2) continue;
-      const maxParentLevel = Math.max(...parents.map((p) => level.get(p) ?? 0));
-      const needed = maxParentLevel + 1;
-      if ((level.get(node.id) ?? 0) < needed) {
-        level.set(node.id, needed);
-        changed = true;
+  // ── Longest-path column assignment ──
+  const colMemo = new Map<string, number>();
+
+  function longestPathTo(nodeId: string): number {
+    if (colMemo.has(nodeId)) return colMemo.get(nodeId)!;
+    const parents = dagIncoming.get(nodeId) ?? [];
+    if (parents.length === 0) {
+      colMemo.set(nodeId, 0);
+      return 0;
+    }
+    const maxParent = Math.max(...parents.map((p) => longestPathTo(p)));
+    const col = maxParent + 1;
+    colMemo.set(nodeId, col);
+    return col;
+  }
+
+  const column = new Map<string, number>();
+  for (const node of rawNodes) {
+    column.set(node.id, longestPathTo(node.id));
+  }
+
+  // ── Identify sub-journeys ──
+  // BFS from each entry node through DAG edges to assign nodes to entry groups
+  const nodeToEntry = new Map<string, string>();
+
+  for (const entryId of roots) {
+    const bfsQueue = [entryId];
+    while (bfsQueue.length > 0) {
+      const current = bfsQueue.shift()!;
+      if (nodeToEntry.has(current)) continue;
+      nodeToEntry.set(current, entryId);
+      for (const next of dagOutgoing.get(current) ?? []) {
+        if (!nodeToEntry.has(next)) bfsQueue.push(next);
       }
     }
   }
-
-  // ── Cascade children after promoted merges ──
-  // If a merge was pushed right, its children may now overlap.
-  // Re-run a forward pass to ensure every child is at least parent + 1.
-  // Skip back-edges to prevent infinite loops on cycles.
-  changed = true;
-  while (changed) {
-    changed = false;
-    rawEdges.forEach((edge, i) => {
-      if (backEdges.has(i)) return;
-      const fromLvl = level.get(edge.from) ?? 0;
-      const toLvl = level.get(edge.to) ?? 0;
-      if (toLvl <= fromLvl) {
-        level.set(edge.to, fromLvl + 1);
-        changed = true;
-      }
-    });
-  }
-
-  // Group by level
-  const byLevel = new Map<number, string[]>();
-  for (const [id, lvl] of level) {
-    if (!byLevel.has(lvl)) byLevel.set(lvl, []);
-    byLevel.get(lvl)!.push(id);
-  }
-
-  const sortedLevels = [...byLevel.keys()].sort((a, b) => a - b);
-
-  // ── Median ordering within each level ──
-  // Reduces edge crossings by sorting nodes near their predecessors.
-  for (let pass = 0; pass < 4; pass++) {
-    for (const lvl of sortedLevels) {
-      if (lvl === sortedLevels[0]) continue;
-      const ids = byLevel.get(lvl)!;
-      // Build position map from ALL preceding levels (not just the one directly before)
-      const allPrevPos = new Map<string, number>();
-      for (const pLvl of sortedLevels) {
-        if (pLvl >= lvl) break;
-        const pIds = byLevel.get(pLvl)!;
-        pIds.forEach((id, i) => allPrevPos.set(id, pLvl * 1000 + i));
-      }
-
-      ids.sort((a, b) => {
-        const aParents = (incoming.get(a) ?? []).map((p) => allPrevPos.get(p) ?? 0);
-        const bParents = (incoming.get(b) ?? []).map((p) => allPrevPos.get(p) ?? 0);
-        const aMedian = aParents.length > 0 ? aParents.reduce((s, v) => s + v, 0) / aParents.length : 0;
-        const bMedian = bParents.length > 0 ? bParents.reduce((s, v) => s + v, 0) / bParents.length : 0;
-        return aMedian - bMedian;
-      });
-
-      byLevel.set(lvl, ids);
+  // Assign any remaining nodes to the first root
+  for (const node of rawNodes) {
+    if (!nodeToEntry.has(node.id)) {
+      nodeToEntry.set(node.id, roots[0]);
     }
   }
 
-  // ── Assign positions ──
+  // Group entries in order
+  const entryOrder = roots.filter((r) => rawNodes.some((n) => nodeToEntry.get(n.id) === r));
+
+  // ── Decision-aware vertical positioning ──
+  // Build a map from decision node id → ordered option target ids
+  const nodeById = new Map(rawNodes.map((n) => [n.id, n]));
+  const decisionChildren = new Map<string, string[]>();
+  for (const node of rawNodes) {
+    if (node.type === 'decision' && node.options) {
+      const ordered = node.options.map((opt) => opt.to).filter((to): to is string => !!to);
+      decisionChildren.set(node.id, ordered);
+    }
+  }
+
+  function getOrderedChildren(nodeId: string): string[] {
+    const dc = decisionChildren.get(nodeId);
+    if (dc) {
+      // Return decision options in order, then any DAG children not in options
+      const optSet = new Set(dc);
+      const extra = (dagOutgoing.get(nodeId) ?? []).filter((c) => !optSet.has(c));
+      return [...dc, ...extra];
+    }
+    return dagOutgoing.get(nodeId) ?? [];
+  }
+
+  // Subtree extent: total vertical height a subtree needs
+  const extentMemo = new Map<string, number>();
+
+  function subtreeExtent(nodeId: string): number {
+    if (extentMemo.has(nodeId)) return extentMemo.get(nodeId)!;
+    const children = getOrderedChildren(nodeId);
+    const dagChildren = children.filter((c) => (dagOutgoing.get(nodeId) ?? []).includes(c));
+    if (dagChildren.length === 0) {
+      extentMemo.set(nodeId, NODE_H);
+      return NODE_H;
+    }
+    const n = nodeById.get(nodeId);
+    if (n?.type === 'decision' && dagChildren.length > 1) {
+      // Sum all branch extents + gaps between them
+      const total = dagChildren.reduce((sum, c) => sum + subtreeExtent(c), 0);
+      const gaps = (dagChildren.length - 1) * V_GAP;
+      const ext = Math.max(NODE_H, total + gaps);
+      extentMemo.set(nodeId, ext);
+      return ext;
+    }
+    // Linear node: take max child extent
+    const maxExt = Math.max(...dagChildren.map((c) => subtreeExtent(c)));
+    const ext = Math.max(NODE_H, maxExt);
+    extentMemo.set(nodeId, ext);
+    return ext;
+  }
+
   const positions = new Map<string, { x: number; y: number }>();
+  const placed = new Set<string>();
 
-  // Find the max group height for centering
-  const maxGroupSize = Math.max(...sortedLevels.map((lvl) => byLevel.get(lvl)!.length));
+  function layoutSubJourney(entryId: string, yStart: number): number {
+    // Place nodes depth-first from the entry
+    const stack: { nodeId: string; y: number }[] = [{ nodeId: entryId, y: yStart }];
+    let maxY = yStart;
 
-  for (const lvl of sortedLevels) {
-    const ids = byLevel.get(lvl)!;
-    // Center each column vertically relative to the tallest column
-    const totalHeight = (ids.length - 1) * (NODE_H + V_GAP);
-    const maxHeight = (maxGroupSize - 1) * (NODE_H + V_GAP);
-    const yOffset = (maxHeight - totalHeight) / 2;
+    while (stack.length > 0) {
+      const { nodeId, y } = stack.pop()!;
+      if (placed.has(nodeId)) continue;
+      if (nodeToEntry.get(nodeId) !== entryId) continue;
 
-    for (let i = 0; i < ids.length; i++) {
-      positions.set(ids[i], {
-        x: lvl * (NODE_W + H_GAP),
-        y: yOffset + i * (NODE_H + V_GAP),
+      placed.add(nodeId);
+      const col = column.get(nodeId) ?? 0;
+      positions.set(nodeId, {
+        x: col * (NODE_W + H_GAP),
+        y,
+      });
+      maxY = Math.max(maxY, y + NODE_H);
+
+      const children = getOrderedChildren(nodeId).filter(
+        (c) =>
+          !placed.has(c) &&
+          nodeToEntry.get(c) === entryId &&
+          (dagOutgoing.get(nodeId) ?? []).includes(c),
+      );
+
+      const n = nodeById.get(nodeId);
+      if (n?.type === 'decision' && children.length > 1) {
+        // Decision fork: first option inherits parent's y (happy path),
+        // alternates stack below
+        let branchY = y;
+        // Process in reverse so first child ends up on top of the stack (processed first)
+        for (let i = children.length - 1; i >= 0; i--) {
+          const childY = i === 0 ? y : branchY;
+          stack.push({ nodeId: children[i], y: childY });
+          if (i > 0) {
+            // Stack next branch below
+            const ext = subtreeExtent(children[i]);
+            branchY = Math.max(branchY + ext + V_GAP, branchY + NODE_H + V_GAP);
+          }
+          if (i === 0 && children.length > 1) {
+            // After first child (happy path), start alternates below
+            branchY = y + subtreeExtent(children[0]) + V_GAP;
+          }
+        }
+        // Re-do: place first at y, then stack remaining below
+        // Clear the stack entries we just added and redo correctly
+        // (The loop above already handles this: i=0 gets y, others get stacked branchY)
+      } else {
+        // Linear flow: all children get same y as parent
+        for (let i = children.length - 1; i >= 0; i--) {
+          stack.push({ nodeId: children[i], y });
+        }
+      }
+    }
+
+    return maxY;
+  }
+
+  // ── Layout each sub-journey ──
+  let currentY = 0;
+  for (let i = 0; i < entryOrder.length; i++) {
+    const maxY = layoutSubJourney(entryOrder[i], currentY);
+    currentY = maxY + MULTI_ENTRY_GAP;
+  }
+
+  // Place any remaining unplaced nodes
+  for (const node of rawNodes) {
+    if (!placed.has(node.id)) {
+      const col = column.get(node.id) ?? 0;
+      positions.set(node.id, {
+        x: col * (NODE_W + H_GAP),
+        y: currentY,
+      });
+      currentY += NODE_H + V_GAP;
+    }
+  }
+
+  // ── Normalize — translate all positions so first entry is at (0, 0) ──
+  const firstEntry = roots[0];
+  const originPos = positions.get(firstEntry) ?? { x: 0, y: 0 };
+  const offsetX = originPos.x;
+  const offsetY = originPos.y;
+
+  if (offsetX !== 0 || offsetY !== 0) {
+    for (const [id, pos] of positions) {
+      positions.set(id, {
+        x: pos.x - offsetX,
+        y: pos.y - offsetY,
       });
     }
   }
@@ -312,6 +404,57 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
     x: positions.get(node.id)?.x ?? 0,
     y: positions.get(node.id)?.y ?? 0,
   })) as JourneyNode[];
+}
+
+/**
+ * Detect back-edges (cycle edges) in a journey's edge list.
+ * Returns a Set of edge indices that are back-edges.
+ * Used by JourneyCanvas to render back-edges with distinct visual treatment.
+ */
+export function detectJourneyBackEdges(
+  nodes: { id: string; type: string }[],
+  edges: { from: string; to: string }[],
+): Set<number> {
+  const outgoing = new Map<string, string[]>();
+  const incoming = new Map<string, string[]>();
+  for (const node of nodes) {
+    outgoing.set(node.id, []);
+    incoming.set(node.id, []);
+  }
+  for (const edge of edges) {
+    outgoing.get(edge.from)?.push(edge.to);
+    incoming.get(edge.to)?.push(edge.from);
+  }
+
+  const backEdges = new Set<number>();
+  const visited = new Set<string>();
+  const inStack = new Set<string>();
+
+  function dfs(nodeId: string) {
+    visited.add(nodeId);
+    inStack.add(nodeId);
+    for (const next of outgoing.get(nodeId) ?? []) {
+      if (inStack.has(next)) {
+        const ei = edges.findIndex((e) => e.from === nodeId && e.to === next);
+        if (ei >= 0) backEdges.add(ei);
+      } else if (!visited.has(next)) {
+        dfs(next);
+      }
+    }
+    inStack.delete(nodeId);
+  }
+
+  const roots = nodes
+    .filter((n) => n.type === 'entry' || (incoming.get(n.id) ?? []).length === 0)
+    .map((n) => n.id);
+  for (const r of roots) {
+    if (!visited.has(r)) dfs(r);
+  }
+  for (const node of nodes) {
+    if (!visited.has(node.id)) dfs(node.id);
+  }
+
+  return backEdges;
 }
 
 /** Clean journey titles: strip parenthetical tech details, arrows, file refs */
