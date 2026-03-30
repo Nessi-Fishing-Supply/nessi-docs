@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(messaging): #305 offer types, services, and validation",
+      "number": 328,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/328",
+      "mergedAt": "2026-03-30T20:28:41Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "messaging",
+      "type": "feature"
+    },
+    {
       "title": "feat(messaging): #304 scaffold types, server services, and client services",
       "number": 327,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/327",

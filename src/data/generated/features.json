@@ -371,16 +371,23 @@
       "componentCount": 4,
       "endpointCount": 0,
       "hookCount": 0,
-      "serviceCount": 2,
+      "serviceCount": 4,
       "entities": [
+        "listings",
         "member_blocks",
         "members",
         "message_thread_participants",
         "message_threads",
-        "messages"
+        "messages",
+        "offers"
       ],
       "journeySlugs": [],
       "links": [
+        {
+          "type": "entity",
+          "label": "listings",
+          "href": "/data-model"
+        },
         {
           "type": "entity",
           "label": "member_blocks",
@@ -404,6 +411,11 @@
         {
           "type": "entity",
           "label": "messages",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "offers",
           "href": "/data-model"
         }
       ]
