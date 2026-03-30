@@ -1,4 +1,4 @@
-import { getPort, smoothPath, autoPortSides } from '../utils/geometry';
+import { getPort, smoothPath, autoPortSides, journeyPortSides } from '../utils/geometry';
 
 interface AnimatedEdgeProps {
   from: { x: number; y: number; type: string };
@@ -6,14 +6,31 @@ interface AnimatedEdgeProps {
   isLit?: boolean;
   isDimmed?: boolean;
   hasActivePath?: boolean;
+  isBackEdge?: boolean;
+  isDecisionBranch?: boolean;
+  useJourneyPorts?: boolean;
 }
 
-export function AnimatedEdge({ from, to, isLit, isDimmed, hasActivePath }: AnimatedEdgeProps) {
+export function AnimatedEdge({
+  from,
+  to,
+  isLit,
+  isDimmed,
+  hasActivePath,
+  isBackEdge,
+  isDecisionBranch,
+  useJourneyPorts,
+}: AnimatedEdgeProps) {
   // When path is active: only show on lit edges
   // When no path: show ambient on all edges
   if (hasActivePath && (!isLit || isDimmed)) return null;
 
-  const [fDir, tDir] = autoPortSides(from, to);
+  // Don't animate back-edges
+  if (isBackEdge) return null;
+
+  const [fDir, tDir] = useJourneyPorts
+    ? journeyPortSides(from, to, { isBackEdge, isDecisionBranch })
+    : autoPortSides(from, to);
   const fp = getPort(from, fDir);
   const tp = getPort(to, tDir);
   const d = smoothPath(fp.x, fp.y, fDir, tp.x, tp.y, tDir);

@@ -18,6 +18,7 @@ import { NodeTooltip } from '@/features/canvas/components/node-tooltip';
 import { Minimap } from '@/features/canvas/components/minimap';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { Legend } from '@/features/canvas/components/legend';
+import { detectJourneyBackEdges } from '@/data/index';
 
 interface JourneyCanvasProps {
   journey: Journey;
@@ -79,6 +80,22 @@ export function JourneyCanvas({
   };
 
   const nodeMap = new Map(journey.nodes.map((n) => [n.id, n]));
+
+  // Detect back-edges and decision branch edges for visual treatment
+  const backEdges = detectJourneyBackEdges(journey.nodes, journey.edges);
+
+  // Build set of decision option target IDs for identifying decision branches
+  const decisionBranchTargets = new Map<string, Set<string>>();
+  for (const node of journey.nodes) {
+    if (node.type === 'decision' && node.options) {
+      const targets = new Set<string>();
+      // Skip first option (happy path exits right, not bottom)
+      for (let i = 1; i < node.options.length; i++) {
+        targets.add(node.options[i].to);
+      }
+      decisionBranchTargets.set(node.id, targets);
+    }
+  }
 
   const handleNodeClick = (node: JourneyNode) => {
     if (node.type === 'step') {
@@ -146,6 +163,8 @@ export function JourneyCanvas({
 
         const isLit = litEdges.has(i);
         const isDimmed = hasPath && !isLit;
+        const isBackEdge = backEdges.has(i);
+        const isDecisionBranch = decisionBranchTargets.get(edge.from)?.has(edge.to) ?? false;
 
         return (
           <g
@@ -158,6 +177,9 @@ export function JourneyCanvas({
               isDecision={!!edge.opt}
               isLit={isLit}
               isDimmed={isDimmed}
+              isBackEdge={isBackEdge}
+              isDecisionBranch={isDecisionBranch}
+              useJourneyPorts
             />
             <AnimatedEdge
               from={fromNode}
@@ -165,6 +187,9 @@ export function JourneyCanvas({
               isLit={isLit}
               isDimmed={isDimmed}
               hasActivePath={hasPath}
+              isBackEdge={isBackEdge}
+              isDecisionBranch={isDecisionBranch}
+              useJourneyPorts
             />
           </g>
         );
