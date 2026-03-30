@@ -1,4 +1,4 @@
-import { getPort, smoothPath } from '../utils/geometry';
+import { getPort, smoothPath, autoPortSides } from '../utils/geometry';
 
 interface AnimatedEdgeProps {
   from: { x: number; y: number; type: string };
@@ -13,9 +13,10 @@ export function AnimatedEdge({ from, to, isLit, isDimmed, hasActivePath }: Anima
   // When no path: show ambient on all edges
   if (hasActivePath && (!isLit || isDimmed)) return null;
 
-  const fp = getPort(from, 'right');
-  const tp = getPort(to, 'left');
-  const d = smoothPath(fp.x, fp.y, 'right', tp.x, tp.y, 'left');
+  const [fDir, tDir] = autoPortSides(from, to);
+  const fp = getPort(from, fDir);
+  const tp = getPort(to, tDir);
+  const d = smoothPath(fp.x, fp.y, fDir, tp.x, tp.y, tDir);
 
   const opacity = isLit ? 0.85 : 0.08;
   const color = isLit ? 'rgba(61,140,117,0.7)' : 'rgba(255,255,255,0.15)';

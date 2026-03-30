@@ -8,15 +8,64 @@ export const ERD_NODE_HEIGHT = 52;
 
 export function getPort(
   node: { x: number; y: number; type: string },
-  side: 'left' | 'right',
+  side: PortSide,
 ): { x: number; y: number } {
   if (node.type === 'decision') {
+    const cx = node.x + DECISION_SIZE / 2;
     const cy = node.y + DECISION_SIZE / 2;
-    return side === 'right' ? { x: node.x + DECISION_SIZE, y: cy } : { x: node.x, y: cy };
+    switch (side) {
+      case 'right':
+        return { x: node.x + DECISION_SIZE, y: cy };
+      case 'left':
+        return { x: node.x, y: cy };
+      case 'bottom':
+        return { x: cx, y: node.y + DECISION_SIZE };
+      case 'top':
+        return { x: cx, y: node.y };
+    }
   }
-  return side === 'right'
-    ? { x: node.x + NODE_WIDTH, y: node.y + NODE_HEIGHT / 2 }
-    : { x: node.x, y: node.y + NODE_HEIGHT / 2 };
+  const cx = node.x + NODE_WIDTH / 2;
+  const cy = node.y + NODE_HEIGHT / 2;
+  switch (side) {
+    case 'right':
+      return { x: node.x + NODE_WIDTH, y: cy };
+    case 'left':
+      return { x: node.x, y: cy };
+    case 'bottom':
+      return { x: cx, y: node.y + NODE_HEIGHT };
+    case 'top':
+      return { x: cx, y: node.y };
+  }
+}
+
+/**
+ * Auto-detect the best exit/entry port sides based on relative node positions.
+ * Same approach used by lifecycle and ERD canvases.
+ */
+export function autoPortSides(
+  from: { x: number; y: number; type: string },
+  to: { x: number; y: number; type: string },
+): [PortSide, PortSide] {
+  const fw = from.type === 'decision' ? DECISION_SIZE : NODE_WIDTH;
+  const fh = from.type === 'decision' ? DECISION_SIZE : NODE_HEIGHT;
+  const tw = to.type === 'decision' ? DECISION_SIZE : NODE_WIDTH;
+  const th = to.type === 'decision' ? DECISION_SIZE : NODE_HEIGHT;
+
+  const fromCx = from.x + fw / 2;
+  const fromCy = from.y + fh / 2;
+  const toCx = to.x + tw / 2;
+  const toCy = to.y + th / 2;
+
+  const dx = toCx - fromCx;
+  const dy = toCy - fromCy;
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // Horizontal dominant
+    return dx > 0 ? ['right', 'left'] : ['left', 'right'];
+  } else {
+    // Vertical dominant
+    return dy > 0 ? ['bottom', 'top'] : ['top', 'bottom'];
+  }
 }
 
 /**

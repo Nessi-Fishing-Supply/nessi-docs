@@ -109,6 +109,7 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
             <span>API endpoints</span>
             <span>Tables</span>
             <span>Lifecycles</span>
+            <span>Architecture</span>
           </div>
         )}
       </div>

@@ -1,7 +1,24 @@
-import { getAllJourneys, apiGroups, entities, lifecycles, features, configEnums } from '@/data';
+import {
+  getAllJourneys,
+  apiGroups,
+  entities,
+  lifecycles,
+  features,
+  configEnums,
+  getAllArchDiagrams,
+} from '@/data';
 
 export interface SearchResult {
-  type: 'step' | 'journey' | 'endpoint' | 'entity' | 'lifecycle' | 'state' | 'feature' | 'config';
+  type:
+    | 'step'
+    | 'journey'
+    | 'endpoint'
+    | 'entity'
+    | 'lifecycle'
+    | 'state'
+    | 'feature'
+    | 'config'
+    | 'architecture';
   title: string;
   subtitle: string;
   href: string;
@@ -18,7 +35,7 @@ function buildIndex(): SearchResult[] {
       type: 'journey',
       title: j.title,
       subtitle: `Journey · ${j.nodes.length} nodes`,
-      href: `/journeys/${j.slug}`,
+      href: `/journeys/${j.domain}/${j.slug}`,
       color: '#3d8c75',
       icon: '⬡',
     });
@@ -29,7 +46,7 @@ function buildIndex(): SearchResult[] {
         type: 'step',
         title: node.label,
         subtitle: `${j.title} · ${node.route ?? node.layer ?? ''}`,
-        href: `/journeys/${j.slug}`,
+        href: `/journeys/${j.domain}/${j.slug}`,
         color: '#3d8c75',
         icon: '◆',
       });
@@ -94,6 +111,18 @@ function buildIndex(): SearchResult[] {
       href: '/features',
       color: '#3d8c75',
       icon: '⬢',
+    });
+  }
+
+  // Architecture diagrams
+  for (const d of getAllArchDiagrams()) {
+    results.push({
+      type: 'architecture',
+      title: d.title,
+      subtitle: `Architecture · ${d.category}`,
+      href: `/architecture/${d.slug}`,
+      color: '#d4923a',
+      icon: '◈',
     });
   }
 

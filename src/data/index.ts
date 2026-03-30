@@ -152,25 +152,30 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
 
   // Build adjacency from edges
   const outgoing = new Map<string, string[]>();
-  const incomingCount = new Map<string, number>();
+  const incoming = new Map<string, string[]>();
   for (const node of rawNodes) {
     outgoing.set(node.id, []);
-    incomingCount.set(node.id, 0);
+    incoming.set(node.id, []);
   }
   for (const edge of rawEdges) {
     outgoing.get(edge.from)?.push(edge.to);
-    incomingCount.set(edge.to, (incomingCount.get(edge.to) ?? 0) + 1);
+    incoming.get(edge.to)?.push(edge.from);
   }
 
-  // Entry nodes: explicit type=entry OR zero incoming edges
+  // ── BFS with merge-aware leveling ──
+  // Standard BFS gives the earliest possible column (shortest path from root).
+  // After BFS, bump merge nodes (multiple incoming edges) so they sit at
+  // max(predecessor levels) + 1. This keeps the branching layout compact
+  // but prevents backward-flowing edges at merge points.
+  const level = new Map<string, number>();
+  const queue: string[] = [];
+
+  // Seed from entry/root nodes
   const entryIds = rawNodes
-    .filter((n) => n.type === 'entry' || (incomingCount.get(n.id) ?? 0) === 0)
+    .filter((n) => n.type === 'entry' || (incoming.get(n.id) ?? []).length === 0)
     .map((n) => n.id);
   const roots = entryIds.length > 0 ? entryIds : [rawNodes[0]?.id].filter(Boolean);
 
-  // BFS to assign column levels (first-visit — back-edges ignored for layout)
-  const level = new Map<string, number>();
-  const queue: string[] = [];
   for (const r of roots) {
     level.set(r, 0);
     queue.push(r);
@@ -192,22 +197,112 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
     if (!level.has(node.id)) level.set(node.id, 0);
   }
 
-  // Group by level, then assign x/y
+  // ── Identify back-edges (cycles) ──
+  // Back-edges point from a later BFS level to an earlier one. These are
+  // cycle edges and must be excluded from merge promotion and cascading
+  // to prevent infinite loops.
+  const backEdges = new Set<number>();
+  rawEdges.forEach((edge, i) => {
+    const fromLvl = level.get(edge.from) ?? 0;
+    const toLvl = level.get(edge.to) ?? 0;
+    if (toLvl <= fromLvl && (incoming.get(edge.to) ?? []).length > 0) {
+      // Only mark as back-edge if it actually goes backward in BFS order
+      if (toLvl < fromLvl) backEdges.add(i);
+    }
+  });
+
+  // ── Merge-point promotion ──
+  // Push merge nodes right so all predecessors are strictly to their left.
+  // Iterate until stable (cascading merges may need multiple passes).
+  // Skip back-edges to avoid infinite promotion loops on cycles.
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const node of rawNodes) {
+      const parents = (incoming.get(node.id) ?? []).filter((p) => {
+        const ei = rawEdges.findIndex((e) => e.from === p && e.to === node.id);
+        return !backEdges.has(ei);
+      });
+      if (parents.length < 2) continue;
+      const maxParentLevel = Math.max(...parents.map((p) => level.get(p) ?? 0));
+      const needed = maxParentLevel + 1;
+      if ((level.get(node.id) ?? 0) < needed) {
+        level.set(node.id, needed);
+        changed = true;
+      }
+    }
+  }
+
+  // ── Cascade children after promoted merges ──
+  // If a merge was pushed right, its children may now overlap.
+  // Re-run a forward pass to ensure every child is at least parent + 1.
+  // Skip back-edges to prevent infinite loops on cycles.
+  changed = true;
+  while (changed) {
+    changed = false;
+    rawEdges.forEach((edge, i) => {
+      if (backEdges.has(i)) return;
+      const fromLvl = level.get(edge.from) ?? 0;
+      const toLvl = level.get(edge.to) ?? 0;
+      if (toLvl <= fromLvl) {
+        level.set(edge.to, fromLvl + 1);
+        changed = true;
+      }
+    });
+  }
+
+  // Group by level
   const byLevel = new Map<number, string[]>();
   for (const [id, lvl] of level) {
     if (!byLevel.has(lvl)) byLevel.set(lvl, []);
     byLevel.get(lvl)!.push(id);
   }
 
-  const positions = new Map<string, { x: number; y: number }>();
   const sortedLevels = [...byLevel.keys()].sort((a, b) => a - b);
+
+  // ── Median ordering within each level ──
+  // Reduces edge crossings by sorting nodes near their predecessors.
+  for (let pass = 0; pass < 4; pass++) {
+    for (const lvl of sortedLevels) {
+      if (lvl === sortedLevels[0]) continue;
+      const ids = byLevel.get(lvl)!;
+      // Build position map from ALL preceding levels (not just the one directly before)
+      const allPrevPos = new Map<string, number>();
+      for (const pLvl of sortedLevels) {
+        if (pLvl >= lvl) break;
+        const pIds = byLevel.get(pLvl)!;
+        pIds.forEach((id, i) => allPrevPos.set(id, pLvl * 1000 + i));
+      }
+
+      ids.sort((a, b) => {
+        const aParents = (incoming.get(a) ?? []).map((p) => allPrevPos.get(p) ?? 0);
+        const bParents = (incoming.get(b) ?? []).map((p) => allPrevPos.get(p) ?? 0);
+        const aMedian = aParents.length > 0 ? aParents.reduce((s, v) => s + v, 0) / aParents.length : 0;
+        const bMedian = bParents.length > 0 ? bParents.reduce((s, v) => s + v, 0) / bParents.length : 0;
+        return aMedian - bMedian;
+      });
+
+      byLevel.set(lvl, ids);
+    }
+  }
+
+  // ── Assign positions ──
+  const positions = new Map<string, { x: number; y: number }>();
+
+  // Find the max group height for centering
+  const maxGroupSize = Math.max(...sortedLevels.map((lvl) => byLevel.get(lvl)!.length));
 
   for (const lvl of sortedLevels) {
     const ids = byLevel.get(lvl)!;
+    // Center each column vertically relative to the tallest column
+    const totalHeight = (ids.length - 1) * (NODE_H + V_GAP);
+    const maxHeight = (maxGroupSize - 1) * (NODE_H + V_GAP);
+    const yOffset = (maxHeight - totalHeight) / 2;
+
     for (let i = 0; i < ids.length; i++) {
       positions.set(ids[i], {
         x: lvl * (NODE_W + H_GAP),
-        y: i * (NODE_H + V_GAP),
+        y: yOffset + i * (NODE_H + V_GAP),
       });
     }
   }

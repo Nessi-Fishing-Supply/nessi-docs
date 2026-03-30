@@ -104,6 +104,7 @@ export function DashboardView({ metrics, domains, recentChanges }: DashboardView
                 <span>{d.featureCount} features</span>
                 <span>{d.endpointCount} endpoints</span>
                 {d.journeyCount > 0 && <span>{d.journeyCount} journeys</span>}
+                {d.entityCount > 0 && <span>{d.entityCount} entities</span>}
               </div>
             </Link>
           ))}
