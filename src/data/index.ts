@@ -915,7 +915,6 @@ const ERD_NODE_GAP_Y = 30;
 const ERD_GROUP_PADDING = 24;
 const ERD_GROUP_HEADER = 32;
 const ERD_GROUP_GAP = 50;
-const ERD_GROUP_COLS = 2; // Groups arranged in 2 columns
 const ERD_GROUP_COL_GAP = 80;
 const ERD_NODES_PER_ROW = 3; // Nodes per row within a group
 
