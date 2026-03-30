@@ -1,6 +1,18 @@
 {
   "items": [
     {
+      "title": "Block Enforcement — prevent blocked users from viewing profiles, shops, listings, and purchasing",
+      "number": 324,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/324",
+      "state": "CLOSED",
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
+      "status": "Done",
+      "priority": "P2 - medium",
+      "area": "Full-stack",
+      "executor": "Conductor",
+      "feature": ""
+    },
+    {
       "title": "Blocked Members — settings page with list and unblock",
       "number": 322,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/322",

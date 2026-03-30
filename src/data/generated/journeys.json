@@ -647,8 +647,8 @@
       "domain": "cart",
       "title": "Authenticated Cart (DB-Backed)",
       "persona": "buyer",
-      "description": "Authenticated buyer adds items to DB-backed cart with price snapshots, 30-day expiry, seller grouping, and pre-checkout validation.",
-      "relatedIssues": [],
+      "description": "Authenticated buyer adds items to DB-backed cart with price snapshots, 30-day expiry, seller grouping, and pre-checkout validation. Block enforcement prevents adding items from sellers who have blocked the buyer.",
+      "relatedIssues": [324],
       "nodes": [
         {
           "id": "add-to-cart--entry",
@@ -683,7 +683,35 @@
           "layer": "server",
           "status": "built",
           "route": "/api/cart",
-          "why": "Send listingId + priceCents"
+          "codeRef": "src/app/api/cart/route.ts",
+          "why": "Send listingId + priceCents. Server checks: listing exists + active, block check (isBlockedByServer), not own listing, no duplicate, cart cap.",
+          "errorCases": [
+            {
+              "condition": "Seller has blocked the buyer",
+              "result": "Returns 403 'You cannot purchase this listing'",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Listing not found or inactive",
+              "result": "Returns 404",
+              "httpStatus": 404
+            },
+            {
+              "condition": "Own listing",
+              "result": "Returns 403",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Already in cart",
+              "result": "Returns 409",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Cart full (25 items)",
+              "result": "Returns 422",
+              "httpStatus": 422
+            }
+          ]
         },
         {
           "id": "add-to-cart--price-snapshot",
@@ -793,7 +821,9 @@
           "label": "Validate Cart",
           "layer": "server",
           "status": "built",
-          "route": "/api/cart/validate"
+          "route": "/api/cart/validate",
+          "codeRef": "src/features/cart/services/cart-server.ts",
+          "why": "Validates all cart items. Batch block check: single IN query on member_blocks for all unique seller IDs. Blocked items moved to removed[] with reason: 'blocked'."
         },
         {
           "id": "pre-checkout-validation--decision-validate-cart",
@@ -809,7 +839,7 @@
               "to": "END"
             },
             {
-              "label": "Removed",
+              "label": "Removed (sold/deleted/deactivated/blocked)",
               "to": "END"
             }
           ]
@@ -2997,8 +3027,8 @@
       "domain": "account",
       "title": "Blocked Members",
       "persona": "account",
-      "description": "View and manage blocked members — authenticated users can see who they have blocked and unblock them from the account settings page.",
-      "relatedIssues": [322],
+      "description": "View and manage blocked members — authenticated users can see who they have blocked and unblock them from the account settings page. Block enforcement prevents blocked users from viewing the blocker's profiles, shops, listings, and purchasing their items.",
+      "relatedIssues": [322, 324],
       "nodes": [
         {
           "id": "view-blocked-members--entry",
@@ -3206,6 +3236,211 @@
           "status": "planned",
           "route": "/member/[slug]",
           "notes": "When viewing a member profile from the blocked list (or any profile of a member you have blocked), show a 'Blocked' indicator. This would let users confirm the block is active and access the unblock action without navigating to account settings."
+        },
+        {
+          "id": "block-enforcement-profile--entry",
+          "type": "entry",
+          "label": "Block Enforcement — Profile Page"
+        },
+        {
+          "id": "block-enforcement-profile--navigate-member-profile",
+          "type": "step",
+          "label": "Navigate to Member Profile",
+          "layer": "client",
+          "status": "built",
+          "route": "/member/[slug]",
+          "codeRef": "src/app/(frontend)/member/[slug]/page.tsx"
+        },
+        {
+          "id": "block-enforcement-profile--fetch-member",
+          "type": "step",
+          "label": "Fetch Member by Slug",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/members/services/member-server.ts",
+          "why": "Server component calls getMemberBySlugServer(slug). If member not found, notFound() is called."
+        },
+        {
+          "id": "block-enforcement-profile--check-block-status",
+          "type": "step",
+          "label": "Check Block Status",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/blocks/services/block-server.ts",
+          "why": "Calls isBlockedByServer(currentUserId, member.id). Uses server client with RLS policy member_blocks_select_blocked (blocked_id = auth.uid()). Short-circuits to false for null viewer or self-view."
+        },
+        {
+          "id": "block-enforcement-profile--decision-check-block-status",
+          "type": "decision",
+          "label": "Is viewer blocked?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "block-enforcement-profile--render-not-found"
+            },
+            {
+              "label": "No",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "block-enforcement-profile--render-not-found",
+          "type": "step",
+          "label": "Show Not Found Page",
+          "layer": "client",
+          "status": "built",
+          "why": "If blocked, notFound() is called — identical to a non-existent member. No information leakage about the block."
+        },
+        {
+          "id": "block-enforcement-shop--entry",
+          "type": "entry",
+          "label": "Block Enforcement — Shop Page"
+        },
+        {
+          "id": "block-enforcement-shop--navigate-shop-page",
+          "type": "step",
+          "label": "Navigate to Shop Page",
+          "layer": "client",
+          "status": "built",
+          "route": "/shop/[slug]",
+          "codeRef": "src/app/(frontend)/shop/[slug]/page.tsx"
+        },
+        {
+          "id": "block-enforcement-shop--fetch-shop",
+          "type": "step",
+          "label": "Fetch Shop by Slug",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/shops/services/shop-server.ts",
+          "why": "Server component calls getShopBySlugServer(slug). Returns shop with owner_id. If shop not found, notFound() is called."
+        },
+        {
+          "id": "block-enforcement-shop--check-block-shop",
+          "type": "step",
+          "label": "Check Block Status",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/blocks/services/block-server.ts",
+          "why": "Calls isBlockedByServer(currentUserId, shop.owner_id). Block is checked against the shop owner, not the shop entity itself."
+        },
+        {
+          "id": "block-enforcement-shop--decision-check-block-shop",
+          "type": "decision",
+          "label": "Is viewer blocked by shop owner?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "block-enforcement-shop--render-not-found-shop"
+            },
+            {
+              "label": "No",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "block-enforcement-shop--render-not-found-shop",
+          "type": "step",
+          "label": "Show Not Found Page",
+          "layer": "client",
+          "status": "built",
+          "why": "If blocked, notFound() is called — identical to a non-existent shop."
+        },
+        {
+          "id": "block-enforcement-listing--entry",
+          "type": "entry",
+          "label": "Block Enforcement — Listing Page"
+        },
+        {
+          "id": "block-enforcement-listing--navigate-listing-page",
+          "type": "step",
+          "label": "Navigate to Listing Detail",
+          "layer": "client",
+          "status": "built",
+          "route": "/listing/[id]",
+          "codeRef": "src/app/(frontend)/listing/[id]/page.tsx"
+        },
+        {
+          "id": "block-enforcement-listing--fetch-listing",
+          "type": "step",
+          "label": "Fetch Listing with Seller",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/listings/services/listing-server.ts",
+          "why": "Server component calls getListingWithSellerServer(id). Returns listing with seller_id. If listing not found or inactive, notFound() is called."
+        },
+        {
+          "id": "block-enforcement-listing--check-block-listing",
+          "type": "step",
+          "label": "Check Block Status",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/blocks/services/block-server.ts",
+          "why": "Calls isBlockedByServer(currentUserId, listing.seller_id). Block is checked against the listing's seller."
+        },
+        {
+          "id": "block-enforcement-listing--decision-check-block-listing",
+          "type": "decision",
+          "label": "Is viewer blocked by seller?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "block-enforcement-listing--render-not-found-listing"
+            },
+            {
+              "label": "No",
+              "to": "END"
+            }
+          ]
+        },
+        {
+          "id": "block-enforcement-listing--render-not-found-listing",
+          "type": "step",
+          "label": "Show Not Found Page",
+          "layer": "client",
+          "status": "built",
+          "why": "If blocked, notFound() is called — identical to a non-existent listing."
+        },
+        {
+          "id": "block-enforcement-cart--entry",
+          "type": "entry",
+          "label": "Block Enforcement — Cart"
+        },
+        {
+          "id": "block-enforcement-cart--attempt-add-to-cart",
+          "type": "step",
+          "label": "Add to Cart (Blocked Seller)",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/cart",
+          "codeRef": "src/features/cart/services/cart-server.ts",
+          "why": "addToCartServer checks isBlockedByServer(userId, listing.seller_id) after fetching listing. If blocked, throws 'Seller has blocked you'.",
+          "errorCases": [
+            {
+              "condition": "Seller has blocked the buyer",
+              "result": "Returns 403 'You cannot purchase this listing'",
+              "httpStatus": 403
+            }
+          ]
+        },
+        {
+          "id": "block-enforcement-cart--validate-cart-blocked",
+          "type": "step",
+          "label": "Validate Cart (Blocked Items)",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/cart/validate",
+          "codeRef": "src/features/cart/services/cart-server.ts",
+          "why": "validateCartServer performs a single batch IN query on member_blocks for all unique seller IDs. Items from blocked sellers are moved to the 'removed' array with reason: 'blocked'."
+        },
+        {
+          "id": "block-enforcement-cart--show-blocked-removal",
+          "type": "step",
+          "label": "Show Removed Items Banner",
+          "layer": "client",
+          "status": "built",
+          "why": "Cart page stale items banner shows blocked items as removed. The 'blocked' reason is included in the CartValidationResult removed-item reason union type."
         }
       ],
       "edges": [
@@ -3274,6 +3509,81 @@
         {
           "from": "view-blocked-profile--navigate-to-profile",
           "to": "view-blocked-profile--blocked-indicator-on-profile"
+        },
+        {
+          "from": "block-enforcement-profile--entry",
+          "to": "block-enforcement-profile--navigate-member-profile"
+        },
+        {
+          "from": "block-enforcement-profile--navigate-member-profile",
+          "to": "block-enforcement-profile--fetch-member"
+        },
+        {
+          "from": "block-enforcement-profile--fetch-member",
+          "to": "block-enforcement-profile--check-block-status"
+        },
+        {
+          "from": "block-enforcement-profile--check-block-status",
+          "to": "block-enforcement-profile--decision-check-block-status"
+        },
+        {
+          "from": "block-enforcement-profile--decision-check-block-status",
+          "to": "block-enforcement-profile--render-not-found",
+          "opt": "Yes"
+        },
+        {
+          "from": "block-enforcement-shop--entry",
+          "to": "block-enforcement-shop--navigate-shop-page"
+        },
+        {
+          "from": "block-enforcement-shop--navigate-shop-page",
+          "to": "block-enforcement-shop--fetch-shop"
+        },
+        {
+          "from": "block-enforcement-shop--fetch-shop",
+          "to": "block-enforcement-shop--check-block-shop"
+        },
+        {
+          "from": "block-enforcement-shop--check-block-shop",
+          "to": "block-enforcement-shop--decision-check-block-shop"
+        },
+        {
+          "from": "block-enforcement-shop--decision-check-block-shop",
+          "to": "block-enforcement-shop--render-not-found-shop",
+          "opt": "Yes"
+        },
+        {
+          "from": "block-enforcement-listing--entry",
+          "to": "block-enforcement-listing--navigate-listing-page"
+        },
+        {
+          "from": "block-enforcement-listing--navigate-listing-page",
+          "to": "block-enforcement-listing--fetch-listing"
+        },
+        {
+          "from": "block-enforcement-listing--fetch-listing",
+          "to": "block-enforcement-listing--check-block-listing"
+        },
+        {
+          "from": "block-enforcement-listing--check-block-listing",
+          "to": "block-enforcement-listing--decision-check-block-listing"
+        },
+        {
+          "from": "block-enforcement-listing--decision-check-block-listing",
+          "to": "block-enforcement-listing--render-not-found-listing",
+          "opt": "Yes"
+        },
+        {
+          "from": "block-enforcement-cart--entry",
+          "to": "block-enforcement-cart--attempt-add-to-cart"
+        },
+        {
+          "from": "block-enforcement-cart--attempt-add-to-cart",
+          "to": "block-enforcement-cart--validate-cart-blocked"
+        },
+        {
+          "from": "block-enforcement-cart--validate-cart-blocked",
+          "to": "block-enforcement-cart--show-blocked-removal"
         }
       ]
     },

@@ -839,6 +839,11 @@
           "name": "member_blocks_delete_own",
           "operation": "DELETE",
           "using": "blocker_id = (SELECT auth.uid())"
+        },
+        {
+          "name": "member_blocks_select_blocked",
+          "operation": "SELECT",
+          "using": "blocked_id = (SELECT auth.uid())"
         }
       ],
       "indexes": [

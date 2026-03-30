@@ -54,7 +54,7 @@
     {
       "slug": "blocks",
       "name": "Blocks",
-      "description": "Blocked members management — lets authenticated users view and unblock members they have previously blocked. Surfaces in account settings so users have full control over who can interact with them. Blocking itself is triggered from messaging/profiles; this feature owns only the management view (list + unblock).",
+      "description": "Blocked members management and enforcement. Two responsibilities:",
       "componentCount": 1,
       "endpointCount": 1,
       "hookCount": 1,
@@ -92,8 +92,8 @@
       "endpointCount": 6,
       "hookCount": 3,
       "serviceCount": 2,
-      "entities": ["cart_items", "listings", "members", "shops"],
-      "journeySlugs": ["guest-cart", "login", "signup"],
+      "entities": ["cart_items", "listings", "member_blocks", "members", "shops"],
+      "journeySlugs": ["buyer-cart", "guest-cart", "login", "member-block-management", "signup"],
       "links": [
         {
           "type": "entity",
@@ -103,6 +103,11 @@
         {
           "type": "entity",
           "label": "listings",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "member_blocks",
           "href": "/data-model"
         },
         {
@@ -117,6 +122,11 @@
         },
         {
           "type": "journey",
+          "label": "buyer-cart",
+          "href": "/journeys/buyer-cart"
+        },
+        {
+          "type": "journey",
           "label": "guest-cart",
           "href": "/journeys/guest-cart"
         },
@@ -124,6 +134,11 @@
           "type": "journey",
           "label": "login",
           "href": "/journeys/login"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
         },
         {
           "type": "journey",
@@ -266,7 +281,13 @@
       "hookCount": 11,
       "serviceCount": 7,
       "entities": ["follows", "listings", "members", "shops"],
-      "journeySlugs": ["buyer-search", "member-follow", "member-watchlist", "seller-listings"],
+      "journeySlugs": [
+        "buyer-search",
+        "member-block-management",
+        "member-follow",
+        "member-watchlist",
+        "seller-listings"
+      ],
       "links": [
         {
           "type": "entity",
@@ -292,6 +313,11 @@
           "type": "journey",
           "label": "buyer-search",
           "href": "/journeys/buyer-search"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
         },
         {
           "type": "journey",
@@ -324,12 +350,17 @@
       "hookCount": 2,
       "serviceCount": 4,
       "entities": ["members"],
-      "journeySlugs": [],
+      "journeySlugs": ["member-block-management"],
       "links": [
         {
           "type": "entity",
           "label": "members",
           "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
         },
         {
           "type": "api-group",
@@ -436,7 +467,7 @@
       "hookCount": 5,
       "serviceCount": 5,
       "entities": ["shop_members", "shops", "slugs"],
-      "journeySlugs": ["shop-invite-acceptance", "signup"],
+      "journeySlugs": ["member-block-management", "shop-invite-acceptance", "signup"],
       "links": [
         {
           "type": "entity",
@@ -452,6 +483,11 @@
           "type": "entity",
           "label": "slugs",
           "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
         },
         {
           "type": "journey",
