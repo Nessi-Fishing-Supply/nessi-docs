@@ -69,6 +69,44 @@ export function autoPortSides(
 }
 
 /**
+ * Journey-specific port selection: always left-to-right flow.
+ * - Same column + vertical offset → bottom/top
+ * - Back-edge (target left of source) → top/top (arc above)
+ * - Default → right/left
+ * - Decision alternate branches → bottom/left (fork down then continue right)
+ */
+export function journeyPortSides(
+  from: { x: number; y: number; type: string },
+  to: { x: number; y: number; type: string },
+  opts?: { isBackEdge?: boolean; isDecisionBranch?: boolean },
+): [PortSide, PortSide] {
+  const fw = from.type === 'decision' ? DECISION_SIZE : NODE_WIDTH;
+  const tw = to.type === 'decision' ? DECISION_SIZE : NODE_WIDTH;
+  const fromCx = from.x + fw / 2;
+  const toCx = to.x + tw / 2;
+
+  // Back-edges: arc above via top ports
+  if (opts?.isBackEdge) {
+    return ['top', 'top'];
+  }
+
+  // Same column (vertical edge within a fork group)
+  if (Math.abs(fromCx - toCx) < 10) {
+    const fromCy = from.y + (from.type === 'decision' ? DECISION_SIZE / 2 : NODE_HEIGHT / 2);
+    const toCy = to.y + (to.type === 'decision' ? DECISION_SIZE / 2 : NODE_HEIGHT / 2);
+    return toCy > fromCy ? ['bottom', 'top'] : ['top', 'bottom'];
+  }
+
+  // Decision alternate branch: exit bottom, enter left
+  if (opts?.isDecisionBranch && from.type === 'decision') {
+    return ['bottom', 'left'];
+  }
+
+  // Default: strict left-to-right
+  return ['right', 'left'];
+}
+
+/**
  * Simple horizontal-biased bezier (legacy — only appropriate for strict left→right flows).
  */
 export function bezier(fx: number, fy: number, tx: number, ty: number): string {
@@ -98,6 +136,23 @@ export function smoothPath(
   const [cp2x, cp2y] = cpOffset(tx, ty, tDir, cp);
 
   return `M${fx},${fy} C${cp1x},${cp1y} ${cp2x},${cp2y} ${tx},${ty}`;
+}
+
+/**
+ * Back-edge arc: curves above the flow from a later node back to an earlier one.
+ * Uses a large vertical offset to arc above intervening nodes.
+ */
+export function backEdgeArc(
+  fx: number,
+  fy: number,
+  tx: number,
+  ty: number,
+): string {
+  const dx = Math.abs(tx - fx);
+  const arcHeight = Math.max(dx * 0.3, 60);
+  const midX = (fx + tx) / 2;
+  const midY = Math.min(fy, ty) - arcHeight;
+  return `M${fx},${fy} Q${midX},${midY} ${tx},${ty}`;
 }
 
 function cpOffset(x: number, y: number, dir: PortSide, amount: number): [number, number] {
