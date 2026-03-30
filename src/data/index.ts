@@ -232,12 +232,17 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
     for (const opt of node.options) {
       const targetCol = column.get(opt.to) ?? 0;
       if (targetCol > decCol + 1) {
-        // This target was pushed far right — demote non-decision incoming edges
+        // This target was pushed far right — demote incoming edges from
+        // nodes that are further right than the decision. Edges from nodes
+        // at or near the decision column are normal merge flows, not back-edges.
         rawEdges.forEach((edge, i) => {
           if (backEdgeSet.has(i)) return;
           if (edge.to !== opt.to) return;
           if (edge.from === node.id) return; // Keep the decision's own edge
-          backEdgeSet.add(i);
+          const srcCol = column.get(edge.from) ?? 0;
+          if (srcCol > decCol + 1) {
+            backEdgeSet.add(i);
+          }
         });
         column.set(opt.to, decCol + 1);
       }
@@ -334,16 +339,68 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
 
   const positions = new Map<string, { x: number; y: number }>();
   const placed = new Set<string>();
+  // Pre-assigned y-values for decision branch targets.
+  // These override DFS-inherited y to ensure branches stack vertically
+  // even when a branch target is reached through a sibling edge first.
+  const reservedY = new Map<string, number>();
 
   function layoutSubJourney(entryId: string, yStart: number): number {
-    // Place nodes depth-first from the entry
+    // Pre-pass: walk the DAG and pre-assign y-values for all decision branches.
+    // This ensures stacking even when DFS reaches targets through sibling edges.
+    const preVisited = new Set<string>();
+
+    function preAssignDecisionBranches(nodeId: string, y: number) {
+      if (preVisited.has(nodeId)) return;
+      preVisited.add(nodeId);
+      if (nodeToEntry.get(nodeId) !== entryId) return;
+
+      const n = nodeById.get(nodeId);
+      const allChildren = getOrderedChildren(nodeId).filter(
+        (c) => nodeToEntry.get(c) === entryId && (dagOutgoing.get(nodeId) ?? []).includes(c),
+      );
+
+      if (n?.type === 'decision' && allChildren.length > 1) {
+        let branchY = y;
+        for (let i = 0; i < allChildren.length; i++) {
+          const childY = i === 0 ? y : branchY;
+          reservedY.set(allChildren[i], childY);
+          if (i === 0) {
+            branchY = y + Math.max(subtreeExtent(allChildren[0]), NODE_H) + V_GAP;
+          } else {
+            branchY += Math.max(subtreeExtent(allChildren[i]), NODE_H) + V_GAP;
+          }
+          // Recurse into each branch with its assigned y
+          preAssignDecisionBranches(allChildren[i], childY);
+        }
+      } else {
+        // Linear: children inherit same y
+        for (const child of allChildren) {
+          preAssignDecisionBranches(child, y);
+        }
+      }
+    }
+
+    preAssignDecisionBranches(entryId, yStart);
+
+    // Main DFS: place nodes using reserved y-values where available
     const stack: { nodeId: string; y: number }[] = [{ nodeId: entryId, y: yStart }];
     let maxY = yStart;
 
     while (stack.length > 0) {
-      const { nodeId, y } = stack.pop()!;
-      if (placed.has(nodeId)) continue;
+      const { nodeId, y: stackY } = stack.pop()!;
       if (nodeToEntry.get(nodeId) !== entryId) continue;
+
+      // Use reserved y if this node is a decision branch target, otherwise use stack y
+      const y = reservedY.has(nodeId) ? reservedY.get(nodeId)! : stackY;
+
+      if (placed.has(nodeId)) {
+        // Already placed — but if reserved y differs, reposition it
+        const existing = positions.get(nodeId);
+        if (existing && reservedY.has(nodeId) && existing.y !== y) {
+          positions.set(nodeId, { x: existing.x, y });
+        }
+        continue;
+      }
 
       placed.add(nodeId);
       const col = column.get(nodeId) ?? 0;
@@ -360,34 +417,10 @@ function layoutJourneyNodes(rawNodes: RawJourneyNode[], rawEdges: RawJourneyEdge
           (dagOutgoing.get(nodeId) ?? []).includes(c),
       );
 
-      const n = nodeById.get(nodeId);
-      if (n?.type === 'decision' && children.length > 1) {
-        // Decision fork: first option inherits parent's y (happy path),
-        // alternates stack below with V_GAP spacing.
-        // Compute y-values in forward order, then push to stack in reverse
-        // so the first child (happy path) is processed first by stack.pop().
-        const childYValues: number[] = [];
-        let branchY = y;
-        for (let i = 0; i < children.length; i++) {
-          if (i === 0) {
-            // Happy path: same y as decision
-            childYValues.push(y);
-            branchY = y + Math.max(subtreeExtent(children[0]), NODE_H) + V_GAP;
-          } else {
-            // Alternate branch: below previous branch's extent
-            childYValues.push(branchY);
-            branchY += Math.max(subtreeExtent(children[i]), NODE_H) + V_GAP;
-          }
-        }
-        // Push in reverse so first child is on top of stack (processed first)
-        for (let i = children.length - 1; i >= 0; i--) {
-          stack.push({ nodeId: children[i], y: childYValues[i] });
-        }
-      } else {
-        // Linear flow: all children get same y as parent
-        for (let i = children.length - 1; i >= 0; i--) {
-          stack.push({ nodeId: children[i], y });
-        }
+      // Linear flow: all children get same y as parent
+      // Decision fork stacking is already handled by the pre-pass (reservedY)
+      for (let i = children.length - 1; i >= 0; i--) {
+        stack.push({ nodeId: children[i], y });
       }
     }
 
@@ -505,6 +538,7 @@ export function detectJourneyBackEdges(
   for (const node of nodes) col.set(node.id, longestPath(node.id));
 
   // Step 3: Mark merge-back edges to decision branch targets
+  // Only demote edges from nodes significantly further right (not same-column merges)
   for (const node of nodes) {
     if (node.type !== 'decision' || !node.options) continue;
     const decCol = col.get(node.id) ?? 0;
@@ -514,7 +548,10 @@ export function detectJourneyBackEdges(
           if (backEdges.has(i)) return;
           if (edge.to !== opt.to) return;
           if (edge.from === node.id) return;
-          backEdges.add(i);
+          const srcCol = col.get(edge.from) ?? 0;
+          if (srcCol > decCol + 1) {
+            backEdges.add(i);
+          }
         });
       }
     }

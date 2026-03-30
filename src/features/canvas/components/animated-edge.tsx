@@ -1,4 +1,10 @@
-import { getPort, smoothPath, autoPortSides, journeyPortSides } from '../utils/geometry';
+import {
+  getPort,
+  smoothPath,
+  backEdgeArc,
+  autoPortSides,
+  journeyPortSides,
+} from '../utils/geometry';
 
 interface AnimatedEdgeProps {
   from: { x: number; y: number; type: string };
@@ -25,18 +31,21 @@ export function AnimatedEdge({
   // When no path: show ambient on all edges
   if (hasActivePath && (!isLit || isDimmed)) return null;
 
-  // Don't animate back-edges
-  if (isBackEdge) return null;
-
   const [fDir, tDir] = useJourneyPorts
     ? journeyPortSides(from, to, { isBackEdge, isDecisionBranch })
     : autoPortSides(from, to);
   const fp = getPort(from, fDir);
   const tp = getPort(to, tDir);
-  const d = smoothPath(fp.x, fp.y, fDir, tp.x, tp.y, tDir);
+  const d = isBackEdge
+    ? backEdgeArc(fp.x, fp.y, tp.x, tp.y)
+    : smoothPath(fp.x, fp.y, fDir, tp.x, tp.y, tDir);
 
-  const opacity = isLit ? 0.85 : 0.08;
-  const color = isLit ? 'rgba(61,140,117,0.7)' : 'rgba(255,255,255,0.15)';
+  const opacity = isBackEdge ? 0.25 : isLit ? 0.85 : 0.08;
+  const color = isBackEdge
+    ? 'rgba(234,179,8,0.5)'
+    : isLit
+      ? 'rgba(61,140,117,0.7)'
+      : 'rgba(255,255,255,0.15)';
   const marker = isLit ? 'url(#arrow-lit)' : undefined;
 
   return (

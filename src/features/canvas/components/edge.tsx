@@ -38,7 +38,8 @@ export function Edge({
     : smoothPath(fp.x, fp.y, fDir, tp.x, tp.y, tDir);
 
   // When lit, this edge becomes a subtle track — the AnimatedEdge is the primary visual
-  const opacity = isDimmed ? 0.06 : isLit ? 0.2 : 0.25;
+  // Back-edges are more visible since they don't get the animated overlay
+  const opacity = isDimmed ? 0.06 : isBackEdge ? 0.55 : isLit ? 0.2 : 0.25;
   const strokeWidth = isLit ? 1.5 : 1.5;
   const stroke = isBackEdge
     ? 'rgba(234,179,8,0.5)'

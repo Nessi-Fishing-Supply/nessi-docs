@@ -97,9 +97,17 @@ export function journeyPortSides(
     return toCy > fromCy ? ['bottom', 'top'] : ['top', 'bottom'];
   }
 
-  // Decision alternate branch: exit bottom, enter left
+  // Decision alternate branch: exit bottom of decision diamond.
+  // If target is mostly below (large y gap relative to x gap), enter from top.
+  // Otherwise enter from left (target is further to the right).
   if (opts?.isDecisionBranch && from.type === 'decision') {
-    return ['bottom', 'left'];
+    const fh = DECISION_SIZE;
+    const th = to.type === 'decision' ? DECISION_SIZE : NODE_HEIGHT;
+    const fromCy = from.y + fh / 2;
+    const toCy = to.y + th / 2;
+    const dy = Math.abs(toCy - fromCy);
+    const dx = Math.abs(toCx - fromCx);
+    return dy > dx * 1.2 ? ['bottom', 'top'] : ['bottom', 'left'];
   }
 
   // Default: strict left-to-right
@@ -142,12 +150,7 @@ export function smoothPath(
  * Back-edge arc: curves above the flow from a later node back to an earlier one.
  * Uses a large vertical offset to arc above intervening nodes.
  */
-export function backEdgeArc(
-  fx: number,
-  fy: number,
-  tx: number,
-  ty: number,
-): string {
+export function backEdgeArc(fx: number, fy: number, tx: number, ty: number): string {
   const dx = Math.abs(tx - fx);
   const arcHeight = Math.max(dx * 0.3, 60);
   const midX = (fx + tx) / 2;
