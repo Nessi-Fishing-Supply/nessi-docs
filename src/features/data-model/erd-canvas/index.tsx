@@ -26,7 +26,40 @@ interface ErdCanvasProps {
 }
 
 /** Spread between sibling edges sharing the same node pair */
-const SIBLING_SPREAD = 24;
+const SIBLING_SPREAD = 32;
+
+/** Pill dimensions for collision detection */
+const PILL_H = 18;
+const PILL_PADDING = 6;
+
+/** Push apart any label pills that overlap after initial placement. */
+function deconflictPills(
+  pills: { lx: number; ly: number; w: number }[],
+): { lx: number; ly: number }[] {
+  const result = pills.map((p) => ({ lx: p.lx, ly: p.ly }));
+  const step = PILL_H + PILL_PADDING;
+
+  for (let pass = 0; pass < 3; pass++) {
+    for (let i = 0; i < result.length; i++) {
+      for (let j = i + 1; j < result.length; j++) {
+        const dx = Math.abs(result[i].lx - result[j].lx);
+        const dy = Math.abs(result[i].ly - result[j].ly);
+        const overlapX = (pills[i].w + pills[j].w) / 2;
+        if (dx < overlapX && dy < step) {
+          const push = (step - dy) / 2 + 1;
+          if (result[i].ly <= result[j].ly) {
+            result[i].ly -= push;
+            result[j].ly += push;
+          } else {
+            result[i].ly += push;
+            result[j].ly -= push;
+          }
+        }
+      }
+    }
+  }
+  return result;
+}
 
 /**
  * Build a map of edge pair key → count of siblings and per-edge index.
@@ -326,40 +359,55 @@ export function ErdCanvas({ nodes, edges, entities }: ErdCanvasProps) {
       })}
 
       {/* Edge labels — rendered above all lines so glass effect works */}
-      {edges.map((edge, i) => {
-        const fromNode = nodeMap.get(edge.from);
-        const toNode = nodeMap.get(edge.to);
-        if (!fromNode || !toNode) return null;
-        if (!isNodeVisible(fromNode) || !isNodeVisible(toNode)) return null;
+      {(() => {
+        // Pass 1: compute initial positions
+        const pillData = edges.map((edge, i) => {
+          const fromNode = nodeMap.get(edge.from);
+          const toNode = nodeMap.get(edge.to);
+          if (!fromNode || !toNode) return null;
+          if (!isNodeVisible(fromNode) || !isNodeVisible(toNode)) return null;
 
-        const sibling = siblingMap.get(i);
-        const perpOffset =
-          sibling && sibling.siblingCount > 1
-            ? (sibling.siblingIndex - (sibling.siblingCount - 1) / 2) * SIBLING_SPREAD
-            : 0;
+          const sibling = siblingMap.get(i);
+          const perpOffset =
+            sibling && sibling.siblingCount > 1
+              ? (sibling.siblingIndex - (sibling.siblingCount - 1) / 2) * SIBLING_SPREAD
+              : 0;
 
-        const path = getEdgePath(fromNode, toNode, perpOffset);
-        const { lx, ly } = avoidNodeOverlap(
-          path.mx,
-          path.my,
-          path.fx,
-          path.fy,
-          path.tx,
-          path.ty,
-          nodes,
-          edge.from,
-          edge.to,
-        );
+          const path = getEdgePath(fromNode, toNode, perpOffset);
+          const { lx, ly } = avoidNodeOverlap(
+            path.mx,
+            path.my,
+            path.fx,
+            path.fy,
+            path.tx,
+            path.ty,
+            nodes,
+            edge.from,
+            edge.to,
+          );
 
-        const isLit = litEdges.has(i);
-        const isDimmed = hasTrace && !isLit;
+          const label = edge.fk ?? edge.label;
+          const w = label.length * 6.5 + 16;
+          const isLit = litEdges.has(i);
+          const isDimmed = hasTrace && !isLit;
 
-        return (
-          <g key={i} style={{ opacity: isDimmed ? 0.1 : 1, transition: 'opacity 400ms ease-out' }}>
-            <LabelPill x={lx} y={ly} label={edge.fk ?? edge.label} />
+          return { i, lx, ly, w, label, isDimmed };
+        });
+
+        const visible = pillData.filter((p): p is NonNullable<typeof p> => p !== null);
+
+        // Pass 2: push apart overlapping pills
+        const deconflicted = deconflictPills(visible);
+
+        return visible.map((pill, idx) => (
+          <g
+            key={pill.i}
+            style={{ opacity: pill.isDimmed ? 0.1 : 1, transition: 'opacity 400ms ease-out' }}
+          >
+            <LabelPill x={deconflicted[idx].lx} y={deconflicted[idx].ly} label={pill.label} />
           </g>
-        );
-      })}
+        ));
+      })()}
 
       {/* Entity nodes */}
       {nodes.map((node) => {
