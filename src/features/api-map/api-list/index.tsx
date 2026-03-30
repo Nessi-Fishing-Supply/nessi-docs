@@ -80,6 +80,42 @@ function FilterBar({
 
 /* ── Endpoint Detail (Expanded) ── */
 
+/* ── Group Divider with deep-link support ── */
+
+function GroupDivider({ name, count }: { name: string; count: number }) {
+  const slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+  const ref = useRef<HTMLDivElement>(null);
+  const [highlight, setHighlight] = useState(false);
+
+  useEffect(() => {
+    function checkHash() {
+      const hashes = window.location.hash.split('#').filter(Boolean);
+      if (hashes.includes(slug)) {
+        setHighlight(true);
+        history.replaceState(null, '', window.location.pathname);
+        setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+        setTimeout(() => setHighlight(false), 9500);
+      }
+    }
+
+    checkHash();
+    window.addEventListener('hashchange', checkHash);
+    return () => window.removeEventListener('hashchange', checkHash);
+  }, [slug]);
+
+  return (
+    <div ref={ref} id={slug} className={styles.groupDivider} style={{ position: 'relative' }}>
+      <BorderTrace active={highlight} />
+      <span className={styles.groupName}>{name}</span>
+      <span className={styles.groupLine} />
+      <span className={styles.groupCount}>{count}</span>
+    </div>
+  );
+}
+
 function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
@@ -200,7 +236,9 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; staggerIndex: number }) {
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
   const [isDeepLinkTarget] = useState(
-    () => typeof window !== 'undefined' && window.location.hash === `#${slug}`,
+    () =>
+      typeof window !== 'undefined' &&
+      window.location.hash.split('#').filter(Boolean).includes(slug),
   );
   const [isOpen, setIsOpen] = useState(false);
   const [highlight, setHighlight] = useState(false);
@@ -212,15 +250,15 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
   // Deep-link: expand → scroll → glow (matches Data Model timing)
   useEffect(() => {
     function checkHash() {
-      if (window.location.hash === `#${slug}`) {
+      const hashes = window.location.hash.split('#').filter(Boolean);
+      if (hashes.includes(slug)) {
         setIsOpen(true);
         setHighlight(true);
+        history.replaceState(null, '', window.location.pathname);
         setTimeout(
           () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
           100,
         );
-        // Clear hash after scroll settles so it doesn't stack on next navigation
-        setTimeout(() => history.replaceState(null, '', window.location.pathname), 600);
         setTimeout(() => setHighlight(false), 9500);
       }
     }
@@ -401,11 +439,7 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
       <div className={styles.epContainer}>
         {filteredGroups.map((group) => (
           <div key={group.name}>
-            <div className={styles.groupDivider}>
-              <span className={styles.groupName}>{group.name}</span>
-              <span className={styles.groupLine} />
-              <span className={styles.groupCount}>{group.endpoints.length}</span>
-            </div>
+            <GroupDivider name={group.name} count={group.endpoints.length} />
 
             {group.endpoints.map((ep) => {
               const idx = staggerIndex++;

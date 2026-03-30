@@ -4,7 +4,6 @@ import { useDocsContext } from '@/providers/docs-provider';
 import { StepPanel } from './panels/step-panel';
 import { EntityPanel } from './panels/entity-panel';
 import { LifecyclePanel } from './panels/lifecycle-panel';
-import { CoveragePanel } from './panels/coverage-panel';
 import { FeaturePanel } from './panels/feature-panel';
 import { PermissionPanel } from './panels/permission-panel';
 import { ConfigPanel } from './panels/config-panel';
@@ -32,7 +31,6 @@ export function DetailPanel() {
       {selectedItem.type === 'lifecycle-state' && (
         <LifecyclePanel state={selectedItem.state} lifecycle={selectedItem.lifecycle} />
       )}
-      {selectedItem.type === 'coverage' && <CoveragePanel journey={selectedItem.journey} />}
       {selectedItem.type === 'feature' && <FeaturePanel feature={selectedItem.feature} />}
       {selectedItem.type === 'role' && <PermissionPanel role={selectedItem.role} />}
       {selectedItem.type === 'config-enum' && <ConfigPanel configEnum={selectedItem.configEnum} />}

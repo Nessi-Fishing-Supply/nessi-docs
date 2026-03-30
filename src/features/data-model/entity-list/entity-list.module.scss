@@ -278,6 +278,7 @@
 .fieldTable {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .fieldThName,
@@ -340,6 +341,16 @@
   font-family: var(--font-family-mono);
   font-size: 11px;
   color: var(--text-muted);
+  max-width: 120px;
+}
+
+.fieldDefaultTruncated {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+  cursor: help;
 }
 
 .fieldRef {

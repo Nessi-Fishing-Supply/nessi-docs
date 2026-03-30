@@ -7,6 +7,7 @@ import { getMethodColors } from '@/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation } from '@/data/cross-links';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
+import { Tooltip } from '@/components/ui';
 import styles from './entity-list.module.scss';
 
 /* ── Constants ── */
@@ -109,22 +110,25 @@ function EntityRow({
 }) {
   const fkCount = countForeignKeys(entity);
   const [isDeepLinkTarget] = useState(
-    () => typeof window !== 'undefined' && window.location.hash === `#${entity.name}`,
+    () =>
+      typeof window !== 'undefined' &&
+      window.location.hash.split('#').filter(Boolean).includes(entity.name),
   );
   const rowRef = useRef<HTMLDivElement>(null);
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
     function checkHash() {
-      if (window.location.hash === `#${entity.name}`) {
+      // Handle stacked hashes (e.g. #members#members) by splitting on #
+      const hashes = window.location.hash.split('#').filter(Boolean);
+      if (hashes.includes(entity.name)) {
         onOpen();
         setHighlight(true);
+        history.replaceState(null, '', window.location.pathname);
         setTimeout(
           () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
           100,
         );
-        // Clear hash after scroll settles so it doesn't stack on next navigation
-        setTimeout(() => history.replaceState(null, '', window.location.pathname), 600);
         setTimeout(() => setHighlight(false), 9500);
       }
     }
@@ -194,7 +198,15 @@ function FieldTable({
               )}
             </td>
             <td className={styles.fieldType}>{f.type}</td>
-            <td className={styles.fieldDefault}>{f.default ?? ''}</td>
+            <td className={styles.fieldDefault}>
+              {f.default && f.default.length > 15 ? (
+                <Tooltip text={f.default}>
+                  <span className={styles.fieldDefaultTruncated}>{f.default}</span>
+                </Tooltip>
+              ) : (
+                (f.default ?? '')
+              )}
+            </td>
             <td className={styles.fieldRef}>
               {f.references && (
                 <a

@@ -11,7 +11,6 @@ export type SelectedItem =
   | { type: 'api'; endpoint: ApiEndpoint; group: string }
   | { type: 'entity'; entity: Entity }
   | { type: 'lifecycle-state'; state: LifecycleState; lifecycle: Lifecycle }
-  | { type: 'coverage'; journey: Journey }
   | { type: 'feature'; feature: Feature }
   | { type: 'role'; role: Role }
   | { type: 'config-enum'; configEnum: ConfigEnum }

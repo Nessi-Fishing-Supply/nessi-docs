@@ -9,6 +9,38 @@ import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
 import { BorderTrace } from '@/components/ui/border-trace';
 import styles from './feature-domain-view.module.scss';
 
+/* ── Deep-link href resolution ── */
+
+/** Clear any stale hash before navigating to prevent hash stacking. */
+function clearHash() {
+  if (window.location.hash) {
+    history.replaceState(null, '', window.location.pathname);
+  }
+}
+
+function resolveHref(
+  link: { type: string; label: string; href: string },
+  journeyDomainMap: Map<string, string>,
+): string {
+  switch (link.type) {
+    case 'entity':
+      return `/data-model#${link.label}`;
+    case 'api-group':
+      return `/api-map#${link.label
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')}`;
+    case 'journey': {
+      const domain = journeyDomainMap.get(link.label);
+      return domain ? `/journeys/${domain}/${link.label}` : link.href;
+    }
+    case 'lifecycle':
+      return `/lifecycles/${link.label}`;
+    default:
+      return link.href;
+  }
+}
+
 /* ── Feature Row ── */
 
 function FeatureRow({
@@ -17,29 +49,34 @@ function FeatureRow({
   isOpen,
   onToggle,
   onOpen,
+  journeyDomainMap,
 }: {
   feature: Feature;
   staggerIndex: number;
   isOpen: boolean;
   onToggle: () => void;
   onOpen: () => void;
+  journeyDomainMap: Map<string, string>;
 }) {
   const [isDeepLinkTarget] = useState(
-    () => typeof window !== 'undefined' && window.location.hash === `#${feature.slug}`,
+    () =>
+      typeof window !== 'undefined' &&
+      window.location.hash.split('#').filter(Boolean).includes(feature.slug),
   );
   const rowRef = useRef<HTMLDivElement>(null);
   const [highlight, setHighlight] = useState(false);
 
   useEffect(() => {
     function checkHash() {
-      if (window.location.hash === `#${feature.slug}`) {
+      const hashes = window.location.hash.split('#').filter(Boolean);
+      if (hashes.includes(feature.slug)) {
         onOpen();
         setHighlight(true);
+        history.replaceState(null, '', window.location.pathname);
         setTimeout(
           () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
           100,
         );
-        setTimeout(() => history.replaceState(null, '', window.location.pathname), 600);
         setTimeout(() => setHighlight(false), 9500);
       }
     }
@@ -66,12 +103,25 @@ function FeatureRow({
       <BorderTrace active={highlight} />
       <button className={styles.featureRowHeader} onClick={onToggle}>
         <span className={styles.featureName}>{feature.name}</span>
-        <span className={styles.featureMeta}>
-          <span className={styles.endpointCount}>
-            {feature.endpointCount} endpoint{feature.endpointCount !== 1 ? 's' : ''}
-          </span>
-          <span className={styles.chevron}>&#9656;</span>
+        <span className={styles.featureBadges}>
+          {feature.componentCount > 0 && (
+            <span className={styles.featureBadge}>
+              {feature.componentCount} component{feature.componentCount !== 1 ? 's' : ''}
+            </span>
+          )}
+          {feature.endpointCount > 0 && (
+            <span className={`${styles.featureBadge} ${styles.featureBadgeOrange}`}>
+              {feature.endpointCount} endpoint{feature.endpointCount !== 1 ? 's' : ''}
+            </span>
+          )}
+          {(feature.hookCount ?? 0) > 0 && (
+            <span className={styles.featureBadge}>{feature.hookCount} hooks</span>
+          )}
+          {(feature.serviceCount ?? 0) > 0 && (
+            <span className={styles.featureBadge}>{feature.serviceCount} services</span>
+          )}
         </span>
+        <span className={styles.chevron}>&#9656;</span>
       </button>
 
       {isOpen && (
@@ -82,13 +132,17 @@ function FeatureRow({
 
           {apiLinks.length > 0 && (
             <div className={styles.expansionSection}>
-              <div className={styles.sectionLabel}>
-                API Endpoints <span className={styles.endpointBadge}>{feature.endpointCount}</span>
-              </div>
+              <div className={styles.sectionLabel}>API Endpoints</div>
               <div className={styles.linkList}>
                 {apiLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className={styles.linkItem}>
-                    {link.label}
+                  <Link
+                    key={link.label}
+                    href={resolveHref(link, journeyDomainMap)}
+                    onClick={clearHash}
+                    className={`${styles.linkItem} ${styles.linkApi}`}
+                  >
+                    <span>{link.label}</span>
+                    <span className={styles.linkArrowSmall}>&rsaquo;</span>
                   </Link>
                 ))}
               </div>
@@ -100,8 +154,14 @@ function FeatureRow({
               <div className={styles.sectionLabel}>Related Entities</div>
               <div className={styles.linkList}>
                 {entityLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className={styles.linkItem}>
-                    {link.label}
+                  <Link
+                    key={link.label}
+                    href={resolveHref(link, journeyDomainMap)}
+                    onClick={clearHash}
+                    className={`${styles.linkItem} ${styles.linkEntity}`}
+                  >
+                    <span>{link.label}</span>
+                    <span className={styles.linkArrowSmall}>&rsaquo;</span>
                   </Link>
                 ))}
               </div>
@@ -113,8 +173,14 @@ function FeatureRow({
               <div className={styles.sectionLabel}>Related Journeys</div>
               <div className={styles.linkList}>
                 {journeyLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className={styles.linkItem}>
-                    {link.label}
+                  <Link
+                    key={link.label}
+                    href={resolveHref(link, journeyDomainMap)}
+                    onClick={clearHash}
+                    className={`${styles.linkItem} ${styles.linkJourney}`}
+                  >
+                    <span>{link.label}</span>
+                    <span className={styles.linkArrowSmall}>&rsaquo;</span>
                   </Link>
                 ))}
               </div>
@@ -126,8 +192,14 @@ function FeatureRow({
               <div className={styles.sectionLabel}>Related Lifecycles</div>
               <div className={styles.linkList}>
                 {lifecycleLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className={styles.linkItem}>
-                    {link.label}
+                  <Link
+                    key={link.label}
+                    href={resolveHref(link, journeyDomainMap)}
+                    onClick={clearHash}
+                    className={`${styles.linkItem} ${styles.linkLifecycle}`}
+                  >
+                    <span>{link.label}</span>
+                    <span className={styles.linkArrowSmall}>&rsaquo;</span>
                   </Link>
                 ))}
               </div>
@@ -156,6 +228,7 @@ export function FeatureDomainView({
   journeys,
   entities,
 }: FeatureDomainViewProps) {
+  const journeyDomainMap = new Map(journeys.map((j) => [j.slug, j.domain]));
   const [openFeatures, setOpenFeatures] = useState<Set<string>>(new Set());
 
   const toggleFeature = (slug: string) => {
@@ -194,6 +267,7 @@ export function FeatureDomainView({
       </div>
 
       {/* ── Feature Rows ── */}
+      <div className={styles.featureSectionLabel}>Features</div>
       <div className={styles.featureContainer}>
         {features.map((feature, idx) => (
           <FeatureRow
@@ -203,6 +277,7 @@ export function FeatureDomainView({
             isOpen={openFeatures.has(feature.slug)}
             onToggle={() => toggleFeature(feature.slug)}
             onOpen={() => openFeature(feature.slug)}
+            journeyDomainMap={journeyDomainMap}
           />
         ))}
 
@@ -214,53 +289,73 @@ export function FeatureDomainView({
       {/* ── Footer ── */}
       {(changelog.length > 0 || journeys.length > 0 || entities.length > 0) && (
         <div className={styles.footer}>
-          <div className={styles.footerSection}>
-            <div className={styles.footerTitle}>Recent Changes</div>
-            <div className={styles.footerList}>
-              {changelog.slice(0, 8).map((entry) =>
-                (entry.changes ?? []).map((change, i) => {
-                  const config = CHANGE_TYPE_CONFIG[change.type as ChangeType];
-                  return (
-                    <div key={`${entry.date}-${i}`} className={styles.changeEntry}>
-                      <span
-                        className={styles.changeTypeBadge}
-                        style={{
-                          color: config?.color ?? '#78756f',
-                          background: `${config?.color ?? '#78756f'}1a`,
-                        }}
-                      >
-                        {config?.label ?? change.type}
-                      </span>
-                      <span>{change.description}</span>
-                    </div>
-                  );
-                }),
-              )}
-              {changelog.length === 0 && (
-                <span className={styles.changeEntry}>No recent changes</span>
-              )}
+          {changelog.length > 0 && (
+            <div className={styles.footerSection}>
+              <div className={styles.footerTitleRow}>
+                <span className={styles.footerTitle}>Recent Changes</span>
+                <Link href={`/changelog?domain=${domain.slug}`} className={styles.footerViewAll}>
+                  View all &rarr;
+                </Link>
+              </div>
+              <div className={styles.footerList}>
+                {changelog
+                  .flatMap((entry) =>
+                    (entry.changes ?? []).map((change) => ({ ...change, date: entry.date })),
+                  )
+                  .slice(0, 6)
+                  .map((change, i) => {
+                    const config = CHANGE_TYPE_CONFIG[change.type as ChangeType];
+                    return (
+                      <div key={i} className={styles.changeEntry}>
+                        <span
+                          className={styles.changeTypeBadge}
+                          style={{
+                            color: config?.color ?? '#78756f',
+                            background: `${config?.color ?? '#78756f'}1a`,
+                          }}
+                        >
+                          {config?.label ?? change.type}
+                        </span>
+                        <span className={styles.changeDesc}>{change.description}</span>
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className={styles.footerSection}>
-            <div className={styles.footerTitle}>Quick Links</div>
-            <div className={styles.footerList}>
-              {journeys.map((j) => (
-                <Link
-                  key={j.slug}
-                  href={`/journeys/${j.domain}/${j.slug}`}
-                  className={styles.footerLink}
-                >
-                  {j.title}
-                </Link>
-              ))}
-              {entities.map((e) => (
-                <Link key={e.name} href={`/data-model#${e.name}`} className={styles.footerLink}>
-                  {e.label ?? e.name} ({e.fieldCount} fields)
-                </Link>
-              ))}
+          {journeys.length > 0 && (
+            <div className={styles.footerSection}>
+              <div className={styles.footerTitle}>Journeys</div>
+              <div className={styles.footerList}>
+                {journeys.map((j) => (
+                  <Link
+                    key={j.slug}
+                    href={`/journeys/${j.domain}/${j.slug}`}
+                    className={styles.journeyLink}
+                  >
+                    <span>{j.title}</span>
+                    <span className={styles.linkArrow}>&rsaquo;</span>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {entities.length > 0 && (
+            <div className={styles.footerSection}>
+              <div className={styles.footerTitle}>Entities</div>
+              <div className={styles.footerList}>
+                {entities.map((e) => (
+                  <Link key={e.name} href={`/data-model#${e.name}`} className={styles.entityLink}>
+                    <span>{e.label ?? e.name}</span>
+                    <span className={styles.footerLinkMeta}>{e.fieldCount} fields</span>
+                    <span className={styles.linkArrow}>&rsaquo;</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

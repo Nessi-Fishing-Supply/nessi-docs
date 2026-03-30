@@ -8,7 +8,9 @@
   bottom: calc(100% + 8px);
   right: 0;
   width: max-content;
-  max-width: 240px;
+  max-width: 320px;
+  overflow-wrap: break-word;
+  word-break: break-all;
   padding: 8px 12px;
   border-radius: 6px;
   background: var(--bg-panel);

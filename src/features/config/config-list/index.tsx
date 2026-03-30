@@ -27,15 +27,16 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
   // Deep-link: detect hash, expand accordion, highlight, scroll
   useEffect(() => {
     function checkHash() {
-      const hash = window.location.hash.slice(1);
+      const hashes = window.location.hash.split('#').filter(Boolean);
+      const hash = hashes[hashes.length - 1];
       if (!hash) return;
 
       setOpenSlugs((prev) => new Set(prev).add(hash));
       setHighlightSlug(hash);
+      history.replaceState(null, '', window.location.pathname);
       setTimeout(() => {
         blockRefs.current.get(hash)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
-      setTimeout(() => history.replaceState(null, '', window.location.pathname), 600);
       setTimeout(() => setHighlightSlug(null), 9500);
     }
 

@@ -23,7 +23,7 @@ export interface ChangelogEntry {
 
 export const CHANGE_TYPE_CONFIG: Record<ChangeType, { label: string; color: string }> = {
   added: { label: 'Added', color: '#3d8c75' },
-  changed: { label: 'Changed', color: '#b86e0a' },
+  changed: { label: 'Changed', color: '#7b8fcd' },
   fixed: { label: 'Fixed', color: '#e27739' },
   removed: { label: 'Removed', color: '#b84040' },
 };

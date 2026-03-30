@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
 import type { ChangelogEntry } from '@/types/changelog';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
+import { formatDate } from '@/constants/dates';
 import styles from './dashboard-view.module.scss';
 
 interface DashboardViewProps {
@@ -78,7 +79,9 @@ export function DashboardView({ metrics, domains, recentChanges }: DashboardView
                     {config.label}
                   </span>
                   <span className={styles.changeDesc}>{change.description}</span>
-                  {change.date && <span className={styles.changeDate}>{change.date}</span>}
+                  {change.date && (
+                    <span className={styles.changeDate}>{formatDate(change.date)}</span>
+                  )}
                 </li>
               );
             })}
