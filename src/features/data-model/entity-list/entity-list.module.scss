@@ -183,15 +183,15 @@
   text-decoration: none;
   padding: 1px 8px;
   border-radius: 4px;
-  background: rgba(95, 127, 191, 0.1);
-  border: 1px solid rgba(95, 127, 191, 0.15);
+  background: rgb(95 127 191 / 10%);
+  border: 1px solid rgb(95 127 191 / 15%);
   transition:
     background 150ms ease-out,
     color 150ms ease-out;
   white-space: nowrap;
 
   &:hover {
-    background: rgba(95, 127, 191, 0.2);
+    background: rgb(95 127 191 / 20%);
     color: var(--text-primary);
   }
 }
