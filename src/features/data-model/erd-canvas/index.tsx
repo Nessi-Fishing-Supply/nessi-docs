@@ -13,6 +13,7 @@ import { Minimap } from '@/features/canvas/components/minimap';
 import { ErdLegend } from '@/features/canvas/components/erd-legend';
 import { useErdTrace } from '@/features/canvas/hooks/use-erd-trace';
 import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
+import { CanvasEmptyState } from '@/features/canvas/components/canvas-empty-state';
 import {
   ERD_NODE_WIDTH,
   ERD_NODE_HEIGHT,
@@ -184,6 +185,7 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
   };
 
   const visibleNodes = nodes.filter(isNodeVisible);
+  const hasVisibleNodes = visibleNodes.length > 0;
 
   useCanvasKeyboardNav({
     nodes: visibleNodes,
@@ -218,6 +220,7 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
     <CanvasProvider
       viewBox={viewBox}
       viewKey="erd"
+      overlay={!hasVisibleNodes ? <CanvasEmptyState /> : undefined}
       renderMinimap={(vbs, panTo) => (
         <Minimap
           nodes={nodes}
