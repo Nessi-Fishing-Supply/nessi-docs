@@ -4,18 +4,7 @@ import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
 import { GitHubLink } from '@/components/ui/github-link';
 import { LIFECYCLE_NODE_WIDTH } from '../utils/geometry';
-
-const TT_BG = 'rgba(15,19,25,0.97)';
-const TT_BORDER = 'rgba(255,255,255,0.12)';
-const TT_SHADOW = '0 4px 20px rgba(0,0,0,0.6), 0 8px 40px rgba(0,0,0,0.3)';
-
-const sectionLabel: React.CSSProperties = {
-  fontSize: '9px',
-  color: '#4a4840',
-  textTransform: 'uppercase',
-  letterSpacing: '0.06em',
-  marginBottom: '3px',
-};
+import { TT_BG, TT_BORDER, TT_SHADOW, sectionLabel } from '../constants/tooltip-styles';
 
 interface StateTooltipProps {
   state: LifecycleState;

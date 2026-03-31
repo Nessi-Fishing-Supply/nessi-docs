@@ -4,10 +4,9 @@ import { useState } from 'react';
 import { NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 
 const ENTRY_COLOR = '#3ba8d4';
+import { TT_BG, TT_BORDER, TT_SHADOW } from '../constants/tooltip-styles';
+
 const ENTRY_W = 160;
-const TT_BG = 'rgba(15,19,25,0.97)';
-const TT_BORDER = 'rgba(255,255,255,0.12)';
-const TT_SHADOW = '0 4px 20px rgba(0,0,0,0.6), 0 8px 40px rgba(0,0,0,0.3)';
 
 export interface EntryNodeMeta {
   description?: string;

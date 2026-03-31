@@ -6,6 +6,12 @@ import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { LabelPill } from '@/features/canvas/components/label-pill';
 import { smoothPath, type PortSide } from '@/features/canvas/utils/geometry';
+import {
+  TT_BG,
+  TT_BORDER,
+  TT_SHADOW,
+  sectionLabel,
+} from '@/features/canvas/constants/tooltip-styles';
 
 /* ------------------------------------------------------------------ */
 /*  Layout constants                                                   */
@@ -24,9 +30,7 @@ const LAYER_HEADER_HEIGHT = 36;
 /*  Tooltip styles                                                     */
 /* ------------------------------------------------------------------ */
 
-const TT_BG = 'rgba(15,19,25,0.97)';
-const TT_BORDER = 'rgba(255,255,255,0.12)';
-const TT_SHADOW = '0 4px 20px rgba(0,0,0,0.6), 0 8px 40px rgba(0,0,0,0.3)';
+// TT_BG, TT_BORDER, TT_SHADOW imported from shared constants
 
 /* ------------------------------------------------------------------ */
 /*  Layout engine                                                      */
@@ -207,14 +211,6 @@ function ArchTooltip({
 }: ArchTooltipProps) {
   const outgoing = connections.filter((c) => c.from === node.id);
   const incoming = connections.filter((c) => c.to === node.id);
-
-  const sectionLabel: React.CSSProperties = {
-    fontSize: '9px',
-    color: '#4a4840',
-    textTransform: 'uppercase',
-    letterSpacing: '0.06em',
-    marginBottom: '3px',
-  };
 
   return (
     <foreignObject

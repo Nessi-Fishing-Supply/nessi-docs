@@ -7,26 +7,7 @@ import type { ErdNode } from '@/types/entity-relationship';
 import { getEndpointsForTable, type EndpointRef } from '@/data/cross-links';
 import { GitHubLink } from '@/components/ui/github-link';
 import { ERD_NODE_WIDTH } from '../utils/geometry';
-
-const TT_BG = 'rgba(15,19,25,0.97)';
-const TT_BORDER = 'rgba(255,255,255,0.12)';
-const TT_SHADOW = '0 4px 20px rgba(0,0,0,0.6), 0 8px 40px rgba(0,0,0,0.3)';
-
-const sectionLabel: React.CSSProperties = {
-  fontSize: '9px',
-  color: '#4a4840',
-  textTransform: 'uppercase',
-  letterSpacing: '0.06em',
-  marginBottom: '3px',
-};
-
-const monoBlock: React.CSSProperties = {
-  fontSize: '10px',
-  fontFamily: 'var(--font-family-mono)',
-  background: 'rgba(255,255,255,0.04)',
-  padding: '4px 8px',
-  borderRadius: '4px',
-};
+import { TT_BG, TT_BORDER, TT_SHADOW, sectionLabel, monoBlock } from '../constants/tooltip-styles';
 
 const BADGE_COLORS: Record<string, string> = {
   core: '#3d8c75',
