@@ -733,19 +733,35 @@ function transformLifecycles(raw: RawLifecycle[]): Lifecycle[] {
 /* ------------------------------------------------------------------ */
 
 const ENTITY_CATEGORY_MAP: Record<string, string> = {
+  // Core marketplace entities
   members: 'core',
   shops: 'core',
   listings: 'core',
   cart_items: 'core',
-  shop_invites: 'lifecycle',
-  shop_ownership_transfers: 'lifecycle',
-  shop_members: 'junction',
-  shop_roles: 'junction',
-  listing_photos: 'media',
-  recently_viewed: 'tracking',
-  search_suggestions: 'discovery',
+  // Shop management (invites, transfers, roles, membership)
+  shop_members: 'shops',
+  shop_roles: 'shops',
+  shop_invites: 'shops',
+  shop_ownership_transfers: 'shops',
+  // Commerce (offers, watchers, price tracking)
+  offers: 'commerce',
+  watchers: 'commerce',
+  price_drop_notifications: 'commerce',
+  // Social (follows, blocks, flags)
+  follows: 'social',
+  member_blocks: 'social',
+  flags: 'social',
+  // Messaging
+  message_threads: 'messaging',
+  message_thread_participants: 'messaging',
+  messages: 'messaging',
+  // Content & discovery
+  listing_photos: 'content',
+  recently_viewed: 'content',
+  search_suggestions: 'content',
+  // User data
   addresses: 'user',
-  slugs: 'system',
+  slugs: 'user',
 };
 
 function transformEntities(raw: RawEntity[]): Entity[] {
@@ -910,8 +926,8 @@ export interface ErdCategoryGroup {
 
 const ERD_NODE_W = 160;
 const ERD_NODE_H = 52;
-const ERD_NODE_GAP_X = 40;
-const ERD_NODE_GAP_Y = 30;
+const ERD_NODE_GAP_X = 60;
+const ERD_NODE_GAP_Y = 50;
 const ERD_GROUP_PADDING = 24;
 const ERD_GROUP_HEADER = 32;
 const ERD_GROUP_GAP = 50;
@@ -920,13 +936,12 @@ const ERD_NODES_PER_ROW = 3; // Nodes per row within a group
 
 const ERD_CATEGORY_ORDER: { key: string; label: string; color: string }[] = [
   { key: 'core', label: 'Core', color: '#3d8c75' },
-  { key: 'user', label: 'User', color: '#5b9fd6' },
-  { key: 'junction', label: 'Junction', color: '#9b7bd4' },
-  { key: 'lifecycle', label: 'Lifecycle', color: '#d4923a' },
-  { key: 'media', label: 'Media', color: '#d46b8a' },
-  { key: 'tracking', label: 'Tracking', color: '#5bbfcf' },
-  { key: 'discovery', label: 'Discovery', color: '#c9b44a' },
-  { key: 'system', label: 'System', color: '#7a8591' },
+  { key: 'shops', label: 'Shop Management', color: '#d4923a' },
+  { key: 'commerce', label: 'Commerce', color: '#e27739' },
+  { key: 'social', label: 'Social', color: '#9b7bd4' },
+  { key: 'messaging', label: 'Messaging', color: '#5b9fd6' },
+  { key: 'content', label: 'Content & Discovery', color: '#5bbfcf' },
+  { key: 'user', label: 'User', color: '#8a8580' },
 ];
 
 let _erdCategoryGroups: ErdCategoryGroup[] = [];

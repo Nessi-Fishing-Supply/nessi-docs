@@ -5,15 +5,13 @@ import { ERD_NODE_WIDTH, ERD_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { ErdNode } from '@/types/entity-relationship';
 
 const BADGE_COLORS: Record<string, string> = {
-  core: '#3d8c75', // teal — primary business entities
-  user: '#5b9fd6', // blue — identity / people
-  lifecycle: '#d4923a', // amber — state transitions
-  junction: '#9b7bd4', // purple — relationship join tables
-  media: '#d46b8a', // rose — visual / uploads
-  tracking: '#5bbfcf', // cyan — analytics / metrics
-  discovery: '#c9b44a', // gold — search / finding
-  config: '#8a8580', // warm gray — settings
-  system: '#7a8591', // cool slate — infrastructure
+  core: '#3d8c75', // teal — primary marketplace entities
+  shops: '#d4923a', // amber — shop management
+  commerce: '#e27739', // orange — offers, watchers, pricing
+  social: '#9b7bd4', // purple — follows, blocks, flags
+  messaging: '#5b9fd6', // blue — threads, messages
+  content: '#5bbfcf', // cyan — photos, search, recently viewed
+  user: '#8a8580', // warm gray — addresses, slugs
 };
 
 const DEFAULT_COLOR = '#8a8580';

@@ -205,14 +205,12 @@ function avoidNodeOverlap(
 
 const CATEGORY_DEFS = [
   { key: 'core', label: 'Core', color: '#3d8c75' },
-  { key: 'user', label: 'User', color: '#5b9fd6' },
-  { key: 'lifecycle', label: 'Lifecycle', color: '#d4923a' },
-  { key: 'junction', label: 'Junction', color: '#9b7bd4' },
-  { key: 'media', label: 'Media', color: '#d46b8a' },
-  { key: 'tracking', label: 'Tracking', color: '#5bbfcf' },
-  { key: 'discovery', label: 'Discovery', color: '#c9b44a' },
-  { key: 'config', label: 'Config', color: '#8a8580' },
-  { key: 'system', label: 'System', color: '#7a8591' },
+  { key: 'shops', label: 'Shop Management', color: '#d4923a' },
+  { key: 'commerce', label: 'Commerce', color: '#e27739' },
+  { key: 'social', label: 'Social', color: '#9b7bd4' },
+  { key: 'messaging', label: 'Messaging', color: '#5b9fd6' },
+  { key: 'content', label: 'Content & Discovery', color: '#5bbfcf' },
+  { key: 'user', label: 'User', color: '#8a8580' },
 ];
 
 const ALL_CATEGORIES = new Set(CATEGORY_DEFS.map((c) => c.key));

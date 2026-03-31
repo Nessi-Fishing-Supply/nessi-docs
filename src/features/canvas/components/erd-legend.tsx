@@ -2,14 +2,12 @@ import { hexToRgba } from '../utils/geometry';
 
 const CATEGORIES: { label: string; color: string }[] = [
   { label: 'Core', color: '#3d8c75' },
-  { label: 'User', color: '#5b9fd6' },
-  { label: 'Lifecycle', color: '#d4923a' },
-  { label: 'Junction', color: '#9b7bd4' },
-  { label: 'Media', color: '#d46b8a' },
-  { label: 'Tracking', color: '#5bbfcf' },
-  { label: 'Discovery', color: '#c9b44a' },
-  { label: 'Config', color: '#8a8580' },
-  { label: 'System', color: '#7a8591' },
+  { label: 'Shop Management', color: '#d4923a' },
+  { label: 'Commerce', color: '#e27739' },
+  { label: 'Social', color: '#9b7bd4' },
+  { label: 'Messaging', color: '#5b9fd6' },
+  { label: 'Content & Discovery', color: '#5bbfcf' },
+  { label: 'User', color: '#8a8580' },
 ];
 
 interface ErdLegendProps {
