@@ -11,7 +11,6 @@ import {
   NODE_WIDTH,
   NODE_HEIGHT,
   LAYER_PADDING,
-  LAYER_HEADER_HEIGHT,
 } from './arch-layout';
 import { useArchTrace } from './use-arch-trace';
 import { ArchTooltip } from './arch-tooltip';
