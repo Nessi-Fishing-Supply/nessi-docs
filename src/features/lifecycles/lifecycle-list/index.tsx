@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { Lifecycle } from '@/types/lifecycle';
+import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
 import { PageHeader } from '@/components/ui/page-header';
 import styles from './lifecycle-list.module.scss';
 
@@ -71,6 +72,30 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
             <div className={styles.rowContent}>
               <div className={styles.rowTitle}>{lc.name}</div>
               <div className={styles.rowDesc}>{lc.description}</div>
+              <div className={styles.rowMeta}>
+                {(() => {
+                  const entityNames = getEntitiesForLifecycle(lc.slug);
+                  if (entityNames.length === 0) return null;
+                  return (
+                    <Link
+                      href={`/data-model#${entityNames[0]}`}
+                      className={styles.metaLink}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Table: {entityNames[0]}
+                    </Link>
+                  );
+                })()}
+                {(() => {
+                  const journeys = getJourneysForLifecycle(lc.slug);
+                  if (journeys.length === 0) return null;
+                  return (
+                    <span className={styles.metaText}>
+                      {journeys.length} {journeys.length === 1 ? 'journey' : 'journeys'}
+                    </span>
+                  );
+                })()}
+              </div>
             </div>
             <span
               className={styles.sourceBadge}

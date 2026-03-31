@@ -50,6 +50,28 @@
   margin-top: 3px;
 }
 
+.rowMeta {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+  font-size: 10px;
+}
+
+.metaLink {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: var(--font-family-mono);
+  transition: color 150ms ease-out;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.metaText {
+  color: var(--text-dim);
+}
+
 .sourceBadge {
   font-size: 11px;
   padding: 3px 9px;
