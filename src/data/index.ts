@@ -926,12 +926,12 @@ export interface ErdCategoryGroup {
 
 const ERD_NODE_W = 160;
 const ERD_NODE_H = 52;
-const ERD_NODE_GAP_X = 60;
-const ERD_NODE_GAP_Y = 50;
-const ERD_GROUP_PADDING = 24;
-const ERD_GROUP_HEADER = 32;
-const ERD_GROUP_GAP = 50;
-const ERD_GROUP_COL_GAP = 80;
+const ERD_NODE_GAP_X = 80;
+const ERD_NODE_GAP_Y = 70;
+const ERD_GROUP_PADDING = 32;
+const ERD_GROUP_HEADER = 36;
+const ERD_GROUP_GAP = 100;
+const ERD_GROUP_COL_GAP = 160;
 const ERD_NODES_PER_ROW = 3; // Nodes per row within a group
 
 const ERD_CATEGORY_ORDER: { key: string; label: string; color: string }[] = [

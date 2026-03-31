@@ -35,7 +35,7 @@ const SIBLING_SPREAD = 32;
 const PILL_H = 18;
 const PILL_PADDING = 6;
 
-/** Push apart any label pills that overlap after initial placement. */
+/** Push apart any label pills that overlap (trace mode only — small sets). */
 function deconflictPills(
   pills: { lx: number; ly: number; w: number }[],
 ): { lx: number; ly: number }[] {
@@ -140,67 +140,6 @@ function getEdgePath(fromNode: ErdNode, toNode: ErdNode, perpOffset = 0) {
     tx,
     ty,
   };
-}
-
-/** Padding around node boxes for label collision detection */
-const LABEL_PAD = 8;
-
-/** Check if a point overlaps any node's bounding box (with padding) */
-function overlapsNode(
-  x: number,
-  y: number,
-  allNodes: ErdNode[],
-  excludeIds: Set<string>,
-): ErdNode | null {
-  for (const n of allNodes) {
-    if (excludeIds.has(n.id)) continue;
-    if (
-      x >= n.x - LABEL_PAD &&
-      x <= n.x + ERD_NODE_WIDTH + LABEL_PAD &&
-      y >= n.y - LABEL_PAD &&
-      y <= n.y + ERD_NODE_HEIGHT + LABEL_PAD
-    ) {
-      return n;
-    }
-  }
-  return null;
-}
-
-/** Nudge a label position along the edge direction to avoid overlapping a node */
-function avoidNodeOverlap(
-  mx: number,
-  my: number,
-  fx: number,
-  fy: number,
-  tx: number,
-  ty: number,
-  allNodes: ErdNode[],
-  edgeFromId: string,
-  edgeToId: string,
-): { lx: number; ly: number } {
-  const excludeIds = new Set([edgeFromId, edgeToId]);
-  if (!overlapsNode(mx, my, allNodes, excludeIds)) {
-    return { lx: mx, ly: my };
-  }
-
-  // Try sliding toward source and target in 10% increments
-  for (let t = 0.3; t >= 0.1; t -= 0.1) {
-    // Closer to source
-    const sx = fx + (tx - fx) * t;
-    const sy = fy + (ty - fy) * t;
-    if (!overlapsNode(sx, sy, allNodes, excludeIds)) {
-      return { lx: sx, ly: sy };
-    }
-    // Closer to target
-    const dx = fx + (tx - fx) * (1 - t);
-    const dy = fy + (ty - fy) * (1 - t);
-    if (!overlapsNode(dx, dy, allNodes, excludeIds)) {
-      return { lx: dx, ly: dy };
-    }
-  }
-
-  // Fallback: return original midpoint
-  return { lx: mx, ly: my };
 }
 
 const CATEGORY_DEFS = [
@@ -387,56 +326,48 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
         );
       })}
 
-      {/* Edge labels — rendered above all lines so glass effect works */}
-      {(() => {
-        // Pass 1: compute initial positions
-        const pillData = edges.map((edge, i) => {
-          const fromNode = nodeMap.get(edge.from);
-          const toNode = nodeMap.get(edge.to);
-          if (!fromNode || !toNode) return null;
-          if (!isNodeVisible(fromNode) || !isNodeVisible(toNode)) return null;
+      {/* Edge labels — only shown in trace mode on lit edges */}
+      {hasTrace &&
+        (() => {
+          const pillData = edges
+            .map((edge, i) => {
+              if (!litEdges.has(i)) return null;
+              const fromNode = nodeMap.get(edge.from);
+              const toNode = nodeMap.get(edge.to);
+              if (!fromNode || !toNode) return null;
 
-          const sibling = siblingMap.get(i);
-          const perpOffset =
-            sibling && sibling.siblingCount > 1
-              ? (sibling.siblingIndex - (sibling.siblingCount - 1) / 2) * SIBLING_SPREAD
-              : 0;
+              const sibling = siblingMap.get(i);
+              const perpOffset =
+                sibling && sibling.siblingCount > 1
+                  ? (sibling.siblingIndex - (sibling.siblingCount - 1) / 2) * SIBLING_SPREAD
+                  : 0;
 
-          const path = getEdgePath(fromNode, toNode, perpOffset);
-          const { lx, ly } = avoidNodeOverlap(
-            path.mx,
-            path.my,
-            path.fx,
-            path.fy,
-            path.tx,
-            path.ty,
-            nodes,
-            edge.from,
-            edge.to,
-          );
+              const path = getEdgePath(fromNode, toNode, perpOffset);
+              const label = edge.fk ?? edge.label;
+              return { i, lx: path.mx, ly: path.my, label };
+            })
+            .filter((p): p is NonNullable<typeof p> => p !== null);
 
-          const label = edge.fk ?? edge.label;
-          const w = label.length * 6.5 + 16;
-          const isLit = litEdges.has(i);
-          const isDimmed = hasTrace && !isLit;
+          // Deconflict only the few visible pills (trace mode = small set)
+          const asDeconflict = pillData.map((p) => ({
+            lx: p.lx,
+            ly: p.ly,
+            w: p.label.length * 6.5 + 16,
+          }));
+          const deconflicted = deconflictPills(asDeconflict);
 
-          return { i, lx, ly, w, label, isDimmed };
-        });
-
-        const visible = pillData.filter((p): p is NonNullable<typeof p> => p !== null);
-
-        // Pass 2: push apart overlapping pills
-        const deconflicted = deconflictPills(visible);
-
-        return visible.map((pill, idx) => (
-          <g
-            key={pill.i}
-            style={{ opacity: pill.isDimmed ? 0.1 : 1, transition: 'opacity 400ms ease-out' }}
-          >
-            <LabelPill x={deconflicted[idx].lx} y={deconflicted[idx].ly} label={pill.label} />
-          </g>
-        ));
-      })()}
+          return pillData.map((pill, idx) => (
+            <g
+              key={pill.i}
+              style={{
+                opacity: 1,
+                animation: 'tooltip-in 150ms ease-out',
+              }}
+            >
+              <LabelPill x={deconflicted[idx].lx} y={deconflicted[idx].ly} label={pill.label} />
+            </g>
+          ));
+        })()}
 
       {/* Entity nodes */}
       {nodes.map((node) => {
