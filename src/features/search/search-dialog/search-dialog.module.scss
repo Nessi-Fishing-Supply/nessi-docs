@@ -181,3 +181,23 @@
     background: var(--bg-raised);
   }
 }
+
+:global {
+  @keyframes overflow-scroll {
+    0% {
+      transform: translateX(0);
+    }
+
+    15% {
+      transform: translateX(0);
+    }
+
+    85% {
+      transform: translateX(var(--scroll-distance));
+    }
+
+    100% {
+      transform: translateX(var(--scroll-distance));
+    }
+  }
+}
