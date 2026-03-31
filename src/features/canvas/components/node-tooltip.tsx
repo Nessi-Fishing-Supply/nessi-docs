@@ -5,6 +5,7 @@ import type { JourneyNode } from '@/types/journey';
 import Link from 'next/link';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { GitHubLink } from '@/components/ui/github-link';
+import { getLifecyclesForRoute } from '@/data';
 import { NODE_WIDTH } from '../utils/geometry';
 import { TT_BG, TT_BORDER, TT_SHADOW, sectionLabel, monoBlock } from '../constants/tooltip-styles';
 
@@ -269,6 +270,44 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                   )}
                 </div>
               )}
+
+              {/* Lifecycle impact */}
+              {node.route &&
+                (() => {
+                  const lcRefs = getLifecyclesForRoute(node.route);
+                  if (lcRefs.length === 0) return null;
+                  return (
+                    <div style={{ marginTop: '8px' }}>
+                      <div style={sectionLabel}>Affects Lifecycle</div>
+                      {lcRefs.map((lc) => (
+                        <Link
+                          key={lc.slug}
+                          href={`/lifecycles/${lc.slug}`}
+                          style={{
+                            ...monoBlock,
+                            color: '#5f7fbf',
+                            textDecoration: 'none',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            cursor: 'pointer',
+                            transition: 'background 150ms ease-out',
+                            marginTop: '2px',
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                          }}
+                        >
+                          <span>↻</span>
+                          <span style={{ flex: 1 }}>{lc.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  );
+                })()}
 
               {/* What it does / Why */}
               {node.why && (
