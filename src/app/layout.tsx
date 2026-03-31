@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { DM_Sans, DM_Serif_Display } from 'next/font/google';
+import { DM_Sans } from 'next/font/google';
 import { DocsProvider } from '@/providers/docs-provider';
 import { AppShell } from '@/components/layout/app-shell';
 import { Topbar } from '@/components/layout/topbar';
@@ -18,13 +18,6 @@ const dmSans = DM_Sans({
   weight: ['300', '400', '500', '600', '700'],
 });
 
-const dmSerif = DM_Serif_Display({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-dm-serif',
-  weight: '400',
-});
-
 export const metadata: Metadata = {
   title: { template: '%s | Nessi Docs', default: 'Nessi Docs' },
   description: 'Documentation and testing tool for the Nessi fishing marketplace',
@@ -32,7 +25,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
+    <html lang="en" className={dmSans.variable}>
       <body className={dmSans.className}>
         <StalenessBanner />
         <DocsProvider>
