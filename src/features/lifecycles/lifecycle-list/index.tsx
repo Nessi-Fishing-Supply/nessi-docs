@@ -77,13 +77,18 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
                   const entityNames = getEntitiesForLifecycle(lc.slug);
                   if (entityNames.length === 0) return null;
                   return (
-                    <Link
-                      href={`/data-model#${entityNames[0]}`}
+                    <span
+                      role="link"
+                      tabIndex={0}
                       className={styles.metaLink}
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.location.href = `/data-model#${entityNames[0]}`;
+                      }}
                     >
                       Table: {entityNames[0]}
-                    </Link>
+                    </span>
                   );
                 })()}
                 {(() => {
