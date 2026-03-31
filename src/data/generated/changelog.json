@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(messaging): #309 API routes for member blocking",
+      "number": 331,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/331",
+      "mergedAt": "2026-03-31T15:50:33Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "messaging",
+      "type": "feature"
+    },
+    {
       "title": "feat(offers): #308 API routes for offer negotiation lifecycle",
       "number": 330,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/330",

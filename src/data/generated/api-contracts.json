@@ -719,6 +719,30 @@
           "sourceFile": "src/app/api/members/avatar/route.ts"
         },
         {
+          "method": "DELETE",
+          "path": "/api/members/block/:member_id",
+          "label": ":Member Id Block",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 404, 500],
+          "requestFields": [],
+          "description": "Unblock a member to allow them to message you again",
+          "tags": [],
+          "sourceFile": "src/app/api/members/block/[member_id]/route.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/members/block",
+          "label": "Block Member",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 409, 500],
+          "requestFields": [],
+          "description": "Block a member to prevent them from messaging you",
+          "tags": [],
+          "sourceFile": "src/app/api/members/block/route.ts"
+        },
+        {
           "method": "GET",
           "path": "/api/members/seller-preconditions",
           "label": "List Seller Precondition",
