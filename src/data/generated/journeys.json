@@ -1310,7 +1310,7 @@
       "title": "Buyer-Seller Messaging",
       "persona": "buyer",
       "description": "Buyers and sellers exchange messages in typed threads (inquiry, direct, offer, custom request) with safety filtering, unread tracking, and archiving.",
-      "relatedIssues": [307],
+      "relatedIssues": [307, 312],
       "nodes": [
         {
           "id": "messaging-hub--entry",
@@ -1322,8 +1322,9 @@
           "type": "step",
           "label": "Open Messaging",
           "layer": "client",
-          "status": "planned",
-          "notes": "Entry point for all messaging flows. Accessible from the nav inbox badge or from a listing detail page CTA. Full inbox UI is Phase 3 — API layer is built. See planned inbox-page step in view-inbox flow."
+          "status": "built",
+          "codeRef": "src/app/(frontend)/messages/page.tsx",
+          "notes": "Entry point for all messaging flows. Accessible from the nav inbox badge or from a listing detail page CTA. Route is /messages — auth-guarded by proxy.ts."
         },
         {
           "id": "messaging-hub--decision-open-messaging",
@@ -1358,6 +1359,30 @@
           "label": "View Thread Inbox"
         },
         {
+          "id": "view-inbox--inbox-loading",
+          "type": "step",
+          "label": "Show Loading Skeleton",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/app/(frontend)/messages/inbox-page.tsx",
+          "why": "Renders 5 skeleton rows with role=\"status\" and sr-only \"Loading your messages\" while useThreads() is pending. Each skeleton row has avatar, body, and timestamp placeholders."
+        },
+        {
+          "id": "view-inbox--decision-inbox-loading",
+          "type": "decision",
+          "label": "Load result?",
+          "options": [
+            {
+              "label": "Loading",
+              "to": "view-inbox--fetch-threads"
+            },
+            {
+              "label": "Error",
+              "to": "view-inbox--inbox-error"
+            }
+          ]
+        },
+        {
           "id": "view-inbox--fetch-threads",
           "type": "step",
           "label": "Fetch Thread List",
@@ -1365,7 +1390,7 @@
           "status": "built",
           "route": "/api/messaging/threads",
           "codeRef": "src/app/api/messaging/threads/route.ts",
-          "why": "Returns all threads where user is a participant, joined with participant member details and my_unread_count. Optional ?type= filter accepts: inquiry, direct, offer, custom_request.",
+          "why": "Returns all threads where user is a participant, joined with participant member details and my_unread_count. Optional ?type= filter accepts: inquiry, direct, offer, custom_request. Client fetches all threads then filters client-side by active tab.",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -1391,7 +1416,7 @@
           "options": [
             {
               "label": "Yes",
-              "to": "view-inbox--inbox-page"
+              "to": "view-inbox--inbox-tabs"
             },
             {
               "label": "No",
@@ -1422,20 +1447,55 @@
           ]
         },
         {
+          "id": "view-inbox--inbox-error",
+          "type": "step",
+          "label": "Show Error State",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/app/(frontend)/messages/inbox-page.tsx",
+          "why": "ErrorState banner: \"Something went wrong loading your messages\" with a Retry button that calls refetch(). Shown when useThreads() isError is true."
+        },
+        {
+          "id": "view-inbox--inbox-tabs",
+          "type": "step",
+          "label": "Render Filter Tabs",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/app/(frontend)/messages/inbox-page.tsx",
+          "why": "Tabs component with five tabs: All, Inquiries, Offers, Custom Requests, Direct. Each tab shows its unread count badge (summed from my_unread_count across filtered threads). Switching tabs filters allThreads client-side by thread.type — no additional API call."
+        },
+        {
+          "id": "view-inbox--decision-inbox-tabs",
+          "type": "decision",
+          "label": "Active tab has threads?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "view-inbox--inbox-page"
+            },
+            {
+              "label": "No — filtered empty",
+              "to": "view-inbox--inbox-empty"
+            }
+          ]
+        },
+        {
           "id": "view-inbox--inbox-page",
           "type": "step",
-          "label": "Show Inbox",
+          "label": "Render Thread List",
           "layer": "client",
-          "status": "planned",
-          "notes": "Inbox page UI is Phase 3. Renders thread list with participant avatars, last message preview, unread badge per thread, and type filter tabs (All / Inquiries / Offers / Direct). ThreadWithParticipants already carries my_unread_count and last_message_preview from the API."
+          "status": "built",
+          "codeRef": "src/features/messaging/components/thread-list/index.tsx",
+          "why": "ThreadList renders a <ul> of ThreadRow components. Each ThreadRow links to /messages/{thread_id} and shows: other participant avatar, name (bold if unread), TypeBadge (colored pill for thread type), last_message_preview truncated, relative timestamp (Just now / Xm ago / Xh ago / Yesterday / MMM D), and an unread dot indicator."
         },
         {
           "id": "view-inbox--inbox-empty",
           "type": "step",
-          "label": "Show Empty Inbox",
+          "label": "Show Empty State",
           "layer": "client",
-          "status": "planned",
-          "notes": "Empty state when user has no threads. Should show encouraging CTA to browse listings. Distinct from filtered-empty state (all threads exist but the active filter shows none)."
+          "status": "built",
+          "codeRef": "src/app/(frontend)/messages/inbox-page.tsx",
+          "why": "Empty state with chat icon, \"No messages yet\" heading, tab-contextual description (e.g. \"You have no offers yet\" on the Offers tab), and a \"Browse listings\" CTA that routes to /search. Shown when the filtered thread list has zero items."
         },
         {
           "id": "start-thread--entry",
@@ -1928,7 +1988,21 @@
         },
         {
           "from": "view-inbox--entry",
-          "to": "view-inbox--fetch-threads"
+          "to": "view-inbox--inbox-loading"
+        },
+        {
+          "from": "view-inbox--inbox-loading",
+          "to": "view-inbox--decision-inbox-loading"
+        },
+        {
+          "from": "view-inbox--decision-inbox-loading",
+          "to": "view-inbox--fetch-threads",
+          "opt": "Loading"
+        },
+        {
+          "from": "view-inbox--decision-inbox-loading",
+          "to": "view-inbox--inbox-error",
+          "opt": "Error"
         },
         {
           "from": "view-inbox--fetch-threads",
@@ -1936,7 +2010,7 @@
         },
         {
           "from": "view-inbox--decision-fetch-threads",
-          "to": "view-inbox--inbox-page",
+          "to": "view-inbox--inbox-tabs",
           "opt": "Yes"
         },
         {
@@ -1946,7 +2020,25 @@
         },
         {
           "from": "view-inbox--fetch-unread-count",
-          "to": "view-inbox--inbox-page"
+          "to": "view-inbox--inbox-error"
+        },
+        {
+          "from": "view-inbox--inbox-error",
+          "to": "view-inbox--inbox-tabs"
+        },
+        {
+          "from": "view-inbox--inbox-tabs",
+          "to": "view-inbox--decision-inbox-tabs"
+        },
+        {
+          "from": "view-inbox--decision-inbox-tabs",
+          "to": "view-inbox--inbox-page",
+          "opt": "Yes"
+        },
+        {
+          "from": "view-inbox--decision-inbox-tabs",
+          "to": "view-inbox--inbox-empty",
+          "opt": "No — filtered empty"
         },
         {
           "from": "view-inbox--inbox-page",
@@ -6330,7 +6422,7 @@
       "domain": "auth",
       "title": "Route Protection (proxy.ts)",
       "persona": "auth",
-      "description": "proxy.ts intercepts every request to enforce auth on /dashboard/*, /shop/transfer, and /watchlist routes, redirect completed onboarding users, and refresh session cookies on public pages.",
+      "description": "proxy.ts intercepts every request to enforce auth on /dashboard/*, /shop/transfer, /watchlist, and /messages routes, redirect completed onboarding users, and refresh session cookies on public pages.",
       "relatedIssues": [],
       "nodes": [
         {
@@ -6388,7 +6480,7 @@
           "label": "Verify JWT",
           "layer": "server",
           "status": "built",
-          "why": "getUser() verifies JWT from cookies for /dashboard/*, /shop/transfer, and /watchlist routes"
+          "why": "getUser() verifies JWT from cookies for /dashboard/*, /shop/transfer, /watchlist, and /messages routes"
         },
         {
           "id": "route-protection--decision-verify-jwt",
@@ -6411,7 +6503,7 @@
           "label": "Redirect to Home",
           "layer": "server",
           "status": "built",
-          "why": "Redirect unauthenticated users to / when accessing /dashboard/*, /shop/transfer, or /watchlist"
+          "why": "Redirect unauthenticated users to / when accessing /dashboard/*, /shop/transfer, /watchlist, or /messages"
         },
         {
           "id": "route-protection--check-onboarding",
