@@ -18,6 +18,7 @@ import { NodeTooltip } from '@/features/canvas/components/node-tooltip';
 import { Minimap } from '@/features/canvas/components/minimap';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { Legend } from '@/features/canvas/components/legend';
+import { CanvasEmptyState } from '@/features/canvas/components/canvas-empty-state';
 import { detectJourneyBackEdges } from '@/data/index';
 
 interface JourneyCanvasProps {
@@ -79,6 +80,8 @@ export function JourneyCanvas({
     return true;
   };
 
+  const hasVisibleNodes = journey.nodes.some(isNodeVisible);
+
   const nodeMap = new Map(journey.nodes.map((n) => [n.id, n]));
 
   // Detect back-edges and decision branch edges for visual treatment
@@ -119,6 +122,7 @@ export function JourneyCanvas({
     <CanvasProvider
       viewBox={viewBox}
       viewKey={`journey-${journey.slug}`}
+      overlay={!hasVisibleNodes ? <CanvasEmptyState /> : undefined}
       renderMinimap={(vbs, panTo) => (
         <Minimap
           nodes={journey.nodes}
