@@ -208,3 +208,74 @@ export function search(query: string, limit = 20): SearchResult[] {
     .slice(0, limit)
     .map((s) => s.result);
 }
+
+/* ------------------------------------------------------------------ */
+/*  Grouped search — results organized by category                    */
+/* ------------------------------------------------------------------ */
+
+export interface SearchCategory {
+  type: SearchResult['type'];
+  label: string;
+  color: string;
+  results: SearchResult[];
+}
+
+const CATEGORY_CONFIG: { type: SearchResult['type']; label: string; color: string }[] = [
+  { type: 'journey', label: 'Journeys', color: '#3d8c75' },
+  { type: 'step', label: 'Steps', color: '#3d8c75' },
+  { type: 'endpoint', label: 'Endpoints', color: '#e27739' },
+  { type: 'entity', label: 'Entities', color: '#8a8580' },
+  { type: 'lifecycle', label: 'Lifecycles', color: '#5f7fbf' },
+  { type: 'state', label: 'States', color: '#5f7fbf' },
+  { type: 'feature', label: 'Features', color: '#9b7bd4' },
+  { type: 'architecture', label: 'Architecture', color: '#d4923a' },
+  { type: 'config', label: 'Config', color: '#78756f' },
+];
+
+export function searchGrouped(query: string, maxPerCategory = 5): SearchCategory[] {
+  if (!query.trim()) return [];
+  const index = getSearchIndex();
+  const q = query.toLowerCase();
+  const tokens = q.split(/\s+/).filter(Boolean);
+
+  // Score all results
+  const scored: { result: SearchResult; score: number }[] = [];
+  for (const result of index) {
+    const titleLower = result.title.toLowerCase();
+    const subtitleLower = result.subtitle.toLowerCase();
+    const combined = titleLower + ' ' + subtitleLower;
+
+    let score = 0;
+    if (titleLower === q) score += 100;
+    else if (titleLower.startsWith(q)) score += 60;
+    else if (titleLower.includes(q)) score += 40;
+
+    const allTokensMatch = tokens.every((t) => combined.includes(t));
+    if (allTokensMatch) score += 30;
+
+    for (const t of tokens) {
+      if (titleLower.includes(t)) score += 10;
+      if (subtitleLower.includes(t)) score += 5;
+    }
+
+    if (score > 0) scored.push({ result, score });
+  }
+
+  // Group by type, sorted by score within each group
+  scored.sort((a, b) => b.score - a.score);
+
+  const groups = new Map<string, SearchResult[]>();
+  for (const { result } of scored) {
+    const existing = groups.get(result.type) ?? [];
+    existing.push(result);
+    groups.set(result.type, existing);
+  }
+
+  // Build categories in defined order, skip empty
+  return CATEGORY_CONFIG.filter((cfg) => groups.has(cfg.type)).map((cfg) => ({
+    type: cfg.type,
+    label: cfg.label,
+    color: cfg.color,
+    results: groups.get(cfg.type)!.slice(0, maxPerCategory),
+  }));
+}
