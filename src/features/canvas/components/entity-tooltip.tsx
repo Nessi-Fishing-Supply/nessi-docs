@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Entity } from '@/types/data-model';
 import type { ErdNode } from '@/types/entity-relationship';
 import { getEndpointsForTable, type EndpointRef } from '@/data/cross-links';
+import { getLifecycleForEntity } from '@/data';
 import { GitHubLink } from '@/components/ui/github-link';
 import { ERD_NODE_WIDTH } from '../utils/geometry';
 import { TT_BG, TT_BORDER, TT_SHADOW, sectionLabel, monoBlock } from '../constants/tooltip-styles';
@@ -353,6 +354,22 @@ export function EntityTooltip({ node, entity, children, suppressTooltip }: Entit
                   </div>
                 </div>
               )}
+
+              {/* Lifecycle */}
+              {(() => {
+                const lc = entity ? getLifecycleForEntity(entity.name) : null;
+                if (!lc) return null;
+                return (
+                  <div>
+                    <div style={sectionLabel}>Lifecycle</div>
+                    <HoverLink href={`/lifecycles/${lc.slug}`}>
+                      <span style={{ color: '#5f7fbf' }}>↻</span>
+                      <span style={{ flex: 1 }}>{lc.name}</span>
+                      {linkIcon}
+                    </HoverLink>
+                  </div>
+                );
+              })()}
 
               {/* Source file */}
               {entity!.sourceFile && (
