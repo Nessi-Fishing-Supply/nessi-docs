@@ -2,7 +2,14 @@
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { search, type SearchResult } from '../search-index';
+import { searchGrouped, type SearchResult, type SearchCategory } from '../search-index';
+import {
+  getRecentSearches,
+  addRecentSearch,
+  removeRecentSearch,
+  clearRecentSearches,
+} from '../recent-searches';
+import { OverflowText } from './overflow-text';
 import styles from './search-dialog.module.scss';
 
 interface SearchDialogProps {
@@ -10,28 +17,50 @@ interface SearchDialogProps {
   onClose: () => void;
 }
 
+/** Flatten grouped categories into a linear list for keyboard navigation. */
+function flattenResults(categories: SearchCategory[]): SearchResult[] {
+  return categories.flatMap((cat) => cat.results);
+}
+
+/** Assign categories to 3 columns, balancing by result count (shortest column gets next). */
+function assignColumns(categories: SearchCategory[]): SearchCategory[][] {
+  const columns: SearchCategory[][] = [[], [], []];
+  const heights = [0, 0, 0];
+
+  for (const cat of categories) {
+    const minIdx = heights.indexOf(Math.min(...heights));
+    columns[minIdx].push(cat);
+    heights[minIdx] += cat.results.length + 1;
+  }
+
+  return columns;
+}
+
 export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  // Focus the input when dialog opens
   useEffect(() => {
     if (isOpen) {
       requestAnimationFrame(() => inputRef.current?.focus());
+      setRecentSearches(getRecentSearches());
     }
   }, [isOpen]);
 
-  // Derive results from query
-  const results = useMemo(() => search(query), [query]);
+  const categories = useMemo(() => searchGrouped(query), [query]);
+  const flatResults = useMemo(() => flattenResults(categories), [categories]);
+  const columns = useMemo(() => assignColumns(categories), [categories]);
 
   const navigate = useCallback(
     (result: SearchResult) => {
+      if (query.trim()) addRecentSearch(query.trim());
       router.push(result.href);
       onClose();
     },
-    [router, onClose],
+    [router, onClose, query],
   );
 
   const handleQueryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,20 +72,39 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     (e: React.KeyboardEvent) => {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        setActiveIndex((i) => Math.min(i + 1, results.length - 1));
+        setActiveIndex((i) => Math.min(i + 1, flatResults.length - 1));
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         setActiveIndex((i) => Math.max(i - 1, 0));
-      } else if (e.key === 'Enter' && results[activeIndex]) {
-        navigate(results[activeIndex]);
+      } else if (e.key === 'Enter' && flatResults[activeIndex]) {
+        navigate(flatResults[activeIndex]);
       } else if (e.key === 'Escape') {
         onClose();
       }
     },
-    [results, activeIndex, navigate, onClose],
+    [flatResults, activeIndex, navigate, onClose],
   );
 
+  const handleRecentClick = useCallback((q: string) => {
+    setQuery(q);
+    setActiveIndex(0);
+  }, []);
+
+  const handleRecentRemove = useCallback((q: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    removeRecentSearch(q);
+    setRecentSearches(getRecentSearches());
+  }, []);
+
+  const handleClearRecent = useCallback(() => {
+    clearRecentSearches();
+    setRecentSearches([]);
+  }, []);
+
   if (!isOpen) return null;
+
+  // Track flat index across columns for active highlighting
+  let flatIdx = 0;
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -77,33 +125,75 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
           </button>
         </div>
 
-        {results.length > 0 && (
+        {categories.length > 0 && (
           <div className={styles.results}>
-            {results.map((result, i) => (
-              <button
-                key={`${result.type}-${result.title}-${i}`}
-                className={`${styles.result} ${i === activeIndex ? styles.active : ''}`}
-                onClick={() => navigate(result)}
-                onMouseEnter={() => setActiveIndex(i)}
-              >
-                <span className={styles.resultIcon} style={{ color: result.color }}>
-                  {result.icon}
-                </span>
-                <div className={styles.resultText}>
-                  <span className={styles.resultTitle}>{result.title}</span>
-                  <span className={styles.resultSubtitle}>{result.subtitle}</span>
+            <div className={styles.columnGrid}>
+              {columns.map((colCategories, colIdx) => (
+                <div key={colIdx} className={styles.column}>
+                  {colCategories.map((cat) => {
+                    const catResults = cat.results.map((result, i) => {
+                      const currentFlatIdx = flatIdx++;
+                      return (
+                        <button
+                          key={`${result.type}-${result.title}-${i}`}
+                          className={`${styles.result} ${currentFlatIdx === activeIndex ? styles.active : ''}`}
+                          onClick={() => navigate(result)}
+                          onMouseEnter={() => setActiveIndex(currentFlatIdx)}
+                        >
+                          <span className={styles.resultIcon} style={{ color: result.color }}>
+                            {result.icon}
+                          </span>
+                          <div className={styles.resultText}>
+                            <OverflowText className={styles.resultTitle}>
+                              {result.title}
+                            </OverflowText>
+                            <OverflowText className={styles.resultSubtitle}>
+                              {result.subtitle}
+                            </OverflowText>
+                          </div>
+                        </button>
+                      );
+                    });
+
+                    return (
+                      <div key={cat.type} className={styles.category}>
+                        <div className={styles.categoryHeader} style={{ color: cat.color }}>
+                          {cat.label}
+                        </div>
+                        {catResults}
+                      </div>
+                    );
+                  })}
                 </div>
-                <span className={styles.resultType}>{result.type}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {query && categories.length === 0 && (
+          <div className={styles.empty}>No results for &ldquo;{query}&rdquo;</div>
+        )}
+
+        {!query && recentSearches.length > 0 && (
+          <div className={styles.recentSearches}>
+            <div className={styles.recentHeader}>
+              <span>Recent</span>
+              <button className={styles.clearRecent} onClick={handleClearRecent}>
+                Clear all
+              </button>
+            </div>
+            {recentSearches.map((q) => (
+              <button key={q} className={styles.recentItem} onClick={() => handleRecentClick(q)}>
+                <span className={styles.recentQuery}>{q}</span>
+                <span className={styles.recentRemove} onClick={(e) => handleRecentRemove(q, e)}>
+                  ×
+                </span>
               </button>
             ))}
           </div>
         )}
 
-        {query && results.length === 0 && (
-          <div className={styles.empty}>No results for &ldquo;{query}&rdquo;</div>
-        )}
-
-        {!query && (
+        {!query && recentSearches.length === 0 && (
           <div className={styles.hints}>
             <span>Journeys</span>
             <span>API endpoints</span>
