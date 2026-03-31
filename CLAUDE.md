@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Nessi Docs is the internal documentation and product visualization app for the Nessi fishing marketplace. It renders structured data (journeys, API contracts, data model, lifecycles, features, permissions, config) as interactive visualizations for the product and engineering teams.
+Nessi Docs is the internal documentation and product visualization app for the Nessi fishing marketplace. It renders structured data (journeys, API contracts, data model, entity relationships, lifecycles, architecture diagrams, features, config) as interactive visualizations for the product and engineering teams.
 
 Deployed at `docs.nessifishingsupply.com` (planned).
 
@@ -75,7 +75,7 @@ src/
 │   └── search/             # Global search dialog
 ├── components/
 │   ├── layout/             # App shell, sidebar, topbar, detail panel
-│   └── ui/                 # Reusable UI primitives (badge, border-trace, breadcrumb, github-link, etc.)
+│   └── ui/                 # Reusable UI primitives (badge, border-trace, breadcrumb, cross-link, github-link, info-block, key-value-row, page-header, section-label, tooltip)
 ├── providers/              # React context (DocsProvider for selection state)
 ├── constants/              # Domain config, colors, GitHub URL
 └── styles/                 # Nessi design tokens (variables, mixins, globals)
@@ -89,7 +89,8 @@ All graph visualizations (Journeys, ERD, Lifecycles, Architecture) use a shared 
 - **Hooks** — `usePanZoom` (external store), `useViewport`, `useStaggerEntry`, `usePathTrace` (journey), `useErdTrace` (ERD/lifecycle)
 - **Shared components** — `Edge`, `AnimatedEdge`, `LabelPill`, `Minimap`, `CanvasToolbar`, `Legend`, `DotGrid`
 - **Domain-specific nodes** — `StepNode`/`EntryNode`/`DecisionNode` (journeys), `EntityNode` (ERD), `StateNode` (lifecycles), inline SVG nodes (architecture)
-- **Tooltips** — `NodeTooltip` (journeys, click-to-pin), `EntityTooltip` (ERD, hover with bridging), `StateTooltip` (lifecycles, hover with bridging), `ArchTooltip` (architecture, hover with bridging)
+- **Tooltips** — `NodeTooltip` (journeys, click-to-pin), `EntityTooltip` (ERD, hover with bridging), `StateTooltip` (lifecycles, hover with bridging)
+- **Architecture tooltip** — `ArchTooltip` is defined inline in the architecture canvas component (`src/features/architecture/architecture-canvas/`), not in the shared canvas dir
 - **Geometry** — `smoothPath()` for direction-aware bezier curves, port helpers, node dimension constants
 
 ### Canvas Features (shared across all canvases)
@@ -124,7 +125,7 @@ Used by: Data Model rows, API Map endpoint rows, Feature domain feature rows, Co
 
 Single file that imports all raw JSON from `src/data/generated/`, transforms it, and re-exports typed data:
 
-- **Layout engines** — BFS-based positioning for lifecycle state machines, grid layout for ERD nodes
+- **Layout engines** — Topological layering with decision-aware vertical positioning for journey canvases, BFS-based positioning for lifecycle state machines, category-clustered grid layout for ERD nodes
 - **Color assignment** — Entity category colors, lifecycle state colors
 - **Domain mapping** — `FEATURE_TO_DOMAIN` map for grouping features into domains
 - **Cross-links** — `cross-links.ts` builds bidirectional indexes between entities and API endpoints
@@ -159,12 +160,14 @@ Three-panel layout managed by `AppShell`:
 - **Sidebar** — Three-group navigation (System Views / Features / Reference)
 - **Main content** — Page-specific visualization
 - **Detail panel** — Context-sensitive inspector (only on non-canvas pages)
+- **DeviceGate** — Blocks mobile/small-screen access with a message (desktop-only app)
+- **StalenessBanner** — Warns when synced data is older than a threshold based on `_meta.json` timestamp
 
 Selection state flows through `DocsProvider` (React context). The `SelectedItem` union type determines which detail panel renders.
 
 ### Fonts
 
-DM Sans (body/UI) and DM Serif Display (headings), loaded via `next/font/google` with CSS variables `--font-dm-sans` and `--font-dm-serif`.
+DM Sans (body/UI), loaded via `next/font/google` with CSS variable `--font-dm-sans`. DM Serif Display is still loaded (`--font-dm-serif`) but no longer applied to any elements — serif was removed site-wide.
 
 ### Styling
 

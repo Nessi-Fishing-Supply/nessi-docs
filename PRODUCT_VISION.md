@@ -77,7 +77,7 @@ Archway isn't theoretical. The proof-of-concept exists and is in daily use.
 - **User journey canvases** — interactive pan/zoom graph visualizations showing complete user flows across client, server, background processes, and integrations. Entry nodes, step nodes, decision nodes with direction-aware edge routing, animated trace mode, and frosted glass node styling.
 - **API map** — auto-extracted endpoint reference with method, path, domain grouping, and deep-link targets.
 - **Data model / ERD** — entity table reference with full field definitions, plus interactive entity relationship diagram canvas with category-colored nodes and relationship edges.
-- **Lifecycle state machines** — auto-generated state machine canvases showing entity state transitions with list page, switcher navigation, and 7 lifecycles (member, shop, listing, invite, flag, subscription, ownership transfers).
+- **Lifecycle state machines** — auto-generated state machine canvases showing entity state transitions with list page, switcher navigation, and 9 lifecycles (member, shop, listing, invite, flag, thread, offer, subscription, ownership transfers).
 - **Feature domain pages** — feature grouping by business domain with coverage metrics and accordion drill-down.
 - **Deep-linking system** — cross-page navigation with hash anchors, auto-expand, highlight animation, and scroll-into-view. Journey node → data model row → API endpoint → source code.
 - **Global search** — search across all extracted data (journeys, entities, endpoints, features).

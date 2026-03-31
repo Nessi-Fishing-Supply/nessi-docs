@@ -2,7 +2,7 @@
 
 Internal documentation and product visualization app for the [Nessi](https://nessifishingsupply.com) fishing marketplace. Provides interactive visualizations of user journeys, API contracts, data model, entity relationships, state machine lifecycles, system architecture diagrams, and feature domain dashboards.
 
-Built for the product and engineering teams to review system architecture, track build progress, navigate cross-cutting concerns across the platform, and deep-link to source code on GitHub.
+Built for the product and engineering teams to review system architecture, navigate cross-cutting concerns across the platform, and deep-link to source code on GitHub.
 
 ## Getting Started
 
@@ -31,7 +31,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - **SCSS Modules** with Nessi design tokens (dark theme)
 - **Custom SVG canvas** system for graph visualizations (no external canvas library)
 - **react-icons** for UI icons
-- **DM Sans / DM Serif Display** via `next/font`
+- **DM Sans** via `next/font`
 
 ## Architecture
 
@@ -39,7 +39,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Route                   | Description                                                          |
 | ----------------------- | -------------------------------------------------------------------- |
-| `/`                     | Dashboard — build progress, recent changes, feature domain grid      |
+| `/`                     | Dashboard — metrics, recent changes, feature domain grid             |
 | `/journeys/**`          | Interactive journey flow canvases with path tracing                  |
 | `/api-map`              | API endpoint reference with expandable details                       |
 | `/data-model`           | Database entity reference with field tables                          |
