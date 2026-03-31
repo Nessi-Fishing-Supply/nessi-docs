@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { ERD_NODE_WIDTH, ERD_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { ErdNode } from '@/types/entity-relationship';
 
@@ -34,7 +34,7 @@ interface EntityNodeProps {
   onClick?: () => void;
 }
 
-export function EntityNode({ node, isSelected, onClick }: EntityNodeProps) {
+export const EntityNode = memo(function EntityNode({ node, isSelected, onClick }: EntityNodeProps) {
   const [hovered, setHovered] = useState(false);
   const color = BADGE_COLORS[node.badge ?? ''] ?? DEFAULT_COLOR;
   const showHoverGlow = hovered && !isSelected;
@@ -131,4 +131,4 @@ export function EntityNode({ node, isSelected, onClick }: EntityNodeProps) {
       </text>
     </g>
   );
-}
+});

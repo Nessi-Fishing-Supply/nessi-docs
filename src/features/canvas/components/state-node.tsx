@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { LIFECYCLE_NODE_WIDTH, LIFECYCLE_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
@@ -11,7 +11,7 @@ interface StateNodeProps {
   onClick?: () => void;
 }
 
-export function StateNode({ state, isSelected, onClick }: StateNodeProps) {
+export const StateNode = memo(function StateNode({ state, isSelected, onClick }: StateNodeProps) {
   const [hovered, setHovered] = useState(false);
   const color = state.color ?? DEFAULT_STATE_COLOR;
   const showHoverGlow = hovered && !isSelected;
@@ -100,4 +100,4 @@ export function StateNode({ state, isSelected, onClick }: StateNodeProps) {
       </text>
     </g>
   );
-}
+});

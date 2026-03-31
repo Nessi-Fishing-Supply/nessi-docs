@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { LAYER_CONFIG, type JourneyNode } from '@/types/journey';
 import { NODE_WIDTH, NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 
@@ -141,7 +141,12 @@ interface StepNodeProps {
   onClick?: () => void;
 }
 
-export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps) {
+export const StepNode = memo(function StepNode({
+  node,
+  isSelected,
+  isDimmed,
+  onClick,
+}: StepNodeProps) {
   const [hovered, setHovered] = useState(false);
   const layer = node.layer ?? 'client';
   const status = node.status ?? 'planned';
@@ -286,4 +291,4 @@ export function StepNode({ node, isSelected, isDimmed, onClick }: StepNodeProps)
       )}
     </g>
   );
-}
+});

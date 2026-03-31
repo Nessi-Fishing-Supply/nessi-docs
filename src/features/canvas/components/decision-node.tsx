@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import type { DecisionOption } from '@/types/journey';
 import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
 
@@ -36,7 +36,7 @@ interface DecisionNodeProps {
   onChoose?: (opt: string, targetId: string) => void;
 }
 
-export function DecisionNode({
+export const DecisionNode = memo(function DecisionNode({
   x,
   y,
   label,
@@ -193,4 +193,4 @@ export function DecisionNode({
       })}
     </g>
   );
-}
+});

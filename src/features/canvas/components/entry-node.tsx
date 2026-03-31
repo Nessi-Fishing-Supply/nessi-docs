@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 
 const ENTRY_COLOR = '#3ba8d4';
@@ -27,7 +27,15 @@ interface EntryNodeProps {
   onClick?: () => void;
 }
 
-export function EntryNode({ x, y, label, isDimmed, isActive, meta, onClick }: EntryNodeProps) {
+export const EntryNode = memo(function EntryNode({
+  x,
+  y,
+  label,
+  isDimmed,
+  isActive,
+  meta,
+  onClick,
+}: EntryNodeProps) {
   const [hovered, setHovered] = useState(false);
   const h = NODE_HEIGHT;
   const opacity = isDimmed ? 0.15 : 1;
@@ -217,4 +225,4 @@ export function EntryNode({ x, y, label, isDimmed, isActive, meta, onClick }: En
       )}
     </g>
   );
-}
+});
