@@ -852,6 +852,71 @@
       ]
     },
     {
+      "name": "Offers",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/offers/:id/accept",
+          "label": "Accept :Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 403, 409, 500],
+          "requestFields": [],
+          "description": "Accept a pending offer as the seller",
+          "tags": [],
+          "sourceFile": "src/app/api/offers/[id]/accept/route.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/offers/:id/counter",
+          "label": "Counter :Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 403, 409, 500],
+          "requestFields": [],
+          "description": "Counter a pending offer with a new amount",
+          "tags": [],
+          "sourceFile": "src/app/api/offers/[id]/counter/route.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/offers/:id/decline",
+          "label": "Decline :Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 403, 409, 500],
+          "requestFields": [],
+          "description": "Decline a pending offer as the seller",
+          "tags": [],
+          "sourceFile": "src/app/api/offers/[id]/decline/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/offers/:id",
+          "label": "List :Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 404, 500],
+          "requestFields": [],
+          "description": "Get offer details including listing and participant info",
+          "tags": [],
+          "sourceFile": "src/app/api/offers/[id]/route.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/offers",
+          "label": "Create Offer",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 500],
+          "requestFields": [],
+          "description": "Submit a new offer on a listing",
+          "tags": [],
+          "sourceFile": "src/app/api/offers/route.ts"
+        }
+      ]
+    },
+    {
       "name": "Recently Viewed",
       "endpoints": [
         {
