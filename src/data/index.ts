@@ -15,6 +15,15 @@ import type { ChangelogEntry, ChangelogChange, ChangeType } from '@/types/change
 import type { CrossLink } from '@/types/docs-context';
 import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
 import type { ErrorCase } from '@/types/journey';
+import type {
+  RawJourneyNode,
+  RawJourneyEdge,
+  RawJourney,
+  RawLifecycle,
+  RawLifecycleState,
+  RawErdNode,
+  RawEntity,
+} from './raw-types';
 import type { RoadmapItem } from '@/types/roadmap';
 import type { ExtractionMeta } from '@/types/extraction-meta';
 import type { ArchDiagram } from '@/types/architecture';
@@ -33,103 +42,6 @@ import changelogRaw from './generated/changelog.json';
 import roadmapRaw from './generated/roadmap.json';
 import architectureRaw from './generated/architecture.json';
 import metaRaw from './generated/_meta.json';
-
-/* ------------------------------------------------------------------ */
-/*  Raw types — what the extractors produce (no x/y guaranteed)       */
-/* ------------------------------------------------------------------ */
-
-interface RawJourneyNode {
-  id: string;
-  type: 'entry' | 'step' | 'decision';
-  label?: string;
-  title?: string;
-  x?: number;
-  y?: number;
-  layer?: string;
-  status?: string;
-  route?: string;
-  codeRef?: string;
-  notes?: string;
-  why?: string;
-  tooltip?: string;
-  action?: string;
-  method?: string;
-  errorCases?: ErrorCase[];
-  ux?: JourneyNode['ux'];
-  options?: JourneyNode['options'];
-}
-
-interface RawJourneyEdge {
-  from: string;
-  to: string;
-  opt?: string;
-}
-
-interface RawJourney {
-  slug: string;
-  domain: string;
-  title: string;
-  persona: string;
-  description: string;
-  relatedIssues?: number[];
-  nodes: RawJourneyNode[];
-  edges: RawJourneyEdge[];
-}
-
-interface RawLifecycleState {
-  id: string;
-  label: string;
-}
-
-interface RawLifecycle {
-  slug: string;
-  name: string;
-  badge?: string;
-  description: string;
-  why?: string;
-  source?: 'enum' | 'check_constraint' | 'typescript';
-  states: RawLifecycleState[];
-  transitions: { from: string; to: string; label: string }[];
-}
-
-interface RawErdNode {
-  id: string;
-  label: string;
-  x?: number;
-  y?: number;
-}
-
-interface RawEntity {
-  name: string;
-  label?: string;
-  badges?: string[];
-  fields: {
-    name: string;
-    type: string;
-    nullable?: boolean;
-    description?: string;
-    isPrimaryKey?: boolean;
-    default?: string;
-    references?: { table: string; column: string; onDelete?: string };
-  }[];
-  rlsPolicies?: {
-    name: string;
-    operation: string;
-    using?: string;
-    withCheck?: string;
-  }[];
-  indexes?: {
-    name: string;
-    columns: string[];
-    unique: boolean;
-  }[];
-  triggers?: {
-    name: string;
-    event: string;
-    timing: string;
-    function: string;
-  }[];
-}
 
 /* ------------------------------------------------------------------ */
 /*  1. Journey Horizontal Layout Engine                                */
