@@ -6,12 +6,7 @@ import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { LabelPill } from '@/features/canvas/components/label-pill';
 import { smoothPath, type PortSide } from '@/features/canvas/utils/geometry';
-import {
-  computeLayout,
-  NODE_WIDTH,
-  NODE_HEIGHT,
-  LAYER_PADDING,
-} from './arch-layout';
+import { computeLayout, NODE_WIDTH, NODE_HEIGHT, LAYER_PADDING } from './arch-layout';
 import { useArchTrace } from './use-arch-trace';
 import { ArchTooltip } from './arch-tooltip';
 

@@ -14,31 +14,32 @@
 
 ### New files
 
-| File | Responsibility |
-|------|---------------|
-| `src/data/cross-links-lifecycle.ts` | Lifecycle ↔ Entity and Lifecycle ↔ Journey computed indexes |
-| `src/features/search/search-dialog/overflow-text.tsx` | OverflowText component — hover-scroll on truncated text |
-| `src/features/search/recent-searches.ts` | localStorage wrapper for recent search queries |
+| File                                                  | Responsibility                                              |
+| ----------------------------------------------------- | ----------------------------------------------------------- |
+| `src/data/cross-links-lifecycle.ts`                   | Lifecycle ↔ Entity and Lifecycle ↔ Journey computed indexes |
+| `src/features/search/search-dialog/overflow-text.tsx` | OverflowText component — hover-scroll on truncated text     |
+| `src/features/search/recent-searches.ts`              | localStorage wrapper for recent search queries              |
 
 ### Modified files
 
-| File | Changes |
-|------|---------|
-| `src/data/index.ts` | Re-export lifecycle cross-link functions |
-| `src/features/data-model/entity-list/index.tsx` | Add lifecycle link pill to entity rows |
-| `src/features/canvas/components/entity-tooltip.tsx` | Add "Lifecycle" section below "API Endpoints" |
-| `src/features/canvas/components/node-tooltip.tsx` | Add "Lifecycle" section when step route affects a lifecycle-governed entity |
-| `src/features/lifecycles/lifecycle-list/index.tsx` | Add entity + journey links to lifecycle rows |
-| `src/app/lifecycles/[slug]/client.tsx` | Add "Governs: tablename" link below breadcrumb |
-| `src/features/search/search-index.ts` | Add `searchGrouped()` function for grouped-by-category results |
-| `src/features/search/search-dialog/index.tsx` | 3-column grouped layout, recent searches, keyboard nav |
-| `src/features/search/search-dialog/search-dialog.module.scss` | Wider dialog, 3-column grid, category headers, hover-scroll animation |
+| File                                                          | Changes                                                                     |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `src/data/index.ts`                                           | Re-export lifecycle cross-link functions                                    |
+| `src/features/data-model/entity-list/index.tsx`               | Add lifecycle link pill to entity rows                                      |
+| `src/features/canvas/components/entity-tooltip.tsx`           | Add "Lifecycle" section below "API Endpoints"                               |
+| `src/features/canvas/components/node-tooltip.tsx`             | Add "Lifecycle" section when step route affects a lifecycle-governed entity |
+| `src/features/lifecycles/lifecycle-list/index.tsx`            | Add entity + journey links to lifecycle rows                                |
+| `src/app/lifecycles/[slug]/client.tsx`                        | Add "Governs: tablename" link below breadcrumb                              |
+| `src/features/search/search-index.ts`                         | Add `searchGrouped()` function for grouped-by-category results              |
+| `src/features/search/search-dialog/index.tsx`                 | 3-column grouped layout, recent searches, keyboard nav                      |
+| `src/features/search/search-dialog/search-dialog.module.scss` | Wider dialog, 3-column grid, category headers, hover-scroll animation       |
 
 ---
 
 ## Task 1: Create lifecycle cross-link index
 
 **Files:**
+
 - Create: `src/data/cross-links-lifecycle.ts`
 - Modify: `src/data/index.ts`
 
@@ -209,6 +210,7 @@ git commit -m "feat(data): add lifecycle cross-link index for entity and journey
 ## Task 2: Add lifecycle link to Data Model entity rows
 
 **Files:**
+
 - Modify: `src/features/data-model/entity-list/index.tsx`
 
 - [ ] **Step 1: Add import**
@@ -224,19 +226,21 @@ import { getLifecycleForEntity } from '@/data';
 Inside the `EntityRow` component, after the entity name/badge area and before the existing stats (RLS, TRIGGERS, FK badges), add a lifecycle link. Find the row header area where the entity name and badge are rendered. After the badge, add:
 
 ```tsx
-{(() => {
-  const lc = getLifecycleForEntity(entity.name);
-  if (!lc) return null;
-  return (
-    <Link
-      href={`/lifecycles/${lc.slug}`}
-      className={styles.lifecycleLink}
-      onClick={(e) => e.stopPropagation()}
-    >
-      ↻ {lc.name}
-    </Link>
-  );
-})()}
+{
+  (() => {
+    const lc = getLifecycleForEntity(entity.name);
+    if (!lc) return null;
+    return (
+      <Link
+        href={`/lifecycles/${lc.slug}`}
+        className={styles.lifecycleLink}
+        onClick={(e) => e.stopPropagation()}
+      >
+        ↻ {lc.name}
+      </Link>
+    );
+  })();
+}
 ```
 
 - [ ] **Step 3: Add styles**
@@ -252,7 +256,9 @@ Add to `entity-list.module.scss`:
   border-radius: 4px;
   background: rgba(95, 127, 191, 0.1);
   border: 1px solid rgba(95, 127, 191, 0.15);
-  transition: background 150ms ease-out, color 150ms ease-out;
+  transition:
+    background 150ms ease-out,
+    color 150ms ease-out;
   white-space: nowrap;
 
   &:hover {
@@ -279,6 +285,7 @@ git commit -m "feat(data-model): add lifecycle link to entity rows"
 ## Task 3: Add lifecycle section to ERD entity tooltip
 
 **Files:**
+
 - Modify: `src/features/canvas/components/entity-tooltip.tsx`
 
 - [ ] **Step 1: Add import**
@@ -292,21 +299,25 @@ import { getLifecycleForEntity } from '@/data';
 Inside the `EntityTooltip` component, after the existing "API Endpoints" section (around line 355), add:
 
 ```tsx
-{/* Lifecycle */}
-{(() => {
-  const lc = entity ? getLifecycleForEntity(entity.name) : null;
-  if (!lc) return null;
-  return (
-    <div>
-      <div style={sectionLabel}>Lifecycle</div>
-      <HoverLink href={`/lifecycles/${lc.slug}`}>
-        <span style={{ color: '#5f7fbf' }}>↻</span>
-        <span style={{ flex: 1 }}>{lc.name}</span>
-        {linkIcon}
-      </HoverLink>
-    </div>
-  );
-})()}
+{
+  /* Lifecycle */
+}
+{
+  (() => {
+    const lc = entity ? getLifecycleForEntity(entity.name) : null;
+    if (!lc) return null;
+    return (
+      <div>
+        <div style={sectionLabel}>Lifecycle</div>
+        <HoverLink href={`/lifecycles/${lc.slug}`}>
+          <span style={{ color: '#5f7fbf' }}>↻</span>
+          <span style={{ flex: 1 }}>{lc.name}</span>
+          {linkIcon}
+        </HoverLink>
+      </div>
+    );
+  })();
+}
 ```
 
 This uses the existing `HoverLink` and `linkIcon` patterns already in the tooltip.
@@ -328,6 +339,7 @@ git commit -m "feat(erd): add lifecycle section to entity tooltip"
 ## Task 4: Add lifecycle section to journey step tooltip
 
 **Files:**
+
 - Modify: `src/features/canvas/components/node-tooltip.tsx`
 
 - [ ] **Step 1: Add import**
@@ -341,42 +353,47 @@ import { getLifecyclesForRoute } from '@/data';
 Inside the `NodeTooltip` component, after the existing route/API link section, add a lifecycle section. This should appear when the step's `route` touches a lifecycle-governed entity:
 
 ```tsx
-{/* Lifecycle impact */}
-{node.route && (() => {
-  const lcRefs = getLifecyclesForRoute(node.route);
-  if (lcRefs.length === 0) return null;
-  return (
-    <div style={{ marginTop: '8px' }}>
-      <div style={sectionLabel}>Affects Lifecycle</div>
-      {lcRefs.map((lc) => (
-        <Link
-          key={lc.slug}
-          href={`/lifecycles/${lc.slug}`}
-          style={{
-            ...monoBlock,
-            color: '#5f7fbf',
-            textDecoration: 'none',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            cursor: 'pointer',
-            transition: 'background 150ms ease-out',
-            marginTop: '2px',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-          }}
-        >
-          <span>↻</span>
-          <span style={{ flex: 1 }}>{lc.name}</span>
-        </Link>
-      ))}
-    </div>
-  );
-})()}
+{
+  /* Lifecycle impact */
+}
+{
+  node.route &&
+    (() => {
+      const lcRefs = getLifecyclesForRoute(node.route);
+      if (lcRefs.length === 0) return null;
+      return (
+        <div style={{ marginTop: '8px' }}>
+          <div style={sectionLabel}>Affects Lifecycle</div>
+          {lcRefs.map((lc) => (
+            <Link
+              key={lc.slug}
+              href={`/lifecycles/${lc.slug}`}
+              style={{
+                ...monoBlock,
+                color: '#5f7fbf',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+                transition: 'background 150ms ease-out',
+                marginTop: '2px',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+              }}
+            >
+              <span>↻</span>
+              <span style={{ flex: 1 }}>{lc.name}</span>
+            </Link>
+          ))}
+        </div>
+      );
+    })();
+}
 ```
 
 - [ ] **Step 3: Verify build**
@@ -396,6 +413,7 @@ git commit -m "feat(journeys): add lifecycle section to step tooltip"
 ## Task 5: Add entity + journey links to lifecycle list
 
 **Files:**
+
 - Modify: `src/features/lifecycles/lifecycle-list/index.tsx`
 - Modify: `src/features/lifecycles/lifecycle-list/lifecycle-list.module.scss`
 
@@ -481,6 +499,7 @@ git commit -m "feat(lifecycles): add entity and journey links to lifecycle list 
 ## Task 6: Add "Governs" entity link to lifecycle canvas header
 
 **Files:**
+
 - Modify: `src/app/lifecycles/[slug]/client.tsx`
 
 - [ ] **Step 1: Add import**
@@ -495,26 +514,28 @@ import { getEntitiesForLifecycle } from '@/data';
 After the `Breadcrumb` component, add a subtle link:
 
 ```tsx
-{(() => {
-  const entityNames = getEntitiesForLifecycle(lifecycle.slug);
-  if (entityNames.length === 0) return null;
-  return (
-    <div style={{ padding: '0 16px 4px', fontSize: '11px' }}>
-      <span style={{ color: 'var(--text-dim)' }}>Governs: </span>
-      <Link
-        href={`/data-model#${entityNames[0]}`}
-        style={{
-          color: 'var(--text-muted)',
-          textDecoration: 'none',
-          fontFamily: 'var(--font-family-mono)',
-          fontSize: '11px',
-        }}
-      >
-        {entityNames[0]} →
-      </Link>
-    </div>
-  );
-})()}
+{
+  (() => {
+    const entityNames = getEntitiesForLifecycle(lifecycle.slug);
+    if (entityNames.length === 0) return null;
+    return (
+      <div style={{ padding: '0 16px 4px', fontSize: '11px' }}>
+        <span style={{ color: 'var(--text-dim)' }}>Governs: </span>
+        <Link
+          href={`/data-model#${entityNames[0]}`}
+          style={{
+            color: 'var(--text-muted)',
+            textDecoration: 'none',
+            fontFamily: 'var(--font-family-mono)',
+            fontSize: '11px',
+          }}
+        >
+          {entityNames[0]} →
+        </Link>
+      </div>
+    );
+  })();
+}
 ```
 
 - [ ] **Step 3: Verify build**
@@ -534,6 +555,7 @@ git commit -m "feat(lifecycles): add governs entity link to canvas header"
 ## Task 7: Create OverflowText component for hover-scroll
 
 **Files:**
+
 - Create: `src/features/search/search-dialog/overflow-text.tsx`
 
 - [ ] **Step 1: Create the component**
@@ -587,14 +609,14 @@ export function OverflowText({ children, className, style }: OverflowTextProps) 
       onMouseLeave={handleMouseLeave}
     >
       <span
-        style={{
-          display: 'inline-block',
-          transition: scrolling ? 'none' : undefined,
-          animation: scrolling
-            ? `overflow-scroll ${duration}ms linear`
-            : undefined,
-          '--scroll-distance': `-${overflow}px`,
-        } as React.CSSProperties}
+        style={
+          {
+            display: 'inline-block',
+            transition: scrolling ? 'none' : undefined,
+            animation: scrolling ? `overflow-scroll ${duration}ms linear` : undefined,
+            '--scroll-distance': `-${overflow}px`,
+          } as React.CSSProperties
+        }
       >
         {children}
       </span>
@@ -646,6 +668,7 @@ git commit -m "feat(search): add OverflowText component with hover-scroll animat
 ## Task 8: Create recent searches localStorage wrapper
 
 **Files:**
+
 - Create: `src/features/search/recent-searches.ts`
 
 - [ ] **Step 1: Create the module**
@@ -711,6 +734,7 @@ git commit -m "feat(search): add recent searches localStorage wrapper"
 ## Task 9: Add grouped search function to search-index.ts
 
 **Files:**
+
 - Modify: `src/features/search/search-index.ts`
 
 - [ ] **Step 1: Add SearchCategory type and searchGrouped function**
@@ -777,14 +801,12 @@ export function searchGrouped(query: string, maxPerCategory = 5): SearchCategory
   }
 
   // Build categories in defined order, skip empty
-  return CATEGORY_CONFIG
-    .filter((cfg) => groups.has(cfg.type))
-    .map((cfg) => ({
-      type: cfg.type,
-      label: cfg.label,
-      color: cfg.color,
-      results: groups.get(cfg.type)!.slice(0, maxPerCategory),
-    }));
+  return CATEGORY_CONFIG.filter((cfg) => groups.has(cfg.type)).map((cfg) => ({
+    type: cfg.type,
+    label: cfg.label,
+    color: cfg.color,
+    results: groups.get(cfg.type)!.slice(0, maxPerCategory),
+  }));
 }
 ```
 
@@ -805,6 +827,7 @@ git commit -m "feat(search): add searchGrouped function for category-based resul
 ## Task 10: Rewrite search dialog with 3-column grouped layout
 
 **Files:**
+
 - Modify: `src/features/search/search-dialog/index.tsx`
 - Modify: `src/features/search/search-dialog/search-dialog.module.scss`
 
@@ -818,7 +841,12 @@ Replace the entire file:
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { searchGrouped, type SearchResult, type SearchCategory } from '../search-index';
-import { getRecentSearches, addRecentSearch, removeRecentSearch, clearRecentSearches } from '../recent-searches';
+import {
+  getRecentSearches,
+  addRecentSearch,
+  removeRecentSearch,
+  clearRecentSearches,
+} from '../recent-searches';
 import { OverflowText } from './overflow-text';
 import styles from './search-dialog.module.scss';
 
@@ -896,22 +924,16 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
     [flatResults, activeIndex, navigate, onClose],
   );
 
-  const handleRecentClick = useCallback(
-    (q: string) => {
-      setQuery(q);
-      setActiveIndex(0);
-    },
-    [],
-  );
+  const handleRecentClick = useCallback((q: string) => {
+    setQuery(q);
+    setActiveIndex(0);
+  }, []);
 
-  const handleRecentRemove = useCallback(
-    (q: string, e: React.MouseEvent) => {
-      e.stopPropagation();
-      removeRecentSearch(q);
-      setRecentSearches(getRecentSearches());
-    },
-    [],
-  );
+  const handleRecentRemove = useCallback((q: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    removeRecentSearch(q);
+    setRecentSearches(getRecentSearches());
+  }, []);
 
   const handleClearRecent = useCallback(() => {
     clearRecentSearches();
@@ -1000,16 +1022,9 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               </button>
             </div>
             {recentSearches.map((q) => (
-              <button
-                key={q}
-                className={styles.recentItem}
-                onClick={() => handleRecentClick(q)}
-              >
+              <button key={q} className={styles.recentItem} onClick={() => handleRecentClick(q)}>
                 <span className={styles.recentQuery}>{q}</span>
-                <span
-                  className={styles.recentRemove}
-                  onClick={(e) => handleRecentRemove(q, e)}
-                >
+                <span className={styles.recentRemove} onClick={(e) => handleRecentRemove(q, e)}>
                   ×
                 </span>
               </button>

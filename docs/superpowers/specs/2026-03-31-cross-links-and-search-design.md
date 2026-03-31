@@ -31,26 +31,31 @@ ownership_transfers  → shop_ownership_transfers (alias)
 **Alias map:** A `LIFECYCLE_ENTITY_MAP` record explicitly maps each lifecycle slug to its entity table name. Simple pluralization handles most cases; aliases handle the rest (`invite` → `shop_invites`, `thread` → `message_threads`, `ownership_transfers` → `shop_ownership_transfers`). Lifecycles with no matching entity (e.g., `subscription`) are silently skipped. Add new entries when new lifecycles are extracted.
 
 **Produces two maps:**
+
 - `entityToLifecycle: Map<string, { slug: string; name: string }>` — table name → lifecycle ref
 - `lifecycleToEntities: Map<string, string[]>` — lifecycle slug → table names
 
 ### Where Links Appear
 
 **Data Model page (entity-list rows):**
+
 - Entity rows that have a lifecycle show a small link after the badges: `Lifecycle: Listing →`
 - Links to `/lifecycles/{slug}` (direct page navigation)
 - Styled consistently with existing badge/link patterns in entity rows
 
 **ERD entity tooltip:**
+
 - New "Lifecycle" section in the tooltip (below existing "API Endpoints" section)
 - Shows lifecycle name as a clickable link to `/lifecycles/{slug}`
 - Uses existing `HoverLink` pattern from the tooltip
 
 **Lifecycle list page:**
+
 - Each lifecycle row shows "Table: `listings` →" linking to `/data-model#listings`
 - Uses the existing deep-link hash pattern → expand row → highlight → scroll → fade
 
 **Lifecycle canvas (header/breadcrumb area):**
+
 - Breadcrumb already shows "Lifecycles > Listing Lifecycle"
 - Add "Governs: `listings`" as a subtle link below the breadcrumb, linking to `/data-model#listings`
 
@@ -68,20 +73,24 @@ Infer lifecycle-to-journey connections through the existing cross-link indexes:
 4. Therefore: this journey relates to the Listing Lifecycle
 
 **Produces:**
+
 - `lifecycleToJourneys: Map<string, { slug: string; domain: string; title: string }[]>` — lifecycle slug → journeys that interact with its governed entities
 - `journeyToLifecycles: Map<string, { slug: string; name: string }[]>` — journey slug → lifecycles its steps affect
 
 ### Where Links Appear
 
 **Lifecycle list page:**
+
 - Each lifecycle row shows "Related Journeys:" with linked journey titles
 - Links to `/journeys/{domain}/{slug}` (direct navigation)
 - Show max 3 journeys, with "+N more" if overflow
 
 **Lifecycle canvas header:**
+
 - "Used in N journeys" as a subtle indicator (not a link — journeys are multiple targets)
 
 **Journey step tooltip (node-tooltip.tsx):**
+
 - If the step's endpoint touches a lifecycle-governed entity, add a "Lifecycle" section
 - Shows "Affects: Listing Lifecycle →" linking to `/lifecycles/listing`
 - Only shown when the connection exists (many steps won't have one)
@@ -100,7 +109,9 @@ export function getLifecycleForEntity(tableName: string): { slug: string; name: 
 export function getEntitiesForLifecycle(lifecycleSlug: string): string[];
 
 // Lifecycle ↔ Journey
-export function getJourneysForLifecycle(lifecycleSlug: string): { slug: string; domain: string; title: string }[];
+export function getJourneysForLifecycle(
+  lifecycleSlug: string,
+): { slug: string; domain: string; title: string }[];
 export function getLifecyclesForJourney(journeySlug: string): { slug: string; name: string }[];
 export function getLifecyclesForRoute(route: string): { slug: string; name: string }[];
 ```
@@ -177,19 +188,21 @@ Flatten all visible results into a single linear sequence (left-to-right, top-to
 ## 6. Files Summary
 
 ### New files
-| File | Responsibility |
-|------|---------------|
+
+| File                                | Responsibility                                              |
+| ----------------------------------- | ----------------------------------------------------------- |
 | `src/data/cross-links-lifecycle.ts` | Lifecycle ↔ Entity and Lifecycle ↔ Journey computed indexes |
 
 ### Modified files
-| File | Changes |
-|------|---------|
-| `src/data/index.ts` | Re-export lifecycle cross-link functions |
-| `src/features/data-model/entity-list/index.tsx` | Add lifecycle link to entity rows |
-| `src/features/canvas/components/entity-tooltip.tsx` | Add lifecycle section to ERD tooltip |
-| `src/features/canvas/components/node-tooltip.tsx` | Add lifecycle section to journey step tooltip |
-| `src/features/lifecycles/lifecycle-list/index.tsx` | Add entity + journey links to lifecycle rows |
-| `src/app/lifecycles/[slug]/client.tsx` | Add "Governs" entity link in canvas header |
-| `src/features/search/search-index.ts` | Add grouped-by-category export |
-| `src/features/search/search-dialog/index.tsx` | 3-column layout, recent searches, hover-scroll |
+
+| File                                                          | Changes                                                  |
+| ------------------------------------------------------------- | -------------------------------------------------------- |
+| `src/data/index.ts`                                           | Re-export lifecycle cross-link functions                 |
+| `src/features/data-model/entity-list/index.tsx`               | Add lifecycle link to entity rows                        |
+| `src/features/canvas/components/entity-tooltip.tsx`           | Add lifecycle section to ERD tooltip                     |
+| `src/features/canvas/components/node-tooltip.tsx`             | Add lifecycle section to journey step tooltip            |
+| `src/features/lifecycles/lifecycle-list/index.tsx`            | Add entity + journey links to lifecycle rows             |
+| `src/app/lifecycles/[slug]/client.tsx`                        | Add "Governs" entity link in canvas header               |
+| `src/features/search/search-index.ts`                         | Add grouped-by-category export                           |
+| `src/features/search/search-dialog/index.tsx`                 | 3-column layout, recent searches, hover-scroll           |
 | `src/features/search/search-dialog/search-dialog.module.scss` | Updated styles for 3-column grid, hover-scroll animation |
