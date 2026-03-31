@@ -12,6 +12,7 @@ import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { Minimap } from '@/features/canvas/components/minimap';
 import { ErdLegend } from '@/features/canvas/components/erd-legend';
 import { useErdTrace } from '@/features/canvas/hooks/use-erd-trace';
+import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
 import {
   ERD_NODE_WIDTH,
   ERD_NODE_HEIGHT,
@@ -162,7 +163,8 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
     () => new Set(ALL_CATEGORIES),
   );
   const { setSelectedItem } = useDocsContext();
-  const { toggleFocus, resetTrace, litNodes, litEdges, hasTrace } = useErdTrace(edges);
+  const { focusedNodeId, toggleFocus, resetTrace, litNodes, litEdges, hasTrace } =
+    useErdTrace(edges);
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
   const entityMap = new Map(entities.map((e) => [e.name, e]));
   const siblingMap = buildSiblingMap(edges);
@@ -180,6 +182,18 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
     const badge = node.badge ?? 'system';
     return visibleCategories.has(badge);
   };
+
+  const visibleNodes = nodes.filter(isNodeVisible);
+
+  useCanvasKeyboardNav({
+    nodes: visibleNodes,
+    selectedId: focusedNodeId,
+    onSelect: (id) => toggleFocus(id),
+    onClear: () => {
+      resetTrace();
+      setPinnedNodeId(null);
+    },
+  });
 
   // Compute viewBox from node positions
   let minX = Infinity,

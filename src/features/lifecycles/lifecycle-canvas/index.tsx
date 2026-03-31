@@ -14,6 +14,7 @@ import {
   smoothPath,
   type PortSide,
 } from '@/features/canvas/utils/geometry';
+import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
 
 interface LifecycleCanvasProps {
   lifecycle: Lifecycle;
@@ -154,9 +155,15 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
   const [legendVisible, setLegendVisible] = useState(false);
   const [hoveredStateId, setHoveredStateId] = useState<string | null>(null);
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { toggleFocus, resetTrace, litNodes, litEdges, hasTrace } = useLifecycleTrace(
-    lifecycle.transitions,
-  );
+  const { focusedStateId, toggleFocus, resetTrace, litNodes, litEdges, hasTrace } =
+    useLifecycleTrace(lifecycle.transitions);
+  useCanvasKeyboardNav({
+    nodes: lifecycle.states,
+    selectedId: focusedStateId,
+    onSelect: (id) => toggleFocus(id),
+    onClear: resetTrace,
+  });
+
   const stateMap = new Map(lifecycle.states.map((s) => [s.id, s]));
 
   // Compute viewBox from state positions
