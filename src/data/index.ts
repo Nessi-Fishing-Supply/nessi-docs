@@ -242,3 +242,15 @@ export function getLinksForEndpoint(method: string, path: string): CrossLink[] {
   }
   return links;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Lifecycle cross-link helpers                                       */
+/* ------------------------------------------------------------------ */
+
+export {
+  getLifecycleForEntity,
+  getEntitiesForLifecycle,
+  getJourneysForLifecycle,
+  getLifecyclesForJourney,
+  getLifecyclesForRoute,
+} from './cross-links-lifecycle';
