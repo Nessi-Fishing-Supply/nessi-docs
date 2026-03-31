@@ -370,7 +370,7 @@
       "description": "Real-time messaging between buyers and sellers. Supports inquiry threads on listings, direct member-to-member messages, offer negotiations, and custom gear requests. Messages pass through a safety filter before delivery.",
       "componentCount": 4,
       "endpointCount": 6,
-      "hookCount": 0,
+      "hookCount": 7,
       "serviceCount": 6,
       "entities": [
         "listings",
