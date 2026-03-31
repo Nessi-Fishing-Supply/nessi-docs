@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Entity } from '@/types/data-model';
 import { getMethodColors } from '@/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation } from '@/data/cross-links';
+import { getLifecycleForEntity } from '@/data';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
 import { Tooltip } from '@/components/ui';
@@ -151,6 +152,19 @@ function EntityRow({
       <button className={styles.entityRowHeader} onClick={onToggle}>
         <span className={styles.entityName}>{entity.name}</span>
         <span className={styles.categoryBadge}>{entity.badge}</span>
+        {(() => {
+          const lc = getLifecycleForEntity(entity.name);
+          if (!lc) return null;
+          return (
+            <Link
+              href={`/lifecycles/${lc.slug}`}
+              className={styles.lifecycleLink}
+              onClick={(e) => e.stopPropagation()}
+            >
+              ↻ {lc.name}
+            </Link>
+          );
+        })()}
         <span className={styles.entityMeta}>
           {(entity.rlsPolicies?.length ?? 0) > 0 && <span className={styles.rlsBadge}>RLS</span>}
           {(entity.triggers?.length ?? 0) > 0 && (
