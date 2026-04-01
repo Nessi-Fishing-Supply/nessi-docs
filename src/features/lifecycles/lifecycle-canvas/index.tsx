@@ -370,7 +370,12 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
       {/* State nodes */}
       {lifecycle.states.map((state) => {
         const isLit = litNodes.has(state.id);
-        const isDimmed = hasTrace && !isLit;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
+        const nodeDiffStatus = isDiffMode ? (nodeStatusMap.get(state.id) ?? null) : null;
+        const isChangedNode = nodeDiffStatus === 'added' || nodeDiffStatus === 'modified';
+
+        // In diff mode: only changed nodes get hover tooltips
+        const canHover = isDiffMode ? isChangedNode : !isDimmed;
 
         return (
           <g
@@ -381,7 +386,7 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
             }}
             onMouseEnter={() => {
               if (hoverTimer.current) clearTimeout(hoverTimer.current);
-              if (!isDimmed) setHoveredStateId(state.id);
+              if (canHover) setHoveredStateId(state.id);
             }}
             onMouseLeave={() => {
               hoverTimer.current = setTimeout(() => setHoveredStateId(null), 120);
@@ -389,11 +394,9 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
           >
             <StateNode
               state={state}
-              isSelected={litNodes.has(state.id) && hasTrace}
-              diffStatus={isDiffMode ? (nodeStatusMap.get(state.id) ?? null) : null}
-              onClick={() => {
-                toggleFocus(state.id);
-              }}
+              isSelected={!isDiffMode && litNodes.has(state.id) && hasTrace}
+              diffStatus={nodeDiffStatus}
+              onClick={isDiffMode ? undefined : () => toggleFocus(state.id)}
             />
           </g>
         );
@@ -412,12 +415,14 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
         (() => {
           const state = stateMap.get(hoveredStateId);
           if (!state) return null;
+          const tooltipDiffStatus = isDiffMode ? (nodeStatusMap.get(state.id) ?? null) : null;
           return (
             <StateTooltip
               state={state}
               lifecycle={lifecycle}
-              diffStatus={isDiffMode ? (nodeStatusMap.get(state.id) ?? null) : null}
+              diffStatus={tooltipDiffStatus}
               diffChanges={isDiffMode ? changesMap.get(state.id) : undefined}
+              diffOnly={isDiffMode}
               onMouseEnter={() => {
                 if (hoverTimer.current) clearTimeout(hoverTimer.current);
               }}

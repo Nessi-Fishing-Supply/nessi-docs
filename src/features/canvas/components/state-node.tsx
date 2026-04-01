@@ -6,6 +6,12 @@ import type { LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
 import type { DiffStatus } from '@/types/diff';
 
+const DIFF_COLORS: Record<string, string> = {
+  added: '#3d8c75',
+  modified: '#7b8fcd',
+  removed: '#b84040',
+};
+
 interface StateNodeProps {
   state: LifecycleState;
   isSelected?: boolean;
@@ -21,46 +27,40 @@ export const StateNode = memo(function StateNode({
 }: StateNodeProps) {
   const [hovered, setHovered] = useState(false);
 
-  const naturalColor = state.color ?? DEFAULT_STATE_COLOR;
+  // Always use the node's natural color — diff is additive, not a replacement
+  const color = state.color ?? DEFAULT_STATE_COLOR;
   const isGhost = diffStatus === 'removed';
-
-  const color =
-    diffStatus === 'added'
-      ? '#3d8c75'
-      : diffStatus === 'modified'
-        ? '#7b8fcd'
-        : diffStatus === 'removed'
-          ? '#b84040'
-          : naturalColor;
-
   const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
-  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
+  const diffColor = diffStatus ? DIFF_COLORS[diffStatus] : undefined;
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
 
-  const showDiffGlow = isDiffChanged && !isSelected;
-  const showHoverGlow = hovered && !isSelected && !isGhost;
+  // In diff mode: only changed nodes get hover/interaction
+  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
+  const showHoverGlow = hovered && !isSelected && isInteractive;
 
   return (
     <g
       transform={`translate(${state.x},${state.y})`}
-      onClick={isGhost ? undefined : onClick}
-      onMouseEnter={isGhost ? undefined : () => setHovered(true)}
-      onMouseLeave={isGhost ? undefined : () => setHovered(false)}
+      onClick={isInteractive ? onClick : undefined}
+      onMouseEnter={isInteractive ? () => setHovered(true) : undefined}
+      onMouseLeave={isInteractive ? () => setHovered(false) : undefined}
       style={{
-        cursor: isGhost ? 'default' : 'pointer',
+        cursor: isInteractive ? 'pointer' : 'default',
         opacity: diffOpacity,
         transition: 'opacity 400ms ease-out',
-        pointerEvents: isGhost ? 'none' : undefined,
+        pointerEvents: isGhost || diffStatus === 'unchanged' ? 'none' : undefined,
       }}
     >
-      {/* Diff glow */}
-      {showDiffGlow && (
+      {/* Diff outer ring — colored ring around changed nodes */}
+      {isDiffChanged && diffColor && (
         <>
           <defs>
             <radialGradient id={`lc-diff-${state.id}`}>
-              <stop offset="0%" stopColor={color} stopOpacity={0.3} />
-              <stop offset="100%" stopColor={color} stopOpacity={0} />
+              <stop offset="0%" stopColor={diffColor} stopOpacity={0.25} />
+              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
             </radialGradient>
           </defs>
+          {/* Glow aura */}
           <circle
             cx={LIFECYCLE_NODE_WIDTH / 2}
             cy={LIFECYCLE_NODE_HEIGHT / 2}
@@ -68,7 +68,35 @@ export const StateNode = memo(function StateNode({
             fill={`url(#lc-diff-${state.id})`}
             style={{ animation: 'glow-pulse 2.5s ease-in-out infinite' }}
           />
+          {/* Outer ring border */}
+          <rect
+            x={-4}
+            y={-4}
+            width={LIFECYCLE_NODE_WIDTH + 8}
+            height={LIFECYCLE_NODE_HEIGHT + 8}
+            rx={12}
+            fill="none"
+            stroke={diffColor}
+            strokeWidth={1.5}
+            strokeOpacity={0.6}
+            strokeDasharray={diffStatus === 'added' ? undefined : '6 3'}
+          />
         </>
+      )}
+      {/* Ghost outer ring */}
+      {isGhost && diffColor && (
+        <rect
+          x={-3}
+          y={-3}
+          width={LIFECYCLE_NODE_WIDTH + 6}
+          height={LIFECYCLE_NODE_HEIGHT + 6}
+          rx={11}
+          fill="none"
+          stroke={diffColor}
+          strokeWidth={1}
+          strokeOpacity={0.4}
+          strokeDasharray="4 3"
+        />
       )}
       {/* Hover glow */}
       {showHoverGlow && (
@@ -122,22 +150,14 @@ export const StateNode = memo(function StateNode({
           }}
         />
       </foreignObject>
-      {/* Colored card */}
+      {/* Colored card — always uses natural color */}
       <rect
         width={LIFECYCLE_NODE_WIDTH}
         height={LIFECYCLE_NODE_HEIGHT}
         rx={8}
-        fill={hexToRgba(color, isDiffChanged ? 0.2 : 0.12)}
-        stroke={
-          isDiffChanged
-            ? color
-            : isSelected
-              ? color
-              : hovered
-                ? hexToRgba(color, 0.4)
-                : hexToRgba(color, 0.3)
-        }
-        strokeWidth={isDiffChanged ? 2 : isSelected ? 1.5 : 1}
+        fill={hexToRgba(color, 0.12)}
+        stroke={isSelected ? color : hovered ? hexToRgba(color, 0.4) : hexToRgba(color, 0.3)}
+        strokeWidth={isSelected ? 1.5 : 1}
         strokeDasharray={isGhost ? '4 3' : undefined}
       />
       {/* Left accent bar */}
