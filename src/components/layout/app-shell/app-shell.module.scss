@@ -51,6 +51,11 @@
   grid-row: 2;
   position: relative;
   overflow: hidden;
+  transition: opacity 150ms ease;
+}
+
+.fading {
+  opacity: 0.3;
 }
 
 .detail {
