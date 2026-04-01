@@ -8,8 +8,14 @@
           "path": "/api/addresses/:id/default",
           "label": "Default :Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Marks a specific address as the user's default shipping address.",
           "tags": [],
@@ -20,8 +26,15 @@
           "path": "/api/addresses/:id",
           "label": ":Id Address",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Updates an existing address on the user's account.",
           "tags": [],
@@ -32,8 +45,15 @@
           "path": "/api/addresses/:id",
           "label": ":Id Address",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Removes a saved address from the user's account.",
           "tags": [],
@@ -44,8 +64,15 @@
           "path": "/api/addresses",
           "label": "List Address",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 422, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "Returns all saved addresses for the currently logged-in user.",
           "tags": [],
@@ -56,8 +83,15 @@
           "path": "/api/addresses",
           "label": "Create Address",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 422, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "Saves a new shipping address to the user's account.",
           "tags": [],
@@ -73,7 +107,9 @@
           "path": "/api/auth/callback",
           "label": "List Callback",
           "auth": "user",
-          "access": ["Member"],
+          "access": [
+            "Member"
+          ],
           "errorCodes": [],
           "requestFields": [],
           "description": "Completes the OAuth or email verification flow and redirects the user.",
@@ -85,8 +121,15 @@
           "path": "/api/auth/check-email",
           "label": "Check Email Auth",
           "auth": "admin",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            409,
+            500
+          ],
           "requestFields": [
             {
               "name": "email",
@@ -95,7 +138,9 @@
             }
           ],
           "description": "Checks whether an email address is already registered on the platform.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/auth/check-email/route.ts"
         },
         {
@@ -103,11 +148,19 @@
           "path": "/api/auth/delete-account",
           "label": "Delete Account Auth",
           "auth": "admin",
-          "access": ["Member"],
-          "errorCodes": [401, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Permanently deletes the user's account, listings, and all associated data.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/auth/delete-account/route.ts"
         },
         {
@@ -115,8 +168,14 @@
           "path": "/api/auth/register",
           "label": "Register Auth",
           "auth": "admin",
-          "access": ["Member"],
-          "errorCodes": [400, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
           "requestFields": [
             {
               "name": "firstName",
@@ -145,7 +204,9 @@
             }
           ],
           "description": "Creates a new user account and sends a verification email.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/auth/register/route.ts"
         }
       ]
@@ -158,8 +219,15 @@
           "path": "/api/blocks",
           "label": "List Block",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "List all members blocked by the authenticated user",
           "tags": [],
@@ -170,8 +238,15 @@
           "path": "/api/blocks",
           "label": "Delete Block",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Unblock a member by removing the block record",
           "tags": [],
@@ -187,8 +262,14 @@
           "path": "/api/cart/:id/expiry",
           "label": "Expiry :Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Extends the hold timer on a cart item to keep it reserved longer.",
           "tags": [],
@@ -199,8 +280,14 @@
           "path": "/api/cart/:id",
           "label": ":Id Cart",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Removes a single item from the user's cart.",
           "tags": [],
@@ -211,8 +298,13 @@
           "path": "/api/cart/count",
           "label": "List Count",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Returns the number of items currently in the user's cart.",
           "tags": [],
@@ -223,8 +315,14 @@
           "path": "/api/cart/merge",
           "label": "Merge Cart",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [
             {
               "name": "items",
@@ -241,8 +339,18 @@
           "path": "/api/cart",
           "label": "List Cart",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 404, 409, 422, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "Returns all items currently in the user's cart.",
           "tags": [],
@@ -253,8 +361,18 @@
           "path": "/api/cart",
           "label": "Create Cart",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 404, 409, 422, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ],
           "requestFields": [
             {
               "name": "listingId",
@@ -276,8 +394,18 @@
           "path": "/api/cart",
           "label": "Delete Cart",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 404, 409, 422, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            409,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "Removes all items from the user's cart at once.",
           "tags": [],
@@ -288,8 +416,13 @@
           "path": "/api/cart/validate",
           "label": "Validate Cart",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Checks that all cart items are still available and valid before checkout.",
           "tags": [],
@@ -302,26 +435,21 @@
       "endpoints": [
         {
           "method": "GET",
-          "path": "/api/cron/offers-expiry",
-          "label": "List Offers Expiry",
-          "auth": "none",
-          "access": [],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "Expire stale pending and accepted offers past their time windows",
-          "tags": [],
-          "sourceFile": "src/app/api/cron/offers-expiry/route.ts"
-        },
-        {
-          "method": "GET",
           "path": "/api/cron/price-drops",
           "label": "List Price Drop",
           "auth": "admin",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Process price drop notifications and email watchers about reduced prices",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/cron/price-drops/route.ts"
         }
       ]
@@ -334,8 +462,14 @@
           "path": "/api/flags/check",
           "label": "List Check",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Checks whether the current user has already flagged a specific item.",
           "tags": [],
@@ -346,8 +480,15 @@
           "path": "/api/flags",
           "label": "Create Flag",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Submits a flag reporting a listing or user for review by the Nessi team.",
           "tags": [],
@@ -364,7 +505,10 @@
           "label": "List Count",
           "auth": "none",
           "access": [],
-          "errorCodes": [400, 500],
+          "errorCodes": [
+            400,
+            500
+          ],
           "requestFields": [],
           "description": "Get the follower count for a member or shop",
           "tags": [],
@@ -375,8 +519,14 @@
           "path": "/api/follows/following",
           "label": "List Following",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "List members and shops the authenticated user follows",
           "tags": [],
@@ -387,8 +537,16 @@
           "path": "/api/follows",
           "label": "Create Follow",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            409,
+            500
+          ],
           "requestFields": [
             {
               "name": "target_type",
@@ -410,8 +568,16 @@
           "path": "/api/follows",
           "label": "Delete Follow",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Unfollow a member or shop",
           "tags": [],
@@ -422,8 +588,14 @@
           "path": "/api/follows/status",
           "label": "List Statu",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Check if the authenticated user follows a member or shop",
           "tags": [],
@@ -439,11 +611,21 @@
           "path": "/api/invites/:token/accept",
           "label": "Accept :Token",
           "auth": "admin",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Accepts a shop invite via token and adds the user as a shop member.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/invites/[token]/accept/route.ts"
         }
       ]
@@ -456,8 +638,17 @@
           "path": "/api/listings/:id/duplicate",
           "label": "Duplicate :Id",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Creates a new draft listing copied from an existing one the seller owns.",
           "tags": [],
@@ -468,8 +659,17 @@
           "path": "/api/listings/:id",
           "label": "List :Id",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Returns the full details of a single listing, including photos.",
           "tags": [],
@@ -480,8 +680,17 @@
           "path": "/api/listings/:id",
           "label": ":Id Listing",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Updates the details of an existing listing owned by the seller.",
           "tags": [],
@@ -492,8 +701,17 @@
           "path": "/api/listings/:id",
           "label": ":Id Listing",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Permanently removes a listing and its photos from the seller's account.",
           "tags": [],
@@ -504,8 +722,17 @@
           "path": "/api/listings/:id/status",
           "label": "Status :Id",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [
             {
               "name": "status",
@@ -527,8 +754,14 @@
           "path": "/api/listings/:id/view",
           "label": "View :Id",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Records a listing view and updates the user's recently-viewed history.",
           "tags": [],
@@ -539,8 +772,14 @@
           "path": "/api/listings/autocomplete",
           "label": "List Autocomplete",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            500
+          ],
           "requestFields": [],
           "description": "Returns quick search suggestions combining popular terms, listings, and categories.",
           "tags": [],
@@ -551,8 +790,14 @@
           "path": "/api/listings/batch",
           "label": "List Batch",
           "auth": "none",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            500
+          ],
           "requestFields": [],
           "description": "Fetches multiple listings by ID in a single request, useful for cart and watchlist displays.",
           "tags": [],
@@ -563,8 +808,17 @@
           "path": "/api/listings/drafts",
           "label": "List Draft",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Returns all draft listings the seller has not yet published.",
           "tags": [],
@@ -575,8 +829,17 @@
           "path": "/api/listings/drafts",
           "label": "Drafts Listing",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Creates a new blank draft listing ready for the seller to fill in.",
           "tags": [],
@@ -587,8 +850,17 @@
           "path": "/api/listings/drafts",
           "label": "Drafts Listing",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Discards a draft listing that was never published.",
           "tags": [],
@@ -599,8 +871,14 @@
           "path": "/api/listings/followed-sellers",
           "label": "List Followed Seller",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Returns recent active listings from members and shops the user follows",
           "tags": [],
@@ -611,8 +889,15 @@
           "path": "/api/listings/recommendations",
           "label": "List Recommendation",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 403, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Returns personalized listing recommendations based on context such as similar items or seller listings.",
           "tags": [],
@@ -623,8 +908,16 @@
           "path": "/api/listings",
           "label": "List Listing",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Returns a paginated list of active listings, with optional filters and sorting.",
           "tags": [],
@@ -635,8 +928,16 @@
           "path": "/api/listings",
           "label": "Create Listing",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Creates a new listing draft for the seller, in either member or shop context.",
           "tags": [],
@@ -647,8 +948,14 @@
           "path": "/api/listings/search-suggestions",
           "label": "Search Suggestions Listing",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            500
+          ],
           "requestFields": [],
           "description": "Records a search term to improve future autocomplete suggestions.",
           "tags": [],
@@ -659,8 +966,14 @@
           "path": "/api/listings/search",
           "label": "List Search",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            500
+          ],
           "requestFields": [],
           "description": "Full-text search for listings with filters for category, condition, price, and location.",
           "tags": [],
@@ -671,8 +984,16 @@
           "path": "/api/listings/seller",
           "label": "List Seller",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Returns the seller's own listings, optionally filtered by status.",
           "tags": [],
@@ -683,8 +1004,16 @@
           "path": "/api/listings/upload/delete",
           "label": "Delete Upload",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [
             {
               "name": "imageUrl",
@@ -706,11 +1035,21 @@
           "path": "/api/listings/upload",
           "label": "Upload Listing",
           "auth": "user",
-          "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "access": [
+            "Member",
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Uploads a photo for a listing, resizes it, and saves both full and thumbnail versions.",
-          "tags": ["file-upload"],
+          "tags": [
+            "file-upload"
+          ],
           "sourceFile": "src/app/api/listings/upload/route.ts"
         }
       ]
@@ -723,11 +1062,19 @@
           "path": "/api/members/avatar",
           "label": "Avatar Member",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Uploads and sets a new profile photo for the member's account.",
-          "tags": ["file-upload"],
+          "tags": [
+            "file-upload"
+          ],
           "sourceFile": "src/app/api/members/avatar/route.ts"
         },
         {
@@ -735,8 +1082,14 @@
           "path": "/api/members/block/:member_id",
           "label": ":Member Id Block",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Unblock a member to allow them to message you again",
           "tags": [],
@@ -747,32 +1100,32 @@
           "path": "/api/members/block",
           "label": "Block Member",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Block a member to prevent them from messaging you",
           "tags": [],
           "sourceFile": "src/app/api/members/block/route.ts"
         },
         {
-          "method": "PATCH",
-          "path": "/api/members/heartbeat",
-          "label": "Heartbeat Member",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "Update the current user's last seen timestamp for online status",
-          "tags": [],
-          "sourceFile": "src/app/api/members/heartbeat/route.ts"
-        },
-        {
           "method": "GET",
           "path": "/api/members/seller-preconditions",
           "label": "List Seller Precondition",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Checks whether the member has any active listings that would block disabling seller mode.",
           "tags": [],
@@ -783,8 +1136,14 @@
           "path": "/api/members/toggle-seller",
           "label": "Toggle Seller Member",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [
             {
               "name": "is_seller",
@@ -806,8 +1165,14 @@
           "path": "/api/messaging/threads/:thread_id/archive",
           "label": "Archive :Thread Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 403, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Archive a message thread",
           "tags": [],
@@ -818,8 +1183,16 @@
           "path": "/api/messaging/threads/:thread_id/messages",
           "label": "List Message",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 422, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "List messages in a thread with cursor-based pagination",
           "tags": [],
@@ -830,8 +1203,16 @@
           "path": "/api/messaging/threads/:thread_id/messages",
           "label": "Messages :Thread Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 422, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            422,
+            500
+          ],
           "requestFields": [],
           "description": "Send a message in a thread (applies safety filter before storage)",
           "tags": [],
@@ -842,8 +1223,14 @@
           "path": "/api/messaging/threads/:thread_id/read",
           "label": "Read :Thread Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 403, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Mark a thread as read for the authenticated user",
           "tags": [],
@@ -854,32 +1241,33 @@
           "path": "/api/messaging/threads/:thread_id",
           "label": "List :Thread Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Get thread details including participants and context",
           "tags": [],
           "sourceFile": "src/app/api/messaging/threads/[thread_id]/route.ts"
         },
         {
-          "method": "POST",
-          "path": "/api/messaging/threads/:thread_id/upload",
-          "label": "Upload :Thread Id",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 422, 500],
-          "requestFields": [],
-          "description": "Upload images in a message thread",
-          "tags": ["file-upload"],
-          "sourceFile": "src/app/api/messaging/threads/[thread_id]/upload/route.ts"
-        },
-        {
           "method": "GET",
           "path": "/api/messaging/threads",
           "label": "List Thread",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "List the authenticated user's message threads with optional type filter",
           "tags": [],
@@ -890,8 +1278,15 @@
           "path": "/api/messaging/threads",
           "label": "Threads Messaging",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Create a new message thread between two members",
           "tags": [],
@@ -902,65 +1297,17 @@
           "path": "/api/messaging/unread-count",
           "label": "List Unread Count",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Get the total unread message count for the authenticated user",
           "tags": [],
           "sourceFile": "src/app/api/messaging/unread-count/route.ts"
-        }
-      ]
-    },
-    {
-      "name": "Notifications",
-      "endpoints": [
-        {
-          "method": "PATCH",
-          "path": "/api/notifications/:id/read",
-          "label": "Read :Id",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 404, 500],
-          "requestFields": [],
-          "description": "Mark a single notification as read",
-          "tags": [],
-          "sourceFile": "src/app/api/notifications/[id]/read/route.ts"
-        },
-        {
-          "method": "PATCH",
-          "path": "/api/notifications/read-all",
-          "label": "Read All Notification",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "Mark all notifications as read for the authenticated user",
-          "tags": [],
-          "sourceFile": "src/app/api/notifications/read-all/route.ts"
-        },
-        {
-          "method": "GET",
-          "path": "/api/notifications",
-          "label": "List Notification",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "List notifications for the authenticated user with pagination",
-          "tags": [],
-          "sourceFile": "src/app/api/notifications/route.ts"
-        },
-        {
-          "method": "GET",
-          "path": "/api/notifications/unread-count",
-          "label": "List Unread Count",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "Get the unread notification count for the authenticated user",
-          "tags": [],
-          "sourceFile": "src/app/api/notifications/unread-count/route.ts"
         }
       ]
     },
@@ -972,8 +1319,15 @@
           "path": "/api/offers/:id/accept",
           "label": "Accept :Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 403, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            403,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Accept a pending offer as the seller",
           "tags": [],
@@ -984,8 +1338,16 @@
           "path": "/api/offers/:id/counter",
           "label": "Counter :Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Counter a pending offer with a new amount",
           "tags": [],
@@ -996,8 +1358,15 @@
           "path": "/api/offers/:id/decline",
           "label": "Decline :Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 403, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            403,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Decline a pending offer as the seller",
           "tags": [],
@@ -1008,8 +1377,14 @@
           "path": "/api/offers/:id",
           "label": "List :Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 404, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Get offer details including listing and participant info",
           "tags": [],
@@ -1020,8 +1395,14 @@
           "path": "/api/offers",
           "label": "Create Offer",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Submit a new offer on a listing",
           "tags": [],
@@ -1037,8 +1418,14 @@
           "path": "/api/recently-viewed/merge",
           "label": "Merge Recently Viewed",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            500
+          ],
           "requestFields": [
             {
               "name": "items",
@@ -1055,8 +1442,13 @@
           "path": "/api/recently-viewed",
           "label": "List Recently Viewed",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Returns listings the user has recently viewed, for display on their dashboard.",
           "tags": [],
@@ -1067,8 +1459,13 @@
           "path": "/api/recently-viewed",
           "label": "Delete Recently Viewed",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Clears the user's entire recently-viewed browsing history.",
           "tags": [],
@@ -1084,11 +1481,19 @@
           "path": "/api/shops/:id/invites/:inviteId/resend",
           "label": "Resend :InviteId",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 404, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Resends a shop invite email with a refreshed token and expiry.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/invites/[inviteId]/resend/route.ts",
           "permissions": {
             "feature": "members",
@@ -1100,11 +1505,19 @@
           "path": "/api/shops/:id/invites/:inviteId",
           "label": ":InviteId Invite",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 404, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Revokes a pending shop invite so it can no longer be accepted.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/invites/[inviteId]/route.ts",
           "permissions": {
             "feature": "members",
@@ -1116,11 +1529,19 @@
           "path": "/api/shops/:id/invites",
           "label": "Invites :Id",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 409, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Sends a shop invite email to a new member with a specified role.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/invites/route.ts",
           "permissions": {
             "feature": "members",
@@ -1132,11 +1553,19 @@
           "path": "/api/shops/:id/invites",
           "label": "List Invite",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 409, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Returns all pending and past invites for a shop.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/invites/route.ts",
           "permissions": {
             "feature": "members",
@@ -1148,11 +1577,19 @@
           "path": "/api/shops/:id/members/:memberId/role",
           "label": "Role :MemberId",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 404, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Changes the role assigned to a shop member.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/members/[memberId]/role/route.ts",
           "permissions": {
             "feature": "members",
@@ -1164,11 +1601,17 @@
           "path": "/api/shops/:id/members/:memberId",
           "label": ":MemberId Member",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            500
+          ],
           "requestFields": [],
           "description": "Removes a member from a shop, or allows a member to remove themselves.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/members/[memberId]/route.ts",
           "permissions": {
             "feature": "members",
@@ -1180,11 +1623,17 @@
           "path": "/api/shops/:id/members",
           "label": "Members :Id",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            500
+          ],
           "requestFields": [],
           "description": "Adds a member directly to a shop with a specified role, bypassing the invite flow.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/members/route.ts",
           "permissions": {
             "feature": "members",
@@ -1196,11 +1645,18 @@
           "path": "/api/shops/:id/ownership-transfer",
           "label": "List Ownership Transfer",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [404, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Returns the pending ownership transfer request for a shop, if one exists.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/ownership-transfer/route.ts",
           "permissions": {
             "feature": "members",
@@ -1212,11 +1668,18 @@
           "path": "/api/shops/:id/ownership-transfer",
           "label": "Ownership Transfer :Id",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [404, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Cancels a pending shop ownership transfer before it is accepted.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/ownership-transfer/route.ts",
           "permissions": {
             "feature": "members",
@@ -1228,11 +1691,19 @@
           "path": "/api/shops/:id/ownership",
           "label": "Ownership :Id",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 409, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Initiates a shop ownership transfer by sending a confirmation email to the new owner.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/ownership/route.ts",
           "permissions": {
             "feature": "members",
@@ -1244,11 +1715,17 @@
           "path": "/api/shops/:id/roles",
           "label": "List Role",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            500
+          ],
           "requestFields": [],
           "description": "Returns the list of roles available to assign to members of a shop.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/roles/route.ts",
           "permissions": {
             "feature": "members",
@@ -1260,11 +1737,18 @@
           "path": "/api/shops/:id",
           "label": ":Id Shop",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [404, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            404,
+            500
+          ],
           "requestFields": [],
           "description": "Permanently deletes a shop and all its associated listings and assets.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/[id]/route.ts",
           "permissions": {
             "feature": "shop_settings",
@@ -1276,11 +1760,20 @@
           "path": "/api/shops/avatar",
           "label": "Avatar Shop",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 403, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Uploads and sets a new avatar image for a shop's profile.",
-          "tags": ["file-upload", "admin-only"],
+          "tags": [
+            "file-upload",
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/avatar/route.ts",
           "permissions": {
             "feature": "shop_settings",
@@ -1292,11 +1785,20 @@
           "path": "/api/shops/hero-banner",
           "label": "Hero Banner Shop",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 403, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            403,
+            500
+          ],
           "requestFields": [],
           "description": "Uploads and sets a new hero banner image displayed at the top of a shop's page.",
-          "tags": ["file-upload", "admin-only"],
+          "tags": [
+            "file-upload",
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/hero-banner/route.ts",
           "permissions": {
             "feature": "shop_settings",
@@ -1308,11 +1810,21 @@
           "path": "/api/shops/ownership-transfer/:token/accept",
           "label": "Accept :Token",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [401, 403, 404, 410, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            401,
+            403,
+            404,
+            410,
+            500
+          ],
           "requestFields": [],
           "description": "Accepts a shop ownership transfer, making the recipient the new owner.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/ownership-transfer/[token]/accept/route.ts"
         },
         {
@@ -1320,11 +1832,21 @@
           "path": "/api/shops/ownership-transfer/:token",
           "label": "List :Token",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [401, 403, 404, 410, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            401,
+            403,
+            404,
+            410,
+            500
+          ],
           "requestFields": [],
           "description": "Looks up the details of a shop ownership transfer by its invite token.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/ownership-transfer/[token]/route.ts"
         },
         {
@@ -1332,11 +1854,21 @@
           "path": "/api/shops",
           "label": "Create Shop",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 401, 403, 409, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            403,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Creates a new shop and registers the creator as its owner.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/route.ts"
         },
         {
@@ -1344,11 +1876,20 @@
           "path": "/api/shops/slug",
           "label": "Slug Shop",
           "auth": "admin",
-          "access": ["Shop"],
-          "errorCodes": [400, 403, 409, 500],
+          "access": [
+            "Shop"
+          ],
+          "errorCodes": [
+            400,
+            403,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Reserves a new URL slug for a shop, replacing the previous one.",
-          "tags": ["admin-only"],
+          "tags": [
+            "admin-only"
+          ],
           "sourceFile": "src/app/api/shops/slug/route.ts",
           "permissions": {
             "feature": "shop_settings",
@@ -1365,8 +1906,13 @@
           "path": "/api/watchlist/:listing_id",
           "label": "List :Listing Id",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            401,
+            500
+          ],
           "requestFields": [],
           "description": "Check if the authenticated user is watching a specific listing",
           "tags": [],
@@ -1377,8 +1923,16 @@
           "path": "/api/watchlist",
           "label": "List Watchlist",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "List all listings the authenticated user is watching",
           "tags": [],
@@ -1389,8 +1943,16 @@
           "path": "/api/watchlist",
           "label": "Create Watchlist",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            409,
+            500
+          ],
           "requestFields": [
             {
               "name": "listing_id",
@@ -1407,8 +1969,16 @@
           "path": "/api/watchlist",
           "label": "Delete Watchlist",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 404, 409, 500],
+          "access": [
+            "Member"
+          ],
+          "errorCodes": [
+            400,
+            401,
+            404,
+            409,
+            500
+          ],
           "requestFields": [],
           "description": "Stop watching a listing for the authenticated user",
           "tags": [],
