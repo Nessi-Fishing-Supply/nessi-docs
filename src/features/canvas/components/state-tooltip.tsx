@@ -2,18 +2,30 @@
 
 import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
+import type { DiffStatus } from '@/types/diff';
 import { GitHubLink } from '@/components/ui/github-link';
+import { DiffTooltipSection } from './diff-tooltip-section';
+import type { NodeChange } from '../hooks/use-diff-nodes';
 import { LIFECYCLE_NODE_WIDTH } from '../utils/geometry';
 import { TT_BG, TT_BORDER, TT_SHADOW, sectionLabel } from '../constants/tooltip-styles';
 
 interface StateTooltipProps {
   state: LifecycleState;
   lifecycle: Lifecycle;
+  diffStatus?: DiffStatus | null;
+  diffChanges?: NodeChange[];
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
 
-export function StateTooltip({ state, lifecycle, onMouseEnter, onMouseLeave }: StateTooltipProps) {
+export function StateTooltip({
+  state,
+  lifecycle,
+  diffStatus,
+  diffChanges,
+  onMouseEnter,
+  onMouseLeave,
+}: StateTooltipProps) {
   const color = state.color ?? DEFAULT_STATE_COLOR;
   const incoming = lifecycle.transitions.filter((t) => t.to === state.id);
   const outgoing = lifecycle.transitions.filter((t) => t.from === state.id);
@@ -106,6 +118,11 @@ export function StateTooltip({ state, lifecycle, onMouseEnter, onMouseLeave }: S
               )}
             </div>
           </div>
+
+          {/* Diff changes */}
+          {diffStatus && diffStatus !== 'unchanged' && (
+            <DiffTooltipSection status={diffStatus} changes={diffChanges} />
+          )}
 
           {/* Description */}
           {lifecycle.why && (

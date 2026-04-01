@@ -196,11 +196,33 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
 
   const getStateKey = useCallback((s: LifecycleState) => s.id, []);
 
-  const { statusMap: nodeStatusMap, ghostNodes: ghostStates } = useDiffNodes(
-    lifecycle.states,
-    baseLifecycle?.states ?? null,
-    getStateKey,
-  );
+  const {
+    statusMap: nodeStatusMap,
+    changesMap,
+    ghostNodes: ghostStates,
+  } = useDiffNodes(lifecycle.states, baseLifecycle?.states ?? null, getStateKey);
+
+  // Diff transitions directly (more precise than deriving from node status)
+  const transitionStatusMap = useMemo(() => {
+    if (!baseLifecycle) return new Map<string, DiffStatus>();
+    const baseTransitions = new Map(baseLifecycle.transitions.map((t) => [`${t.from}:${t.to}`, t]));
+    const headTransitions = new Map(lifecycle.transitions.map((t) => [`${t.from}:${t.to}`, t]));
+    const map = new Map<string, DiffStatus>();
+    for (const [key, t] of headTransitions) {
+      const base = baseTransitions.get(key);
+      if (!base) {
+        map.set(key, 'added');
+      } else if (JSON.stringify(base) !== JSON.stringify(t)) {
+        map.set(key, 'modified');
+      } else {
+        map.set(key, 'unchanged');
+      }
+    }
+    for (const key of baseTransitions.keys()) {
+      if (!headTransitions.has(key)) map.set(key, 'removed');
+    }
+    return map;
+  }, [lifecycle.transitions, baseLifecycle]);
 
   const allStates = [...lifecycle.states, ...ghostStates];
   const stateMap = new Map(allStates.map((s) => [s.id, s]));
@@ -254,7 +276,10 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
 
         const isLit = litEdges.has(i);
         const isDimmed = hasTrace && !isLit;
-        const edgeDiffStatus = isDiffMode ? getEdgeDiffStatus(t.from, t.to, nodeStatusMap) : null;
+        const edgeDiffStatus = isDiffMode
+          ? (transitionStatusMap.get(`${t.from}:${t.to}`) ??
+            getEdgeDiffStatus(t.from, t.to, nodeStatusMap))
+          : null;
 
         let edgeStroke = isLit ? 'rgba(61,140,117,0.5)' : 'rgba(154,151,144,0.3)';
         let edgeOpacity = isDimmed ? 0.08 : 1;
@@ -321,7 +346,10 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
 
         const isLit = litEdges.has(i);
         const isDimmed = hasTrace && !isLit;
-        const edgeDiffStatus = isDiffMode ? getEdgeDiffStatus(t.from, t.to, nodeStatusMap) : null;
+        const edgeDiffStatus = isDiffMode
+          ? (transitionStatusMap.get(`${t.from}:${t.to}`) ??
+            getEdgeDiffStatus(t.from, t.to, nodeStatusMap))
+          : null;
 
         const labelOpacity =
           edgeDiffStatus === 'unchanged'
@@ -388,6 +416,8 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
             <StateTooltip
               state={state}
               lifecycle={lifecycle}
+              diffStatus={isDiffMode ? (nodeStatusMap.get(state.id) ?? null) : null}
+              diffChanges={isDiffMode ? changesMap.get(state.id) : undefined}
               onMouseEnter={() => {
                 if (hoverTimer.current) clearTimeout(hoverTimer.current);
               }}

@@ -33,7 +33,6 @@ export const StateNode = memo(function StateNode({
           ? '#b84040'
           : naturalColor;
 
-  const isDiffActive = diffStatus != null;
   const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
   const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
 
