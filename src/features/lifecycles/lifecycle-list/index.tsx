@@ -8,7 +8,6 @@ import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { DiffBadge } from '@/components/ui/diff-badge';
-import type { DiffStatus } from '@/types/diff';
 import styles from './lifecycle-list.module.scss';
 
 interface LifecycleListProps {
@@ -79,11 +78,11 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
             <div className={styles.rowContent}>
               <div className={styles.rowTitle}>
                 {lc.name}
-                {lifecycleStatusMap && lifecycleStatusMap.get(lc.slug) !== 'unchanged' && (
-                  <DiffBadge
-                    status={lifecycleStatusMap.get(lc.slug) as Exclude<DiffStatus, 'unchanged'>}
-                  />
-                )}
+                {(() => {
+                  const status = lifecycleStatusMap?.get(lc.slug);
+                  if (!status || status === 'unchanged') return null;
+                  return <DiffBadge status={status} />;
+                })()}
               </div>
               <div className={styles.rowDesc}>{lc.description}</div>
               <div className={styles.rowMeta}>
@@ -133,7 +132,7 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
             <div
               key={`removed-${lc.slug}`}
               className={`${styles.row} ${styles.diff_removed}`}
-              style={{ opacity: 1 }}
+              style={{ opacity: 0.6 }}
             >
               <div className={styles.rowContent}>
                 <div className={styles.rowTitle}>
