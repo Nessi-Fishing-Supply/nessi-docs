@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
@@ -44,6 +45,8 @@ export default async function LifecyclePage({
   const entityNames = getEntitiesForLifecycle(data.lifecycles, lifecycle.slug);
 
   return (
-    <LifecyclePageClient lifecycle={lifecycle} siblings={siblings} entityNames={entityNames} />
+    <Suspense>
+      <LifecyclePageClient lifecycle={lifecycle} siblings={siblings} entityNames={entityNames} />
+    </Suspense>
   );
 }

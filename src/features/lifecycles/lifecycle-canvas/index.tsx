@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useRef, useMemo, useCallback } from 'react';
-import type { Lifecycle, LifecycleTransition } from '@/types/lifecycle';
+import type { Lifecycle, LifecycleState, LifecycleTransition } from '@/types/lifecycle';
+import type { DiffStatus } from '@/types/diff';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { StateNode } from '@/features/canvas/components/state-node';
 import { StateTooltip } from '@/features/canvas/components/state-tooltip';
@@ -15,6 +16,8 @@ import {
   type PortSide,
 } from '@/features/canvas/utils/geometry';
 import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
+import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 
 interface LifecycleCanvasProps {
   lifecycle: Lifecycle;
@@ -113,6 +116,20 @@ function getTransitionPath(
   return { d: smoothPath(fx, fy, fDir, tx, ty, tDir), mx: (fx + tx) / 2, my: (fy + ty) / 2 };
 }
 
+function getEdgeDiffStatus(
+  fromId: string,
+  toId: string,
+  statusMap: Map<string, DiffStatus>,
+): DiffStatus | null {
+  if (statusMap.size === 0) return null;
+  const fromStatus = statusMap.get(fromId);
+  const toStatus = statusMap.get(toId);
+  if (fromStatus === 'removed' || toStatus === 'removed') return 'removed';
+  if (fromStatus === 'added' || toStatus === 'added') return 'added';
+  if (fromStatus === 'modified' || toStatus === 'modified') return 'modified';
+  return 'unchanged';
+}
+
 /** Trace hook for lifecycle — click a state to isolate its connections */
 function useLifecycleTrace(transitions: LifecycleTransition[]) {
   const [focusedStateId, setFocusedStateId] = useState<string | null>(null);
@@ -164,14 +181,36 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
     onClear: resetTrace,
   });
 
-  const stateMap = new Map(lifecycle.states.map((s) => [s.id, s]));
+  // Diff mode integration
+  const { isActive: isDiffMode, diffResult } = useDiffMode();
+
+  // Get base lifecycle for node-level comparison
+  const baseLifecycle =
+    isDiffMode && diffResult
+      ? (() => {
+          const mod = diffResult.lifecycles.modified.find((m) => m.base.slug === lifecycle.slug);
+          if (mod) return mod.base;
+          return null;
+        })()
+      : null;
+
+  const getStateKey = useCallback((s: LifecycleState) => s.id, []);
+
+  const { statusMap: nodeStatusMap, ghostNodes: ghostStates } = useDiffNodes(
+    lifecycle.states,
+    baseLifecycle?.states ?? null,
+    getStateKey,
+  );
+
+  const allStates = [...lifecycle.states, ...ghostStates];
+  const stateMap = new Map(allStates.map((s) => [s.id, s]));
 
   // Compute viewBox from state positions
   let minX = Infinity,
     minY = Infinity,
     maxX = -Infinity,
     maxY = -Infinity;
-  for (const s of lifecycle.states) {
+  for (const s of allStates) {
     minX = Math.min(minX, s.x);
     minY = Math.min(minY, s.y);
     maxX = Math.max(maxX, s.x + LIFECYCLE_NODE_WIDTH);
@@ -189,7 +228,7 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
     <CanvasProvider
       viewBox={viewBox}
       viewKey={`lifecycle-${lifecycle.slug}`}
-      legend={<LifecycleLegend visible={legendVisible} />}
+      legend={<LifecycleLegend visible={legendVisible} isDiffMode={isDiffMode} />}
       renderToolbar={(zoomControls) => (
         <CanvasToolbar
           zoomControls={zoomControls}
@@ -215,22 +254,46 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
 
         const isLit = litEdges.has(i);
         const isDimmed = hasTrace && !isLit;
+        const edgeDiffStatus = isDiffMode ? getEdgeDiffStatus(t.from, t.to, nodeStatusMap) : null;
+
+        let edgeStroke = isLit ? 'rgba(61,140,117,0.5)' : 'rgba(154,151,144,0.3)';
+        let edgeOpacity = isDimmed ? 0.08 : 1;
+        let edgeMarker = isLit ? 'url(#arrow-lit)' : 'url(#arrow)';
+        let edgeDash: string | undefined = undefined;
+
+        if (edgeDiffStatus) {
+          if (edgeDiffStatus === 'added') {
+            edgeStroke = 'rgba(61,140,117,0.7)';
+            edgeMarker = 'url(#arrow-diff-added)';
+          } else if (edgeDiffStatus === 'modified') {
+            edgeStroke = 'rgba(123,143,205,0.7)';
+            edgeMarker = 'url(#arrow-diff-modified)';
+          } else if (edgeDiffStatus === 'removed') {
+            edgeStroke = 'rgba(184,64,64,0.5)';
+            edgeMarker = 'url(#arrow-diff-removed)';
+            edgeDash = '3 5';
+            edgeOpacity = 0.5;
+          } else if (edgeDiffStatus === 'unchanged') {
+            edgeOpacity = 0.15;
+          }
+        }
 
         return (
           <g key={i}>
             <path
               d={path.d}
               fill="none"
-              stroke={isLit ? 'rgba(61,140,117,0.5)' : 'rgba(154,151,144,0.3)'}
+              stroke={edgeStroke}
               strokeWidth={isLit ? 2 : 1.5}
-              markerEnd={isLit ? 'url(#arrow-lit)' : 'url(#arrow)'}
+              strokeDasharray={edgeDash}
+              markerEnd={edgeMarker}
               style={{
-                opacity: isDimmed ? 0.08 : 1,
+                opacity: edgeOpacity,
                 transition: 'opacity 400ms ease-out',
               }}
             />
             {/* Animated flow on lit edges */}
-            {isLit && (
+            {isLit && edgeDiffStatus !== 'removed' && edgeDiffStatus !== 'unchanged' && (
               <path
                 d={path.d}
                 fill="none"
@@ -256,9 +319,19 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
 
         const isLit = litEdges.has(i);
         const isDimmed = hasTrace && !isLit;
+        const edgeDiffStatus = isDiffMode ? getEdgeDiffStatus(t.from, t.to, nodeStatusMap) : null;
+
+        const labelOpacity =
+          edgeDiffStatus === 'unchanged'
+            ? 0.15
+            : edgeDiffStatus === 'removed'
+              ? 0.4
+              : isDimmed
+                ? 0.1
+                : 1;
 
         return (
-          <g key={i} style={{ opacity: isDimmed ? 0.1 : 1, transition: 'opacity 400ms ease-out' }}>
+          <g key={i} style={{ opacity: labelOpacity, transition: 'opacity 400ms ease-out' }}>
             <LabelPill x={path.mx} y={path.my} label={t.label} />
           </g>
         );
@@ -287,6 +360,7 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
             <StateNode
               state={state}
               isSelected={litNodes.has(state.id) && hasTrace}
+              diffStatus={isDiffMode ? (nodeStatusMap.get(state.id) ?? null) : null}
               onClick={() => {
                 toggleFocus(state.id);
               }}
@@ -294,6 +368,14 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
           </g>
         );
       })}
+
+      {/* Ghost nodes from base branch (removed states) */}
+      {isDiffMode &&
+        ghostStates.map((state) => (
+          <g key={`ghost-${state.id}`}>
+            <StateNode state={state} diffStatus="removed" />
+          </g>
+        ))}
 
       {/* Tooltip — rendered last so it sits above all nodes */}
       {hoveredStateId &&
