@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { DomainWithStats } from '@/data';
+import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import styles from './domain-grid.module.scss';
 
@@ -11,6 +12,7 @@ interface DomainGridProps {
 }
 
 export function DomainGrid({ domains }: DomainGridProps) {
+  const branchHref = useBranchHref();
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setEntered(true));
@@ -30,7 +32,7 @@ export function DomainGrid({ domains }: DomainGridProps) {
         {domains.map((d, i) => (
           <Link
             key={d.slug}
-            href={`/journeys/${d.slug}`}
+            href={branchHref(`/journeys/${d.slug}`)}
             className={styles.card}
             style={{
               opacity: entered ? 1 : 0,

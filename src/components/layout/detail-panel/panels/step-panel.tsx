@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import type { JourneyNode, Journey } from '@/types/journey';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { getLinksForRoute } from '@/data';
+import { useBranchHref } from '@/providers/branch-provider';
 import { Badge, SectionLabel, InfoBlock, CrossLink } from '@/components/ui';
 import { GitHubLink } from '@/components/ui/github-link';
 import styles from './panel-content.module.scss';
@@ -12,6 +15,7 @@ interface StepPanelProps {
 }
 
 export function StepPanel({ node, journey }: StepPanelProps) {
+  const branchHref = useBranchHref();
   const layer = node.layer ? LAYER_CONFIG[node.layer] : null;
   const status = node.status ? STATUS_CONFIG[node.status] : null;
   const crossLinks = node.route ? getLinksForRoute(node.route) : [];
@@ -38,11 +42,13 @@ export function StepPanel({ node, journey }: StepPanelProps) {
         <>
           <SectionLabel>API Route</SectionLabel>
           <Link
-            href={`/api-map#${node.route
-              ?.split(' ')[1]
-              ?.toLowerCase()
-              .replace(/[^a-z0-9]+/g, '-')
-              .replace(/(^-|-$)/g, '')}`}
+            href={branchHref(
+              `/api-map#${node.route
+                ?.split(' ')[1]
+                ?.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '')}`,
+            )}
             className={styles.codeBlockAccent}
           >
             {node.route} →
@@ -98,7 +104,7 @@ export function StepPanel({ node, journey }: StepPanelProps) {
           <SectionLabel>See also</SectionLabel>
           <div className={styles.linkList}>
             {crossLinks.map((link, i) => (
-              <CrossLink key={i} href={link.href}>
+              <CrossLink key={i} href={branchHref(link.href)}>
                 View API Spec
               </CrossLink>
             ))}

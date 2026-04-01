@@ -62,3 +62,12 @@ export function useBranchData(): BranchContextValue {
   if (!ctx) throw new Error('useBranchData must be used within BranchProvider');
   return ctx;
 }
+
+/** Returns a function that prefixes a path with the active branch. */
+export function useBranchHref() {
+  const { activeBranch } = useBranchData();
+  return useCallback(
+    (path: string) => `/${activeBranch}${path.startsWith('/') ? path : `/${path}`}`,
+    [activeBranch],
+  );
+}

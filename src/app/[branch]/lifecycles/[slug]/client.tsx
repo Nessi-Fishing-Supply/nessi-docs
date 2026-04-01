@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import type { Lifecycle } from '@/types/lifecycle';
+import { useBranchHref } from '@/providers/branch-provider';
 import { Breadcrumb } from '@/components/ui';
 import type { SwitcherItem } from '@/components/ui/breadcrumb';
 import { LifecycleCanvas } from '@/features/lifecycles/lifecycle-canvas';
@@ -17,10 +18,11 @@ export function LifecyclePageClient({
   siblings,
   entityNames,
 }: LifecyclePageClientProps) {
+  const branchHref = useBranchHref();
   const switcherItems: SwitcherItem[] = siblings.map((s) => ({
     label: s.name,
     description: s.description,
-    href: `/lifecycles/${s.slug}`,
+    href: branchHref(`/lifecycles/${s.slug}`),
     active: s.slug === lifecycle.slug,
   }));
 
@@ -28,14 +30,17 @@ export function LifecyclePageClient({
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ padding: '12px 16px 0', flexShrink: 0 }}>
         <Breadcrumb
-          segments={[{ label: 'Lifecycles', href: '/lifecycles' }, { label: lifecycle.name }]}
+          segments={[
+            { label: 'Lifecycles', href: branchHref('/lifecycles') },
+            { label: lifecycle.name },
+          ]}
           switcher={switcherItems}
         />
         {entityNames.length > 0 && (
           <div style={{ padding: '4px 0 0', fontSize: '11px' }}>
             <span style={{ color: 'var(--text-dim)' }}>Governs: </span>
             <Link
-              href={`/data-model#${entityNames[0]}`}
+              href={branchHref(`/data-model#${entityNames[0]}`)}
               style={{
                 color: 'var(--text-muted)',
                 textDecoration: 'none',

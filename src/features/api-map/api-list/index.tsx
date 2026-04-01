@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
+import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
 import { GitHubLink } from '@/components/ui/github-link';
@@ -117,6 +118,7 @@ function GroupDivider({ name, count }: { name: string; count: number }) {
 }
 
 function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
+  const branchHref = useBranchHref();
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
   const hasRequestFields = endpoint.requestFields && endpoint.requestFields.length > 0;
@@ -180,7 +182,7 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
                 {endpoint.access.map((ctx) => (
                   <Link
                     key={ctx}
-                    href="/config#__roles__"
+                    href={branchHref('/config#__roles__')}
                     className={`${styles.accessBadge} ${ctx === 'Shop' ? styles.accessShop : ''}`}
                   >
                     <span className={styles.accessDot} />
@@ -211,7 +213,7 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
               <div className={styles.detailLabel}>Used in Journeys</div>
               <div className={styles.journeyChips}>
                 {journeyLinks.map((link, i) => (
-                  <Link key={i} href={link.href} className={styles.journeyChip}>
+                  <Link key={i} href={branchHref(link.href)} className={styles.journeyChip}>
                     {link.label}
                   </Link>
                 ))}
@@ -234,6 +236,7 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 /* ── Endpoint Row ── */
 
 function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; staggerIndex: number }) {
+  const branchHref = useBranchHref();
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
   const [isDeepLinkTarget] = useState(
     () =>
@@ -302,7 +305,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
           {endpoint.access?.map((ctx) => (
             <Link
               key={ctx}
-              href="/config#__roles__"
+              href={branchHref('/config#__roles__')}
               className={`${styles.epAccess} ${ctx === 'Shop' ? styles.epAccessShop : ''}`}
             >
               {ctx}

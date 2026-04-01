@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import type { Journey, StepLayer, StepStatus } from '@/types/journey';
 import { getDomainConfig } from '@/constants/domains';
+import { useBranchHref } from '@/providers/branch-provider';
 import { Breadcrumb } from '@/components/ui';
 import type { SwitcherItem } from '@/components/ui/breadcrumb';
 import { JourneyCanvas } from '@/features/journeys/journey-canvas';
@@ -17,6 +18,7 @@ interface JourneyPageClientProps {
 }
 
 export function JourneyPageClient({ journey, domain, siblings }: JourneyPageClientProps) {
+  const branchHref = useBranchHref();
   const [visibleLayers, setVisibleLayers] = useState<Set<string>>(new Set(ALL_LAYERS));
   const [visibleStatuses, setVisibleStatuses] = useState<Set<string>>(new Set(ALL_STATUSES));
   const domainConfig = getDomainConfig(domain);
@@ -42,7 +44,7 @@ export function JourneyPageClient({ journey, domain, siblings }: JourneyPageClie
   const switcherItems: SwitcherItem[] = siblings.map((s) => ({
     label: s.title,
     description: s.description,
-    href: `/journeys/${domain}/${s.slug}`,
+    href: branchHref(`/journeys/${domain}/${s.slug}`),
     active: s.slug === journey.slug,
   }));
 
@@ -51,8 +53,8 @@ export function JourneyPageClient({ journey, domain, siblings }: JourneyPageClie
       <div style={{ padding: '12px 16px 0', flexShrink: 0 }}>
         <Breadcrumb
           segments={[
-            { label: 'Journeys', href: '/journeys' },
-            { label: domainConfig?.label ?? domain, href: `/journeys/${domain}` },
+            { label: 'Journeys', href: branchHref('/journeys') },
+            { label: domainConfig?.label ?? domain, href: branchHref(`/journeys/${domain}`) },
             { label: journey.title },
           ]}
           switcher={switcherItems}

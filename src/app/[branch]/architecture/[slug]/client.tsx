@@ -1,6 +1,7 @@
 'use client';
 
 import type { ArchDiagram } from '@/types/architecture';
+import { useBranchHref } from '@/providers/branch-provider';
 import { Breadcrumb } from '@/components/ui';
 import type { SwitcherItem } from '@/components/ui/breadcrumb';
 import { ArchitectureCanvas } from '@/features/architecture/architecture-canvas';
@@ -11,10 +12,11 @@ interface ArchitecturePageClientProps {
 }
 
 export function ArchitecturePageClient({ diagram, siblings }: ArchitecturePageClientProps) {
+  const branchHref = useBranchHref();
   const switcherItems: SwitcherItem[] = siblings.map((s) => ({
     label: s.title,
     description: s.description,
-    href: `/architecture/${s.slug}`,
+    href: branchHref(`/architecture/${s.slug}`),
     active: s.slug === diagram.slug,
   }));
 
@@ -22,7 +24,10 @@ export function ArchitecturePageClient({ diagram, siblings }: ArchitecturePageCl
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ padding: '12px 16px 0', flexShrink: 0 }}>
         <Breadcrumb
-          segments={[{ label: 'Architecture', href: '/architecture' }, { label: diagram.title }]}
+          segments={[
+            { label: 'Architecture', href: branchHref('/architecture') },
+            { label: diagram.title },
+          ]}
           switcher={switcherItems}
         />
       </div>

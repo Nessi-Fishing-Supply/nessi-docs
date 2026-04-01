@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Entity } from '@/types/data-model';
 import { getMethodColors } from '@/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation, getLifecycleForEntity } from '@/data';
+import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
 import { Tooltip } from '@/components/ui';
@@ -108,6 +109,7 @@ function EntityRow({
   onOpen: () => void;
   onScrollToEntity: (name: string) => void;
 }) {
+  const branchHref = useBranchHref();
   const fkCount = countForeignKeys(entity);
   const [isDeepLinkTarget] = useState(
     () =>
@@ -156,7 +158,7 @@ function EntityRow({
           if (!lc) return null;
           return (
             <Link
-              href={`/lifecycles/${lc.slug}`}
+              href={branchHref(`/lifecycles/${lc.slug}`)}
               className={styles.lifecycleLink}
               onClick={(e) => e.stopPropagation()}
             >
@@ -245,6 +247,7 @@ function FieldTable({
 /* ── Meta Sections ── */
 
 function MetaSections({ entity }: { entity: Entity }) {
+  const branchHref = useBranchHref();
   return (
     <div className={styles.metaSections}>
       {entity.rlsPolicies && entity.rlsPolicies.length > 0 && (
@@ -270,7 +273,11 @@ function MetaSections({ entity }: { entity: Entity }) {
 
             if (bestEndpoint) {
               return (
-                <Link key={i} href={`/api-map#${bestEndpoint.anchor}`} className={styles.metaLink}>
+                <Link
+                  key={i}
+                  href={branchHref(`/api-map#${bestEndpoint.anchor}`)}
+                  className={styles.metaLink}
+                >
                   {row}
                 </Link>
               );

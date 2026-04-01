@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { Lifecycle } from '@/types/lifecycle';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
+import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import styles from './lifecycle-list.module.scss';
 
@@ -38,6 +39,7 @@ function sourceLabel(source?: string): string {
 }
 
 export function LifecycleList({ lifecycles }: LifecycleListProps) {
+  const branchHref = useBranchHref();
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setEntered(true));
@@ -61,7 +63,7 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
         {lifecycles.map((lc, i) => (
           <Link
             key={lc.slug}
-            href={`/lifecycles/${lc.slug}`}
+            href={branchHref(`/lifecycles/${lc.slug}`)}
             className={styles.row}
             style={{
               opacity: entered ? 1 : 0,
@@ -84,7 +86,7 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        window.location.href = `/data-model#${entityNames[0]}`;
+                        window.location.href = branchHref(`/data-model#${entityNames[0]}`);
                       }}
                     >
                       Table: {entityNames[0]}

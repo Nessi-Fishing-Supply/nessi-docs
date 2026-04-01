@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { ArchDiagram } from '@/types/architecture';
+import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import styles from './architecture-list.module.scss';
 
@@ -17,6 +18,7 @@ const CATEGORY_CONFIG: Record<string, { label: string; color: string }> = {
 };
 
 export function ArchitectureList({ diagrams }: ArchitectureListProps) {
+  const branchHref = useBranchHref();
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setEntered(true));
@@ -50,7 +52,7 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
           return (
             <Link
               key={d.slug}
-              href={`/architecture/${d.slug}`}
+              href={branchHref(`/architecture/${d.slug}`)}
               className={styles.row}
               style={{
                 opacity: entered ? 1 : 0,
