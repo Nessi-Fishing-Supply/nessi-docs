@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
 import type { Entity } from '@/types/data-model';
+import type { DiffStatus } from '@/types/diff';
 import { useDocsContext } from '@/providers/docs-provider';
+import { useDiffMode } from '@/hooks/use-diff-mode';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { EntityNode } from '@/features/canvas/components/entity-node';
 import { EntityTooltip } from '@/features/canvas/components/entity-tooltip';
@@ -164,6 +166,10 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
     () => new Set(ALL_CATEGORIES),
   );
   const { setSelectedItem } = useDocsContext();
+  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const erdNodeStatusMap = isDiffMode ? diffResult?.erdNodes.statusMap : undefined;
+  const ghostErdNodes: ErdNode[] = isDiffMode ? (diffResult?.erdNodes.removed ?? []) : [];
+  const erdEdgeStatusMap = isDiffMode ? diffResult?.erdEdges.statusMap : undefined;
   const { focusedNodeId, toggleFocus, resetTrace, litNodes, litEdges, hasTrace } =
     useErdTrace(edges);
   const nodeMap = new Map(nodes.map((n) => [n.id, n]));
@@ -197,12 +203,12 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
     },
   });
 
-  // Compute viewBox from node positions
+  // Compute viewBox from node positions (include ghost nodes from diff)
   let minX = Infinity,
     minY = Infinity,
     maxX = -Infinity,
     maxY = -Infinity;
-  for (const n of nodes) {
+  for (const n of [...nodes, ...ghostErdNodes]) {
     minX = Math.min(minX, n.x);
     minY = Math.min(minY, n.y);
     maxX = Math.max(maxX, n.x + ERD_NODE_WIDTH);
@@ -233,7 +239,7 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
           nodeColor="#3d8c75"
         />
       )}
-      legend={<ErdLegend visible={legendVisible} />}
+      legend={<ErdLegend visible={legendVisible} isDiffMode={isDiffMode} />}
       renderToolbar={(zoomControls) => (
         <CanvasToolbar
           zoomControls={zoomControls}
@@ -310,13 +316,27 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
 
         const path = getEdgePath(fromNode, toNode, perpOffset);
 
+        const edgeDiffKey = `${edge.from}:${edge.to}`;
+        const edgeDiffStatus: DiffStatus | null = isDiffMode
+          ? (erdEdgeStatusMap?.get(edgeDiffKey) ?? null)
+          : null;
+
+        // Derive edge color considering diff status
+        let strokeColor = isLit ? 'rgba(61,140,117,0.5)' : 'rgba(154,151,144,0.25)';
+        if (edgeDiffStatus === 'added') strokeColor = 'rgba(61,140,117,0.6)';
+        else if (edgeDiffStatus === 'modified') strokeColor = 'rgba(123,143,205,0.6)';
+        else if (edgeDiffStatus === 'removed') strokeColor = 'rgba(184,64,64,0.5)';
+        else if (edgeDiffStatus === 'unchanged' && isDiffMode)
+          strokeColor = 'rgba(154,151,144,0.15)';
+
         return (
           <g key={i}>
             <path
               d={path.d}
               fill="none"
-              stroke={isLit ? 'rgba(61,140,117,0.5)' : 'rgba(154,151,144,0.25)'}
+              stroke={strokeColor}
               strokeWidth={isLit ? 2 : 1.5}
+              strokeDasharray={edgeDiffStatus === 'removed' ? '5 4' : undefined}
               markerEnd={isLit ? 'url(#arrow-lit)' : 'url(#arrow)'}
               style={{
                 opacity: isDimmed ? 0.08 : 1,
@@ -393,6 +413,9 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
         const isPinned = pinnedNodeId === node.id;
         const isLit = litNodes.has(node.id);
         const isDimmed = hasTrace && !isLit;
+        const nodeDiffStatus: DiffStatus | null = isDiffMode
+          ? (erdNodeStatusMap?.get(node.id) ?? null)
+          : null;
 
         return (
           <g
@@ -406,6 +429,7 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
               <EntityNode
                 node={node}
                 isSelected={isPinned}
+                diffStatus={nodeDiffStatus}
                 onClick={() => {
                   // Toggle trace focus
                   toggleFocus(node.id);
@@ -422,6 +446,13 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
           </g>
         );
       })}
+
+      {/* Ghost nodes — removed entities only visible in diff mode */}
+      {ghostErdNodes.map((node) => (
+        <g key={`ghost-${node.id}`}>
+          <EntityNode node={node} isSelected={false} diffStatus="removed" onClick={() => {}} />
+        </g>
+      ))}
     </CanvasProvider>
   );
 }

@@ -1,4 +1,5 @@
 import { hexToRgba } from '../utils/geometry';
+import { DiffLegendSection } from './diff-legend-section';
 
 const CATEGORIES: { label: string; color: string }[] = [
   { label: 'Core', color: '#3d8c75' },
@@ -12,9 +13,10 @@ const CATEGORIES: { label: string; color: string }[] = [
 
 interface ErdLegendProps {
   visible: boolean;
+  isDiffMode?: boolean;
 }
 
-export function ErdLegend({ visible }: ErdLegendProps) {
+export function ErdLegend({ visible, isDiffMode }: ErdLegendProps) {
   if (!visible) return null;
 
   const sectionLabel: React.CSSProperties = {
@@ -99,6 +101,7 @@ export function ErdLegend({ visible }: ErdLegendProps) {
           </svg>
           <span>FK column name</span>
         </div>
+        {isDiffMode && <DiffLegendSection />}
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { ErdCanvas } from '@/features/data-model/erd-canvas';
@@ -14,11 +15,13 @@ export default async function EntityRelationshipsPage({
   if (!data) notFound();
 
   return (
-    <ErdCanvas
-      nodes={data.erdNodes}
-      edges={data.erdEdges}
-      entities={data.entities}
-      categoryGroups={data.erdCategoryGroups}
-    />
+    <Suspense>
+      <ErdCanvas
+        nodes={data.erdNodes}
+        edges={data.erdEdges}
+        entities={data.entities}
+        categoryGroups={data.erdCategoryGroups}
+      />
+    </Suspense>
   );
 }
