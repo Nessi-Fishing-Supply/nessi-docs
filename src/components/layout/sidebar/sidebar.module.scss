@@ -49,6 +49,14 @@
   }
 }
 
+.diffNavItem {
+  border-left-color: var(--diff-modified);
+
+  &.active {
+    border-left-color: var(--diff-modified);
+  }
+}
+
 .navIcon {
   width: 16px;
   height: 16px;

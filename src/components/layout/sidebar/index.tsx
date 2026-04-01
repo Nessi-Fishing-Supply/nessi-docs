@@ -14,7 +14,9 @@ import {
   HiOutlineCog,
   HiOutlineClock,
   HiOutlineChip,
+  HiOutlineSwitchHorizontal,
 } from 'react-icons/hi';
+import { useDiffMode } from '@/hooks/use-diff-mode';
 import type { Lifecycle } from '@/types/lifecycle';
 import { useBranchData, useBranchHref } from '@/providers/branch-provider';
 import { BranchSwitcher } from '@/components/layout/branch-switcher';
@@ -35,6 +37,26 @@ const REFERENCE_ITEMS = [
   { id: 'changelog', label: 'Changelog', icon: HiOutlineClock, path: '/changelog' },
 ];
 
+function DiffNavItem() {
+  const branchHref = useBranchHref();
+  const pathname = usePathname();
+  const { isActive } = useDiffMode();
+
+  if (!isActive) return null;
+
+  const isOnDiffPage = pathname.endsWith('/diff');
+
+  return (
+    <Link
+      href={branchHref('/diff')}
+      className={`${styles.navItem} ${styles.diffNavItem} ${isOnDiffPage ? styles.active : ''}`}
+    >
+      <HiOutlineSwitchHorizontal className={styles.navIcon} />
+      <span>Diff Overview</span>
+    </Link>
+  );
+}
+
 interface SidebarProps {
   lifecycles: Lifecycle[];
   featureDomains: { slug: string; label: string }[];
@@ -51,6 +73,10 @@ export function Sidebar({ featureDomains }: SidebarProps) {
   return (
     <div className={styles.sidebar}>
       <div className={styles.navContent}>
+        <Suspense>
+          <DiffNavItem />
+        </Suspense>
+
         <Link
           href={branchHref('/')}
           className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}
