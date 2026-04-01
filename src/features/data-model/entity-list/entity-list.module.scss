@@ -522,3 +522,44 @@
   color: #3d8c75;
   background: rgb(61 140 117 / 10%);
 }
+
+// ─── Diff Mode ───
+
+.diff_added {
+  border-left: 2px solid var(--diff-added);
+  background: var(--diff-added-bg);
+}
+
+.diff_modified {
+  border-left: 2px solid var(--diff-modified);
+  background: var(--diff-modified-bg);
+}
+
+.diff_removed {
+  border-left: 2px solid var(--diff-removed);
+  background: var(--diff-removed-bg);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.diff_unchanged {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: default;
+}
+
+.diffCounts {
+  display: flex;
+  gap: 8px;
+  margin-left: 8px;
+  font-size: 10px;
+  font-family: var(--font-family-mono);
+}
+
+.diffCountAdded {
+  color: var(--diff-added);
+}
+
+.diffCountModified {
+  color: var(--diff-modified);
+}

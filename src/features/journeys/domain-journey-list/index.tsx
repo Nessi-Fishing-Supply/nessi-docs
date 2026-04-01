@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Journey } from '@/types/journey';
 import { PERSONA_CONFIG } from '@/types/journey';
 import type { DomainConfig } from '@/constants/domains';
+import { useBranchHref } from '@/providers/branch-provider';
 import { Breadcrumb } from '@/components/ui';
 import styles from './domain-journey-list.module.scss';
 
@@ -21,6 +22,7 @@ export function DomainJourneyList({
   stats,
   siblingDomains,
 }: DomainJourneyListProps) {
+  const branchHref = useBranchHref();
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setEntered(true));
@@ -29,10 +31,10 @@ export function DomainJourneyList({
   return (
     <div className={styles.container}>
       <Breadcrumb
-        segments={[{ label: 'Journeys', href: '/journeys' }, { label: domain.label }]}
+        segments={[{ label: 'Journeys', href: branchHref('/journeys') }, { label: domain.label }]}
         switcher={siblingDomains?.map((d) => ({
           label: d.label,
-          href: `/journeys/${d.slug}`,
+          href: branchHref(`/journeys/${d.slug}`),
           active: d.slug === domain.slug,
         }))}
       />
@@ -54,7 +56,7 @@ export function DomainJourneyList({
           return (
             <Link
               key={j.slug}
-              href={`/journeys/${domain.slug}/${j.slug}`}
+              href={branchHref(`/journeys/${domain.slug}/${j.slug}`)}
               className={styles.row}
               style={{
                 opacity: entered ? 1 : 0,

@@ -5,12 +5,33 @@ import Link from 'next/link';
 import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
+import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
 import { GitHubLink } from '@/components/ui/github-link';
+import { useDiffMode } from '@/hooks/use-diff-mode';
+import { DiffBadge } from '@/components/ui/diff-badge';
+import type { DiffStatus, ApiGroupDiff } from '@/types/diff';
 import styles from './api-list.module.scss';
 
 const ALL_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const;
+
+function getEndpointDiffStatus(
+  method: string,
+  path: string,
+  groupDiffs: ApiGroupDiff[] | undefined,
+  groupName: string,
+): DiffStatus | null {
+  if (!groupDiffs) return null;
+  const gd = groupDiffs.find((g) => g.group.name === groupName);
+  if (!gd) return null;
+  const key = `${method}:${path}`;
+  if (gd.endpointDiffs.added.some((ep) => `${ep.method}:${ep.path}` === key)) return 'added';
+  if (gd.endpointDiffs.removed.some((ep) => `${ep.method}:${ep.path}` === key)) return 'removed';
+  if (gd.endpointDiffs.modified.some((m) => `${m.head.method}:${m.head.path}` === key))
+    return 'modified';
+  return 'unchanged';
+}
 
 /* ── Filter Bar ── */
 
@@ -117,6 +138,7 @@ function GroupDivider({ name, count }: { name: string; count: number }) {
 }
 
 function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
+  const branchHref = useBranchHref();
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
   const hasRequestFields = endpoint.requestFields && endpoint.requestFields.length > 0;
@@ -180,7 +202,7 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
                 {endpoint.access.map((ctx) => (
                   <Link
                     key={ctx}
-                    href="/config#__roles__"
+                    href={branchHref('/config#__roles__')}
                     className={`${styles.accessBadge} ${ctx === 'Shop' ? styles.accessShop : ''}`}
                   >
                     <span className={styles.accessDot} />
@@ -211,7 +233,7 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
               <div className={styles.detailLabel}>Used in Journeys</div>
               <div className={styles.journeyChips}>
                 {journeyLinks.map((link, i) => (
-                  <Link key={i} href={link.href} className={styles.journeyChip}>
+                  <Link key={i} href={branchHref(link.href)} className={styles.journeyChip}>
                     {link.label}
                   </Link>
                 ))}
@@ -233,7 +255,16 @@ function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
 
 /* ── Endpoint Row ── */
 
-function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; staggerIndex: number }) {
+function EndpointRow({
+  endpoint,
+  staggerIndex,
+  diffStatus,
+}: {
+  endpoint: ApiEndpoint;
+  staggerIndex: number;
+  diffStatus: DiffStatus | null;
+}) {
+  const branchHref = useBranchHref();
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
   const [isDeepLinkTarget] = useState(
     () =>
@@ -274,7 +305,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
     <div
       ref={rowRef}
       id={slug}
-      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''}`}
+      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''} ${diffStatus ? styles[`diff_${diffStatus}`] : ''}`}
       style={
         {
           '--method-color': color,
@@ -285,8 +316,19 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
       }
     >
       <BorderTrace active={highlight} />
-      <button className={styles.epRowHeader} onClick={() => setIsOpen((p) => !p)}>
+      <button
+        className={styles.epRowHeader}
+        onClick={
+          diffStatus === 'removed' || diffStatus === 'unchanged'
+            ? undefined
+            : () => setIsOpen((p) => !p)
+        }
+        style={
+          diffStatus === 'removed' || diffStatus === 'unchanged' ? { cursor: 'default' } : undefined
+        }
+      >
         <span className={styles.methodBadge}>{endpoint.method}</span>
+        {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
         <span className={styles.epPath}>
           {pathParts.map((part, i) =>
             part.startsWith(':') ? (
@@ -302,7 +344,7 @@ function EndpointRow({ endpoint, staggerIndex }: { endpoint: ApiEndpoint; stagge
           {endpoint.access?.map((ctx) => (
             <Link
               key={ctx}
-              href="/config#__roles__"
+              href={branchHref('/config#__roles__')}
               className={`${styles.epAccess} ${ctx === 'Shop' ? styles.epAccessShop : ''}`}
             >
               {ctx}
@@ -352,6 +394,25 @@ function buildResponseCodes(errorCodes?: number[]): ResponseCode[] {
   return codes;
 }
 
+/* ── Helpers ── */
+
+function diffSort<T>(
+  items: T[],
+  getKey: (item: T) => string,
+  statusMap: Map<string, DiffStatus> | undefined,
+): T[] {
+  if (!statusMap) return items;
+  return [...items].sort((a, b) => {
+    const aStatus = statusMap.get(getKey(a));
+    const bStatus = statusMap.get(getKey(b));
+    const aChanged = aStatus === 'added' || aStatus === 'modified';
+    const bChanged = bStatus === 'added' || bStatus === 'modified';
+    if (aChanged && !bChanged) return -1;
+    if (!aChanged && bChanged) return 1;
+    return 0;
+  });
+}
+
 /* ── Main Component ── */
 
 interface ApiListProps {
@@ -360,6 +421,9 @@ interface ApiListProps {
 }
 
 export function ApiList({ groups, totalEndpoints }: ApiListProps) {
+  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const apiGroupDiffs = isDiffMode ? diffResult?.apiGroupDiffs : undefined;
+
   const [activeGroups, setActiveGroups] = useState<Set<string>>(
     () => new Set(groups.map((g) => g.name)),
   );
@@ -408,12 +472,31 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
   const filteredGroups = useMemo(() => {
     return groups
       .filter((g) => activeGroups.has(g.name))
-      .map((g) => ({
-        ...g,
-        endpoints: g.endpoints.filter((ep) => activeMethods.has(ep.method)),
-      }))
+      .map((g) => {
+        const filtered = g.endpoints.filter((ep) => activeMethods.has(ep.method));
+        const sorted = isDiffMode
+          ? diffSort(
+              filtered,
+              (ep) => `${ep.method}:${ep.path}`,
+              (() => {
+                if (!apiGroupDiffs) return undefined;
+                const gd = apiGroupDiffs.find((d) => d.group.name === g.name);
+                if (!gd) return undefined;
+                const map = new Map<string, DiffStatus>();
+                for (const ep of gd.endpointDiffs.added)
+                  map.set(`${ep.method}:${ep.path}`, 'added');
+                for (const ep of gd.endpointDiffs.unchanged)
+                  map.set(`${ep.method}:${ep.path}`, 'unchanged');
+                for (const m of gd.endpointDiffs.modified)
+                  map.set(`${m.head.method}:${m.head.path}`, 'modified');
+                return map;
+              })(),
+            )
+          : filtered;
+        return { ...g, endpoints: sorted };
+      })
       .filter((g) => g.endpoints.length > 0);
-  }, [groups, activeGroups, activeMethods]);
+  }, [groups, activeGroups, activeMethods, isDiffMode, apiGroupDiffs]);
 
   let staggerIndex = 0;
 
@@ -444,11 +527,49 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
             {group.endpoints.map((ep) => {
               const idx = staggerIndex++;
               return (
-                <EndpointRow key={`${ep.method}-${ep.path}`} endpoint={ep} staggerIndex={idx} />
+                <EndpointRow
+                  key={`${ep.method}-${ep.path}`}
+                  endpoint={ep}
+                  staggerIndex={idx}
+                  diffStatus={getEndpointDiffStatus(ep.method, ep.path, apiGroupDiffs, group.name)}
+                />
               );
             })}
+
+            {isDiffMode &&
+              apiGroupDiffs &&
+              (() => {
+                const gd = apiGroupDiffs.find((g) => g.group.name === group.name);
+                if (!gd) return null;
+                return gd.endpointDiffs.removed.map((ep) => (
+                  <EndpointRow
+                    key={`removed-${ep.method}-${ep.path}`}
+                    endpoint={ep}
+                    staggerIndex={0}
+                    diffStatus="removed"
+                  />
+                ));
+              })()}
           </div>
         ))}
+
+        {isDiffMode &&
+          apiGroupDiffs &&
+          apiGroupDiffs
+            .filter((gd) => gd.status === 'removed')
+            .map((gd) => (
+              <div key={`removed-group-${gd.group.name}`}>
+                <GroupDivider name={gd.group.name} count={gd.group.endpoints.length} />
+                {gd.group.endpoints.map((ep) => (
+                  <EndpointRow
+                    key={`removed-${ep.method}-${ep.path}`}
+                    endpoint={ep}
+                    staggerIndex={0}
+                    diffStatus="removed"
+                  />
+                ))}
+              </div>
+            ))}
 
         {filteredGroups.length === 0 && (
           <div className={styles.emptyState}>No endpoints match the current filters.</div>

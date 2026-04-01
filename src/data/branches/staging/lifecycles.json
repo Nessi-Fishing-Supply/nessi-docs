@@ -1,0 +1,388 @@
+{
+  "lifecycles": [
+    {
+      "slug": "listing",
+      "name": "Listing Lifecycle",
+      "description": "Status lifecycle for listing entities",
+      "states": [
+        {
+          "id": "draft",
+          "label": "Draft"
+        },
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "reserved",
+          "label": "Reserved"
+        },
+        {
+          "id": "sold",
+          "label": "Sold"
+        },
+        {
+          "id": "archived",
+          "label": "Archived"
+        },
+        {
+          "id": "deleted",
+          "label": "Deleted"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "draft",
+          "to": "active",
+          "label": "Publish"
+        },
+        {
+          "from": "active",
+          "to": "sold",
+          "label": "Mark as sold"
+        },
+        {
+          "from": "active",
+          "to": "archived",
+          "label": "Archive"
+        },
+        {
+          "from": "draft",
+          "to": "deleted",
+          "label": "Delete draft"
+        },
+        {
+          "from": "active",
+          "to": "reserved",
+          "label": "Reserve"
+        },
+        {
+          "from": "reserved",
+          "to": "sold",
+          "label": "Complete sale"
+        },
+        {
+          "from": "reserved",
+          "to": "active",
+          "label": "Release reservation"
+        },
+        {
+          "from": "archived",
+          "to": "active",
+          "label": "Reactivate"
+        }
+      ],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260321100000_listings_schema.sql"
+    },
+    {
+      "slug": "invite",
+      "name": "Invite Lifecycle",
+      "description": "Status lifecycle for invite entities",
+      "states": [
+        {
+          "id": "pending",
+          "label": "Pending"
+        },
+        {
+          "id": "accepted",
+          "label": "Accepted"
+        },
+        {
+          "id": "expired",
+          "label": "Expired"
+        },
+        {
+          "id": "revoked",
+          "label": "Revoked"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "pending",
+          "to": "accepted",
+          "label": "Accept invite"
+        },
+        {
+          "from": "pending",
+          "to": "expired",
+          "label": "Expire"
+        },
+        {
+          "from": "pending",
+          "to": "revoked",
+          "label": "Revoke"
+        }
+      ],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260325000000_create_shop_invites.sql"
+    },
+    {
+      "slug": "flag",
+      "name": "Flag Lifecycle",
+      "description": "Status lifecycle for flag entities",
+      "states": [
+        {
+          "id": "pending",
+          "label": "Pending"
+        },
+        {
+          "id": "reviewed",
+          "label": "Reviewed"
+        },
+        {
+          "id": "resolved",
+          "label": "Resolved"
+        },
+        {
+          "id": "dismissed",
+          "label": "Dismissed"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "pending",
+          "to": "reviewed",
+          "label": "Begin review"
+        },
+        {
+          "from": "reviewed",
+          "to": "resolved",
+          "label": "Resolve flag"
+        },
+        {
+          "from": "reviewed",
+          "to": "dismissed",
+          "label": "Dismiss flag"
+        },
+        {
+          "from": "pending",
+          "to": "dismissed",
+          "label": "Dismiss flag"
+        }
+      ],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260326000000_create_reports.sql"
+    },
+    {
+      "slug": "member",
+      "name": "Member Lifecycle",
+      "description": "Status lifecycle for member entities",
+      "states": [
+        {
+          "id": "onboarding",
+          "label": "Onboarding"
+        },
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "suspended",
+          "label": "Suspended"
+        },
+        {
+          "id": "deleted",
+          "label": "Deleted"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "onboarding",
+          "to": "active",
+          "label": "Complete onboarding"
+        },
+        {
+          "from": "active",
+          "to": "suspended",
+          "label": "Suspend account"
+        },
+        {
+          "from": "suspended",
+          "to": "active",
+          "label": "Reinstate account"
+        },
+        {
+          "from": "active",
+          "to": "deleted",
+          "label": "Delete account"
+        },
+        {
+          "from": "suspended",
+          "to": "deleted",
+          "label": "Delete account"
+        }
+      ],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260328000000_add_member_and_shop_status.sql"
+    },
+    {
+      "slug": "shop",
+      "name": "Shop Lifecycle",
+      "description": "Status lifecycle for shop entities",
+      "states": [
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "suspended",
+          "label": "Suspended"
+        },
+        {
+          "id": "archived",
+          "label": "Archived"
+        },
+        {
+          "id": "deleted",
+          "label": "Deleted"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "active",
+          "to": "suspended",
+          "label": "Suspend shop"
+        },
+        {
+          "from": "suspended",
+          "to": "active",
+          "label": "Reinstate shop"
+        },
+        {
+          "from": "active",
+          "to": "archived",
+          "label": "Archive shop"
+        },
+        {
+          "from": "archived",
+          "to": "active",
+          "label": "Reactivate shop"
+        },
+        {
+          "from": "suspended",
+          "to": "deleted",
+          "label": "Delete shop"
+        },
+        {
+          "from": "archived",
+          "to": "deleted",
+          "label": "Delete shop"
+        }
+      ],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260328000000_add_member_and_shop_status.sql"
+    },
+    {
+      "slug": "thread",
+      "name": "Thread Lifecycle",
+      "description": "Status lifecycle for thread entities",
+      "states": [
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "archived",
+          "label": "Archived"
+        },
+        {
+          "id": "closed",
+          "label": "Closed"
+        }
+      ],
+      "transitions": [],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql"
+    },
+    {
+      "slug": "offer",
+      "name": "Offer Lifecycle",
+      "description": "Status lifecycle for offer entities",
+      "states": [
+        {
+          "id": "pending",
+          "label": "Pending"
+        },
+        {
+          "id": "accepted",
+          "label": "Accepted"
+        },
+        {
+          "id": "declined",
+          "label": "Declined"
+        },
+        {
+          "id": "countered",
+          "label": "Countered"
+        },
+        {
+          "id": "expired",
+          "label": "Expired"
+        }
+      ],
+      "transitions": [],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260330000001_create_offers_and_blocks.sql"
+    },
+    {
+      "slug": "subscription",
+      "name": "Subscription Lifecycle",
+      "description": "Status lifecycle for subscription entities",
+      "states": [
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "past_due",
+          "label": "Past Due"
+        },
+        {
+          "id": "cancelled",
+          "label": "Cancelled"
+        },
+        {
+          "id": "trialing",
+          "label": "Trialing"
+        }
+      ],
+      "transitions": [],
+      "source": "check_constraint",
+      "sourceFile": "supabase/migrations/20260320000003_create_shops_shop_members_slugs_tables.sql"
+    },
+    {
+      "slug": "ownership_transfers",
+      "name": "Ownership Transfers Lifecycle",
+      "description": "Status lifecycle for ownership transfers entities",
+      "states": [
+        {
+          "id": "pending",
+          "label": "Pending"
+        },
+        {
+          "id": "accepted",
+          "label": "Accepted"
+        },
+        {
+          "id": "cancelled",
+          "label": "Cancelled"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "pending",
+          "to": "accepted",
+          "label": "Accept transfer"
+        },
+        {
+          "from": "pending",
+          "to": "cancelled",
+          "label": "Cancel"
+        }
+      ],
+      "source": "check_constraint",
+      "sourceFile": "supabase/migrations/20260325200000_create_shop_ownership_transfers.sql"
+    }
+  ]
+}

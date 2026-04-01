@@ -1,20 +1,28 @@
+'use client';
+
 import Image from 'next/image';
+import Link from 'next/link';
+import { useBranchData } from '@/providers/branch-provider';
 import styles from './topbar.module.scss';
 
 export function Topbar() {
+  const { activeBranch } = useBranchData();
+
   return (
     <div className={styles.topbar}>
-      <div className={styles.brand}>
-        <Image
-          src="/logo_full.svg"
-          alt="Nessi"
-          width={68}
-          height={27}
-          className={styles.logo}
-          priority
-        />
-        <span className={styles.docs}>Docs</span>
-      </div>
+      <Link href={`/${activeBranch}/`} className={styles.brandLink}>
+        <div className={styles.brand}>
+          <Image
+            src="/logo_full.svg"
+            alt="Nessi"
+            width={68}
+            height={27}
+            className={styles.logo}
+            priority
+          />
+          <span className={styles.docs}>Docs</span>
+        </div>
+      </Link>
       <a
         href="https://nessifishingsupply.com"
         target="_blank"

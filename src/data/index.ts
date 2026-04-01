@@ -37,24 +37,30 @@ import { transformLifecycles } from './layout/lifecycle-layout';
 import { transformEntities } from './transforms/entities';
 import { transformChangelog } from './transforms/changelog';
 import {
-  getFeatureDomains,
-  getFeaturesByDomain,
+  getFeatureDomains as _getFeatureDomains,
+  getFeaturesByDomain as _getFeaturesByDomain,
   getDomainForScope,
-  getChangelogByDomain,
-  getDashboardMetrics,
+  getChangelogByDomain as _getChangelogByDomain,
+  getDashboardMetrics as _getDashboardMetrics,
 } from './transforms/features';
 
+import { buildCrossLinkIndex, rlsOperationToMethod } from './cross-links';
+export type { EndpointRef, TableRef, CrossLinkIndex } from './cross-links';
+export { rlsOperationToMethod };
+
+import {
+  getLifecycleForEntity as _getLifecycleForEntity,
+  getEntitiesForLifecycle as _getEntitiesForLifecycle,
+  getJourneysForLifecycle as _getJourneysForLifecycle,
+  getLifecyclesForJourney as _getLifecyclesForJourney,
+  getLifecyclesForRoute as _getLifecyclesForRoute,
+} from './cross-links-lifecycle';
+
 export { detectJourneyBackEdges };
-export {
-  getFeatureDomains,
-  getFeaturesByDomain,
-  getDomainForScope,
-  getChangelogByDomain,
-  getDashboardMetrics,
-};
+export { getDomainForScope };
 
 import { transformErdNodes, getErdCategoryGroups } from './layout/erd-layout';
-export type { ErdCategoryGroup } from './layout/erd-layout';
+export type { ErdCategoryGroup } from '@/types/entity-relationship';
 export { getErdCategoryGroups };
 
 /* ------------------------------------------------------------------ */
@@ -95,6 +101,67 @@ export const changelog = transformChangelog(
 export const roadmapItems = roadmapRaw.items as unknown as RoadmapItem[];
 
 export const extractionMeta = metaRaw as unknown as ExtractionMeta;
+
+/* ------------------------------------------------------------------ */
+/*  Cross-link index (built once from raw data)                        */
+/* ------------------------------------------------------------------ */
+
+const crossLinkIndex = buildCrossLinkIndex(
+  apiContractsRaw.groups as { name: string; endpoints: { method: string; path: string }[] }[],
+  dataModelRaw.entities as { name: string; label?: string; badge?: string }[],
+);
+
+export function getEndpointsForTable(tableName: string) {
+  return crossLinkIndex.getEndpointsForTable(tableName);
+}
+
+export function getTablesForEndpoint(method: string, path: string) {
+  return crossLinkIndex.getTablesForEndpoint(method, path);
+}
+
+export function getBestEndpointForOperation(tableName: string, operation: string) {
+  return crossLinkIndex.getBestEndpointForOperation(tableName, operation);
+}
+
+export function getEndpointsForOperation(tableName: string, operation: string) {
+  return crossLinkIndex.getEndpointsForOperation(tableName, operation);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Feature transform wrappers                                         */
+/* ------------------------------------------------------------------ */
+
+export function getFeatureDomains() {
+  return _getFeatureDomains(features, journeysRaw.journeys as unknown as RawJourney[]);
+}
+
+export function getFeaturesByDomain(domain: string) {
+  return _getFeaturesByDomain(features, domain);
+}
+
+export function getChangelogByDomain(domain: string) {
+  return _getChangelogByDomain(
+    changelogRaw.entries as {
+      title?: string;
+      mergedAt?: string;
+      type?: string;
+      area?: string;
+      number?: number;
+      url?: string;
+    }[],
+    domain,
+  );
+}
+
+export function getDashboardMetrics() {
+  return _getDashboardMetrics({
+    features,
+    apiGroups,
+    journeys: journeysRaw.journeys as unknown as RawJourney[],
+    entities: dataModelRaw.entities as RawEntity[],
+    lifecycles: lifecyclesRaw.lifecycles as RawLifecycle[],
+  });
+}
 
 /* ------------------------------------------------------------------ */
 /*  6. Journey helpers                                                 */
@@ -247,10 +314,22 @@ export function getLinksForEndpoint(method: string, path: string): CrossLink[] {
 /*  Lifecycle cross-link helpers                                       */
 /* ------------------------------------------------------------------ */
 
-export {
-  getLifecycleForEntity,
-  getEntitiesForLifecycle,
-  getJourneysForLifecycle,
-  getLifecyclesForJourney,
-  getLifecyclesForRoute,
-} from './cross-links-lifecycle';
+export function getLifecycleForEntity(tableName: string) {
+  return _getLifecycleForEntity(lifecycles, tableName);
+}
+
+export function getEntitiesForLifecycle(lifecycleSlug: string) {
+  return _getEntitiesForLifecycle(lifecycles, lifecycleSlug);
+}
+
+export function getJourneysForLifecycle(lifecycleSlug: string) {
+  return _getJourneysForLifecycle(journeys, lifecycles, crossLinkIndex, lifecycleSlug);
+}
+
+export function getLifecyclesForJourney(journeySlug: string) {
+  return _getLifecyclesForJourney(journeys, lifecycles, crossLinkIndex, journeySlug);
+}
+
+export function getLifecyclesForRoute(route: string) {
+  return _getLifecyclesForRoute(lifecycles, crossLinkIndex, route);
+}

@@ -1,0 +1,293 @@
+{
+  "nodes": [
+    {
+      "id": "addresses",
+      "label": "Addresses"
+    },
+    {
+      "id": "cart_items",
+      "label": "Cart Items"
+    },
+    {
+      "id": "flags",
+      "label": "Flags"
+    },
+    {
+      "id": "follows",
+      "label": "Follows"
+    },
+    {
+      "id": "listing_photos",
+      "label": "Listing Photos"
+    },
+    {
+      "id": "listings",
+      "label": "Listings"
+    },
+    {
+      "id": "member_blocks",
+      "label": "Member Blocks"
+    },
+    {
+      "id": "members",
+      "label": "Members"
+    },
+    {
+      "id": "message_thread_participants",
+      "label": "Message Thread Participants"
+    },
+    {
+      "id": "message_threads",
+      "label": "Message Threads"
+    },
+    {
+      "id": "messages",
+      "label": "Messages"
+    },
+    {
+      "id": "offers",
+      "label": "Offers"
+    },
+    {
+      "id": "price_drop_notifications",
+      "label": "Price Drop Notifications"
+    },
+    {
+      "id": "recently_viewed",
+      "label": "Recently Viewed"
+    },
+    {
+      "id": "search_suggestions",
+      "label": "Search Suggestions"
+    },
+    {
+      "id": "shop_invites",
+      "label": "Shop Invites"
+    },
+    {
+      "id": "shop_members",
+      "label": "Shop Members"
+    },
+    {
+      "id": "shop_ownership_transfers",
+      "label": "Shop Ownership Transfers"
+    },
+    {
+      "id": "shop_roles",
+      "label": "Shop Roles"
+    },
+    {
+      "id": "shops",
+      "label": "Shops"
+    },
+    {
+      "id": "slugs",
+      "label": "Slugs"
+    },
+    {
+      "id": "watchers",
+      "label": "Watchers"
+    },
+    {
+      "id": "wishlists",
+      "label": "Wishlists"
+    }
+  ],
+  "edges": [
+    {
+      "from": "addresses",
+      "to": "members",
+      "label": "user_id"
+    },
+    {
+      "from": "cart_items",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "cart_items",
+      "to": "members",
+      "label": "user_id"
+    },
+    {
+      "from": "follows",
+      "to": "members",
+      "label": "follower_id"
+    },
+    {
+      "from": "listing_photos",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "listings",
+      "to": "members",
+      "label": "seller_id"
+    },
+    {
+      "from": "listings",
+      "to": "members",
+      "label": "member_id"
+    },
+    {
+      "from": "listings",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "member_blocks",
+      "to": "members",
+      "label": "blocked_id"
+    },
+    {
+      "from": "member_blocks",
+      "to": "members",
+      "label": "blocker_id"
+    },
+    {
+      "from": "message_thread_participants",
+      "to": "members",
+      "label": "member_id"
+    },
+    {
+      "from": "message_thread_participants",
+      "to": "message_threads",
+      "label": "thread_id"
+    },
+    {
+      "from": "message_threads",
+      "to": "members",
+      "label": "created_by"
+    },
+    {
+      "from": "message_threads",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "message_threads",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "messages",
+      "to": "members",
+      "label": "sender_id"
+    },
+    {
+      "from": "messages",
+      "to": "message_threads",
+      "label": "thread_id"
+    },
+    {
+      "from": "offers",
+      "to": "members",
+      "label": "buyer_id"
+    },
+    {
+      "from": "offers",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "offers",
+      "to": "offers",
+      "label": "parent_offer_id"
+    },
+    {
+      "from": "offers",
+      "to": "members",
+      "label": "seller_id"
+    },
+    {
+      "from": "offers",
+      "to": "message_threads",
+      "label": "thread_id"
+    },
+    {
+      "from": "price_drop_notifications",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "recently_viewed",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "recently_viewed",
+      "to": "members",
+      "label": "user_id"
+    },
+    {
+      "from": "shop_invites",
+      "to": "members",
+      "label": "invited_by"
+    },
+    {
+      "from": "shop_invites",
+      "to": "shop_roles",
+      "label": "role_id"
+    },
+    {
+      "from": "shop_invites",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "shop_members",
+      "to": "members",
+      "label": "member_id"
+    },
+    {
+      "from": "shop_members",
+      "to": "shop_roles",
+      "label": "role_id"
+    },
+    {
+      "from": "shop_members",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "shop_ownership_transfers",
+      "to": "members",
+      "label": "from_member_id"
+    },
+    {
+      "from": "shop_ownership_transfers",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "shop_ownership_transfers",
+      "to": "members",
+      "label": "to_member_id"
+    },
+    {
+      "from": "shop_roles",
+      "to": "shops",
+      "label": "shop_id"
+    },
+    {
+      "from": "shops",
+      "to": "members",
+      "label": "owner_id"
+    },
+    {
+      "from": "watchers",
+      "to": "listings",
+      "label": "listing_id"
+    },
+    {
+      "from": "watchers",
+      "to": "members",
+      "label": "user_id"
+    },
+    {
+      "from": "wishlists",
+      "to": "members",
+      "label": "profile_id"
+    }
+  ]
+}

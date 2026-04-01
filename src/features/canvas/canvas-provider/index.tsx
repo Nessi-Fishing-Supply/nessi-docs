@@ -84,6 +84,39 @@ export function CanvasProvider({
           >
             <path d="M2,2 L10,5 L2,8 Z" fill="rgba(234,179,8,0.5)" />
           </marker>
+          <marker
+            id="arrow-diff-added"
+            viewBox="0 0 10 10"
+            refX="10"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto"
+          >
+            <path d="M2,2 L10,5 L2,8 Z" fill="rgba(61,140,117,0.6)" />
+          </marker>
+          <marker
+            id="arrow-diff-modified"
+            viewBox="0 0 10 10"
+            refX="10"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto"
+          >
+            <path d="M2,2 L10,5 L2,8 Z" fill="rgba(123,143,205,0.6)" />
+          </marker>
+          <marker
+            id="arrow-diff-removed"
+            viewBox="0 0 10 10"
+            refX="10"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto"
+          >
+            <path d="M2,2 L10,5 L2,8 Z" fill="rgba(184,64,64,0.4)" />
+          </marker>
         </defs>
         {children}
       </svg>

@@ -13,6 +13,7 @@
 @use 'variables/shadows' as *;
 @use 'variables/radius' as *;
 @use 'variables/dark-theme' as *;
+@use 'variables/diff' as *;
 
 // Mixins
 @use 'mixins/breakpoints' as *;

@@ -70,3 +70,20 @@
   font-family: var(--font-family-mono);
   color: var(--text-muted);
 }
+
+.diffBadges {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+}
+
+.diffBadgeAdded {
+  color: var(--diff-added);
+}
+
+.diffBadgeModified {
+  color: var(--diff-modified);
+}

@@ -1,14 +1,6 @@
-import { getDashboardMetrics, getFeatureDomains, changelog } from '@/data';
-import { DashboardView } from '@/features/dashboard/dashboard-view';
+import { redirect } from 'next/navigation';
+import { getDefaultBranch } from '@/data/branch-registry';
 
-export const metadata = { title: 'Dashboard | Nessi Docs' };
-
-export default function DashboardPage() {
-  return (
-    <DashboardView
-      metrics={getDashboardMetrics()}
-      domains={getFeatureDomains()}
-      recentChanges={changelog.slice(0, 5)}
-    />
-  );
+export default function RootPage() {
+  redirect(`/${getDefaultBranch().name}/`);
 }

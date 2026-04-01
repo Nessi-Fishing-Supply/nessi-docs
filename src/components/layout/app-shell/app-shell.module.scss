@@ -51,6 +51,18 @@
   grid-row: 2;
   position: relative;
   overflow: hidden;
+  transition: opacity 150ms ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainContent {
+  flex: 1;
+  overflow: hidden auto;
+}
+
+.fading {
+  opacity: 0.3;
 }
 
 .detail {

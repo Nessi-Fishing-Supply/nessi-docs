@@ -6,6 +6,7 @@ import type { ChangelogEntry } from '@/types/changelog';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
 import { getDomainForScope } from '@/data';
 import { DOMAINS } from '@/constants/domains';
+import { useBranchHref } from '@/providers/branch-provider';
 import { formatDate } from '@/constants/dates';
 import { PageHeader } from '@/components/ui/page-header';
 import { Tooltip } from '@/components/ui';
@@ -22,6 +23,7 @@ interface ChangelogFeedProps {
 }
 
 export function ChangelogFeed({ entries }: ChangelogFeedProps) {
+  const branchHref = useBranchHref();
   const searchParams = useSearchParams();
   const domainFilter = searchParams.get('domain');
 
@@ -51,7 +53,7 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
 
       <div className={styles.filterBar}>
         <Link
-          href="/changelog"
+          href={branchHref('/changelog')}
           className={`${styles.filterChip} ${!domainFilter ? styles.filterChipActive : ''}`}
         >
           All
@@ -59,7 +61,7 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
         {DOMAINS.map((d) => (
           <Link
             key={d.slug}
-            href={`/changelog?domain=${d.slug}`}
+            href={branchHref(`/changelog?domain=${d.slug}`)}
             className={`${styles.filterChip} ${domainFilter === d.slug ? styles.filterChipActive : ''}`}
           >
             {d.label}
@@ -92,7 +94,7 @@ export function ChangelogFeed({ entries }: ChangelogFeedProps) {
                     </span>
                     <span className={styles.description}>{change.description}</span>
                     {displayArea && domain ? (
-                      <Link href={`/features/${domain}`} className={styles.area}>
+                      <Link href={branchHref(`/features/${domain}`)} className={styles.area}>
                         {displayArea}
                       </Link>
                     ) : displayArea && displayArea !== 'general' ? (

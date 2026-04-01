@@ -14,3 +14,13 @@ export interface ErdEdge {
   cardinality?: '1:1' | '1:N' | 'N:M';
   fk?: string;
 }
+
+export interface ErdCategoryGroup {
+  key: string;
+  label: string;
+  color: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}

@@ -524,3 +524,28 @@
   font-size: 12px;
   color: var(--text-dim);
 }
+
+// ─── Diff Mode ───
+
+.diff_added {
+  border-left: 2px solid var(--diff-added);
+  background: var(--diff-added-bg);
+}
+
+.diff_modified {
+  border-left: 2px solid var(--diff-modified);
+  background: var(--diff-modified-bg);
+}
+
+.diff_removed {
+  border-left: 2px solid var(--diff-removed);
+  background: var(--diff-removed-bg);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.diff_unchanged {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: default;
+}

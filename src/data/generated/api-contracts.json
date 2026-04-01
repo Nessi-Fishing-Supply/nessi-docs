@@ -302,18 +302,6 @@
       "endpoints": [
         {
           "method": "GET",
-          "path": "/api/cron/offers-expiry",
-          "label": "List Offers Expiry",
-          "auth": "none",
-          "access": [],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "Expire stale pending and accepted offers past their time windows",
-          "tags": [],
-          "sourceFile": "src/app/api/cron/offers-expiry/route.ts"
-        },
-        {
-          "method": "GET",
           "path": "/api/cron/price-drops",
           "label": "List Price Drop",
           "auth": "admin",
@@ -755,18 +743,6 @@
           "sourceFile": "src/app/api/members/block/route.ts"
         },
         {
-          "method": "PATCH",
-          "path": "/api/members/heartbeat",
-          "label": "Heartbeat Member",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "Update the current user's last seen timestamp for online status",
-          "tags": [],
-          "sourceFile": "src/app/api/members/heartbeat/route.ts"
-        },
-        {
           "method": "GET",
           "path": "/api/members/seller-preconditions",
           "label": "List Seller Precondition",
@@ -862,24 +838,12 @@
           "sourceFile": "src/app/api/messaging/threads/[thread_id]/route.ts"
         },
         {
-          "method": "POST",
-          "path": "/api/messaging/threads/:thread_id/upload",
-          "label": "Upload :Thread Id",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 403, 422, 500],
-          "requestFields": [],
-          "description": "Upload images in a message thread",
-          "tags": ["file-upload"],
-          "sourceFile": "src/app/api/messaging/threads/[thread_id]/upload/route.ts"
-        },
-        {
           "method": "GET",
           "path": "/api/messaging/threads",
           "label": "List Thread",
           "auth": "user",
           "access": ["Member"],
-          "errorCodes": [400, 401, 403, 409, 500],
+          "errorCodes": [400, 401, 409, 500],
           "requestFields": [],
           "description": "List the authenticated user's message threads with optional type filter",
           "tags": [],
@@ -891,7 +855,7 @@
           "label": "Threads Messaging",
           "auth": "user",
           "access": ["Member"],
-          "errorCodes": [400, 401, 403, 409, 500],
+          "errorCodes": [400, 401, 409, 500],
           "requestFields": [],
           "description": "Create a new message thread between two members",
           "tags": [],
@@ -908,59 +872,6 @@
           "description": "Get the total unread message count for the authenticated user",
           "tags": [],
           "sourceFile": "src/app/api/messaging/unread-count/route.ts"
-        }
-      ]
-    },
-    {
-      "name": "Notifications",
-      "endpoints": [
-        {
-          "method": "PATCH",
-          "path": "/api/notifications/:id/read",
-          "label": "Read :Id",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 404, 500],
-          "requestFields": [],
-          "description": "Mark a single notification as read",
-          "tags": [],
-          "sourceFile": "src/app/api/notifications/[id]/read/route.ts"
-        },
-        {
-          "method": "PATCH",
-          "path": "/api/notifications/read-all",
-          "label": "Read All Notification",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "Mark all notifications as read for the authenticated user",
-          "tags": [],
-          "sourceFile": "src/app/api/notifications/read-all/route.ts"
-        },
-        {
-          "method": "GET",
-          "path": "/api/notifications",
-          "label": "List Notification",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "List notifications for the authenticated user with pagination",
-          "tags": [],
-          "sourceFile": "src/app/api/notifications/route.ts"
-        },
-        {
-          "method": "GET",
-          "path": "/api/notifications/unread-count",
-          "label": "List Unread Count",
-          "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [401, 500],
-          "requestFields": [],
-          "description": "Get the unread notification count for the authenticated user",
-          "tags": [],
-          "sourceFile": "src/app/api/notifications/unread-count/route.ts"
         }
       ]
     },

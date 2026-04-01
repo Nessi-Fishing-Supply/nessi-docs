@@ -6,13 +6,6 @@ import type { RawJourney, RawLifecycle, RawEntity } from '../raw-types';
 import { DOMAINS } from '@/constants/domains';
 import { transformChangelog } from './changelog';
 
-import apiContractsRaw from '../generated/api-contracts.json';
-import featuresRaw from '../generated/features.json';
-import journeysRaw from '../generated/journeys.json';
-import dataModelRaw from '../generated/data-model.json';
-import lifecyclesRaw from '../generated/lifecycles.json';
-import changelogRaw from '../generated/changelog.json';
-
 /* ------------------------------------------------------------------ */
 /*  Feature Domain Mapping                                             */
 /*  Map feature slugs → domain slugs for dashboard grouping            */
@@ -76,10 +69,10 @@ function hasProductSurface(f: Feature): boolean {
   return f.componentCount > 0 || f.endpointCount > 0 || entities.length > 0;
 }
 
-export function getFeatureDomains(): FeatureDomain[] {
-  const allFeatures = featuresRaw.features as unknown as Feature[];
-  const allJourneys = journeysRaw.journeys as unknown as RawJourney[];
-
+export function getFeatureDomains(
+  allFeatures: Feature[],
+  allJourneys: RawJourney[],
+): FeatureDomain[] {
   return DOMAINS.map((d) => {
     const domainFeatures = allFeatures
       .filter((f) => FEATURE_TO_DOMAIN[f.slug] === d.slug)
@@ -105,8 +98,7 @@ export function getFeatureDomains(): FeatureDomain[] {
   }).filter((d): d is FeatureDomain => d !== null);
 }
 
-export function getFeaturesByDomain(domain: string): Feature[] {
-  const allFeatures = featuresRaw.features as unknown as Feature[];
+export function getFeaturesByDomain(allFeatures: Feature[], domain: string): Feature[] {
   return allFeatures.filter((f) => FEATURE_TO_DOMAIN[f.slug] === domain).filter(hasProductSurface);
 }
 
@@ -114,18 +106,19 @@ export function getDomainForScope(scope: string): string | undefined {
   return SCOPE_TO_DOMAIN[scope.toLowerCase()];
 }
 
-export function getChangelogByDomain(domain: string): ChangelogEntry[] {
-  const raw = changelogRaw.entries as {
+export function getChangelogByDomain(
+  rawChangelog: {
     title?: string;
     mergedAt?: string;
     type?: string;
     area?: string;
     number?: number;
     url?: string;
-  }[];
-
+  }[],
+  domain: string,
+): ChangelogEntry[] {
   const scopeRegex = /^\w+\(([^)]+)\):/;
-  const matched = raw.filter((entry) => {
+  const matched = rawChangelog.filter((entry) => {
     const match = (entry.title ?? '').match(scopeRegex);
     if (!match) return false;
     const scope = match[1].toLowerCase();
@@ -135,18 +128,18 @@ export function getChangelogByDomain(domain: string): ChangelogEntry[] {
   return transformChangelog(matched);
 }
 
-export function getDashboardMetrics(): DashboardMetrics {
-  const allFeatures = featuresRaw.features as unknown as Feature[];
-  const allJourneys = journeysRaw.journeys as unknown as RawJourney[];
-
+export function getDashboardMetrics(data: {
+  features: Feature[];
+  apiGroups: ApiGroup[];
+  journeys: RawJourney[];
+  entities: RawEntity[];
+  lifecycles: RawLifecycle[];
+}): DashboardMetrics {
   return {
-    totalFeatures: allFeatures.length,
-    totalEndpoints: (apiContractsRaw.groups as unknown as ApiGroup[]).reduce(
-      (sum, g) => sum + g.endpoints.length,
-      0,
-    ),
-    totalJourneys: allJourneys.length,
-    totalEntities: (dataModelRaw.entities as RawEntity[]).length,
-    totalLifecycles: (lifecyclesRaw.lifecycles as RawLifecycle[]).length,
+    totalFeatures: data.features.length,
+    totalEndpoints: data.apiGroups.reduce((sum, g) => sum + g.endpoints.length, 0),
+    totalJourneys: data.journeys.length,
+    totalEntities: data.entities.length,
+    totalLifecycles: data.lifecycles.length,
   };
 }

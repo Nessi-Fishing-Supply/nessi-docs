@@ -3,6 +3,7 @@
 import { useState, memo } from 'react';
 import { ERD_NODE_WIDTH, ERD_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { ErdNode } from '@/types/entity-relationship';
+import type { DiffStatus } from '@/types/diff';
 
 const BADGE_COLORS: Record<string, string> = {
   core: '#3d8c75', // teal — primary marketplace entities
@@ -15,6 +16,14 @@ const BADGE_COLORS: Record<string, string> = {
 };
 
 const DEFAULT_COLOR = '#8a8580';
+
+const DIFF_COLORS: Record<NonNullable<DiffStatus>, string> = {
+  added: '#3d8c75',
+  modified: '#7b8fcd',
+  removed: '#b84040',
+  unchanged: '',
+};
+
 const LABEL_MAX = 20;
 
 /** Truncate at a word boundary when possible */
@@ -32,22 +41,64 @@ interface EntityNodeProps {
   node: ErdNode;
   isSelected?: boolean;
   onClick?: () => void;
+  diffStatus?: DiffStatus | null;
 }
 
-export const EntityNode = memo(function EntityNode({ node, isSelected, onClick }: EntityNodeProps) {
+export const EntityNode = memo(function EntityNode({
+  node,
+  isSelected,
+  onClick,
+  diffStatus,
+}: EntityNodeProps) {
   const [hovered, setHovered] = useState(false);
+
+  // Always use natural color — diff status never overrides the badge color
   const color = BADGE_COLORS[node.badge ?? ''] ?? DEFAULT_COLOR;
-  const showHoverGlow = hovered && !isSelected;
+
+  const isGhost = diffStatus === 'removed';
+  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
+  const diffColor = diffStatus && diffStatus !== 'unchanged' ? DIFF_COLORS[diffStatus] : undefined;
+
+  // Unchanged nodes are not interactive; ghost nodes are not interactive
+  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
+
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
+
+  const showDiffGlow = isDiffChanged && !isSelected;
+  const showHoverGlow = hovered && !isSelected && !isGhost;
 
   return (
     <g
       transform={`translate(${node.x},${node.y})`}
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ cursor: 'pointer' }}
+      onClick={isInteractive ? onClick : undefined}
+      onMouseEnter={isInteractive ? () => setHovered(true) : undefined}
+      onMouseLeave={isInteractive ? () => setHovered(false) : undefined}
+      style={{
+        cursor: isInteractive ? 'pointer' : 'default',
+        opacity: diffOpacity,
+        transition: 'opacity 400ms ease-out',
+        pointerEvents: !isInteractive ? 'none' : undefined,
+      }}
     >
-      {/* Hover glow */}
+      {/* Diff glow — uses diffColor, larger radius */}
+      {showDiffGlow && diffColor && (
+        <>
+          <defs>
+            <radialGradient id={`erd-diff-${node.id}`}>
+              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
+              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <circle
+            cx={ERD_NODE_WIDTH / 2}
+            cy={ERD_NODE_HEIGHT / 2}
+            r={ERD_NODE_WIDTH * 0.7}
+            fill={`url(#erd-diff-${node.id})`}
+            style={{ animation: 'glow-pulse 2.5s ease-in-out infinite' }}
+          />
+        </>
+      )}
+      {/* Hover glow — uses natural color */}
       {showHoverGlow && (
         <>
           <defs>
@@ -64,7 +115,7 @@ export const EntityNode = memo(function EntityNode({ node, isSelected, onClick }
           />
         </>
       )}
-      {/* Selection glow */}
+      {/* Selection glow — uses natural color */}
       {isSelected && (
         <>
           <defs>
@@ -82,6 +133,20 @@ export const EntityNode = memo(function EntityNode({ node, isSelected, onClick }
           />
         </>
       )}
+      {/* Outer diff ring — rendered outside the card, only for changed/ghost nodes */}
+      {diffColor && (isDiffChanged || isGhost) && (
+        <rect
+          x={-4}
+          y={-4}
+          width={ERD_NODE_WIDTH + 8}
+          height={ERD_NODE_HEIGHT + 8}
+          rx={10}
+          fill="none"
+          stroke={diffColor}
+          strokeWidth={1.5}
+          strokeDasharray={diffStatus === 'modified' ? '4 3' : undefined}
+        />
+      )}
       {/* Frosted glass backdrop — blurs edges passing behind */}
       <foreignObject width={ERD_NODE_WIDTH} height={ERD_NODE_HEIGHT} style={{ borderRadius: 6 }}>
         <div
@@ -95,7 +160,7 @@ export const EntityNode = memo(function EntityNode({ node, isSelected, onClick }
           }}
         />
       </foreignObject>
-      {/* Colored card */}
+      {/* Colored card — always uses natural color */}
       <rect
         width={ERD_NODE_WIDTH}
         height={ERD_NODE_HEIGHT}
@@ -103,6 +168,7 @@ export const EntityNode = memo(function EntityNode({ node, isSelected, onClick }
         fill={hexToRgba(color, 0.08)}
         stroke={isSelected ? color : hovered ? hexToRgba(color, 0.4) : hexToRgba(color, 0.2)}
         strokeWidth={isSelected ? 1.5 : 1}
+        strokeDasharray={isGhost ? '4 3' : undefined}
       />
       {/* Left accent bar */}
       <rect x={0} y={8} width={3} height={ERD_NODE_HEIGHT - 16} rx={1.5} fill={color} />

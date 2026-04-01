@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
 import type { ChangelogEntry } from '@/types/changelog';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
+import { useBranchHref } from '@/providers/branch-provider';
 import { formatDate } from '@/constants/dates';
 import styles from './dashboard-view.module.scss';
 
@@ -12,6 +15,7 @@ interface DashboardViewProps {
 }
 
 export function DashboardView({ metrics, domains, recentChanges }: DashboardViewProps) {
+  const branchHref = useBranchHref();
   const flatChanges = recentChanges
     .flatMap((entry) => (entry.changes ?? []).map((c) => ({ ...c, date: entry.date })))
     .slice(0, 8);
@@ -62,7 +66,7 @@ export function DashboardView({ metrics, domains, recentChanges }: DashboardView
         <div className={styles.changelogCard}>
           <div className={styles.changelogHeader}>
             <span className={styles.changelogLabel}>Recent Changes</span>
-            <Link href="/changelog" className={styles.viewAll}>
+            <Link href={branchHref('/changelog')} className={styles.viewAll}>
               View all &rarr;
             </Link>
           </div>
@@ -94,7 +98,11 @@ export function DashboardView({ metrics, domains, recentChanges }: DashboardView
         <span className={styles.domainLabel}>Feature Domains</span>
         <div className={styles.domainGrid}>
           {domains.map((d) => (
-            <Link key={d.slug} href={`/features/${d.slug}`} className={styles.domainCard}>
+            <Link
+              key={d.slug}
+              href={branchHref(`/features/${d.slug}`)}
+              className={styles.domainCard}
+            >
               <div className={styles.domainCardHeader}>
                 <span className={styles.domainCardName}>{d.label}</span>
                 <span className={styles.domainCardCount}>{d.featureCount}</span>

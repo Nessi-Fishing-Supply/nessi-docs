@@ -2,8 +2,15 @@
 
 import { useState, memo } from 'react';
 import { NODE_HEIGHT, hexToRgba } from '../utils/geometry';
+import type { DiffStatus } from '@/types/diff';
 
 const ENTRY_COLOR = '#3ba8d4';
+const DIFF_COLORS: Record<string, string> = {
+  added: '#3d8c75',
+  modified: '#7b8fcd',
+  removed: '#b84040',
+};
+
 import { TT_BG, TT_BORDER, TT_SHADOW } from '../constants/tooltip-styles';
 
 const ENTRY_W = 160;
@@ -23,6 +30,7 @@ interface EntryNodeProps {
   label: string;
   isDimmed?: boolean;
   isActive?: boolean;
+  diffStatus?: DiffStatus | null;
   meta?: EntryNodeMeta;
   onClick?: () => void;
 }
@@ -33,22 +41,74 @@ export const EntryNode = memo(function EntryNode({
   label,
   isDimmed,
   isActive,
+  diffStatus,
   meta,
   onClick,
 }: EntryNodeProps) {
   const [hovered, setHovered] = useState(false);
   const h = NODE_HEIGHT;
-  const opacity = isDimmed ? 0.15 : 1;
-  const showGlow = hovered || isActive;
+  const isGhost = diffStatus === 'removed';
+  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
+
+  // Diff color only when changed — never overrides natural color
+  const diffColor = isDiffChanged ? DIFF_COLORS[diffStatus!] : undefined;
+
+  // Interaction: disabled for ghosts and unchanged nodes
+  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
+
+  // Opacity: ghost → 0.35, unchanged → 0.2, dimmed → 0.15, else 1
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
+  const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
+
+  const showGlow = (hovered || isActive) && !isGhost && isInteractive;
+  const showDiffGlow = isDiffChanged && !isActive;
 
   return (
     <g
       transform={`translate(${x},${y})`}
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ cursor: 'pointer', opacity, transition: 'opacity 400ms ease-out' }}
+      onClick={isInteractive ? onClick : undefined}
+      onMouseEnter={isInteractive ? () => setHovered(true) : undefined}
+      onMouseLeave={isInteractive ? () => setHovered(false) : undefined}
+      style={{
+        cursor: isInteractive ? 'pointer' : 'default',
+        opacity,
+        transition: 'opacity 400ms ease-out',
+        pointerEvents: isInteractive ? undefined : 'none',
+      }}
     >
+      {/* Outer diff ring — pill shape, only for added/modified */}
+      {diffColor && (
+        <rect
+          x={-4}
+          y={-4}
+          width={ENTRY_W + 8}
+          height={h + 8}
+          rx={(h + 8) / 2}
+          fill="none"
+          stroke={diffColor}
+          strokeWidth={1.5}
+          strokeOpacity={0.7}
+        />
+      )}
+      {/* Diff glow */}
+      {showDiffGlow && diffColor && (
+        <>
+          <defs>
+            <radialGradient id={`entry-diff-${x}-${y}`}>
+              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
+              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <ellipse
+            cx={ENTRY_W / 2}
+            cy={h / 2}
+            rx={ENTRY_W * 0.55}
+            ry={h * 1.2}
+            fill={`url(#entry-diff-${x}-${y})`}
+            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
+          />
+        </>
+      )}
       {/* Hover/active glow */}
       {showGlow && (
         <>
@@ -68,7 +128,7 @@ export const EntryNode = memo(function EntryNode({
           />
         </>
       )}
-      {/* Background pill */}
+      {/* Background pill — always uses natural ENTRY_COLOR */}
       <rect
         width={ENTRY_W}
         height={h}
@@ -76,6 +136,7 @@ export const EntryNode = memo(function EntryNode({
         fill={hexToRgba(ENTRY_COLOR, isActive ? 0.15 : 0.1)}
         stroke={hexToRgba(ENTRY_COLOR, hovered || isActive ? 0.5 : 0.3)}
         strokeWidth={isActive ? 1.5 : 1}
+        strokeDasharray={isGhost ? '4 3' : undefined}
       />
       {/* Play icon */}
       <text

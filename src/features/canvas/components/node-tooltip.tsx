@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { GitHubLink } from '@/components/ui/github-link';
 import { getLifecyclesForRoute } from '@/data';
+import { useBranchHref } from '@/providers/branch-provider';
 import { NODE_WIDTH } from '../utils/geometry';
 import { TT_BG, TT_BORDER, TT_SHADOW, sectionLabel, monoBlock } from '../constants/tooltip-styles';
 
@@ -17,6 +18,7 @@ interface NodeTooltipProps {
 }
 
 export function NodeTooltip({ node, children, suppressTooltip, isSelected }: NodeTooltipProps) {
+  const branchHref = useBranchHref();
   const [hovered, setHovered] = useState(false);
 
   if (node.type !== 'step' || suppressTooltip) {
@@ -147,11 +149,13 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                   <div style={sectionLabel}>{node.layer === 'server' ? 'Endpoint' : 'Page'}</div>
                   {node.layer === 'server' ? (
                     <Link
-                      href={`/api-map#${node.route
-                        .replace(/^(GET|POST|PUT|PATCH|DELETE)\s+/, '')
-                        .toLowerCase()
-                        .replace(/[^a-z0-9]+/g, '-')
-                        .replace(/(^-|-$)/g, '')}`}
+                      href={branchHref(
+                        `/api-map#${node.route
+                          .replace(/^(GET|POST|PUT|PATCH|DELETE)\s+/, '')
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]+/g, '-')
+                          .replace(/(^-|-$)/g, '')}`,
+                      )}
                       style={{
                         ...monoBlock,
                         color: '#e27739',
@@ -282,7 +286,7 @@ export function NodeTooltip({ node, children, suppressTooltip, isSelected }: Nod
                       {lcRefs.map((lc) => (
                         <Link
                           key={lc.slug}
-                          href={`/lifecycles/${lc.slug}`}
+                          href={branchHref(`/lifecycles/${lc.slug}`)}
                           style={{
                             ...monoBlock,
                             color: '#5f7fbf',

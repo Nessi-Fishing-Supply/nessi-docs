@@ -1,11 +1,14 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 import type { ArchDiagram, ArchNode } from '@/types/architecture';
+import type { DiffStatus } from '@/types/diff';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { LabelPill } from '@/features/canvas/components/label-pill';
 import { smoothPath, type PortSide } from '@/features/canvas/utils/geometry';
+import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 import { computeLayout, NODE_WIDTH, NODE_HEIGHT, LAYER_PADDING } from './arch-layout';
 import { useArchTrace } from './use-arch-trace';
 import { ArchTooltip } from './arch-tooltip';
@@ -43,6 +46,24 @@ function edgePath(
 }
 
 /* ------------------------------------------------------------------ */
+/*  Diff helpers                                                       */
+/* ------------------------------------------------------------------ */
+
+function getEdgeDiffStatus(
+  fromId: string,
+  toId: string,
+  statusMap: Map<string, DiffStatus>,
+): DiffStatus | null {
+  if (statusMap.size === 0) return null;
+  const fromStatus = statusMap.get(fromId);
+  const toStatus = statusMap.get(toId);
+  if (fromStatus === 'removed' || toStatus === 'removed') return 'removed';
+  if (fromStatus === 'added' || toStatus === 'added') return 'added';
+  if (fromStatus === 'modified' || toStatus === 'modified') return 'modified';
+  return 'unchanged';
+}
+
+/* ------------------------------------------------------------------ */
 /*  Canvas component                                                   */
 /* ------------------------------------------------------------------ */
 
@@ -58,6 +79,24 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
   const { toggleFocus, resetTrace, litNodes, litEdges, hasTrace } = useArchTrace(
     diagram.connections,
   );
+
+  // Diff mode integration
+  const { isActive: isDiffMode, diffResult } = useDiffMode();
+
+  const baseDiagram = useMemo(() => {
+    if (!isDiffMode || !diffResult) return null;
+    return diffResult.archDiagrams.modified.find((m) => m.base.slug === diagram.slug)?.base ?? null;
+  }, [isDiffMode, diffResult, diagram.slug]);
+
+  const headFlatNodes = useMemo(() => diagram.layers.flatMap((l) => l.nodes), [diagram.layers]);
+  const baseFlatNodes = useMemo(
+    () => (baseDiagram ? baseDiagram.layers.flatMap((l) => l.nodes) : null),
+    [baseDiagram],
+  );
+
+  const getNodeKey = useCallback((n: ArchNode) => n.id, []);
+
+  const { statusMap: nodeStatusMap } = useDiffNodes(headFlatNodes, baseFlatNodes, getNodeKey);
 
   const layout = useMemo(() => computeLayout(diagram), [diagram]);
 
@@ -152,24 +191,49 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
 
         const path = edgePath(from, to);
         const isLit = litEdges.has(i);
-        const isDimmed = hasTrace && !isLit;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
+        const edgeDiffStatus = isDiffMode
+          ? getEdgeDiffStatus(conn.from, conn.to, nodeStatusMap)
+          : null;
+
+        let edgeStroke = isLit ? 'rgba(61,140,117,0.5)' : 'rgba(154,151,144,0.3)';
+        let edgeOpacity = isDimmed ? 0.08 : 1;
+        let edgeMarker = isLit ? 'url(#arch-arrow-lit)' : 'url(#arch-arrow)';
+        let edgeDash = conn.style === 'dashed' ? '4 3' : undefined;
+
+        if (edgeDiffStatus) {
+          if (edgeDiffStatus === 'added') {
+            edgeStroke = 'rgba(61,140,117,0.7)';
+            edgeMarker = 'url(#arrow-diff-added)';
+          } else if (edgeDiffStatus === 'modified') {
+            edgeStroke = 'rgba(123,143,205,0.7)';
+            edgeMarker = 'url(#arrow-diff-modified)';
+          } else if (edgeDiffStatus === 'removed') {
+            edgeStroke = 'rgba(184,64,64,0.5)';
+            edgeMarker = 'url(#arrow-diff-removed)';
+            edgeDash = '3 5';
+            edgeOpacity = 0.5;
+          } else if (edgeDiffStatus === 'unchanged') {
+            edgeOpacity = isDimmed ? 0.08 : 0.15;
+          }
+        }
 
         return (
           <g key={`edge-${i}`}>
             <path
               d={path.d}
               fill="none"
-              stroke={isLit ? 'rgba(61,140,117,0.5)' : 'rgba(154,151,144,0.3)'}
+              stroke={edgeStroke}
               strokeWidth={isLit ? 2 : 1.5}
-              strokeDasharray={conn.style === 'dashed' ? '4 3' : undefined}
-              markerEnd={isLit ? 'url(#arch-arrow-lit)' : 'url(#arch-arrow)'}
+              strokeDasharray={edgeDash}
+              markerEnd={edgeMarker}
               style={{
-                opacity: isDimmed ? 0.08 : 1,
+                opacity: edgeOpacity,
                 transition: 'opacity 400ms ease-out',
               }}
             />
             {/* Animated flow on lit edges */}
-            {isLit && (
+            {isLit && edgeDiffStatus !== 'removed' && edgeDiffStatus !== 'unchanged' && (
               <path
                 d={path.d}
                 fill="none"
@@ -196,12 +260,24 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
 
         const path = edgePath(from, to);
         const isLit = litEdges.has(i);
-        const isDimmed = hasTrace && !isLit;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
+        const edgeDiffStatus = isDiffMode
+          ? getEdgeDiffStatus(conn.from, conn.to, nodeStatusMap)
+          : null;
+
+        const labelOpacity =
+          edgeDiffStatus === 'unchanged'
+            ? 0.15
+            : edgeDiffStatus === 'removed'
+              ? 0.4
+              : isDimmed
+                ? 0.1
+                : 1;
 
         return (
           <g
             key={`label-${i}`}
-            style={{ opacity: isDimmed ? 0.1 : 1, transition: 'opacity 400ms ease-out' }}
+            style={{ opacity: labelOpacity, transition: 'opacity 400ms ease-out' }}
           >
             <LabelPill x={path.mx} y={path.my} label={conn.label} />
           </g>
@@ -211,31 +287,67 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
       {/* Nodes */}
       {layout.positionedNodes.map((pn) => {
         const isLit = litNodes.has(pn.node.id);
-        const isDimmed = hasTrace && !isLit;
-        const isSelected = isLit && hasTrace;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
+        const isSelected = !isDiffMode && isLit && hasTrace;
         const isHovered = hoveredNodeId === pn.node.id;
         const layerColor =
           layout.positionedLayers.find((l) => l.layer.id === pn.layerId)?.layer.color ?? '#78756f';
+
+        const nodeDiffStatus = isDiffMode ? (nodeStatusMap.get(pn.node.id) ?? null) : null;
+        const isChangedNode = nodeDiffStatus === 'added' || nodeDiffStatus === 'modified';
+
+        // Diff color overrides
+        let rectFill = `${layerColor}1e`;
+        let rectStroke = isSelected ? layerColor : `${layerColor}4d`;
+        let rectStrokeWidth = isSelected ? 1.5 : 1;
+        let rectStrokeDash: string | undefined = undefined;
+        let labelFill = '#e8e6e1';
+        let nodeOpacity = isDimmed ? 0.15 : 1;
+
+        if (nodeDiffStatus === 'added') {
+          rectFill = 'rgba(61,140,117,0.12)';
+          rectStroke = 'rgba(61,140,117,0.7)';
+          rectStrokeWidth = 1.5;
+          labelFill = 'rgba(130,210,180,0.95)';
+        } else if (nodeDiffStatus === 'modified') {
+          rectFill = 'rgba(123,143,205,0.12)';
+          rectStroke = 'rgba(123,143,205,0.7)';
+          rectStrokeWidth = 1.5;
+          labelFill = 'rgba(170,185,230,0.95)';
+        } else if (nodeDiffStatus === 'removed') {
+          rectFill = 'rgba(184,64,64,0.08)';
+          rectStroke = 'rgba(184,64,64,0.5)';
+          rectStrokeWidth = 1.5;
+          rectStrokeDash = '4 3';
+          labelFill = 'rgba(220,130,130,0.8)';
+          nodeOpacity = isDimmed ? 0.08 : 0.4;
+        } else if (nodeDiffStatus === 'unchanged') {
+          nodeOpacity = isDimmed ? 0.08 : 0.6;
+        }
+
+        const isRemoved = nodeDiffStatus === 'removed';
 
         return (
           <g
             key={pn.node.id}
             style={{
-              opacity: isDimmed ? 0.15 : 1,
+              opacity: nodeOpacity,
               transition: 'opacity 400ms ease-out',
-              cursor: 'pointer',
+              cursor: isRemoved ? 'default' : 'pointer',
+              pointerEvents: isDiffMode && !isChangedNode ? 'none' : undefined,
             }}
             onMouseEnter={() => {
               if (hoverTimer.current) clearTimeout(hoverTimer.current);
-              if (!isDimmed) setHoveredNodeId(pn.node.id);
+              const canHover = isDiffMode ? isChangedNode : !isDimmed && !isRemoved;
+              if (canHover) setHoveredNodeId(pn.node.id);
             }}
             onMouseLeave={() => {
               hoverTimer.current = setTimeout(() => setHoveredNodeId(null), 120);
             }}
-            onClick={() => toggleFocus(pn.node.id)}
+            onClick={() => !isRemoved && !isDiffMode && toggleFocus(pn.node.id)}
           >
             {/* Hover glow */}
-            {isHovered && !isSelected && (
+            {isHovered && !isSelected && !isRemoved && (
               <>
                 <defs>
                   <radialGradient id={`arch-hover-${pn.node.id}`}>
@@ -253,7 +365,7 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
             )}
 
             {/* Selection glow */}
-            {isSelected && (
+            {isSelected && !isRemoved && (
               <>
                 <defs>
                   <radialGradient id={`arch-glow-${pn.node.id}`}>
@@ -298,10 +410,11 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
               width={NODE_WIDTH}
               height={NODE_HEIGHT}
               rx={8}
-              fill={`${layerColor}1e`}
-              stroke={isSelected ? layerColor : `${layerColor}4d`}
-              strokeWidth={isSelected ? 1.5 : 1}
-              style={{ cursor: 'pointer' }}
+              fill={rectFill}
+              stroke={rectStroke}
+              strokeWidth={rectStrokeWidth}
+              strokeDasharray={rectStrokeDash}
+              style={{ cursor: isRemoved ? 'default' : 'pointer' }}
             />
 
             {/* Left accent bar */}
@@ -318,10 +431,10 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
             <text
               x={pn.x + 14}
               y={pn.y + (pn.node.sublabel ? 23 : NODE_HEIGHT / 2 + 4)}
-              fill="#e8e6e1"
+              fill={labelFill}
               fontSize={12}
               fontWeight={500}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: isRemoved ? 'default' : 'pointer' }}
             >
               {pn.node.label}
             </text>
@@ -334,7 +447,7 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
                 fill="#6a6860"
                 fontSize={10}
                 fontFamily="var(--font-family-mono)"
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: isRemoved ? 'default' : 'pointer' }}
               >
                 {pn.node.sublabel}
               </text>
@@ -349,6 +462,8 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
           const pn = layout.positionedNodes.find((n) => n.node.id === hoveredNodeId);
           if (!pn) return null;
           const node = pn.node;
+          // Skip tooltip for removed nodes
+          if (isDiffMode && nodeStatusMap.get(node.id) === 'removed') return null;
           // Only show tooltip if there's meaningful content
           if (!node.tooltip && !node.url) return null;
           const layerColor =

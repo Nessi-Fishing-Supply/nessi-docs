@@ -94,3 +94,27 @@
   opacity: 0.5;
   flex-shrink: 0;
 }
+
+// ─── Diff Mode ───
+
+.diff_added {
+  border-left: 2px solid var(--diff-added) !important;
+  background: var(--diff-added-bg) !important;
+}
+
+.diff_modified {
+  border-left: 2px solid var(--diff-modified) !important;
+  background: var(--diff-modified-bg) !important;
+}
+
+.diff_removed {
+  border-left: 2px solid var(--diff-removed) !important;
+  background: var(--diff-removed-bg) !important;
+  opacity: 0.6 !important;
+  pointer-events: none;
+}
+
+.diff_unchanged {
+  opacity: 0.3 !important;
+  pointer-events: none;
+}

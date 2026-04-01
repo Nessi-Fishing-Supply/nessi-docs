@@ -1,4 +1,5 @@
 import { hexToRgba } from '../utils/geometry';
+import { DiffLegendSection } from './diff-legend-section';
 
 const STATE_TYPES: { label: string; color: string }[] = [
   { label: 'Active / Complete', color: '#3d8c75' },
@@ -12,9 +13,10 @@ const STATE_TYPES: { label: string; color: string }[] = [
 
 interface LifecycleLegendProps {
   visible: boolean;
+  isDiffMode?: boolean;
 }
 
-export function LifecycleLegend({ visible }: LifecycleLegendProps) {
+export function LifecycleLegend({ visible, isDiffMode }: LifecycleLegendProps) {
   if (!visible) return null;
 
   const sectionLabel: React.CSSProperties = {
@@ -99,6 +101,7 @@ export function LifecycleLegend({ visible }: LifecycleLegendProps) {
           </svg>
           <span>Action label</span>
         </div>
+        {isDiffMode && <DiffLegendSection />}
       </div>
     </div>
   );

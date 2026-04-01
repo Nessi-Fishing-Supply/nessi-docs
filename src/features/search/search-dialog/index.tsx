@@ -9,6 +9,7 @@ import {
   removeRecentSearch,
   clearRecentSearches,
 } from '../recent-searches';
+import { useBranchHref } from '@/providers/branch-provider';
 import { OverflowText } from './overflow-text';
 import styles from './search-dialog.module.scss';
 
@@ -42,6 +43,7 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const branchHref = useBranchHref();
 
   useEffect(() => {
     if (isOpen) {
@@ -57,10 +59,10 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   const navigate = useCallback(
     (result: SearchResult) => {
       if (query.trim()) addRecentSearch(query.trim());
-      router.push(result.href);
+      router.push(branchHref(result.href));
       onClose();
     },
-    [router, onClose, query],
+    [router, onClose, query, branchHref],
   );
 
   const handleQueryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

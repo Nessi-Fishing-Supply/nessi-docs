@@ -5,6 +5,7 @@ import {
   autoPortSides,
   journeyPortSides,
 } from '../utils/geometry';
+import type { DiffStatus } from '@/types/diff';
 
 interface AnimatedEdgeProps {
   from: { x: number; y: number; type: string };
@@ -15,6 +16,7 @@ interface AnimatedEdgeProps {
   isBackEdge?: boolean;
   isDecisionBranch?: boolean;
   useJourneyPorts?: boolean;
+  diffStatus?: DiffStatus | null;
 }
 
 export function AnimatedEdge({
@@ -26,7 +28,11 @@ export function AnimatedEdge({
   isBackEdge,
   isDecisionBranch,
   useJourneyPorts,
+  diffStatus,
 }: AnimatedEdgeProps) {
+  // Removed or unchanged diff states don't animate
+  if (diffStatus === 'removed' || diffStatus === 'unchanged') return null;
+
   // When path is active: only show on lit edges
   // When no path: show ambient on all edges
   if (hasActivePath && (!isLit || isDimmed)) return null;
@@ -41,18 +47,23 @@ export function AnimatedEdge({
     : smoothPath(fp.x, fp.y, fDir, tp.x, tp.y, tDir);
 
   const opacity = isBackEdge ? 0.25 : isLit ? 0.85 : 0.08;
-  const color = isBackEdge
+
+  let animColor = isBackEdge
     ? 'rgba(234,179,8,0.5)'
     : isLit
       ? 'rgba(61,140,117,0.7)'
       : 'rgba(255,255,255,0.15)';
+
+  if (diffStatus === 'added') animColor = 'rgba(61,140,117,0.7)';
+  if (diffStatus === 'modified') animColor = 'rgba(123,143,205,0.7)';
+
   const marker = isLit ? 'url(#arrow-lit)' : undefined;
 
   return (
     <path
       d={d}
       fill="none"
-      stroke={color}
+      stroke={animColor}
       strokeWidth={isLit ? 2.5 : 1}
       strokeDasharray="4 16"
       strokeLinecap="round"

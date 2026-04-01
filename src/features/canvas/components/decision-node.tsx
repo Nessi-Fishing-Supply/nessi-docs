@@ -3,8 +3,14 @@
 import { useState, memo } from 'react';
 import type { DecisionOption } from '@/types/journey';
 import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
+import type { DiffStatus } from '@/types/diff';
 
 const DECISION_COLOR = '#a78bfa';
+const DIFF_COLORS: Record<string, string> = {
+  added: '#3d8c75',
+  modified: '#7b8fcd',
+  removed: '#b84040',
+};
 
 /** Clean snake_case/SCREAMING_CASE into title case: "email_not_confirmed" → "Email Not Confirmed" */
 function humanize(text: string): string {
@@ -33,6 +39,7 @@ interface DecisionNodeProps {
   options: DecisionOption[];
   chosenOpt?: string;
   isDimmed?: boolean;
+  diffStatus?: DiffStatus | null;
   onChoose?: (opt: string, targetId: string) => void;
 }
 
@@ -43,12 +50,26 @@ export const DecisionNode = memo(function DecisionNode({
   options,
   chosenOpt,
   isDimmed,
+  diffStatus,
   onChoose,
 }: DecisionNodeProps) {
   const [hoveredPill, setHoveredPill] = useState<string | null>(null);
   const cx = x + DECISION_SIZE / 2;
   const cy = y + DECISION_SIZE / 2;
-  const opacity = isDimmed ? 0.15 : 1;
+  const isGhost = diffStatus === 'removed';
+  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
+
+  // Diff color only when changed — never overrides natural color
+  const diffColor = isDiffChanged ? DIFF_COLORS[diffStatus!] : undefined;
+
+  // Interaction: disabled for ghosts and unchanged nodes
+  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
+
+  // Opacity: ghost → 0.35, unchanged → 0.2, dimmed → 0.15, else 1
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
+  const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
+
+  const showDiffGlow = isDiffChanged;
 
   const parsedOptions = options.map((opt) => ({
     ...opt,
@@ -58,8 +79,48 @@ export const DecisionNode = memo(function DecisionNode({
   // Measure pill width from short label
   const pillW = Math.max(DECISION_SIZE + 10, ...parsedOptions.map((o) => o.short.length * 7 + 24));
 
+  // Outer ring radius: slightly larger than the diamond's half-diagonal
+  const diamondHalf = (DECISION_SIZE - 12) / 2;
+  const ringRadius = Math.round(diamondHalf * Math.SQRT2 + 6);
+
   return (
-    <g style={{ opacity, transition: 'opacity 400ms ease-out' }}>
+    <g
+      style={{
+        opacity,
+        transition: 'opacity 400ms ease-out',
+        pointerEvents: isInteractive ? undefined : 'none',
+      }}
+    >
+      {/* Outer diff ring — circle outline around the diamond, only for added/modified */}
+      {diffColor && (
+        <circle
+          cx={cx}
+          cy={cy}
+          r={ringRadius}
+          fill="none"
+          stroke={diffColor}
+          strokeWidth={1.5}
+          strokeOpacity={0.7}
+        />
+      )}
+      {/* Diff glow — centered on diamond */}
+      {showDiffGlow && diffColor && (
+        <>
+          <defs>
+            <radialGradient id={`dec-diff-${x}-${y}`}>
+              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
+              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <circle
+            cx={cx}
+            cy={cy}
+            r={DECISION_SIZE * 0.55}
+            fill={`url(#dec-diff-${x}-${y})`}
+            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
+          />
+        </>
+      )}
       {/* Diamond — no hover, not interactive (pills below are the actions) */}
       <g transform={`translate(${cx},${cy}) rotate(45)`} style={{ cursor: 'default' }}>
         <rect
@@ -71,6 +132,7 @@ export const DecisionNode = memo(function DecisionNode({
           fill={hexToRgba(DECISION_COLOR, 0.12)}
           stroke={hexToRgba(DECISION_COLOR, 0.35)}
           strokeWidth={1}
+          strokeDasharray={isGhost ? '4 3' : undefined}
         />
       </g>
 
@@ -102,10 +164,10 @@ export const DecisionNode = memo(function DecisionNode({
           <g
             key={opt.label}
             transform={`translate(${cx - pillW / 2},${py})`}
-            onClick={() => onChoose?.(opt.label, opt.to)}
-            onMouseEnter={() => setHoveredPill(opt.label)}
-            onMouseLeave={() => setHoveredPill(null)}
-            style={{ cursor: 'pointer', opacity: pillOpacity }}
+            onClick={isInteractive ? () => onChoose?.(opt.label, opt.to) : undefined}
+            onMouseEnter={isInteractive ? () => setHoveredPill(opt.label) : undefined}
+            onMouseLeave={isInteractive ? () => setHoveredPill(null) : undefined}
+            style={{ cursor: isInteractive ? 'pointer' : 'default', opacity: pillOpacity }}
           >
             <rect
               width={pillW}

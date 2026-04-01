@@ -6,6 +6,7 @@ import type { Feature } from '@/types/feature';
 import type { FeatureDomain } from '@/types/dashboard';
 import type { ChangelogEntry, ChangeType } from '@/types/changelog';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
+import { useBranchHref } from '@/providers/branch-provider';
 import { BorderTrace } from '@/components/ui/border-trace';
 import styles from './feature-domain-view.module.scss';
 
@@ -21,23 +22,26 @@ function clearHash() {
 function resolveHref(
   link: { type: string; label: string; href: string },
   journeyDomainMap: Map<string, string>,
+  prefix: (path: string) => string,
 ): string {
   switch (link.type) {
     case 'entity':
-      return `/data-model#${link.label}`;
+      return prefix(`/data-model#${link.label}`);
     case 'api-group':
-      return `/api-map#${link.label
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '')}`;
+      return prefix(
+        `/api-map#${link.label
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '')}`,
+      );
     case 'journey': {
       const domain = journeyDomainMap.get(link.label);
-      return domain ? `/journeys/${domain}/${link.label}` : link.href;
+      return domain ? prefix(`/journeys/${domain}/${link.label}`) : prefix(link.href);
     }
     case 'lifecycle':
-      return `/lifecycles/${link.label}`;
+      return prefix(`/lifecycles/${link.label}`);
     default:
-      return link.href;
+      return prefix(link.href);
   }
 }
 
@@ -58,6 +62,7 @@ function FeatureRow({
   onOpen: () => void;
   journeyDomainMap: Map<string, string>;
 }) {
+  const branchHref = useBranchHref();
   const [isDeepLinkTarget] = useState(
     () =>
       typeof window !== 'undefined' &&
@@ -137,7 +142,7 @@ function FeatureRow({
                 {apiLinks.map((link) => (
                   <Link
                     key={link.label}
-                    href={resolveHref(link, journeyDomainMap)}
+                    href={resolveHref(link, journeyDomainMap, branchHref)}
                     onClick={clearHash}
                     className={`${styles.linkItem} ${styles.linkApi}`}
                   >
@@ -156,7 +161,7 @@ function FeatureRow({
                 {entityLinks.map((link) => (
                   <Link
                     key={link.label}
-                    href={resolveHref(link, journeyDomainMap)}
+                    href={resolveHref(link, journeyDomainMap, branchHref)}
                     onClick={clearHash}
                     className={`${styles.linkItem} ${styles.linkEntity}`}
                   >
@@ -175,7 +180,7 @@ function FeatureRow({
                 {journeyLinks.map((link) => (
                   <Link
                     key={link.label}
-                    href={resolveHref(link, journeyDomainMap)}
+                    href={resolveHref(link, journeyDomainMap, branchHref)}
                     onClick={clearHash}
                     className={`${styles.linkItem} ${styles.linkJourney}`}
                   >
@@ -194,7 +199,7 @@ function FeatureRow({
                 {lifecycleLinks.map((link) => (
                   <Link
                     key={link.label}
-                    href={resolveHref(link, journeyDomainMap)}
+                    href={resolveHref(link, journeyDomainMap, branchHref)}
                     onClick={clearHash}
                     className={`${styles.linkItem} ${styles.linkLifecycle}`}
                   >
@@ -228,6 +233,7 @@ export function FeatureDomainView({
   journeys,
   entities,
 }: FeatureDomainViewProps) {
+  const branchHref = useBranchHref();
   const journeyDomainMap = new Map(journeys.map((j) => [j.slug, j.domain]));
   const [openFeatures, setOpenFeatures] = useState<Set<string>>(new Set());
 
@@ -293,7 +299,10 @@ export function FeatureDomainView({
             <div className={styles.footerSection}>
               <div className={styles.footerTitleRow}>
                 <span className={styles.footerTitle}>Recent Changes</span>
-                <Link href={`/changelog?domain=${domain.slug}`} className={styles.footerViewAll}>
+                <Link
+                  href={branchHref(`/changelog?domain=${domain.slug}`)}
+                  className={styles.footerViewAll}
+                >
                   View all &rarr;
                 </Link>
               </div>
@@ -331,7 +340,7 @@ export function FeatureDomainView({
                 {journeys.map((j) => (
                   <Link
                     key={j.slug}
-                    href={`/journeys/${j.domain}/${j.slug}`}
+                    href={branchHref(`/journeys/${j.domain}/${j.slug}`)}
                     className={styles.journeyLink}
                   >
                     <span>{j.title}</span>
@@ -347,7 +356,11 @@ export function FeatureDomainView({
               <div className={styles.footerTitle}>Entities</div>
               <div className={styles.footerList}>
                 {entities.map((e) => (
-                  <Link key={e.name} href={`/data-model#${e.name}`} className={styles.entityLink}>
+                  <Link
+                    key={e.name}
+                    href={branchHref(`/data-model#${e.name}`)}
+                    className={styles.entityLink}
+                  >
                     <span>{e.label ?? e.name}</span>
                     <span className={styles.footerLinkMeta}>{e.fieldCount} fields</span>
                     <span className={styles.linkArrow}>&rsaquo;</span>

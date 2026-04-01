@@ -1,10 +1,7 @@
 /* ------------------------------------------------------------------ */
 /*  Cross-link index — bidirectional table ↔ endpoint mapping         */
-/*  Computed once at import time from raw JSON sources                 */
+/*  Build via buildCrossLinkIndex() with raw data from any branch     */
 /* ------------------------------------------------------------------ */
-
-import apiContractsRaw from './generated/api-contracts.json';
-import dataModelRaw from './generated/data-model.json';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                               */
@@ -197,71 +194,6 @@ function matchSegmentsToTables(segments: string[], tableNames: string[]): string
 }
 
 /* ------------------------------------------------------------------ */
-/*  Build indexes at module scope (runs once)                          */
-/* ------------------------------------------------------------------ */
-
-const groups = apiContractsRaw.groups as RawGroup[];
-const entities = dataModelRaw.entities as RawEntity[];
-const tableNames = entities.map((e) => e.name);
-
-/** table name → list of endpoints that touch it */
-const tableToEndpoints = new Map<string, EndpointRef[]>();
-
-/** "METHOD path" → list of tables it touches */
-const endpointToTables = new Map<string, TableRef[]>();
-
-// Initialize table map with empty arrays
-for (const name of tableNames) {
-  tableToEndpoints.set(name, []);
-}
-
-for (const group of groups) {
-  for (const ep of group.endpoints) {
-    const segments = extractSegments(ep.path);
-    const matched = matchSegmentsToTables(segments, tableNames);
-
-    const ref: EndpointRef = {
-      method: ep.method,
-      path: ep.path,
-      group: group.name,
-      anchor: makeAnchor(ep.method, ep.path),
-    };
-
-    const key = `${ep.method} ${ep.path}`;
-    const tableRefs: TableRef[] = [];
-
-    for (const tableName of matched) {
-      // Endpoint → tables
-      const entity = entities.find((e) => e.name === tableName);
-      tableRefs.push({
-        name: tableName,
-        label: entity?.label,
-        badge: entity?.badge,
-      });
-
-      // Table → endpoints
-      tableToEndpoints.get(tableName)?.push(ref);
-    }
-
-    endpointToTables.set(key, tableRefs);
-  }
-}
-
-/* ------------------------------------------------------------------ */
-/*  Public lookup functions                                             */
-/* ------------------------------------------------------------------ */
-
-/** Return all endpoints that touch the given table */
-export function getEndpointsForTable(tableName: string): EndpointRef[] {
-  return tableToEndpoints.get(tableName) ?? [];
-}
-
-/** Return all tables touched by the given endpoint */
-export function getTablesForEndpoint(method: string, path: string): TableRef[] {
-  return endpointToTables.get(`${method} ${path}`) ?? [];
-}
-
-/* ------------------------------------------------------------------ */
 /*  RLS operation → HTTP method mapping                                */
 /* ------------------------------------------------------------------ */
 
@@ -276,33 +208,106 @@ export function rlsOperationToMethod(operation: string): string {
   return RLS_TO_METHOD[operation.toUpperCase()] ?? 'GET';
 }
 
-/**
- * Get the best endpoint for a given table + RLS operation combo.
- * Prefers exact HTTP method match with shortest path (base resource endpoint).
- */
-export function getBestEndpointForOperation(
-  tableName: string,
-  operation: string,
-): EndpointRef | null {
-  const endpoints = getEndpointsForTable(tableName);
-  if (endpoints.length === 0) return null;
+/* ------------------------------------------------------------------ */
+/*  Cross-link index type                                              */
+/* ------------------------------------------------------------------ */
 
-  const targetMethod = rlsOperationToMethod(operation);
-  const methodMatches = endpoints.filter((ep) => ep.method === targetMethod);
-
-  if (methodMatches.length > 0) {
-    // Prefer shortest path — base resource endpoint (e.g. /api/cart over /api/cart/:id)
-    return methodMatches.sort((a, b) => a.path.length - b.path.length)[0];
-  }
-
-  return endpoints[0];
+export interface CrossLinkIndex {
+  getEndpointsForTable: (tableName: string) => EndpointRef[];
+  getTablesForEndpoint: (method: string, path: string) => TableRef[];
+  getBestEndpointForOperation: (tableName: string, operation: string) => EndpointRef | null;
+  getEndpointsForOperation: (tableName: string, operation: string) => EndpointRef[];
 }
 
-/**
- * Get all endpoints matching a table + RLS operation for linking.
- */
-export function getEndpointsForOperation(tableName: string, operation: string): EndpointRef[] {
-  const endpoints = getEndpointsForTable(tableName);
-  const targetMethod = rlsOperationToMethod(operation);
-  return endpoints.filter((ep) => ep.method === targetMethod);
+/* ------------------------------------------------------------------ */
+/*  Build cross-link index from raw data                               */
+/* ------------------------------------------------------------------ */
+
+export function buildCrossLinkIndex(
+  apiGroups: RawGroup[],
+  rawEntities: RawEntity[],
+): CrossLinkIndex {
+  const tableNames = rawEntities.map((e) => e.name);
+
+  /** table name → list of endpoints that touch it */
+  const tableToEndpoints = new Map<string, EndpointRef[]>();
+
+  /** "METHOD path" → list of tables it touches */
+  const endpointToTables = new Map<string, TableRef[]>();
+
+  // Initialize table map with empty arrays
+  for (const name of tableNames) {
+    tableToEndpoints.set(name, []);
+  }
+
+  for (const group of apiGroups) {
+    for (const ep of group.endpoints) {
+      const segments = extractSegments(ep.path);
+      const matched = matchSegmentsToTables(segments, tableNames);
+
+      const ref: EndpointRef = {
+        method: ep.method,
+        path: ep.path,
+        group: group.name,
+        anchor: makeAnchor(ep.method, ep.path),
+      };
+
+      const key = `${ep.method} ${ep.path}`;
+      const tableRefs: TableRef[] = [];
+
+      for (const tableName of matched) {
+        // Endpoint → tables
+        const entity = rawEntities.find((e) => e.name === tableName);
+        tableRefs.push({
+          name: tableName,
+          label: entity?.label,
+          badge: entity?.badge,
+        });
+
+        // Table → endpoints
+        tableToEndpoints.get(tableName)?.push(ref);
+      }
+
+      endpointToTables.set(key, tableRefs);
+    }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /*  Lookup functions                                                 */
+  /* ---------------------------------------------------------------- */
+
+  function getEndpointsForTable(tableName: string): EndpointRef[] {
+    return tableToEndpoints.get(tableName) ?? [];
+  }
+
+  function getTablesForEndpoint(method: string, path: string): TableRef[] {
+    return endpointToTables.get(`${method} ${path}`) ?? [];
+  }
+
+  function getBestEndpointForOperation(tableName: string, operation: string): EndpointRef | null {
+    const endpoints = getEndpointsForTable(tableName);
+    if (endpoints.length === 0) return null;
+
+    const targetMethod = rlsOperationToMethod(operation);
+    const methodMatches = endpoints.filter((ep) => ep.method === targetMethod);
+
+    if (methodMatches.length > 0) {
+      return methodMatches.sort((a, b) => a.path.length - b.path.length)[0];
+    }
+
+    return endpoints[0];
+  }
+
+  function getEndpointsForOperation(tableName: string, operation: string): EndpointRef[] {
+    const endpoints = getEndpointsForTable(tableName);
+    const targetMethod = rlsOperationToMethod(operation);
+    return endpoints.filter((ep) => ep.method === targetMethod);
+  }
+
+  return {
+    getEndpointsForTable,
+    getTablesForEndpoint,
+    getBestEndpointForOperation,
+    getEndpointsForOperation,
+  };
 }

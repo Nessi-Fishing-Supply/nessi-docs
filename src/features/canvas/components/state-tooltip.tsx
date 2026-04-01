@@ -2,18 +2,36 @@
 
 import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
+import type { DiffStatus } from '@/types/diff';
 import { GitHubLink } from '@/components/ui/github-link';
+import { DiffTooltipSection } from './diff-tooltip-section';
+import type { NodeChange } from '../hooks/use-diff-nodes';
 import { LIFECYCLE_NODE_WIDTH } from '../utils/geometry';
 import { TT_BG, TT_BORDER, TT_SHADOW, sectionLabel } from '../constants/tooltip-styles';
 
 interface StateTooltipProps {
   state: LifecycleState;
   lifecycle: Lifecycle;
+  diffStatus?: DiffStatus | null;
+  diffChanges?: NodeChange[];
+  diffOnly?: boolean;
+  activeBranchLabel?: string;
+  compareBranchLabel?: string;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
 
-export function StateTooltip({ state, lifecycle, onMouseEnter, onMouseLeave }: StateTooltipProps) {
+export function StateTooltip({
+  state,
+  lifecycle,
+  diffStatus,
+  diffChanges,
+  diffOnly,
+  activeBranchLabel,
+  compareBranchLabel,
+  onMouseEnter,
+  onMouseLeave,
+}: StateTooltipProps) {
   const color = state.color ?? DEFAULT_STATE_COLOR;
   const incoming = lifecycle.transitions.filter((t) => t.to === state.id);
   const outgoing = lifecycle.transitions.filter((t) => t.from === state.id);
@@ -107,100 +125,115 @@ export function StateTooltip({ state, lifecycle, onMouseEnter, onMouseLeave }: S
             </div>
           </div>
 
-          {/* Description */}
-          {lifecycle.why && (
-            <div>
-              <div style={sectionLabel}>Purpose</div>
-              <div
-                style={{
-                  fontSize: '11px',
-                  color: '#9a9790',
-                  lineHeight: '1.5',
-                  borderLeft: `2px solid ${color}`,
-                  paddingLeft: '8px',
-                }}
-              >
-                {lifecycle.why}
-              </div>
-            </div>
+          {/* Diff changes */}
+          {diffStatus && diffStatus !== 'unchanged' && (
+            <DiffTooltipSection
+              status={diffStatus}
+              changes={diffChanges}
+              activeBranchLabel={activeBranchLabel}
+              compareBranchLabel={compareBranchLabel}
+            />
           )}
 
-          {/* Source file */}
-          {lifecycle.sourceFile && (
-            <div>
-              <div style={sectionLabel}>Source</div>
-              <GitHubLink filePath={lifecycle.sourceFile} />
-            </div>
-          )}
-
-          {/* Incoming transitions */}
-          {incoming.length > 0 && (
-            <div>
-              <div style={sectionLabel}>How you get here</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                {incoming.map((t, i) => (
+          {/* Normal content — hidden in diff-only mode */}
+          {diffOnly ? null : (
+            <>
+              {/* Description */}
+              {lifecycle.why && (
+                <div>
+                  <div style={sectionLabel}>Purpose</div>
                   <div
-                    key={i}
                     style={{
-                      fontSize: '10px',
-                      fontFamily: 'var(--font-family-mono)',
-                      display: 'flex',
-                      gap: '6px',
-                      padding: '3px 8px',
-                      borderRadius: '4px',
-                      background: 'rgba(255,255,255,0.03)',
+                      fontSize: '11px',
+                      color: '#9a9790',
+                      lineHeight: '1.5',
+                      borderLeft: `2px solid ${color}`,
+                      paddingLeft: '8px',
                     }}
                   >
-                    <span style={{ color: '#6a6860' }}>{t.from}</span>
-                    <span style={{ color: '#4a4840' }}>→</span>
-                    <span style={{ color: '#9a9790' }}>{t.label}</span>
+                    {lifecycle.why}
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+                </div>
+              )}
 
-          {/* Outgoing transitions */}
-          {outgoing.length > 0 && (
-            <div>
-              <div style={sectionLabel}>Where it goes</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                {outgoing.map((t, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      fontSize: '10px',
-                      fontFamily: 'var(--font-family-mono)',
-                      display: 'flex',
-                      gap: '6px',
-                      padding: '3px 8px',
-                      borderRadius: '4px',
-                      background: 'rgba(255,255,255,0.03)',
-                    }}
-                  >
-                    <span style={{ color: '#9a9790' }}>{t.label}</span>
-                    <span style={{ color: '#4a4840' }}>→</span>
-                    <span style={{ color: '#6a6860' }}>{t.to}</span>
+              {/* Source file */}
+              {lifecycle.sourceFile && (
+                <div>
+                  <div style={sectionLabel}>Source</div>
+                  <GitHubLink filePath={lifecycle.sourceFile} />
+                </div>
+              )}
+
+              {/* Incoming transitions */}
+              {incoming.length > 0 && (
+                <div>
+                  <div style={sectionLabel}>How you get here</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    {incoming.map((t, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          fontSize: '10px',
+                          fontFamily: 'var(--font-family-mono)',
+                          display: 'flex',
+                          gap: '6px',
+                          padding: '3px 8px',
+                          borderRadius: '4px',
+                          background: 'rgba(255,255,255,0.03)',
+                        }}
+                      >
+                        <span style={{ color: '#6a6860' }}>{t.from}</span>
+                        <span style={{ color: '#4a4840' }}>→</span>
+                        <span style={{ color: '#9a9790' }}>{t.label}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+                </div>
+              )}
 
-          {/* Terminal indicator */}
-          {isTerminal && (
-            <div
-              style={{
-                fontSize: '10px',
-                color: '#6a6860',
-                fontStyle: 'italic',
-                padding: '4px 8px',
-                background: 'rgba(255,255,255,0.02)',
-                borderRadius: '4px',
-              }}
-            >
-              Terminal state — no outgoing transitions
-            </div>
+              {/* Outgoing transitions */}
+              {outgoing.length > 0 && (
+                <div>
+                  <div style={sectionLabel}>Where it goes</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                    {outgoing.map((t, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          fontSize: '10px',
+                          fontFamily: 'var(--font-family-mono)',
+                          display: 'flex',
+                          gap: '6px',
+                          padding: '3px 8px',
+                          borderRadius: '4px',
+                          background: 'rgba(255,255,255,0.03)',
+                        }}
+                      >
+                        <span style={{ color: '#9a9790' }}>{t.label}</span>
+                        <span style={{ color: '#4a4840' }}>→</span>
+                        <span style={{ color: '#6a6860' }}>{t.to}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Terminal indicator */}
+              {isTerminal && (
+                <div
+                  style={{
+                    fontSize: '10px',
+                    color: '#6a6860',
+                    fontStyle: 'italic',
+                    padding: '4px 8px',
+                    background: 'rgba(255,255,255,0.02)',
+                    borderRadius: '4px',
+                  }}
+                >
+                  Terminal state — no outgoing transitions
+                </div>
+              )}
+            </>
           )}
 
           {/* Down arrow */}
