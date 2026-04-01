@@ -65,11 +65,16 @@ export function useBranchData(): BranchContextValue {
   return ctx;
 }
 
-/** Returns a function that prefixes a path with the active branch. */
+/** Returns a function that prefixes a path with the active branch and preserves ?compare= param. */
 export function useBranchHref() {
-  const { activeBranch } = useBranchData();
+  const { activeBranch, comparisonBranch } = useBranchData();
   return useCallback(
-    (path: string) => `/${activeBranch}${path.startsWith('/') ? path : `/${path}`}`,
-    [activeBranch],
+    (path: string) => {
+      const base = `/${activeBranch}${path.startsWith('/') ? path : `/${path}`}`;
+      if (!comparisonBranch) return base;
+      const sep = base.includes('?') ? '&' : '?';
+      return `${base}${sep}compare=${comparisonBranch}`;
+    },
+    [activeBranch, comparisonBranch],
   );
 }

@@ -26,7 +26,7 @@ function getPageDomain(pathname: string): string | null {
 export function DiffToolbar() {
   const { branches } = useBranchData();
   const pathname = usePathname();
-  const { isActive, compareBranch, diffResult, deactivate } = useDiffMode();
+  const { isActive, compareBranch, diffResult } = useDiffMode();
 
   if (!isActive || !diffResult) return null;
 
@@ -58,10 +58,6 @@ export function DiffToolbar() {
           <span className={styles.dot} /> {removed} removed
         </span>
       </div>
-
-      <button className={styles.dismissBtn} onClick={deactivate} aria-label="Exit comparison mode">
-        &times;
-      </button>
     </div>
   );
 }
