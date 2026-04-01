@@ -17,7 +17,7 @@ import type { RawJourney, RawLifecycle, RawErdNode, RawEntity } from './raw-type
 
 import { transformJourneys } from './layout/journey-layout';
 import { transformLifecycles } from './layout/lifecycle-layout';
-import { transformErdNodes } from './layout/erd-layout';
+import { transformErdNodes, getErdCategoryGroups } from './layout/erd-layout';
 import { transformEntities } from './transforms/entities';
 import { transformChangelog } from './transforms/changelog';
 
@@ -47,21 +47,22 @@ function transformBundle(raw: RawBundle): BranchData {
     raw.dataModel.entities as RawEntity[],
   );
   const erdEdges = raw.entityRelationships.edges as unknown as ErdEdge[];
+  const erdCategoryGroups = getErdCategoryGroups();
   const roles = raw.permissions.roles as unknown as Role[];
   const configEnums = raw.configReference.configs as unknown as ConfigEnum[];
   const features = raw.features.features as unknown as Feature[];
   const lifecycles = transformLifecycles(raw.lifecycles.lifecycles as RawLifecycle[]);
   const journeys = transformJourneys(raw.journeys.journeys as unknown as RawJourney[]);
-  const changelog = transformChangelog(
-    raw.changelog.entries as {
-      title?: string;
-      mergedAt?: string;
-      type?: string;
-      area?: string;
-      number?: number;
-      url?: string;
-    }[],
-  );
+  const rawChangelogEntries = raw.changelog.entries as {
+    title?: string;
+    mergedAt?: string;
+    type?: string;
+    area?: string;
+    number?: number;
+    url?: string;
+  }[];
+  const changelog = transformChangelog(rawChangelogEntries);
+  const rawChangelog = rawChangelogEntries;
   const roadmapItems = raw.roadmap.items as unknown as RoadmapItem[];
   const meta = raw.meta as unknown as ExtractionMeta;
   const archDiagrams = (raw.architecture as { diagrams: ArchDiagram[] }).diagrams;
@@ -73,12 +74,14 @@ function transformBundle(raw: RawBundle): BranchData {
     lifecycles,
     erdNodes,
     erdEdges,
+    erdCategoryGroups,
     apiGroups,
     archDiagrams,
     features,
     roles,
     configEnums,
     changelog,
+    rawChangelog,
     roadmapItems,
   };
 }

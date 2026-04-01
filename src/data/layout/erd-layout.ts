@@ -3,19 +3,11 @@
 /*  Groups entities by category into containers, lays out in 2 cols    */
 /* ------------------------------------------------------------------ */
 
-import type { ErdNode } from '@/types/entity-relationship';
+import type { ErdNode, ErdCategoryGroup } from '@/types/entity-relationship';
 import type { RawErdNode, RawEntity } from '../raw-types';
 import { ENTITY_CATEGORY_MAP } from '../transforms/entities';
 
-export interface ErdCategoryGroup {
-  key: string;
-  label: string;
-  color: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+export type { ErdCategoryGroup };
 
 const ERD_NODE_W = 160;
 const ERD_NODE_H = 52;

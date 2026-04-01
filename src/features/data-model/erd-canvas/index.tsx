@@ -21,7 +21,7 @@ import {
   type PortSide,
 } from '@/features/canvas/utils/geometry';
 
-import type { ErdCategoryGroup } from '@/data/index';
+import type { ErdCategoryGroup } from '@/types/entity-relationship';
 
 interface ErdCanvasProps {
   nodes: ErdNode[];

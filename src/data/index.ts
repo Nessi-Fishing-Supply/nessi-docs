@@ -60,7 +60,7 @@ export { detectJourneyBackEdges };
 export { getDomainForScope };
 
 import { transformErdNodes, getErdCategoryGroups } from './layout/erd-layout';
-export type { ErdCategoryGroup } from './layout/erd-layout';
+export type { ErdCategoryGroup } from '@/types/entity-relationship';
 export { getErdCategoryGroups };
 
 /* ------------------------------------------------------------------ */

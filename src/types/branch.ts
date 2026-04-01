@@ -2,7 +2,7 @@ import type { ExtractionMeta } from '@/types/extraction-meta';
 import type { Entity } from '@/types/data-model';
 import type { Journey } from '@/types/journey';
 import type { Lifecycle } from '@/types/lifecycle';
-import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
+import type { ErdNode, ErdEdge, ErdCategoryGroup } from '@/types/entity-relationship';
 import type { ApiGroup } from '@/types/api-contract';
 import type { ArchDiagram } from '@/types/architecture';
 import type { Feature } from '@/types/feature';
@@ -26,11 +26,22 @@ export interface BranchData {
   lifecycles: Lifecycle[];
   erdNodes: ErdNode[];
   erdEdges: ErdEdge[];
+  erdCategoryGroups: ErdCategoryGroup[];
   apiGroups: ApiGroup[];
   archDiagrams: ArchDiagram[];
   features: Feature[];
   roles: Role[];
   configEnums: ConfigEnum[];
   changelog: ChangelogEntry[];
+  rawChangelog: RawChangelogEntry[];
   roadmapItems: RoadmapItem[];
+}
+
+export interface RawChangelogEntry {
+  title?: string;
+  mergedAt?: string;
+  type?: string;
+  area?: string;
+  number?: number;
+  url?: string;
 }
