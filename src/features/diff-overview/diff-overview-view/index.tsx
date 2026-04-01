@@ -222,7 +222,7 @@ const DOMAINS: DomainConfig[] = [
 ];
 
 export function DiffOverviewView() {
-  const { branches } = useBranchData();
+  const { activeBranch, branches } = useBranchData();
   const branchHref = useBranchHref();
   const { isActive, compareBranch, diffResult } = useDiffMode();
   const searchParams = useSearchParams();
@@ -233,6 +233,7 @@ export function DiffOverviewView() {
       : 'all',
   );
 
+  const activeLabel = branches.find((b) => b.name === activeBranch)?.label ?? activeBranch;
   const comparisonLabel = branches.find((b) => b.name === compareBranch)?.label ?? compareBranch;
 
   const domainGroups = useMemo(() => {
@@ -255,7 +256,7 @@ export function DiffOverviewView() {
     <div className={styles.container}>
       <PageHeader
         title="Compare Overview"
-        subtitle={`Comparing against ${comparisonLabel}`}
+        subtitle={`${activeLabel} vs ${comparisonLabel}`}
         metrics={[
           { value: added, label: 'added' },
           { value: modified, label: 'modified' },

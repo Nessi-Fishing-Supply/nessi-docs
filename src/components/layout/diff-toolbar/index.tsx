@@ -24,14 +24,15 @@ function getPageDomain(pathname: string): string | null {
 }
 
 export function DiffToolbar() {
-  const { branches } = useBranchData();
+  const { activeBranch, branches } = useBranchData();
   const branchHref = useBranchHref();
   const pathname = usePathname();
   const { isActive, compareBranch, diffResult } = useDiffMode();
 
   if (!isActive || !diffResult) return null;
 
-  const branchLabel = branches.find((b) => b.name === compareBranch)?.label ?? compareBranch;
+  const activeBranchInfo = branches.find((b) => b.name === activeBranch);
+  const compareBranchInfo = branches.find((b) => b.name === compareBranch);
   const isOnDiffPage = pathname.endsWith('/diff');
 
   // Show page-specific counts when on a list view, global counts otherwise
@@ -43,15 +44,29 @@ export function DiffToolbar() {
 
   const diffPageHref = branchHref('/diff');
 
+  const branchLabel = (
+    <span className={styles.branchComparison}>
+      <span className={styles.branchBadge}>
+        <span className={styles.branchDot} style={{ background: activeBranchInfo?.color }} />
+        {activeBranchInfo?.label ?? activeBranch}
+      </span>
+      <span className={styles.vsText}>vs</span>
+      <span className={styles.branchBadge}>
+        <span className={styles.branchDot} style={{ background: compareBranchInfo?.color }} />
+        {compareBranchInfo?.label ?? compareBranch}
+      </span>
+    </span>
+  );
+
   return (
     <div className={styles.toolbar}>
+      <span className={styles.modeIndicator}>COMPARE</span>
+
       {isOnDiffPage ? (
-        <span className={styles.label}>
-          Comparing against <strong>{branchLabel}</strong>
-        </span>
+        <span className={styles.label}>{branchLabel}</span>
       ) : (
         <Link href={diffPageHref} className={styles.labelLink}>
-          Comparing against <strong>{branchLabel}</strong>
+          {branchLabel}
         </Link>
       )}
 
