@@ -6,6 +6,9 @@ import type { Lifecycle } from '@/types/lifecycle';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
+import { useDiffMode } from '@/hooks/use-diff-mode';
+import { DiffBadge } from '@/components/ui/diff-badge';
+import type { DiffStatus } from '@/types/diff';
 import styles from './lifecycle-list.module.scss';
 
 interface LifecycleListProps {
@@ -40,6 +43,8 @@ function sourceLabel(source?: string): string {
 
 export function LifecycleList({ lifecycles }: LifecycleListProps) {
   const branchHref = useBranchHref();
+  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const lifecycleStatusMap = isDiffMode ? diffResult?.lifecycles.statusMap : undefined;
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setEntered(true));
@@ -64,7 +69,7 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
           <Link
             key={lc.slug}
             href={branchHref(`/lifecycles/${lc.slug}`)}
-            className={styles.row}
+            className={`${styles.row} ${lifecycleStatusMap ? styles[`diff_${lifecycleStatusMap.get(lc.slug) ?? 'unchanged'}`] : ''}`}
             style={{
               opacity: entered ? 1 : 0,
               transform: entered ? 'translateY(0)' : 'translateY(4px)',
@@ -72,7 +77,14 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
             }}
           >
             <div className={styles.rowContent}>
-              <div className={styles.rowTitle}>{lc.name}</div>
+              <div className={styles.rowTitle}>
+                {lc.name}
+                {lifecycleStatusMap && lifecycleStatusMap.get(lc.slug) !== 'unchanged' && (
+                  <DiffBadge
+                    status={lifecycleStatusMap.get(lc.slug) as Exclude<DiffStatus, 'unchanged'>}
+                  />
+                )}
+              </div>
               <div className={styles.rowDesc}>{lc.description}</div>
               <div className={styles.rowMeta}>
                 {(() => {
@@ -115,6 +127,25 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
             <span className={styles.chevron}>&rsaquo;</span>
           </Link>
         ))}
+        {isDiffMode &&
+          diffResult &&
+          diffResult.lifecycles.removed.map((lc) => (
+            <div
+              key={`removed-${lc.slug}`}
+              className={`${styles.row} ${styles.diff_removed}`}
+              style={{ opacity: 1 }}
+            >
+              <div className={styles.rowContent}>
+                <div className={styles.rowTitle}>
+                  {lc.name}
+                  <DiffBadge status="removed" />
+                </div>
+                <div className={styles.rowDesc}>{lc.description}</div>
+              </div>
+              <span className={styles.statCount}>{lc.states.length} states</span>
+              <span className={styles.statCount}>{lc.transitions.length} transitions</span>
+            </div>
+          ))}
       </div>
     </div>
   );
