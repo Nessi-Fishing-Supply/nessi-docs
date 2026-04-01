@@ -1,0 +1,121 @@
+.group {
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg-raised);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-hover);
+  }
+}
+
+.headerIcon {
+  font-size: 14px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+}
+
+.headerDomain {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.headerCounts {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+}
+
+.countAdded {
+  color: var(--diff-added);
+}
+
+.countModified {
+  color: var(--diff-modified);
+}
+
+.countRemoved {
+  color: var(--diff-removed);
+}
+
+.chevron {
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+.items {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.rowLink {
+  text-decoration: none;
+  display: block;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 20px;
+  border-left: 2px solid transparent;
+  transition: background var(--transition-fast);
+
+  .rowLink:hover & {
+    background: var(--bg-hover);
+  }
+}
+
+.row + .row,
+.rowLink + .rowLink .row,
+.rowLink + .row,
+.row + .rowLink .row {
+  border-top: 1px solid var(--border-subtle);
+}
+
+.row_added {
+  border-left-color: var(--diff-added);
+}
+
+.row_modified {
+  border-left-color: var(--diff-modified);
+}
+
+.row_removed {
+  border-left-color: var(--diff-removed);
+  opacity: 0.6;
+}
+
+.rowLabel {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-family: var(--font-family-mono);
+}
+
+.row_removed .rowLabel {
+  color: var(--text-muted);
+}
+
+.fieldCount {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-left: auto;
+}
