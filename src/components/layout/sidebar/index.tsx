@@ -73,10 +73,6 @@ export function Sidebar({ featureDomains }: SidebarProps) {
   return (
     <div className={styles.sidebar}>
       <div className={styles.navContent}>
-        <Suspense>
-          <DiffNavItem />
-        </Suspense>
-
         <Link
           href={branchHref('/')}
           className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}
@@ -140,12 +136,15 @@ export function Sidebar({ featureDomains }: SidebarProps) {
       </div>
 
       <div className={styles.switcherSection}>
+        <BranchSwitcher />
         <div className={styles.comparisonSection}>
           <Suspense>
             <ComparisonSelector />
           </Suspense>
         </div>
-        <BranchSwitcher />
+        <Suspense>
+          <DiffNavItem />
+        </Suspense>
       </div>
     </div>
   );
