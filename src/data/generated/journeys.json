@@ -2143,8 +2143,10 @@
           "type": "step",
           "label": "Expire Stale Offers",
           "layer": "external",
-          "status": "planned",
-          "notes": "expirePendingOffersServer() is built but the cron route /api/cron/expire-offers is not yet created. Pending offers expire after 24h; accepted offers (awaiting checkout) expire after 4h. The cron should run every 15 minutes via vercel.json."
+          "status": "built",
+          "route": "GET /api/cron/offers-expiry",
+          "codeRef": "src/app/api/cron/offers-expiry/route.ts",
+          "notes": "Vercel cron at GET /api/cron/offers-expiry runs daily (Hobby plan). expirePendingOffersServer() expires pending offers after 24h and accepted offers after 4h checkout window. Inserts system message 'This offer has expired.' into each offer thread. On Pro plan, increase frequency to every 15 minutes."
         },
         {
           "id": "block-from-messaging--entry",

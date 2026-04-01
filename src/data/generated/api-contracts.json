@@ -302,6 +302,18 @@
       "endpoints": [
         {
           "method": "GET",
+          "path": "/api/cron/offers-expiry",
+          "label": "List Offers Expiry",
+          "auth": "none",
+          "access": [],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Expire stale pending and accepted offers past their time windows",
+          "tags": [],
+          "sourceFile": "src/app/api/cron/offers-expiry/route.ts"
+        },
+        {
+          "method": "GET",
           "path": "/api/cron/price-drops",
           "label": "List Price Drop",
           "auth": "admin",
