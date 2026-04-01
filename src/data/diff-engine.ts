@@ -13,14 +13,30 @@ import type {
 } from '@/types/diff';
 
 /**
+ * Shallow field comparison: compare top-level properties via JSON.stringify.
+ */
+function diffFields(base: object, head: object): FieldChange[] {
+  const changes: FieldChange[] = [];
+  const b = base as Record<string, unknown>;
+  const h = head as Record<string, unknown>;
+  const allKeys = new Set([...Object.keys(b), ...Object.keys(h)]);
+
+  for (const field of allKeys) {
+    const baseVal = b[field];
+    const headVal = h[field];
+    if (JSON.stringify(baseVal) !== JSON.stringify(headVal)) {
+      changes.push({ field, baseValue: baseVal, headValue: headVal });
+    }
+  }
+
+  return changes;
+}
+
+/**
  * Compare two arrays by a stable key. Produces added/removed/modified/unchanged
  * buckets plus a statusMap for O(1) lookup.
  */
-function diffSet<T extends Record<string, unknown>>(
-  baseItems: T[],
-  headItems: T[],
-  getKey: (item: T) => string,
-): DiffSet<T> {
+function diffSet<T>(baseItems: T[], headItems: T[], getKey: (item: T) => string): DiffSet<T> {
   const baseMap = new Map<string, T>();
   for (const item of baseItems) baseMap.set(getKey(item), item);
 
@@ -40,7 +56,7 @@ function diffSet<T extends Record<string, unknown>>(
       added.push(headItem);
       statusMap.set(key, 'added');
     } else {
-      const changes = diffFields(baseItem, headItem);
+      const changes = diffFields(baseItem as object, headItem as object);
       if (changes.length > 0) {
         modified.push({ base: baseItem, head: headItem, changes });
         statusMap.set(key, 'modified');
@@ -60,24 +76,6 @@ function diffSet<T extends Record<string, unknown>>(
   }
 
   return { added, removed, modified, unchanged, statusMap };
-}
-
-/**
- * Shallow field comparison: compare top-level properties via JSON.stringify.
- */
-function diffFields<T extends Record<string, unknown>>(base: T, head: T): FieldChange[] {
-  const changes: FieldChange[] = [];
-  const allKeys = new Set([...Object.keys(base), ...Object.keys(head)]);
-
-  for (const field of allKeys) {
-    const baseVal = base[field];
-    const headVal = head[field];
-    if (JSON.stringify(baseVal) !== JSON.stringify(headVal)) {
-      changes.push({ field, baseValue: baseVal, headValue: headVal });
-    }
-  }
-
-  return changes;
 }
 
 /**
@@ -103,10 +101,7 @@ function diffEndpoints(
     if (!baseEp) {
       added.push(headEp);
     } else {
-      const changes = diffFields(
-        baseEp as unknown as Record<string, unknown>,
-        headEp as unknown as Record<string, unknown>,
-      );
+      const changes = diffFields(baseEp, headEp);
       if (changes.length > 0) {
         modified.push({ base: baseEp, head: headEp, changes });
       } else {
@@ -209,61 +204,16 @@ function buildSummary(
  * `base` is what you're comparing against, `head` is what you're viewing.
  */
 export function computeDiff(base: BranchData, head: BranchData): DiffResult {
-  const entities = diffSet(
-    base.entities as unknown as Record<string, unknown>[],
-    head.entities as unknown as Record<string, unknown>[],
-    (e) => (e as unknown as { name: string }).name,
-  ) as unknown as DiffSet<(typeof base.entities)[number]>;
-
-  const journeys = diffSet(
-    base.journeys as unknown as Record<string, unknown>[],
-    head.journeys as unknown as Record<string, unknown>[],
-    (j) => (j as unknown as { slug: string }).slug,
-  ) as unknown as DiffSet<(typeof base.journeys)[number]>;
-
-  const lifecycles = diffSet(
-    base.lifecycles as unknown as Record<string, unknown>[],
-    head.lifecycles as unknown as Record<string, unknown>[],
-    (l) => (l as unknown as { slug: string }).slug,
-  ) as unknown as DiffSet<(typeof base.lifecycles)[number]>;
-
-  const apiGroups = diffSet(
-    base.apiGroups as unknown as Record<string, unknown>[],
-    head.apiGroups as unknown as Record<string, unknown>[],
-    (g) => (g as unknown as { name: string }).name,
-  ) as unknown as DiffSet<(typeof base.apiGroups)[number]>;
-
+  const entities = diffSet(base.entities, head.entities, (e) => e.name);
+  const journeys = diffSet(base.journeys, head.journeys, (j) => j.slug);
+  const lifecycles = diffSet(base.lifecycles, head.lifecycles, (l) => l.slug);
+  const apiGroups = diffSet(base.apiGroups, head.apiGroups, (g) => g.name);
   const apiGroupDiffs = diffApiGroups(base.apiGroups, head.apiGroups);
-
-  const archDiagrams = diffSet(
-    base.archDiagrams as unknown as Record<string, unknown>[],
-    head.archDiagrams as unknown as Record<string, unknown>[],
-    (d) => (d as unknown as { slug: string }).slug,
-  ) as unknown as DiffSet<(typeof base.archDiagrams)[number]>;
-
-  const features = diffSet(
-    base.features as unknown as Record<string, unknown>[],
-    head.features as unknown as Record<string, unknown>[],
-    (f) => (f as unknown as { slug: string }).slug,
-  ) as unknown as DiffSet<(typeof base.features)[number]>;
-
-  const erdNodes = diffSet(
-    base.erdNodes as unknown as Record<string, unknown>[],
-    head.erdNodes as unknown as Record<string, unknown>[],
-    (n) => (n as unknown as { id: string }).id,
-  ) as unknown as DiffSet<(typeof base.erdNodes)[number]>;
-
-  const erdEdges = diffSet(
-    base.erdEdges as unknown as Record<string, unknown>[],
-    head.erdEdges as unknown as Record<string, unknown>[],
-    (e) => `${(e as unknown as { from: string }).from}:${(e as unknown as { to: string }).to}`,
-  ) as unknown as DiffSet<(typeof base.erdEdges)[number]>;
-
-  const configEnums = diffSet(
-    base.configEnums as unknown as Record<string, unknown>[],
-    head.configEnums as unknown as Record<string, unknown>[],
-    (c) => (c as unknown as { slug: string }).slug,
-  ) as unknown as DiffSet<(typeof base.configEnums)[number]>;
+  const archDiagrams = diffSet(base.archDiagrams, head.archDiagrams, (d) => d.slug);
+  const features = diffSet(base.features, head.features, (f) => f.slug);
+  const erdNodes = diffSet(base.erdNodes, head.erdNodes, (n) => n.id);
+  const erdEdges = diffSet(base.erdEdges, head.erdEdges, (e) => `${e.from}:${e.to}`);
+  const configEnums = diffSet(base.configEnums, head.configEnums, (c) => c.slug);
 
   const summary = buildSummary({
     entities,
