@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { DocsProvider } from '@/providers/docs-provider';
 import { BranchProvider } from '@/providers/branch-provider';
+import { ToastProvider } from '@/components/ui/toast';
 import { AppShell } from '@/components/layout/app-shell';
 import { Topbar } from '@/components/layout/topbar';
 import { Sidebar } from '@/components/layout/sidebar';
@@ -35,16 +36,18 @@ export default async function BranchLayout({
 
   return (
     <BranchProvider branchName={branch} branchData={branchData} allBranchData={allBranchData}>
-      <DocsProvider>
-        <AppShell
-          topbar={<Topbar />}
-          sidebar={<Sidebar lifecycles={branchData.lifecycles} featureDomains={featureDomains} />}
-          detail={<DetailPanel />}
-        >
-          {children}
-        </AppShell>
-        <SearchTrigger />
-      </DocsProvider>
+      <ToastProvider>
+        <DocsProvider>
+          <AppShell
+            topbar={<Topbar />}
+            sidebar={<Sidebar lifecycles={branchData.lifecycles} featureDomains={featureDomains} />}
+            detail={<DetailPanel />}
+          >
+            {children}
+          </AppShell>
+          <SearchTrigger />
+        </DocsProvider>
+      </ToastProvider>
     </BranchProvider>
   );
 }
