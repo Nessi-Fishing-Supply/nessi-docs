@@ -45,6 +45,10 @@
       "label": "Messages"
     },
     {
+      "id": "notifications",
+      "label": "Notifications"
+    },
+    {
       "id": "offers",
       "label": "Offers"
     },

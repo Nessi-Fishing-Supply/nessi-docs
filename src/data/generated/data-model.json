@@ -1423,6 +1423,61 @@
       ]
     },
     {
+      "name": "notifications",
+      "label": "Notifications",
+      "fields": [
+        {
+          "name": "body",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "data",
+          "type": "Json",
+          "nullable": true
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "is_read",
+          "type": "boolean",
+          "nullable": false
+        },
+        {
+          "name": "link",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "user_id",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [],
+      "rlsPolicies": [],
+      "indexes": [],
+      "triggers": []
+    },
+    {
       "name": "offers",
       "label": "Offers",
       "fields": [

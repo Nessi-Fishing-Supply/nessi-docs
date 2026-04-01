@@ -1,11 +1,11 @@
 {
-  "extractedAt": "2026-04-01T14:57:01.254Z",
-  "sourceCommit": "fcc3f72715d1280234cc1a5e067477278b7591aa",
+  "extractedAt": "2026-04-01T15:00:43.969Z",
+  "sourceCommit": "62140eb78ff0d4e1d14ff7a94838b56eb099276c",
   "sourceRepo": "nessi-fishing-supply/Nessi-Web-App",
   "scriptVersion": "1.0.0",
   "itemCounts": {
     "apiGroups": 16,
-    "entities": 22,
+    "entities": 23,
     "roles": 3,
     "permissionFeatures": 6,
     "configs": 11,
