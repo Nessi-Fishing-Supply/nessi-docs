@@ -1,5 +1,18 @@
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.navContent {
+  flex: 1;
+  overflow-y: auto;
   padding: 12px 8px;
+}
+
+.switcherSection {
+  padding: 8px;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .nav {

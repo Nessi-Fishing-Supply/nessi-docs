@@ -16,6 +16,7 @@ import {
 } from 'react-icons/hi';
 import type { Lifecycle } from '@/types/lifecycle';
 import { useBranchData } from '@/providers/branch-provider';
+import { BranchSwitcher } from '@/components/layout/branch-switcher';
 import styles from './sidebar.module.scss';
 
 const SYSTEM_ITEMS = [
@@ -47,68 +48,74 @@ export function Sidebar({ featureDomains }: SidebarProps) {
 
   return (
     <div className={styles.sidebar}>
-      <Link
-        href={`${branchPrefix}/`}
-        className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}
-      >
-        <HiOutlineHome className={styles.navIcon} />
-        <span>Dashboard</span>
-      </Link>
+      <div className={styles.navContent}>
+        <Link
+          href={`${branchPrefix}/`}
+          className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}
+        >
+          <HiOutlineHome className={styles.navIcon} />
+          <span>Dashboard</span>
+        </Link>
 
-      <div className={styles.sectionLabel}>System Views</div>
-      <div className={styles.nav}>
-        {SYSTEM_ITEMS.map((item) => {
-          const Icon = item.icon;
-          const fullHref = `${branchPrefix}${item.path}`;
-          const isActive = pathname.startsWith(fullHref);
-          return (
-            <Link
-              key={item.id}
-              href={fullHref}
-              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-            >
-              <Icon className={styles.navIcon} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
+        <div className={styles.sectionLabel}>System Views</div>
+        <div className={styles.nav}>
+          {SYSTEM_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const fullHref = `${branchPrefix}${item.path}`;
+            const isActive = pathname.startsWith(fullHref);
+            return (
+              <Link
+                key={item.id}
+                href={fullHref}
+                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+              >
+                <Icon className={styles.navIcon} />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className={styles.sectionLabel}>Features</div>
+        <div className={styles.nav}>
+          {featureDomains.map((domain) => {
+            const fullHref = `${branchPrefix}/features/${domain.slug}`;
+            const isActive = pathname.startsWith(fullHref);
+            return (
+              <Link
+                key={domain.slug}
+                href={fullHref}
+                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+              >
+                <HiOutlineLightningBolt className={styles.navIcon} />
+                <span>{domain.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+
+        <div className={styles.sectionLabel}>Reference</div>
+        <div className={styles.nav}>
+          {REFERENCE_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const fullHref = `${branchPrefix}${item.path}`;
+            const isActive = pathname.startsWith(fullHref);
+            return (
+              <Link
+                key={item.id}
+                href={fullHref}
+                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+              >
+                <Icon className={styles.navIcon} />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
-      <div className={styles.sectionLabel}>Features</div>
-      <div className={styles.nav}>
-        {featureDomains.map((domain) => {
-          const fullHref = `${branchPrefix}/features/${domain.slug}`;
-          const isActive = pathname.startsWith(fullHref);
-          return (
-            <Link
-              key={domain.slug}
-              href={fullHref}
-              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-            >
-              <HiOutlineLightningBolt className={styles.navIcon} />
-              <span>{domain.label}</span>
-            </Link>
-          );
-        })}
-      </div>
-
-      <div className={styles.sectionLabel}>Reference</div>
-      <div className={styles.nav}>
-        {REFERENCE_ITEMS.map((item) => {
-          const Icon = item.icon;
-          const fullHref = `${branchPrefix}${item.path}`;
-          const isActive = pathname.startsWith(fullHref);
-          return (
-            <Link
-              key={item.id}
-              href={fullHref}
-              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-            >
-              <Icon className={styles.navIcon} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
+      <div className={styles.switcherSection}>
+        <BranchSwitcher />
       </div>
     </div>
   );
