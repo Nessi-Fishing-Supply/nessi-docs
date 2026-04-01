@@ -13,6 +13,11 @@
 .switcherSection {
   padding: 8px;
   border-top: 1px solid var(--border-subtle);
+
+  .sectionLabel {
+    padding-top: 4px;
+    padding-bottom: 6px;
+  }
 }
 
 .comparisonSection {
