@@ -15,6 +15,7 @@ interface BranchContextValue {
 
   isDiffMode: boolean;
   branches: BranchInfo[];
+  allBranchData: Record<string, BranchData>;
 }
 
 const BranchContext = createContext<BranchContextValue | null>(null);
@@ -50,6 +51,7 @@ export function BranchProvider({
         setComparisonBranch: handleSetComparison,
         isDiffMode: comparisonBranch !== null,
         branches: BRANCHES,
+        allBranchData,
       }}
     >
       {children}
