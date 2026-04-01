@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -116,7 +117,9 @@ export function Sidebar({ featureDomains }: SidebarProps) {
 
       <div className={styles.switcherSection}>
         <div className={styles.comparisonSection}>
-          <ComparisonSelector />
+          <Suspense>
+            <ComparisonSelector />
+          </Suspense>
         </div>
         <BranchSwitcher />
       </div>

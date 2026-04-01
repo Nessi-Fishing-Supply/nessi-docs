@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { DocsProvider } from '@/providers/docs-provider';
 import { BranchProvider } from '@/providers/branch-provider';
@@ -41,7 +42,11 @@ export default async function BranchLayout({
           topbar={<Topbar />}
           sidebar={<Sidebar lifecycles={branchData.lifecycles} featureDomains={featureDomains} />}
           detail={<DetailPanel />}
-          diffToolbar={<DiffToolbar />}
+          diffToolbar={
+            <Suspense>
+              <DiffToolbar />
+            </Suspense>
+          }
         >
           {children}
         </AppShell>

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { EntityList } from '@/features/data-model/entity-list';
@@ -9,5 +10,9 @@ export default async function DataModelPage({ params }: { params: Promise<{ bran
   const data = loadBranch(branch);
   if (!data) notFound();
 
-  return <EntityList entities={data.entities} />;
+  return (
+    <Suspense>
+      <EntityList entities={data.entities} />
+    </Suspense>
+  );
 }
