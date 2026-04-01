@@ -1,0 +1,579 @@
+{
+  "configs": [
+    {
+      "slug": "flags-reasons",
+      "name": "Flags Reasons",
+      "description": "Flags Reasons configuration with 7 defined values",
+      "source": "src/features/flags/constants/reasons.ts",
+      "values": [
+        {
+          "value": "spam",
+          "label": "Spam",
+          "description": "Irrelevant, repetitive, or unsolicited promotional content."
+        },
+        {
+          "value": "prohibited_item",
+          "label": "Prohibited Item",
+          "description": "Item that violates marketplace policies or is illegal to sell."
+        },
+        {
+          "value": "counterfeit",
+          "label": "Counterfeit",
+          "description": "Fake, replica, or knockoff item being sold as genuine."
+        },
+        {
+          "value": "inappropriate_content",
+          "label": "Inappropriate Content",
+          "description": "Offensive, vulgar, or otherwise inappropriate text or images."
+        },
+        {
+          "value": "off_platform_transaction",
+          "label": "Off-Platform Transaction",
+          "description": "Attempting to complete sales outside of Nessi."
+        },
+        {
+          "value": "harassment",
+          "label": "Harassment",
+          "description": "Threatening, abusive, or harassing behavior toward other users."
+        },
+        {
+          "value": "other",
+          "label": "Other",
+          "description": "Something else not covered by the categories above."
+        }
+      ]
+    },
+    {
+      "slug": "listings-categories",
+      "name": "Listings Categories",
+      "description": "Listings Categories configuration with 10 defined values",
+      "source": "src/features/listings/config/categories.ts",
+      "values": [
+        {
+          "value": "rods",
+          "label": "Rods",
+          "description": "Buy and sell fishing rods — spinning, casting, fly, and ice rods from top brands at great prices."
+        },
+        {
+          "value": "reels",
+          "label": "Reels",
+          "description": "Shop used and new fishing reels — spinning, baitcasting, fly, and conventional reels from trusted sellers."
+        },
+        {
+          "value": "lures",
+          "label": "Lures",
+          "description": "Find fishing lures for every technique — crankbaits, soft plastics, jigs, swimbaits, and more."
+        },
+        {
+          "value": "flies",
+          "label": "Flies",
+          "description": "Discover hand-tied and commercial flies for fly fishing — dry flies, nymphs, streamers, and saltwater patterns."
+        },
+        {
+          "value": "tackle",
+          "label": "Tackle",
+          "description": "Browse fishing tackle — hooks, weights, swivels, terminal tackle, and tackle boxes from fellow anglers."
+        },
+        {
+          "value": "line",
+          "label": "Line",
+          "description": "Shop fishing line — monofilament, fluorocarbon, braid, and fly line for fresh and saltwater fishing."
+        },
+        {
+          "value": "apparel",
+          "label": "Apparel",
+          "description": "Find fishing apparel — sun shirts, waders, wading boots, hats, and performance gear for every angler."
+        },
+        {
+          "value": "electronics",
+          "label": "Electronics",
+          "description": "Buy and sell fishing electronics — fish finders, depth finders, GPS units, and trolling motors."
+        },
+        {
+          "value": "watercraft",
+          "label": "Watercraft",
+          "description": "Shop fishing watercraft — kayaks, canoes, float tubes, jon boats, and inflatable fishing vessels."
+        },
+        {
+          "value": "other",
+          "label": "Other",
+          "description": "Browse miscellaneous fishing gear — accessories, tools, nets, coolers, and anything that does not fit another category."
+        }
+      ]
+    },
+    {
+      "slug": "listings-condition",
+      "name": "Listings Condition",
+      "description": "Listings Condition configuration with 6 defined values",
+      "source": "src/features/listings/constants/condition.ts",
+      "values": [
+        {
+          "value": "new_with_tags",
+          "label": "New with Tags",
+          "description": "Brand new, never used. Original tags, packaging, and warranty intact."
+        },
+        {
+          "value": "new_without_tags",
+          "label": "New without Tags",
+          "description": "Brand new and unused, but original tags or packaging have been removed."
+        },
+        {
+          "value": "like_new",
+          "label": "Like New",
+          "description": "Used once or twice with no visible wear. Looks and performs like it just came out of the box."
+        },
+        {
+          "value": "good",
+          "label": "Good",
+          "description": "Regular use with normal wear. Fully functional with minor cosmetic signs of use."
+        },
+        {
+          "value": "fair",
+          "label": "Fair",
+          "description": "Noticeable wear and cosmetic imperfections. Works but may need minor maintenance."
+        },
+        {
+          "value": "poor",
+          "label": "Poor / For Parts",
+          "description": "Heavy wear, damage, or missing parts. Best suited for parts, repair, or a project."
+        }
+      ]
+    },
+    {
+      "slug": "listings-species",
+      "name": "Listings Species",
+      "description": "Listings Species configuration with 15 defined values",
+      "source": "src/features/listings/config/species.ts",
+      "values": [
+        {
+          "value": "bass",
+          "label": "Bass"
+        },
+        {
+          "value": "trout",
+          "label": "Trout"
+        },
+        {
+          "value": "walleye",
+          "label": "Walleye"
+        },
+        {
+          "value": "catfish",
+          "label": "Catfish"
+        },
+        {
+          "value": "crappie",
+          "label": "Crappie"
+        },
+        {
+          "value": "pike",
+          "label": "Pike"
+        },
+        {
+          "value": "musky",
+          "label": "Musky"
+        },
+        {
+          "value": "salmon",
+          "label": "Salmon"
+        },
+        {
+          "value": "steelhead",
+          "label": "Steelhead"
+        },
+        {
+          "value": "panfish",
+          "label": "Panfish"
+        },
+        {
+          "value": "carp",
+          "label": "Carp"
+        },
+        {
+          "value": "striper",
+          "label": "Striper"
+        },
+        {
+          "value": "redfish",
+          "label": "Redfish"
+        },
+        {
+          "value": "snook",
+          "label": "Snook"
+        },
+        {
+          "value": "tarpon",
+          "label": "Tarpon"
+        }
+      ]
+    },
+    {
+      "slug": "listings-status",
+      "name": "Listings Status",
+      "description": "Listings Status configuration with 6 defined values",
+      "source": "src/features/listings/constants/status.ts",
+      "values": [
+        {
+          "value": "draft",
+          "label": "Draft"
+        },
+        {
+          "value": "active",
+          "label": "Active"
+        },
+        {
+          "value": "reserved",
+          "label": "Reserved"
+        },
+        {
+          "value": "sold",
+          "label": "Sold"
+        },
+        {
+          "value": "archived",
+          "label": "Deactivated"
+        },
+        {
+          "value": "deleted",
+          "label": "Deleted"
+        }
+      ]
+    },
+    {
+      "slug": "listings-us-states",
+      "name": "Listings Us States",
+      "description": "Listings Us States configuration with 51 defined values",
+      "source": "src/features/listings/config/us-states.ts",
+      "values": [
+        {
+          "value": "AL",
+          "label": "Alabama"
+        },
+        {
+          "value": "AK",
+          "label": "Alaska"
+        },
+        {
+          "value": "AZ",
+          "label": "Arizona"
+        },
+        {
+          "value": "AR",
+          "label": "Arkansas"
+        },
+        {
+          "value": "CA",
+          "label": "California"
+        },
+        {
+          "value": "CO",
+          "label": "Colorado"
+        },
+        {
+          "value": "CT",
+          "label": "Connecticut"
+        },
+        {
+          "value": "DC",
+          "label": "District of Columbia"
+        },
+        {
+          "value": "DE",
+          "label": "Delaware"
+        },
+        {
+          "value": "FL",
+          "label": "Florida"
+        },
+        {
+          "value": "GA",
+          "label": "Georgia"
+        },
+        {
+          "value": "HI",
+          "label": "Hawaii"
+        },
+        {
+          "value": "ID",
+          "label": "Idaho"
+        },
+        {
+          "value": "IL",
+          "label": "Illinois"
+        },
+        {
+          "value": "IN",
+          "label": "Indiana"
+        },
+        {
+          "value": "IA",
+          "label": "Iowa"
+        },
+        {
+          "value": "KS",
+          "label": "Kansas"
+        },
+        {
+          "value": "KY",
+          "label": "Kentucky"
+        },
+        {
+          "value": "LA",
+          "label": "Louisiana"
+        },
+        {
+          "value": "ME",
+          "label": "Maine"
+        },
+        {
+          "value": "MD",
+          "label": "Maryland"
+        },
+        {
+          "value": "MA",
+          "label": "Massachusetts"
+        },
+        {
+          "value": "MI",
+          "label": "Michigan"
+        },
+        {
+          "value": "MN",
+          "label": "Minnesota"
+        },
+        {
+          "value": "MS",
+          "label": "Mississippi"
+        },
+        {
+          "value": "MO",
+          "label": "Missouri"
+        },
+        {
+          "value": "MT",
+          "label": "Montana"
+        },
+        {
+          "value": "NE",
+          "label": "Nebraska"
+        },
+        {
+          "value": "NV",
+          "label": "Nevada"
+        },
+        {
+          "value": "NH",
+          "label": "New Hampshire"
+        },
+        {
+          "value": "NJ",
+          "label": "New Jersey"
+        },
+        {
+          "value": "NM",
+          "label": "New Mexico"
+        },
+        {
+          "value": "NY",
+          "label": "New York"
+        },
+        {
+          "value": "NC",
+          "label": "North Carolina"
+        },
+        {
+          "value": "ND",
+          "label": "North Dakota"
+        },
+        {
+          "value": "OH",
+          "label": "Ohio"
+        },
+        {
+          "value": "OK",
+          "label": "Oklahoma"
+        },
+        {
+          "value": "OR",
+          "label": "Oregon"
+        },
+        {
+          "value": "PA",
+          "label": "Pennsylvania"
+        },
+        {
+          "value": "RI",
+          "label": "Rhode Island"
+        },
+        {
+          "value": "SC",
+          "label": "South Carolina"
+        },
+        {
+          "value": "SD",
+          "label": "South Dakota"
+        },
+        {
+          "value": "TN",
+          "label": "Tennessee"
+        },
+        {
+          "value": "TX",
+          "label": "Texas"
+        },
+        {
+          "value": "UT",
+          "label": "Utah"
+        },
+        {
+          "value": "VT",
+          "label": "Vermont"
+        },
+        {
+          "value": "VA",
+          "label": "Virginia"
+        },
+        {
+          "value": "WA",
+          "label": "Washington"
+        },
+        {
+          "value": "WV",
+          "label": "West Virginia"
+        },
+        {
+          "value": "WI",
+          "label": "Wisconsin"
+        },
+        {
+          "value": "WY",
+          "label": "Wyoming"
+        }
+      ]
+    },
+    {
+      "slug": "message-type",
+      "name": "Message Type",
+      "description": "Database enum Message Type with 6 values",
+      "source": "supabase/migrations/20260330000000_create_messaging.sql",
+      "values": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "system",
+          "label": "System"
+        },
+        {
+          "value": "offer_node",
+          "label": "Offer Node"
+        },
+        {
+          "value": "custom_request_node",
+          "label": "Custom Request Node"
+        },
+        {
+          "value": "listing_node",
+          "label": "Listing Node"
+        },
+        {
+          "value": "nudge",
+          "label": "Nudge"
+        }
+      ]
+    },
+    {
+      "slug": "participant-role",
+      "name": "Participant Role",
+      "description": "Database enum Participant Role with 4 values",
+      "source": "supabase/migrations/20260330000000_create_messaging.sql",
+      "values": [
+        {
+          "value": "buyer",
+          "label": "Buyer"
+        },
+        {
+          "value": "seller",
+          "label": "Seller"
+        },
+        {
+          "value": "initiator",
+          "label": "Initiator"
+        },
+        {
+          "value": "recipient",
+          "label": "Recipient"
+        }
+      ]
+    },
+    {
+      "slug": "report-target-type",
+      "name": "Report Target Type",
+      "description": "Database enum Report Target Type with 4 values",
+      "source": "supabase/migrations/20260326000000_create_reports.sql",
+      "values": [
+        {
+          "value": "listing",
+          "label": "Listing"
+        },
+        {
+          "value": "member",
+          "label": "Member"
+        },
+        {
+          "value": "shop",
+          "label": "Shop"
+        },
+        {
+          "value": "message",
+          "label": "Message"
+        }
+      ]
+    },
+    {
+      "slug": "shipping-paid-by",
+      "name": "Shipping Paid By",
+      "description": "Database enum Shipping Paid By with 3 values",
+      "source": "supabase/migrations/20260321100000_listings_schema.sql",
+      "values": [
+        {
+          "value": "seller",
+          "label": "Seller"
+        },
+        {
+          "value": "buyer",
+          "label": "Buyer"
+        },
+        {
+          "value": "split",
+          "label": "Split"
+        }
+      ]
+    },
+    {
+      "slug": "thread-type",
+      "name": "Thread Type",
+      "description": "Database enum Thread Type with 4 values",
+      "source": "supabase/migrations/20260330000000_create_messaging.sql",
+      "values": [
+        {
+          "value": "inquiry",
+          "label": "Inquiry"
+        },
+        {
+          "value": "direct",
+          "label": "Direct"
+        },
+        {
+          "value": "offer",
+          "label": "Offer"
+        },
+        {
+          "value": "custom_request",
+          "label": "Custom Request"
+        }
+      ]
+    }
+  ]
+}

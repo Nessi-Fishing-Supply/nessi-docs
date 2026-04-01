@@ -1,0 +1,42 @@
+{
+  "extractedAt": "2026-04-01T13:46:05.433Z",
+  "sourceCommit": "staging-demo-snapshot",
+  "sourceRepo": "nessi-fishing-supply/Nessi-Web-App",
+  "scriptVersion": "1.0.0",
+  "itemCounts": {
+    "apiGroups": 16,
+    "entities": 23,
+    "roles": 3,
+    "permissionFeatures": 6,
+    "configs": 11,
+    "features": 18,
+    "lifecycles": 9,
+    "journeys": 27,
+    "architectureDiagrams": 4,
+    "roadmapItems": 0,
+    "changelogEntries": 0,
+    "enums": 15
+  },
+  "gaps": [
+    {
+      "type": "lifecycle",
+      "slug": "thread",
+      "reason": "No transitions defined"
+    },
+    {
+      "type": "lifecycle",
+      "slug": "offer",
+      "reason": "No transitions defined"
+    },
+    {
+      "type": "lifecycle",
+      "slug": "subscription",
+      "reason": "No transitions defined"
+    },
+    {
+      "type": "feature",
+      "slug": "shared",
+      "reason": "No CLAUDE.md description"
+    }
+  ]
+}

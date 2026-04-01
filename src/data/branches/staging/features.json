@@ -1,0 +1,587 @@
+{
+  "features": [
+    {
+      "slug": "addresses",
+      "name": "Addresses",
+      "description": "Saved shipping addresses for authenticated buyers — store and reuse up to 5 addresses for faster checkout. Full CRUD operations with a single default address per user. The 5-address cap is enforced at both the server service layer (for user-friendly error messages) and via a database trigger (as a hard constraint).",
+      "componentCount": 3,
+      "endpointCount": 3,
+      "hookCount": 1,
+      "serviceCount": 2,
+      "entities": ["addresses"],
+      "journeySlugs": [],
+      "links": [
+        {
+          "type": "entity",
+          "label": "addresses",
+          "href": "/data-model"
+        },
+        {
+          "type": "api-group",
+          "label": "Addresses",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "auth",
+      "name": "Auth",
+      "description": "Authentication feature using Supabase Auth with cookie-based sessions via @supabase/ssr. Covers login, registration, 6-digit OTP code verification, and password reset. Users never leave the app — all verification happens inline via OTP input.",
+      "componentCount": 7,
+      "endpointCount": 4,
+      "hookCount": 0,
+      "serviceCount": 4,
+      "entities": ["members"],
+      "journeySlugs": ["signup"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "signup",
+          "href": "/journeys/signup"
+        },
+        {
+          "type": "api-group",
+          "label": "Auth",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "blocks",
+      "name": "Blocks",
+      "description": "Blocked members management and enforcement. Two responsibilities:",
+      "componentCount": 1,
+      "endpointCount": 1,
+      "hookCount": 1,
+      "serviceCount": 2,
+      "entities": ["member_blocks", "members"],
+      "journeySlugs": ["member-block-management"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "member_blocks",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
+        },
+        {
+          "type": "api-group",
+          "label": "Blocks",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "cart",
+      "name": "Cart",
+      "description": "The cart provides authenticated users with a persistent shopping cart backed by the cart_items database table. Items are capped at 25 per user, expire after 30 days, and snapshot the listing price at the time of addition for price-change detection. Guest users use a localStorage-based cart that merges into the authenticated cart on login.",
+      "componentCount": 4,
+      "endpointCount": 6,
+      "hookCount": 3,
+      "serviceCount": 2,
+      "entities": ["cart_items", "listings", "member_blocks", "members", "shops"],
+      "journeySlugs": ["cart", "login", "member-block-management", "signup"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "cart_items",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "listings",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "member_blocks",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "cart",
+          "href": "/journeys/cart"
+        },
+        {
+          "type": "journey",
+          "label": "login",
+          "href": "/journeys/login"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
+        },
+        {
+          "type": "journey",
+          "label": "signup",
+          "href": "/journeys/signup"
+        },
+        {
+          "type": "api-group",
+          "label": "Cart",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "context",
+      "name": "Context",
+      "description": "The context feature manages which entity (member or shop) the user is currently acting as in the Nessi dashboard. This is the architectural backbone for context switching — it determines which identity is active and what data the dashboard displays.",
+      "componentCount": 1,
+      "endpointCount": 0,
+      "hookCount": 0,
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
+    },
+    {
+      "slug": "dashboard",
+      "name": "Dashboard",
+      "description": "Seller dashboard with KPIs, quick actions, and performance metrics.",
+      "componentCount": 8,
+      "endpointCount": 0,
+      "hookCount": 0,
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
+    },
+    {
+      "slug": "editorial",
+      "name": "Editorial",
+      "description": "Discovery and editorial content — shop highlights, maker stories, featured listings, and social proof.",
+      "componentCount": 14,
+      "endpointCount": 0,
+      "hookCount": 0,
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
+    },
+    {
+      "slug": "email",
+      "name": "Email",
+      "description": "Transactional email for Nessi via Resend.",
+      "componentCount": 0,
+      "endpointCount": 0,
+      "hookCount": 0,
+      "serviceCount": 2,
+      "entities": [],
+      "journeySlugs": ["member-watchlist", "shop-members"],
+      "links": [
+        {
+          "type": "journey",
+          "label": "member-watchlist",
+          "href": "/journeys/member-watchlist"
+        },
+        {
+          "type": "journey",
+          "label": "shop-members",
+          "href": "/journeys/shop-members"
+        }
+      ]
+    },
+    {
+      "slug": "flags",
+      "name": "Flags",
+      "description": "User-generated content and behavior flags. Allows authenticated users to flag listings, members, shops, or messages for review by the platform. The UI says \"Report this...\" but the codebase uses \"flags\" to avoid ambiguity with data reports.",
+      "componentCount": 2,
+      "endpointCount": 2,
+      "hookCount": 2,
+      "serviceCount": 2,
+      "entities": ["flags"],
+      "journeySlugs": [],
+      "links": [
+        {
+          "type": "entity",
+          "label": "flags",
+          "href": "/data-model"
+        },
+        {
+          "type": "api-group",
+          "label": "Flags",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "follows",
+      "name": "Follows",
+      "description": "Part of #155 (social/follows parent feature).",
+      "componentCount": 2,
+      "endpointCount": 4,
+      "hookCount": 4,
+      "serviceCount": 2,
+      "entities": ["follows", "members", "shops"],
+      "journeySlugs": ["member-follow"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "follows",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-follow",
+          "href": "/journeys/member-follow"
+        },
+        {
+          "type": "api-group",
+          "label": "Follows",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "listings",
+      "name": "Listings",
+      "description": "Listings are the core marketplace entities in Nessi — individual items posted for sale by members or shops. This feature provides the full data layer (types, services, hooks), validations, UI components, and pages for creating, editing, and managing listings. Related tickets: #21 (photo infrastructure), #5 (create wizard), #7 (edit wizard).",
+      "componentCount": 60,
+      "endpointCount": 15,
+      "hookCount": 11,
+      "serviceCount": 7,
+      "entities": ["follows", "listings", "members", "shops"],
+      "journeySlugs": [
+        "browse-and-search",
+        "member-block-management",
+        "member-follow",
+        "member-watchlist",
+        "seller-listings"
+      ],
+      "links": [
+        {
+          "type": "entity",
+          "label": "follows",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "listings",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "browse-and-search",
+          "href": "/journeys/browse-and-search"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
+        },
+        {
+          "type": "journey",
+          "label": "member-follow",
+          "href": "/journeys/member-follow"
+        },
+        {
+          "type": "journey",
+          "label": "member-watchlist",
+          "href": "/journeys/member-watchlist"
+        },
+        {
+          "type": "journey",
+          "label": "seller-listings",
+          "href": "/journeys/seller-listings"
+        },
+        {
+          "type": "api-group",
+          "label": "Listings",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "members",
+      "name": "Members",
+      "description": "Member profile management for Nessi's C2C marketplace users. Handles member data fetching, updates, slug generation, onboarding status, and a branching onboarding wizard (3 steps for buyers, 5 steps for sellers) that runs on first login. Members are identified by first_name + last_name.",
+      "componentCount": 21,
+      "endpointCount": 5,
+      "hookCount": 2,
+      "serviceCount": 4,
+      "entities": ["members"],
+      "journeySlugs": ["member-block-management"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
+        },
+        {
+          "type": "api-group",
+          "label": "Members",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "messaging",
+      "name": "Messaging",
+      "description": "Real-time messaging between buyers and sellers. Supports inquiry threads on listings, direct member-to-member messages, offer negotiations, and custom gear requests. Messages pass through a safety filter before delivery.",
+      "componentCount": 13,
+      "endpointCount": 6,
+      "hookCount": 10,
+      "serviceCount": 6,
+      "entities": [
+        "listings",
+        "member_blocks",
+        "members",
+        "message_thread_participants",
+        "message_threads",
+        "messages",
+        "offers"
+      ],
+      "journeySlugs": ["buyer-seller-messaging", "member-block-management"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "listings",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "member_blocks",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "message_thread_participants",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "message_threads",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "messages",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "offers",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "buyer-seller-messaging",
+          "href": "/journeys/buyer-seller-messaging"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
+        },
+        {
+          "type": "api-group",
+          "label": "Messaging",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "orders",
+      "name": "Orders",
+      "description": "Order tracking and management for buyers and sellers.",
+      "componentCount": 2,
+      "endpointCount": 0,
+      "hookCount": 0,
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
+    },
+    {
+      "slug": "recently-viewed",
+      "name": "Recently Viewed",
+      "description": "Recently viewed tracks listings that the current user has viewed. The feature is dual-source: authenticated users have their views persisted to the recently_viewed database table (via /api/recently-viewed), while guest users have their views stored in localStorage. On login, the guest localStorage history is silently merged into the database and localStorage is cleared.",
+      "componentCount": 1,
+      "endpointCount": 2,
+      "hookCount": 5,
+      "serviceCount": 2,
+      "entities": ["members", "recently_viewed", "shops"],
+      "journeySlugs": ["login", "recently-viewed", "signup"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "recently_viewed",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "login",
+          "href": "/journeys/login"
+        },
+        {
+          "type": "journey",
+          "label": "recently-viewed",
+          "href": "/journeys/recently-viewed"
+        },
+        {
+          "type": "journey",
+          "label": "signup",
+          "href": "/journeys/signup"
+        },
+        {
+          "type": "api-group",
+          "label": "Recently Viewed",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "shared",
+      "name": "Shared",
+      "description": "Shared feature",
+      "componentCount": 0,
+      "endpointCount": 0,
+      "hookCount": 3,
+      "serviceCount": 0,
+      "entities": [],
+      "journeySlugs": [],
+      "links": []
+    },
+    {
+      "slug": "shops",
+      "name": "Shops",
+      "description": "Shops are business entities in Nessi's C2C marketplace, separate from member identity. A member can own or be a member of shops. This feature provides the data layer (types, services, hooks), validations, UI components, and pages for shop management.",
+      "componentCount": 18,
+      "endpointCount": 16,
+      "hookCount": 5,
+      "serviceCount": 5,
+      "entities": ["shop_members", "shops", "slugs"],
+      "journeySlugs": ["member-block-management", "shop-members", "signup"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "shop_members",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "slugs",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-block-management",
+          "href": "/journeys/member-block-management"
+        },
+        {
+          "type": "journey",
+          "label": "shop-members",
+          "href": "/journeys/shop-members"
+        },
+        {
+          "type": "journey",
+          "label": "signup",
+          "href": "/journeys/signup"
+        },
+        {
+          "type": "api-group",
+          "label": "Shops",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "watchlist",
+      "name": "Watchlist",
+      "description": "Part of the price-drop notification system. Allows authenticated members to watch listings and receive email notifications when the price drops.",
+      "componentCount": 1,
+      "endpointCount": 2,
+      "hookCount": 3,
+      "serviceCount": 2,
+      "entities": ["watchers"],
+      "journeySlugs": ["member-watchlist"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "watchers",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "member-watchlist",
+          "href": "/journeys/member-watchlist"
+        },
+        {
+          "type": "api-group",
+          "label": "Watchlist",
+          "href": "/api-map"
+        }
+      ]
+    }
+  ]
+}

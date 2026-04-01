@@ -1,0 +1,871 @@
+{
+  "diagrams": [
+    {
+      "slug": "conductor-pipeline",
+      "category": "pipeline",
+      "title": "Conductor Pipeline",
+      "description": "Autonomous ticket-to-PR workflow — from GitHub issue through planning, implementation, review, and pull request creation.",
+      "layers": [
+        {
+          "id": "input",
+          "label": "Input",
+          "color": "#78756f",
+          "nodes": [
+            {
+              "id": "ticket",
+              "label": "/conductor start #N",
+              "tooltip": "Developer triggers the conductor with a GitHub issue number. The conductor reads the issue, loads context, and begins the autonomous workflow."
+            }
+          ]
+        },
+        {
+          "id": "planning",
+          "label": "Planning",
+          "color": "#58a6ff",
+          "nodes": [
+            {
+              "id": "plan-architect",
+              "label": "plan-architect",
+              "sublabel": "Opus model",
+              "tooltip": "Reads the GitHub issue, analyzes the codebase, and generates a phased implementation plan with discrete tasks. Uses Opus for maximum reasoning depth."
+            }
+          ]
+        },
+        {
+          "id": "implementation",
+          "label": "Implementation",
+          "color": "#3dbe87",
+          "nodes": [
+            {
+              "id": "task-executor",
+              "label": "task-executor",
+              "sublabel": "Sonnet model",
+              "tooltip": "Implements individual tasks from the plan. Expert skills are pre-loaded per task. Loops through all tasks in each phase."
+            },
+            {
+              "id": "phase-verifier",
+              "label": "phase-verifier",
+              "sublabel": "Sonnet model",
+              "tooltip": "Verifies each phase is complete and correct before advancing to the next. Runs quality checks at phase boundaries."
+            }
+          ]
+        },
+        {
+          "id": "review",
+          "label": "Review",
+          "color": "#d2a8ff",
+          "nodes": [
+            {
+              "id": "review-orchestrator",
+              "label": "review-orchestrator",
+              "sublabel": "Sonnet model",
+              "tooltip": "Runs /preflight, /ui-test, and /a11y-audit quality gates. Produces review findings."
+            },
+            {
+              "id": "finding-resolver",
+              "label": "finding-resolver",
+              "sublabel": "Sonnet model",
+              "tooltip": "Creates atomic fix tasks from review findings and feeds them back to task-executor for remediation."
+            }
+          ]
+        },
+        {
+          "id": "escalation",
+          "label": "Escalation",
+          "color": "#e27739",
+          "nodes": [
+            {
+              "id": "debug-investigator",
+              "label": "debug-investigator",
+              "sublabel": "Opus model",
+              "tooltip": "Deep 7-step investigation for tasks that fail 3 times. Uses Opus for maximum reasoning depth. Escalates to human via GitHub if still blocked."
+            }
+          ]
+        },
+        {
+          "id": "output",
+          "label": "Output",
+          "color": "#3dbe87",
+          "nodes": [
+            {
+              "id": "pr-creator",
+              "label": "pr-creator",
+              "sublabel": "Sonnet model",
+              "tooltip": "Creates the pull request with structured description, links to the GitHub issue, and moves the ticket on the kanban board."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "ticket",
+          "to": "plan-architect",
+          "label": "Start"
+        },
+        {
+          "from": "plan-architect",
+          "to": "task-executor",
+          "label": "Plan ready"
+        },
+        {
+          "from": "task-executor",
+          "to": "phase-verifier",
+          "label": "Phase complete"
+        },
+        {
+          "from": "phase-verifier",
+          "to": "task-executor",
+          "label": "Next phase"
+        },
+        {
+          "from": "phase-verifier",
+          "to": "review-orchestrator",
+          "label": "All phases done"
+        },
+        {
+          "from": "review-orchestrator",
+          "to": "pr-creator",
+          "label": "Clean"
+        },
+        {
+          "from": "review-orchestrator",
+          "to": "finding-resolver",
+          "label": "Needs fixes"
+        },
+        {
+          "from": "finding-resolver",
+          "to": "task-executor",
+          "label": "Fix tasks"
+        },
+        {
+          "from": "task-executor",
+          "to": "debug-investigator",
+          "label": "3rd failure"
+        },
+        {
+          "from": "debug-investigator",
+          "to": "task-executor",
+          "label": "One more attempt"
+        },
+        {
+          "from": "pr-creator",
+          "to": "ticket",
+          "label": "PR opened",
+          "style": "dashed"
+        }
+      ]
+    },
+    {
+      "slug": "data-flow",
+      "category": "flow",
+      "title": "Data Flow",
+      "description": "How data moves between the browser, Next.js server, and Supabase — client state, server state, auth, and storage.",
+      "layers": [
+        {
+          "id": "browser",
+          "label": "Browser",
+          "color": "#58a6ff",
+          "nodes": [
+            {
+              "id": "ui",
+              "label": "React Components",
+              "tooltip": "UI layer rendering pages and interactive elements. Consumes server state via Tanstack Query and client state via Zustand."
+            },
+            {
+              "id": "tanstack-query",
+              "label": "Tanstack Query",
+              "sublabel": "Server state",
+              "tooltip": "Manages server data with caching, background refetch, and optimistic updates. Uses custom fetch wrapper from src/libs/fetch.ts."
+            },
+            {
+              "id": "zustand-store",
+              "label": "Zustand Store",
+              "sublabel": "Client state",
+              "tooltip": "Local client state with createSelectors pattern. Stores: edit-wizard, create-wizard, context-store. Persisted to localStorage where needed."
+            }
+          ]
+        },
+        {
+          "id": "server",
+          "label": "Next.js Server",
+          "color": "#d2a8ff",
+          "nodes": [
+            {
+              "id": "api-routes",
+              "label": "API Routes",
+              "sublabel": "src/app/api/",
+              "tooltip": "60+ RESTful API routes handling all server-side operations. Uses Supabase server client with cookie-based auth."
+            },
+            {
+              "id": "proxy",
+              "label": "proxy.ts",
+              "sublabel": "Auth + routing",
+              "tooltip": "Next.js 16 middleware handling session refresh, auth redirects, and onboarding checks on every request."
+            }
+          ]
+        },
+        {
+          "id": "supabase",
+          "label": "Supabase",
+          "color": "#3dbe87",
+          "nodes": [
+            {
+              "id": "auth",
+              "label": "Auth",
+              "tooltip": "Supabase Auth with cookie-based sessions via @supabase/ssr. Handles signup, login, password reset, and email change."
+            },
+            {
+              "id": "postgres",
+              "label": "PostgreSQL",
+              "sublabel": "RLS enforced",
+              "tooltip": "Primary database with Row Level Security on all tables. Server client uses publishable key; admin client uses secret key for elevated operations."
+            },
+            {
+              "id": "storage",
+              "label": "Storage",
+              "sublabel": "listing-images, profile-assets",
+              "tooltip": "Two storage buckets: listing-images for product photos and thumbnails, profile-assets for member avatars and shop banners/hero images."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "ui",
+          "to": "tanstack-query",
+          "label": "useQuery / useMutation"
+        },
+        {
+          "from": "ui",
+          "to": "zustand-store",
+          "label": "useStore.use.*()"
+        },
+        {
+          "from": "tanstack-query",
+          "to": "api-routes",
+          "label": "fetch"
+        },
+        {
+          "from": "proxy",
+          "to": "auth",
+          "label": "Session refresh"
+        },
+        {
+          "from": "proxy",
+          "to": "ui",
+          "label": "Redirect if unauthed"
+        },
+        {
+          "from": "api-routes",
+          "to": "postgres",
+          "label": "Server client"
+        },
+        {
+          "from": "api-routes",
+          "to": "auth",
+          "label": "Admin client"
+        },
+        {
+          "from": "api-routes",
+          "to": "storage",
+          "label": "Upload"
+        },
+        {
+          "from": "postgres",
+          "to": "auth",
+          "label": "RLS policy check"
+        }
+      ]
+    },
+    {
+      "slug": "skill-agent-pipeline",
+      "category": "pipeline",
+      "title": "Skill & Agent Pipeline",
+      "description": "Developer command routing through skills and agents — from slash commands through expert skills, design intelligence, conductor pipeline, and testing to outputs.",
+      "layers": [
+        {
+          "id": "commands",
+          "label": "Developer Commands",
+          "color": "#58a6ff",
+          "nodes": [
+            {
+              "id": "feature-pipeline",
+              "label": "/feature-pipeline",
+              "tooltip": "End-to-end feature development: design spec → ticket generation → conductor build. Orchestrates the full lifecycle."
+            },
+            {
+              "id": "design-spec",
+              "label": "/design-spec",
+              "tooltip": "Generate a comprehensive design specification for a feature, including UX flows, data model, and API contracts."
+            },
+            {
+              "id": "ticket-gen",
+              "label": "/ticket-gen",
+              "tooltip": "Generate GitHub issues from a design spec, organized by phase with acceptance criteria."
+            },
+            {
+              "id": "conductor-start",
+              "label": "/conductor start #N",
+              "tooltip": "Start the autonomous conductor pipeline for a specific GitHub issue."
+            },
+            {
+              "id": "preflight",
+              "label": "/preflight",
+              "tooltip": "Pre-merge quality gate: lint, typecheck, format, build, and test validation."
+            },
+            {
+              "id": "audit",
+              "label": "/audit",
+              "tooltip": "Code quality audit across the codebase for patterns, consistency, and best practices."
+            },
+            {
+              "id": "marketplace-audit",
+              "label": "/marketplace-audit",
+              "tooltip": "Competitive analysis against real marketplace platforms (Etsy, Reverb, Poshmark) for feature parity."
+            },
+            {
+              "id": "a11y-audit",
+              "label": "/a11y-audit",
+              "tooltip": "Accessibility audit using WCAG guidelines, checking semantic HTML, ARIA, keyboard nav, and color contrast."
+            },
+            {
+              "id": "ui-test",
+              "label": "/ui-test",
+              "tooltip": "Visual UI testing via browser automation — verifies component rendering and interaction behavior."
+            },
+            {
+              "id": "feature-scaffold",
+              "label": "/feature-scaffold",
+              "tooltip": "Scaffold a new feature directory with standard structure: components, hooks, services, types, constants."
+            },
+            {
+              "id": "db-migrate",
+              "label": "/db-migrate",
+              "tooltip": "Generate and apply Supabase database migrations with RLS policies and indexes."
+            },
+            {
+              "id": "write-tests",
+              "label": "/write-tests",
+              "tooltip": "Generate Vitest unit and integration tests for existing code."
+            },
+            {
+              "id": "debug",
+              "label": "/debug",
+              "tooltip": "Systematic debugging skill for investigating and resolving issues."
+            }
+          ]
+        },
+        {
+          "id": "expert-skills",
+          "label": "Tech Expert Skills",
+          "color": "#d2a8ff",
+          "nodes": [
+            {
+              "id": "ask-supabase",
+              "label": "/ask-supabase",
+              "sublabel": "src/libs/supabase/*",
+              "tooltip": "Auto-triggers when editing Supabase files. Provides context on RLS, auth patterns, storage, and database operations."
+            },
+            {
+              "id": "ask-nextjs",
+              "label": "/ask-nextjs",
+              "sublabel": "src/app/**",
+              "tooltip": "Auto-triggers when editing App Router files. Provides context on routing, server components, and proxy.ts patterns."
+            },
+            {
+              "id": "ask-vercel",
+              "label": "/ask-vercel",
+              "sublabel": "vercel.json",
+              "tooltip": "Auto-triggers when editing Vercel config. Provides context on deployment, crons, and platform configuration."
+            },
+            {
+              "id": "ask-scss",
+              "label": "/ask-scss",
+              "sublabel": "*.module.scss",
+              "tooltip": "Auto-triggers when editing SCSS modules. Provides context on design tokens, theming, and styling patterns."
+            },
+            {
+              "id": "ask-state",
+              "label": "/ask-state",
+              "sublabel": "hooks/*, stores/*",
+              "tooltip": "Auto-triggers when editing hooks or stores. Provides context on Tanstack Query, Zustand, and state management patterns."
+            }
+          ]
+        },
+        {
+          "id": "design-intelligence",
+          "label": "Design Intelligence",
+          "color": "#e27739",
+          "nodes": [
+            {
+              "id": "ux-researcher",
+              "label": "ux-researcher",
+              "sublabel": "Agent",
+              "tooltip": "Researches UX patterns from competitor marketplaces and generates design recommendations for Nessi features."
+            },
+            {
+              "id": "marketplace-audit-agent",
+              "label": "marketplace-audit",
+              "sublabel": "Agent",
+              "tooltip": "Analyzes real marketplace platforms for feature parity, UX patterns, and competitive insights."
+            }
+          ]
+        },
+        {
+          "id": "conductor",
+          "label": "Conductor Pipeline",
+          "color": "#3dbe87",
+          "nodes": [
+            {
+              "id": "plan-architect",
+              "label": "plan-architect",
+              "sublabel": "Opus",
+              "tooltip": "Generates phased implementation plans from GitHub issues."
+            },
+            {
+              "id": "task-executor",
+              "label": "task-executor",
+              "sublabel": "Sonnet",
+              "tooltip": "Implements individual tasks with pre-loaded expert skills."
+            },
+            {
+              "id": "phase-verifier",
+              "label": "phase-verifier",
+              "sublabel": "Sonnet",
+              "tooltip": "Validates phase completion before advancing."
+            },
+            {
+              "id": "review-orchestrator",
+              "label": "review-orchestrator",
+              "sublabel": "Sonnet",
+              "tooltip": "Runs quality gates: preflight, ui-test, a11y-audit."
+            },
+            {
+              "id": "finding-resolver",
+              "label": "finding-resolver",
+              "sublabel": "Sonnet",
+              "tooltip": "Creates atomic fix tasks from review findings."
+            },
+            {
+              "id": "debug-investigator",
+              "label": "debug-investigator",
+              "sublabel": "Opus",
+              "tooltip": "Deep investigation for tasks failing 3+ times."
+            },
+            {
+              "id": "pr-creator",
+              "label": "pr-creator",
+              "sublabel": "Sonnet",
+              "tooltip": "Creates pull request with structured description."
+            },
+            {
+              "id": "ticket-generator",
+              "label": "ticket-generator",
+              "sublabel": "Opus",
+              "tooltip": "Generates GitHub issues from design specs."
+            }
+          ]
+        },
+        {
+          "id": "testing",
+          "label": "Testing & Debugging",
+          "color": "#e27739",
+          "nodes": [
+            {
+              "id": "ui-tester",
+              "label": "ui-tester",
+              "sublabel": "Agent",
+              "tooltip": "Browser-based UI testing agent for visual verification and interaction testing."
+            },
+            {
+              "id": "browser-debug",
+              "label": "browser-debug",
+              "sublabel": "Agent",
+              "tooltip": "Browser automation agent for debugging rendering and interaction issues."
+            },
+            {
+              "id": "a11y-auditor",
+              "label": "a11y-auditor",
+              "sublabel": "Agent",
+              "tooltip": "Accessibility auditing agent checking WCAG compliance."
+            },
+            {
+              "id": "test-author",
+              "label": "test-author",
+              "sublabel": "Agent",
+              "tooltip": "Generates unit and integration tests for existing code."
+            }
+          ]
+        },
+        {
+          "id": "outputs",
+          "label": "Outputs",
+          "color": "#78756f",
+          "nodes": [
+            {
+              "id": "design-specs",
+              "label": "Design Specs",
+              "sublabel": "docs/design-specs/*.md",
+              "tooltip": "Markdown design specifications produced by /design-spec and ux-researcher."
+            },
+            {
+              "id": "github-issues",
+              "label": "GitHub Issues",
+              "sublabel": "Kanban Board",
+              "tooltip": "Structured GitHub issues with acceptance criteria, organized on the project kanban board."
+            },
+            {
+              "id": "pull-request",
+              "label": "Pull Request",
+              "tooltip": "Final output of the conductor pipeline — a ready-to-review PR linked to the source issue."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "feature-pipeline",
+          "to": "design-spec",
+          "label": "Step 1"
+        },
+        {
+          "from": "design-spec",
+          "to": "ux-researcher",
+          "label": "Research"
+        },
+        {
+          "from": "ux-researcher",
+          "to": "design-specs",
+          "label": "Output"
+        },
+        {
+          "from": "feature-pipeline",
+          "to": "ticket-gen",
+          "label": "Step 2"
+        },
+        {
+          "from": "ticket-gen",
+          "to": "ticket-generator",
+          "label": "Generate"
+        },
+        {
+          "from": "ticket-generator",
+          "to": "github-issues",
+          "label": "Output"
+        },
+        {
+          "from": "feature-pipeline",
+          "to": "conductor-start",
+          "label": "Step 3"
+        },
+        {
+          "from": "conductor-start",
+          "to": "plan-architect",
+          "label": "Start"
+        },
+        {
+          "from": "plan-architect",
+          "to": "task-executor",
+          "label": "Plan ready"
+        },
+        {
+          "from": "task-executor",
+          "to": "phase-verifier",
+          "label": "Phase done"
+        },
+        {
+          "from": "phase-verifier",
+          "to": "review-orchestrator",
+          "label": "All done"
+        },
+        {
+          "from": "review-orchestrator",
+          "to": "pr-creator",
+          "label": "Clean"
+        },
+        {
+          "from": "review-orchestrator",
+          "to": "finding-resolver",
+          "label": "Needs fixes"
+        },
+        {
+          "from": "finding-resolver",
+          "to": "task-executor",
+          "label": "Fix tasks"
+        },
+        {
+          "from": "task-executor",
+          "to": "debug-investigator",
+          "label": "3rd failure"
+        },
+        {
+          "from": "pr-creator",
+          "to": "pull-request",
+          "label": "Output"
+        },
+        {
+          "from": "expert-skills",
+          "to": "task-executor",
+          "label": "Pre-loaded context",
+          "style": "dashed"
+        },
+        {
+          "from": "preflight",
+          "to": "review-orchestrator",
+          "label": "Quality gate",
+          "style": "dashed"
+        },
+        {
+          "from": "ui-test",
+          "to": "ui-tester",
+          "label": "Invokes"
+        },
+        {
+          "from": "a11y-audit",
+          "to": "a11y-auditor",
+          "label": "Invokes"
+        },
+        {
+          "from": "write-tests",
+          "to": "test-author",
+          "label": "Invokes"
+        },
+        {
+          "from": "debug",
+          "to": "browser-debug",
+          "label": "Invokes"
+        }
+      ]
+    },
+    {
+      "slug": "tech-stack",
+      "category": "stack",
+      "title": "Tech Stack",
+      "description": "Technology layers powering the Nessi marketplace — frontend, state management, backend, infrastructure, and code quality.",
+      "layers": [
+        {
+          "id": "frontend",
+          "label": "Frontend",
+          "color": "#58a6ff",
+          "nodes": [
+            {
+              "id": "nextjs",
+              "label": "Next.js 16",
+              "sublabel": "App Router",
+              "tooltip": "Full-stack React framework with file-system routing, server components, and proxy.ts middleware."
+            },
+            {
+              "id": "react",
+              "label": "React 19",
+              "tooltip": "UI component library with hooks, server components, and concurrent features."
+            },
+            {
+              "id": "scss-modules",
+              "label": "SCSS Modules",
+              "tooltip": "Scoped CSS with Nessi design tokens, dark theme, and frosted glass effects."
+            },
+            {
+              "id": "react-icons",
+              "label": "react-icons",
+              "tooltip": "Icon library providing HiOutline and other icon sets across the UI."
+            },
+            {
+              "id": "next-image",
+              "label": "next/image",
+              "tooltip": "Automatic image optimization with lazy loading and responsive sizing."
+            }
+          ]
+        },
+        {
+          "id": "state",
+          "label": "State Management",
+          "color": "#d2a8ff",
+          "nodes": [
+            {
+              "id": "tanstack-query",
+              "label": "Tanstack Query",
+              "sublabel": "Server state",
+              "tooltip": "Data fetching and caching with useQuery/useMutation. QueryCache handles 403 context revocation."
+            },
+            {
+              "id": "zustand",
+              "label": "Zustand",
+              "sublabel": "Client state",
+              "tooltip": "Lightweight stores with createSelectors pattern (useStore.use.*()). Used for edit wizards, create wizards, and context switching."
+            },
+            {
+              "id": "auth-provider",
+              "label": "AuthProvider",
+              "sublabel": "Supabase context",
+              "tooltip": "React context providing authenticated Supabase client and user session to the component tree."
+            }
+          ]
+        },
+        {
+          "id": "backend",
+          "label": "Backend (Supabase)",
+          "color": "#3dbe87",
+          "nodes": [
+            {
+              "id": "supabase-auth",
+              "label": "Supabase Auth",
+              "sublabel": "Cookie sessions",
+              "tooltip": "Authentication via @supabase/ssr with cookie-based session management. Supports email/password signup."
+            },
+            {
+              "id": "postgresql",
+              "label": "PostgreSQL",
+              "sublabel": "RLS enforced",
+              "tooltip": "Relational database with Row Level Security on all tables. Managed by Supabase with migrations in supabase/migrations/."
+            },
+            {
+              "id": "supabase-storage",
+              "label": "Supabase Storage",
+              "sublabel": "Product images",
+              "tooltip": "Object storage with two buckets: listing-images (product photos + thumbnails) and profile-assets (avatars, shop banners)."
+            }
+          ]
+        },
+        {
+          "id": "infrastructure",
+          "label": "Infrastructure",
+          "color": "#e27739",
+          "nodes": [
+            {
+              "id": "vercel",
+              "label": "Vercel",
+              "sublabel": "Deploy + CDN",
+              "tooltip": "Hosting platform with automatic deployments from GitHub, edge CDN, and serverless functions."
+            },
+            {
+              "id": "github-actions",
+              "label": "GitHub Actions",
+              "sublabel": "CI pipeline",
+              "tooltip": "Continuous integration running format check, lint, typecheck, tests, and build on every push."
+            },
+            {
+              "id": "vercel-analytics",
+              "label": "Vercel Analytics",
+              "tooltip": "First-party web analytics integrated via @vercel/analytics in the root layout."
+            },
+            {
+              "id": "speed-insights",
+              "label": "Speed Insights",
+              "tooltip": "Real user performance monitoring via @vercel/speed-insights in the root layout."
+            }
+          ]
+        },
+        {
+          "id": "quality",
+          "label": "Code Quality",
+          "color": "#78756f",
+          "nodes": [
+            {
+              "id": "eslint",
+              "label": "ESLint",
+              "tooltip": "Linting with Next.js core-web-vitals and TypeScript configs."
+            },
+            {
+              "id": "prettier",
+              "label": "Prettier",
+              "tooltip": "Code formatting with semi, singleQuote, trailingComma all configuration."
+            },
+            {
+              "id": "stylelint",
+              "label": "Stylelint",
+              "tooltip": "SCSS linting with stylelint-config-standard-scss."
+            },
+            {
+              "id": "typescript",
+              "label": "TypeScript",
+              "sublabel": "Strict mode",
+              "tooltip": "Type safety with strict: true in tsconfig.json."
+            },
+            {
+              "id": "vitest",
+              "label": "Vitest",
+              "tooltip": "Unit and integration testing framework with setup file and workspace configuration."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "nextjs",
+          "to": "react",
+          "label": "renders"
+        },
+        {
+          "from": "react",
+          "to": "tanstack-query",
+          "label": "useQuery"
+        },
+        {
+          "from": "react",
+          "to": "zustand",
+          "label": "useStore"
+        },
+        {
+          "from": "react",
+          "to": "auth-provider",
+          "label": "useAuth"
+        },
+        {
+          "from": "tanstack-query",
+          "to": "supabase-auth",
+          "label": "fetch"
+        },
+        {
+          "from": "tanstack-query",
+          "to": "postgresql",
+          "label": "fetch"
+        },
+        {
+          "from": "supabase-auth",
+          "to": "postgresql",
+          "label": "RLS"
+        },
+        {
+          "from": "nextjs",
+          "to": "vercel",
+          "label": "deploy"
+        },
+        {
+          "from": "vercel",
+          "to": "vercel-analytics",
+          "label": "tracks"
+        },
+        {
+          "from": "vercel",
+          "to": "speed-insights",
+          "label": "monitors"
+        },
+        {
+          "from": "github-actions",
+          "to": "eslint",
+          "label": "runs"
+        },
+        {
+          "from": "github-actions",
+          "to": "prettier",
+          "label": "runs"
+        },
+        {
+          "from": "github-actions",
+          "to": "stylelint",
+          "label": "runs"
+        },
+        {
+          "from": "github-actions",
+          "to": "typescript",
+          "label": "runs"
+        },
+        {
+          "from": "github-actions",
+          "to": "vitest",
+          "label": "runs"
+        }
+      ]
+    }
+  ]
+}
