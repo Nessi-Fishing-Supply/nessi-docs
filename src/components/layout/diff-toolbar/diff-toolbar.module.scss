@@ -18,6 +18,21 @@
   }
 }
 
+.labelLink {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+
+  strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
 .counts {
   display: flex;
   align-items: center;
@@ -42,24 +57,39 @@
 
 .countAdded {
   color: var(--diff-added);
+  text-decoration: none;
 
   .dot {
     background: var(--diff-added);
+  }
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 
 .countModified {
   color: var(--diff-modified);
+  text-decoration: none;
 
   .dot {
     background: var(--diff-modified);
+  }
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 
 .countRemoved {
   color: var(--diff-removed);
+  text-decoration: none;
 
   .dot {
     background: var(--diff-removed);
+  }
+
+  &:hover {
+    opacity: 0.8;
   }
 }

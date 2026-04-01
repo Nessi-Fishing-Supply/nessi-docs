@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   HiOutlineMap,
   HiOutlineServer,
@@ -224,7 +225,13 @@ export function DiffOverviewView() {
   const { branches } = useBranchData();
   const branchHref = useBranchHref();
   const { isActive, compareBranch, diffResult } = useDiffMode();
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const searchParams = useSearchParams();
+  const initialStatus = searchParams.get('status') as StatusFilter | null;
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>(
+    initialStatus && ['added', 'modified', 'removed'].includes(initialStatus)
+      ? initialStatus
+      : 'all',
+  );
 
   const comparisonLabel = branches.find((b) => b.name === compareBranch)?.label ?? compareBranch;
 
