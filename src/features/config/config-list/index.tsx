@@ -3,10 +3,13 @@
 import { useState, useEffect, useRef } from 'react';
 import type { ConfigEnum } from '@/types/config-ref';
 import type { Role } from '@/types/permission';
+import type { DiffStatus } from '@/types/diff';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
 import { useDocsContext } from '@/providers/docs-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
+import { useDiffMode } from '@/hooks/use-diff-mode';
+import { DiffBadge } from '@/components/ui/diff-badge';
 import styles from './config-list.module.scss';
 
 const ROLES_SLUG = '__roles__';
@@ -18,6 +21,8 @@ interface ConfigListProps {
 
 export function ConfigList({ enums, roles }: ConfigListProps) {
   const { setSelectedItem } = useDocsContext();
+  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const configStatusMap = isDiffMode ? diffResult?.configEnums.statusMap : undefined;
   const [openSlugs, setOpenSlugs] = useState<Set<string>>(new Set());
   const [highlightSlug, setHighlightSlug] = useState<string | null>(null);
   const blockRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -188,11 +193,16 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
               ref={(el) => {
                 if (el) blockRefs.current.set(e.slug, el);
               }}
-              className={`${styles.enumBlock} ${isOpen ? styles.enumOpen : ''}`}
+              className={`${styles.enumBlock} ${isOpen ? styles.enumOpen : ''} ${configStatusMap ? styles[`diff_${configStatusMap.get(e.slug) ?? 'unchanged'}`] : ''}`}
             >
               <BorderTrace active={highlightSlug === e.slug} />
               <button className={styles.enumHeader} onClick={() => toggleSlug(e.slug)}>
                 <span className={styles.enumName}>{e.name}</span>
+                {configStatusMap && configStatusMap.get(e.slug) !== 'unchanged' && (
+                  <DiffBadge
+                    status={configStatusMap.get(e.slug) as Exclude<DiffStatus, 'unchanged'>}
+                  />
+                )}
                 <span className={styles.enumCount}>{e.values.length} values</span>
                 <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
               </button>
@@ -225,6 +235,19 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
             </div>
           );
         })}
+
+        {/* Removed Config Enums (diff mode only) */}
+        {isDiffMode &&
+          diffResult &&
+          diffResult.configEnums.removed.map((e) => (
+            <div key={`removed-${e.slug}`} className={`${styles.enumBlock} ${styles.diff_removed}`}>
+              <div className={styles.enumHeader}>
+                <span className={styles.enumName}>{e.name}</span>
+                <DiffBadge status="removed" />
+                <span className={styles.enumCount}>{e.values.length} values</span>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );
