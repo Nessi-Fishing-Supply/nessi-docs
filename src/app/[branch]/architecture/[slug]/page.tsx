@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
@@ -40,5 +41,9 @@ export default async function ArchitecturePage({
     description: d.description,
   }));
 
-  return <ArchitecturePageClient diagram={diagram} siblings={siblings} />;
+  return (
+    <Suspense>
+      <ArchitecturePageClient diagram={diagram} siblings={siblings} />
+    </Suspense>
+  );
 }
