@@ -1,4 +1,5 @@
 import { hexToRgba } from '../utils/geometry';
+import { DiffLegendSection } from './diff-legend-section';
 
 const LAYERS: { label: string; color: string }[] = [
   { label: 'Start', color: '#3ba8d4' },
@@ -24,9 +25,10 @@ const NODES: { label: string; color: string; shape: string }[] = [
 
 interface LegendProps {
   visible: boolean;
+  isDiffMode?: boolean;
 }
 
-export function Legend({ visible }: LegendProps) {
+export function Legend({ visible, isDiffMode }: LegendProps) {
   if (!visible) return null;
 
   const sectionLabel: React.CSSProperties = {
@@ -146,6 +148,7 @@ export function Legend({ visible }: LegendProps) {
             <span>{s.label}</span>
           </div>
         ))}
+        {isDiffMode && <DiffLegendSection />}
       </div>
     </div>
   );

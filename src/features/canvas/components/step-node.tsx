@@ -3,6 +3,7 @@
 import { useState, memo } from 'react';
 import { LAYER_CONFIG, type JourneyNode } from '@/types/journey';
 import { NODE_WIDTH, NODE_HEIGHT, hexToRgba } from '../utils/geometry';
+import type { DiffStatus } from '@/types/diff';
 
 // Max chars for label and sublabel
 const LABEL_MAX = 20;
@@ -138,6 +139,7 @@ interface StepNodeProps {
   node: JourneyNode;
   isSelected?: boolean;
   isDimmed?: boolean;
+  diffStatus?: DiffStatus | null;
   onClick?: () => void;
 }
 
@@ -145,6 +147,7 @@ export const StepNode = memo(function StepNode({
   node,
   isSelected,
   isDimmed,
+  diffStatus,
   onClick,
 }: StepNodeProps) {
   const [hovered, setHovered] = useState(false);
@@ -152,9 +155,24 @@ export const StepNode = memo(function StepNode({
   const status = node.status ?? 'planned';
   const isPlanned = status === 'planned';
   const layerCfg = LAYER_CONFIG[layer];
-  const opacity = isDimmed ? 0.15 : isPlanned ? 0.45 : 1;
+  const isGhost = diffStatus === 'removed';
+
+  const effectiveColor =
+    diffStatus === 'added'
+      ? '#3d8c75'
+      : diffStatus === 'modified'
+        ? '#7b8fcd'
+        : diffStatus === 'removed'
+          ? '#b84040'
+          : layerCfg.color;
+
+  // Diff opacity takes precedence over planned opacity; trace dimming overrides everything
+  const diffOpacity = isGhost ? 0.4 : diffStatus === 'unchanged' ? 0.6 : 1;
+  const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : isPlanned ? 0.45 : 1;
+
   const errorCount = node.errorCases?.length ?? 0;
-  const showGlow = hovered && !isSelected && !isPlanned;
+  const showGlow = hovered && !isSelected && !isPlanned && !isGhost;
+  const showDiffGlow = (diffStatus === 'added' || diffStatus === 'modified') && !isSelected;
 
   const displayLabel = cleanLabel(node.label, node.route);
 
@@ -177,18 +195,41 @@ export const StepNode = memo(function StepNode({
   return (
     <g
       transform={`translate(${node.x},${node.y})`}
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ cursor: 'pointer', opacity, transition: 'opacity 400ms ease-out' }}
+      onClick={isGhost ? undefined : onClick}
+      onMouseEnter={isGhost ? undefined : () => setHovered(true)}
+      onMouseLeave={isGhost ? undefined : () => setHovered(false)}
+      style={{
+        cursor: isGhost ? 'default' : 'pointer',
+        opacity,
+        transition: 'opacity 400ms ease-out',
+        pointerEvents: isGhost ? 'none' : undefined,
+      }}
     >
+      {/* Diff glow */}
+      {showDiffGlow && (
+        <>
+          <defs>
+            <radialGradient id={`step-diff-${node.id}`}>
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.12} />
+              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <circle
+            cx={NODE_WIDTH / 2}
+            cy={NODE_HEIGHT / 2}
+            r={NODE_WIDTH * 0.55}
+            fill={`url(#step-diff-${node.id})`}
+            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
+          />
+        </>
+      )}
       {/* Hover glow */}
       {showGlow && (
         <>
           <defs>
             <radialGradient id={`hover-${node.id}`}>
-              <stop offset="0%" stopColor={layerCfg.color} stopOpacity={0.08} />
-              <stop offset="100%" stopColor={layerCfg.color} stopOpacity={0} />
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.08} />
+              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
             </radialGradient>
           </defs>
           <circle
@@ -204,8 +245,8 @@ export const StepNode = memo(function StepNode({
         <>
           <defs>
             <radialGradient id={`glow-${node.id}`}>
-              <stop offset="0%" stopColor={layerCfg.color} stopOpacity={0.15} />
-              <stop offset="100%" stopColor={layerCfg.color} stopOpacity={0} />
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.15} />
+              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
             </radialGradient>
           </defs>
           <circle
@@ -222,28 +263,28 @@ export const StepNode = memo(function StepNode({
         width={NODE_WIDTH}
         height={NODE_HEIGHT}
         rx={6}
-        fill={hexToRgba(layerCfg.color, isPlanned ? 0.03 : 0.08)}
+        fill={hexToRgba(effectiveColor, isPlanned && !diffStatus ? 0.03 : 0.08)}
         stroke={
           isSelected
-            ? layerCfg.color
+            ? effectiveColor
             : hovered
-              ? hexToRgba(layerCfg.color, 0.4)
-              : hexToRgba(layerCfg.color, isPlanned ? 0.12 : 0.2)
+              ? hexToRgba(effectiveColor, 0.4)
+              : hexToRgba(effectiveColor, isPlanned && !diffStatus ? 0.12 : 0.2)
         }
         strokeWidth={isSelected ? 1.5 : 1}
-        strokeDasharray={isPlanned ? '4 3' : undefined}
+        strokeDasharray={isGhost ? '4 3' : isPlanned && !diffStatus ? '4 3' : undefined}
       />
       {/* Left accent */}
-      <rect x={0} y={6} width={2.5} height={NODE_HEIGHT - 12} rx={1} fill={layerCfg.color} />
+      <rect x={0} y={6} width={2.5} height={NODE_HEIGHT - 12} rx={1} fill={effectiveColor} />
 
       {/* Top-right: method pill OR layer dot */}
       {httpMethod ? (
         <g transform={`translate(${NODE_WIDTH - methodPillW - 6}, 5)`}>
-          <rect width={methodPillW} height={14} rx={3} fill={hexToRgba(layerCfg.color, 0.2)} />
+          <rect width={methodPillW} height={14} rx={3} fill={hexToRgba(effectiveColor, 0.2)} />
           <text
             x={methodPillW / 2}
             y={10}
-            fill={layerCfg.color}
+            fill={effectiveColor}
             fontSize={8}
             fontWeight={700}
             textAnchor="middle"
@@ -253,7 +294,7 @@ export const StepNode = memo(function StepNode({
           </text>
         </g>
       ) : (
-        <circle cx={NODE_WIDTH - 10} cy={10} r={3} fill={layerCfg.color} opacity={0.6} />
+        <circle cx={NODE_WIDTH - 10} cy={10} r={3} fill={effectiveColor} opacity={0.6} />
       )}
 
       {/* Label */}

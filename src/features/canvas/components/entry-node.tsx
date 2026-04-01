@@ -2,6 +2,7 @@
 
 import { useState, memo } from 'react';
 import { NODE_HEIGHT, hexToRgba } from '../utils/geometry';
+import type { DiffStatus } from '@/types/diff';
 
 const ENTRY_COLOR = '#3ba8d4';
 import { TT_BG, TT_BORDER, TT_SHADOW } from '../constants/tooltip-styles';
@@ -23,6 +24,7 @@ interface EntryNodeProps {
   label: string;
   isDimmed?: boolean;
   isActive?: boolean;
+  diffStatus?: DiffStatus | null;
   meta?: EntryNodeMeta;
   onClick?: () => void;
 }
@@ -33,29 +35,68 @@ export const EntryNode = memo(function EntryNode({
   label,
   isDimmed,
   isActive,
+  diffStatus,
   meta,
   onClick,
 }: EntryNodeProps) {
   const [hovered, setHovered] = useState(false);
   const h = NODE_HEIGHT;
-  const opacity = isDimmed ? 0.15 : 1;
-  const showGlow = hovered || isActive;
+  const isGhost = diffStatus === 'removed';
+
+  const effectiveColor =
+    diffStatus === 'added'
+      ? '#3d8c75'
+      : diffStatus === 'modified'
+        ? '#7b8fcd'
+        : diffStatus === 'removed'
+          ? '#b84040'
+          : ENTRY_COLOR;
+
+  const diffOpacity = isGhost ? 0.4 : diffStatus === 'unchanged' ? 0.6 : 1;
+  const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
+
+  const showGlow = (hovered || isActive) && !isGhost;
+  const showDiffGlow = (diffStatus === 'added' || diffStatus === 'modified') && !isActive;
 
   return (
     <g
       transform={`translate(${x},${y})`}
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ cursor: 'pointer', opacity, transition: 'opacity 400ms ease-out' }}
+      onClick={isGhost ? undefined : onClick}
+      onMouseEnter={isGhost ? undefined : () => setHovered(true)}
+      onMouseLeave={isGhost ? undefined : () => setHovered(false)}
+      style={{
+        cursor: isGhost ? 'default' : 'pointer',
+        opacity,
+        transition: 'opacity 400ms ease-out',
+        pointerEvents: isGhost ? 'none' : undefined,
+      }}
     >
+      {/* Diff glow */}
+      {showDiffGlow && (
+        <>
+          <defs>
+            <radialGradient id={`entry-diff-${x}-${y}`}>
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.12} />
+              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <ellipse
+            cx={ENTRY_W / 2}
+            cy={h / 2}
+            rx={ENTRY_W * 0.55}
+            ry={h * 1.2}
+            fill={`url(#entry-diff-${x}-${y})`}
+            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
+          />
+        </>
+      )}
       {/* Hover/active glow */}
       {showGlow && (
         <>
           <defs>
             <radialGradient id={`entry-glow-${x}-${y}`}>
-              <stop offset="0%" stopColor={ENTRY_COLOR} stopOpacity={isActive ? 0.18 : 0.1} />
-              <stop offset="100%" stopColor={ENTRY_COLOR} stopOpacity={0} />
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={isActive ? 0.18 : 0.1} />
+              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
             </radialGradient>
           </defs>
           <ellipse
@@ -73,15 +114,16 @@ export const EntryNode = memo(function EntryNode({
         width={ENTRY_W}
         height={h}
         rx={h / 2}
-        fill={hexToRgba(ENTRY_COLOR, isActive ? 0.15 : 0.1)}
-        stroke={hexToRgba(ENTRY_COLOR, hovered || isActive ? 0.5 : 0.3)}
+        fill={hexToRgba(effectiveColor, isActive ? 0.15 : 0.1)}
+        stroke={hexToRgba(effectiveColor, hovered || isActive ? 0.5 : 0.3)}
         strokeWidth={isActive ? 1.5 : 1}
+        strokeDasharray={isGhost ? '4 3' : undefined}
       />
       {/* Play icon */}
       <text
         x={16}
         y={h / 2 + 1}
-        fill={ENTRY_COLOR}
+        fill={effectiveColor}
         fontSize={11}
         fontWeight={600}
         dominantBaseline="central"
@@ -141,8 +183,8 @@ export const EntryNode = memo(function EntryNode({
                     fontSize: '9px',
                     padding: '1px 7px',
                     borderRadius: '10px',
-                    background: `${ENTRY_COLOR}1a`,
-                    color: ENTRY_COLOR,
+                    background: `${effectiveColor}1a`,
+                    color: effectiveColor,
                   }}
                 >
                   Entry Point

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
@@ -47,5 +48,9 @@ export default async function JourneyPage({
       description: j.description,
     }));
 
-  return <JourneyPageClient journey={journey} domain={domain} siblings={siblings} />;
+  return (
+    <Suspense>
+      <JourneyPageClient journey={journey} domain={domain} siblings={siblings} />
+    </Suspense>
+  );
 }

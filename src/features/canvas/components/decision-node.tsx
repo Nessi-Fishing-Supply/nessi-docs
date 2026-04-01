@@ -3,6 +3,7 @@
 import { useState, memo } from 'react';
 import type { DecisionOption } from '@/types/journey';
 import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
+import type { DiffStatus } from '@/types/diff';
 
 const DECISION_COLOR = '#a78bfa';
 
@@ -33,6 +34,7 @@ interface DecisionNodeProps {
   options: DecisionOption[];
   chosenOpt?: string;
   isDimmed?: boolean;
+  diffStatus?: DiffStatus | null;
   onChoose?: (opt: string, targetId: string) => void;
 }
 
@@ -43,12 +45,27 @@ export const DecisionNode = memo(function DecisionNode({
   options,
   chosenOpt,
   isDimmed,
+  diffStatus,
   onChoose,
 }: DecisionNodeProps) {
   const [hoveredPill, setHoveredPill] = useState<string | null>(null);
   const cx = x + DECISION_SIZE / 2;
   const cy = y + DECISION_SIZE / 2;
-  const opacity = isDimmed ? 0.15 : 1;
+  const isGhost = diffStatus === 'removed';
+
+  const effectiveColor =
+    diffStatus === 'added'
+      ? '#3d8c75'
+      : diffStatus === 'modified'
+        ? '#7b8fcd'
+        : diffStatus === 'removed'
+          ? '#b84040'
+          : DECISION_COLOR;
+
+  const diffOpacity = isGhost ? 0.4 : diffStatus === 'unchanged' ? 0.6 : 1;
+  const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
+
+  const showDiffGlow = diffStatus === 'added' || diffStatus === 'modified';
 
   const parsedOptions = options.map((opt) => ({
     ...opt,
@@ -59,7 +76,31 @@ export const DecisionNode = memo(function DecisionNode({
   const pillW = Math.max(DECISION_SIZE + 10, ...parsedOptions.map((o) => o.short.length * 7 + 24));
 
   return (
-    <g style={{ opacity, transition: 'opacity 400ms ease-out' }}>
+    <g
+      style={{
+        opacity,
+        transition: 'opacity 400ms ease-out',
+        pointerEvents: isGhost ? 'none' : undefined,
+      }}
+    >
+      {/* Diff glow — centered on diamond */}
+      {showDiffGlow && (
+        <>
+          <defs>
+            <radialGradient id={`dec-diff-${x}-${y}`}>
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.12} />
+              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <circle
+            cx={cx}
+            cy={cy}
+            r={DECISION_SIZE * 0.55}
+            fill={`url(#dec-diff-${x}-${y})`}
+            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
+          />
+        </>
+      )}
       {/* Diamond — no hover, not interactive (pills below are the actions) */}
       <g transform={`translate(${cx},${cy}) rotate(45)`} style={{ cursor: 'default' }}>
         <rect
@@ -68,9 +109,10 @@ export const DecisionNode = memo(function DecisionNode({
           width={DECISION_SIZE - 12}
           height={DECISION_SIZE - 12}
           rx={4}
-          fill={hexToRgba(DECISION_COLOR, 0.12)}
-          stroke={hexToRgba(DECISION_COLOR, 0.35)}
+          fill={hexToRgba(effectiveColor, 0.12)}
+          stroke={hexToRgba(effectiveColor, 0.35)}
           strokeWidth={1}
+          strokeDasharray={isGhost ? '4 3' : undefined}
         />
       </g>
 
@@ -78,7 +120,7 @@ export const DecisionNode = memo(function DecisionNode({
       <text
         x={cx}
         y={cy + 4}
-        fill={DECISION_COLOR}
+        fill={effectiveColor}
         fontSize={14}
         fontWeight={700}
         textAnchor="middle"
@@ -102,17 +144,17 @@ export const DecisionNode = memo(function DecisionNode({
           <g
             key={opt.label}
             transform={`translate(${cx - pillW / 2},${py})`}
-            onClick={() => onChoose?.(opt.label, opt.to)}
-            onMouseEnter={() => setHoveredPill(opt.label)}
-            onMouseLeave={() => setHoveredPill(null)}
-            style={{ cursor: 'pointer', opacity: pillOpacity }}
+            onClick={isGhost ? undefined : () => onChoose?.(opt.label, opt.to)}
+            onMouseEnter={isGhost ? undefined : () => setHoveredPill(opt.label)}
+            onMouseLeave={isGhost ? undefined : () => setHoveredPill(null)}
+            style={{ cursor: isGhost ? 'default' : 'pointer', opacity: pillOpacity }}
           >
             <rect
               width={pillW}
               height={20}
               rx={10}
-              fill={hexToRgba(DECISION_COLOR, isChosen ? 0.2 : isHovPill ? 0.14 : 0.08)}
-              stroke={hexToRgba(DECISION_COLOR, isChosen ? 0.5 : isHovPill ? 0.35 : 0.2)}
+              fill={hexToRgba(effectiveColor, isChosen ? 0.2 : isHovPill ? 0.14 : 0.08)}
+              stroke={hexToRgba(effectiveColor, isChosen ? 0.5 : isHovPill ? 0.35 : 0.2)}
               strokeWidth={0.8}
             />
             <text
