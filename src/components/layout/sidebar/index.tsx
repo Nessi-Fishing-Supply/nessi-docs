@@ -17,6 +17,7 @@ import {
 import type { Lifecycle } from '@/types/lifecycle';
 import { useBranchData } from '@/providers/branch-provider';
 import { BranchSwitcher } from '@/components/layout/branch-switcher';
+import { ComparisonSelector } from '@/components/layout/comparison-selector';
 import styles from './sidebar.module.scss';
 
 const SYSTEM_ITEMS = [
@@ -114,6 +115,9 @@ export function Sidebar({ featureDomains }: SidebarProps) {
       </div>
 
       <div className={styles.switcherSection}>
+        <div className={styles.comparisonSection}>
+          <ComparisonSelector />
+        </div>
         <BranchSwitcher />
       </div>
     </div>
