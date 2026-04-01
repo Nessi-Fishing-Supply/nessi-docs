@@ -9,6 +9,9 @@ import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
 import { Tooltip } from '@/components/ui';
+import { useDiffMode } from '@/hooks/use-diff-mode';
+import { DiffBadge } from '@/components/ui/diff-badge';
+import type { DiffStatus } from '@/types/diff';
 import styles from './entity-list.module.scss';
 
 /* ── Constants ── */
@@ -47,6 +50,14 @@ function hasMetaSections(entity: Entity): boolean {
     (entity.triggers?.length ?? 0) > 0 ||
     (entity.indexes?.length ?? 0) > 0
   );
+}
+
+function getEntityDiffStatus(
+  entityName: string,
+  statusMap: Map<string, DiffStatus> | undefined,
+): DiffStatus | null {
+  if (!statusMap) return null;
+  return statusMap.get(entityName) ?? null;
 }
 
 /* ── Filter Bar ── */
@@ -95,6 +106,7 @@ function EntityRow({
   staggerIndex,
   isOpen,
   isHighlighted,
+  diffStatus,
   onToggle,
   onOpen,
   onScrollToEntity,
@@ -103,6 +115,7 @@ function EntityRow({
   staggerIndex: number;
   isOpen: boolean;
   isHighlighted: boolean;
+  diffStatus: DiffStatus | null;
   onToggle: () => void;
   onOpen: () => void;
   onScrollToEntity: (name: string) => void;
@@ -142,14 +155,19 @@ function EntityRow({
     <div
       ref={rowRef}
       id={entity.name}
-      className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''}`}
+      className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''} ${diffStatus ? styles[`diff_${diffStatus}`] : ''}`}
       style={
         { '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms` } as React.CSSProperties
       }
     >
       <BorderTrace active={highlight || isHighlighted} />
-      <button className={styles.entityRowHeader} onClick={onToggle}>
+      <button
+        className={styles.entityRowHeader}
+        onClick={diffStatus === 'removed' ? undefined : onToggle}
+        style={diffStatus === 'removed' ? { cursor: 'default' } : undefined}
+      >
         <span className={styles.entityName}>{entity.name}</span>
+        {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
         <span className={styles.categoryBadge}>{entity.badge}</span>
         {(() => {
           const lc = getLifecycleForEntity(entity.name);
@@ -347,6 +365,9 @@ interface EntityListProps {
 }
 
 export function EntityList({ entities }: EntityListProps) {
+  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const entityStatusMap = isDiffMode ? diffResult?.entities.statusMap : undefined;
+
   const [openEntities, setOpenEntities] = useState<Set<string>>(new Set());
   const [highlightedEntity, setHighlightedEntity] = useState<string | null>(null);
   const [activeCategories, setActiveCategories] = useState<Set<string>>(() => {
@@ -382,6 +403,11 @@ export function EntityList({ entities }: EntityListProps) {
       }))
       .filter((g) => g.entities.length > 0);
   }, [entities, activeCategories, allCategoryNames]);
+
+  const removedEntities = useMemo(() => {
+    if (!isDiffMode || !diffResult) return [];
+    return diffResult.entities.removed;
+  }, [isDiffMode, diffResult]);
 
   const toggleCategory = (name: string) => {
     setActiveCategories((prev) => {
@@ -458,6 +484,27 @@ export function EntityList({ entities }: EntityListProps) {
               <span className={styles.groupName}>{group.label}</span>
               <span className={styles.groupLine} />
               <span className={styles.groupCount}>{group.entities.length}</span>
+              {isDiffMode &&
+                entityStatusMap &&
+                (() => {
+                  const addedCount = group.entities.filter(
+                    (e) => entityStatusMap.get(e.name) === 'added',
+                  ).length;
+                  const modifiedCount = group.entities.filter(
+                    (e) => entityStatusMap.get(e.name) === 'modified',
+                  ).length;
+                  if (addedCount === 0 && modifiedCount === 0) return null;
+                  return (
+                    <span className={styles.diffCounts}>
+                      {addedCount > 0 && (
+                        <span className={styles.diffCountAdded}>{addedCount} new</span>
+                      )}
+                      {modifiedCount > 0 && (
+                        <span className={styles.diffCountModified}>{modifiedCount} modified</span>
+                      )}
+                    </span>
+                  );
+                })()}
             </div>
 
             {group.entities.map((entity) => {
@@ -469,12 +516,30 @@ export function EntityList({ entities }: EntityListProps) {
                   staggerIndex={idx}
                   isOpen={openEntities.has(entity.name)}
                   isHighlighted={highlightedEntity === entity.name}
+                  diffStatus={getEntityDiffStatus(entity.name, entityStatusMap)}
                   onToggle={() => toggleEntity(entity.name)}
                   onOpen={() => openEntity(entity.name)}
                   onScrollToEntity={scrollToAndExpand}
                 />
               );
             })}
+
+            {isDiffMode &&
+              removedEntities
+                .filter((e) => e.badge === group.category)
+                .map((entity) => (
+                  <EntityRow
+                    key={`removed-${entity.name}`}
+                    entity={entity}
+                    staggerIndex={0}
+                    isOpen={false}
+                    isHighlighted={false}
+                    diffStatus="removed"
+                    onToggle={() => {}}
+                    onOpen={() => {}}
+                    onScrollToEntity={() => {}}
+                  />
+                ))}
           </div>
         ))}
 
