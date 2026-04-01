@@ -43,8 +43,7 @@ export function Sidebar({ featureDomains }: SidebarProps) {
   const { activeBranch } = useBranchData();
   const branchPrefix = `/${activeBranch}`;
 
-  const isDashboardActive =
-    pathname === branchPrefix || pathname === `${branchPrefix}/`;
+  const isDashboardActive = pathname === branchPrefix || pathname === `${branchPrefix}/`;
 
   return (
     <div className={styles.sidebar}>

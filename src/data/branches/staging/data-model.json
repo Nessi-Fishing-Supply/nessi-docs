@@ -2491,16 +2491,39 @@
       "label": "Wishlists",
       "badges": ["shopping"],
       "fields": [
-        { "name": "id", "type": "uuid", "nullable": false, "isPrimaryKey": true, "default": "gen_random_uuid()" },
-        { "name": "profile_id", "type": "uuid", "nullable": false, "references": { "table": "profiles", "column": "id", "onDelete": "CASCADE" } },
+        {
+          "name": "id",
+          "type": "uuid",
+          "nullable": false,
+          "isPrimaryKey": true,
+          "default": "gen_random_uuid()"
+        },
+        {
+          "name": "profile_id",
+          "type": "uuid",
+          "nullable": false,
+          "references": { "table": "profiles", "column": "id", "onDelete": "CASCADE" }
+        },
         { "name": "name", "type": "text", "nullable": false },
         { "name": "is_public", "type": "boolean", "nullable": false, "default": "false" },
         { "name": "created_at", "type": "timestamptz", "nullable": false, "default": "now()" }
       ],
       "rlsPolicies": [
-        { "name": "wishlists_select_own", "operation": "SELECT", "using": "auth.uid() = profile_id" },
-        { "name": "wishlists_insert_own", "operation": "INSERT", "withCheck": "auth.uid() = profile_id" },
-        { "name": "wishlists_delete_own", "operation": "DELETE", "using": "auth.uid() = profile_id" }
+        {
+          "name": "wishlists_select_own",
+          "operation": "SELECT",
+          "using": "auth.uid() = profile_id"
+        },
+        {
+          "name": "wishlists_insert_own",
+          "operation": "INSERT",
+          "withCheck": "auth.uid() = profile_id"
+        },
+        {
+          "name": "wishlists_delete_own",
+          "operation": "DELETE",
+          "using": "auth.uid() = profile_id"
+        }
       ],
       "indexes": [
         { "name": "wishlists_profile_id_idx", "columns": ["profile_id"], "unique": false }

@@ -35,9 +35,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         <div className={styles.container}>
           {toasts.map((toast) => (
             <div key={toast.id} className={styles.toast}>
-              {toast.color && (
-                <span className={styles.dot} style={{ background: toast.color }} />
-              )}
+              {toast.color && <span className={styles.dot} style={{ background: toast.color }} />}
               <span>{toast.message}</span>
             </div>
           ))}

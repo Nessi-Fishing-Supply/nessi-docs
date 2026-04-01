@@ -15,78 +15,82 @@
 ## File Map
 
 ### New Files
-| File | Purpose |
-|------|---------|
-| `src/types/branch.ts` | `BranchData` and `BranchInfo` types |
-| `src/data/branch-registry.ts` | Branch definitions (main, staging) |
-| `src/data/branches/raw-main.ts` | Re-exports raw JSON from `generated/` |
-| `src/data/branches/raw-staging.ts` | Re-exports raw JSON from `branches/staging/` |
-| `src/data/branches/staging/*.json` | Copied + modified staging data (13 files) |
-| `src/data/branch-loader.ts` | `loadBranch()` — transforms raw bundle → `BranchData` |
-| `src/providers/branch-provider.tsx` | `BranchProvider` + `useBranchData()` hook |
-| `src/app/[branch]/layout.tsx` | Branch layout — wires provider, app shell, sidebar |
-| `src/app/[branch]/page.tsx` | Dashboard (moved) |
-| `src/app/[branch]/journeys/page.tsx` | Journeys index (moved) |
-| `src/app/[branch]/journeys/[domain]/page.tsx` | Domain journeys (moved) |
-| `src/app/[branch]/journeys/[domain]/[slug]/page.tsx` | Journey detail (moved) |
-| `src/app/[branch]/journeys/[domain]/[slug]/client.tsx` | Journey client (moved) |
-| `src/app/[branch]/data-model/page.tsx` | Data model (moved) |
-| `src/app/[branch]/entity-relationships/page.tsx` | ERD (moved) |
-| `src/app/[branch]/lifecycles/page.tsx` | Lifecycles index (moved) |
-| `src/app/[branch]/lifecycles/[slug]/page.tsx` | Lifecycle detail (moved) |
-| `src/app/[branch]/lifecycles/[slug]/client.tsx` | Lifecycle client (moved) |
-| `src/app/[branch]/api-map/page.tsx` | API map (moved) |
-| `src/app/[branch]/architecture/page.tsx` | Architecture index (moved) |
-| `src/app/[branch]/architecture/[slug]/page.tsx` | Architecture detail (moved) |
-| `src/app/[branch]/architecture/[slug]/client.tsx` | Architecture client (moved) |
-| `src/app/[branch]/features/[domain]/page.tsx` | Feature domain (moved) |
-| `src/app/[branch]/config/page.tsx` | Config (moved) |
-| `src/app/[branch]/changelog/page.tsx` | Changelog (moved) |
-| `src/components/layout/branch-switcher/index.tsx` | Branch dropdown UI |
-| `src/components/layout/branch-switcher/branch-switcher.module.scss` | Switcher styles |
-| `src/components/ui/toast/index.tsx` | Minimal toast component |
-| `src/components/ui/toast/toast.module.scss` | Toast styles |
+
+| File                                                                | Purpose                                               |
+| ------------------------------------------------------------------- | ----------------------------------------------------- |
+| `src/types/branch.ts`                                               | `BranchData` and `BranchInfo` types                   |
+| `src/data/branch-registry.ts`                                       | Branch definitions (main, staging)                    |
+| `src/data/branches/raw-main.ts`                                     | Re-exports raw JSON from `generated/`                 |
+| `src/data/branches/raw-staging.ts`                                  | Re-exports raw JSON from `branches/staging/`          |
+| `src/data/branches/staging/*.json`                                  | Copied + modified staging data (13 files)             |
+| `src/data/branch-loader.ts`                                         | `loadBranch()` — transforms raw bundle → `BranchData` |
+| `src/providers/branch-provider.tsx`                                 | `BranchProvider` + `useBranchData()` hook             |
+| `src/app/[branch]/layout.tsx`                                       | Branch layout — wires provider, app shell, sidebar    |
+| `src/app/[branch]/page.tsx`                                         | Dashboard (moved)                                     |
+| `src/app/[branch]/journeys/page.tsx`                                | Journeys index (moved)                                |
+| `src/app/[branch]/journeys/[domain]/page.tsx`                       | Domain journeys (moved)                               |
+| `src/app/[branch]/journeys/[domain]/[slug]/page.tsx`                | Journey detail (moved)                                |
+| `src/app/[branch]/journeys/[domain]/[slug]/client.tsx`              | Journey client (moved)                                |
+| `src/app/[branch]/data-model/page.tsx`                              | Data model (moved)                                    |
+| `src/app/[branch]/entity-relationships/page.tsx`                    | ERD (moved)                                           |
+| `src/app/[branch]/lifecycles/page.tsx`                              | Lifecycles index (moved)                              |
+| `src/app/[branch]/lifecycles/[slug]/page.tsx`                       | Lifecycle detail (moved)                              |
+| `src/app/[branch]/lifecycles/[slug]/client.tsx`                     | Lifecycle client (moved)                              |
+| `src/app/[branch]/api-map/page.tsx`                                 | API map (moved)                                       |
+| `src/app/[branch]/architecture/page.tsx`                            | Architecture index (moved)                            |
+| `src/app/[branch]/architecture/[slug]/page.tsx`                     | Architecture detail (moved)                           |
+| `src/app/[branch]/architecture/[slug]/client.tsx`                   | Architecture client (moved)                           |
+| `src/app/[branch]/features/[domain]/page.tsx`                       | Feature domain (moved)                                |
+| `src/app/[branch]/config/page.tsx`                                  | Config (moved)                                        |
+| `src/app/[branch]/changelog/page.tsx`                               | Changelog (moved)                                     |
+| `src/components/layout/branch-switcher/index.tsx`                   | Branch dropdown UI                                    |
+| `src/components/layout/branch-switcher/branch-switcher.module.scss` | Switcher styles                                       |
+| `src/components/ui/toast/index.tsx`                                 | Minimal toast component                               |
+| `src/components/ui/toast/toast.module.scss`                         | Toast styles                                          |
 
 ### Modified Files
-| File | Change |
-|------|--------|
-| `src/data/index.ts` | Delegates to `branch-loader` for main; keeps exports for `generateStaticParams` |
-| `src/data/transforms/features.ts` | Accept raw data as params instead of importing JSON directly |
-| `src/data/cross-links.ts` | Accept data as params |
-| `src/data/cross-links-lifecycle.ts` | Accept data as params |
-| `src/app/layout.tsx` | Simplified — html/body/fonts/styles only (no AppShell, no data) |
-| `src/app/page.tsx` | Redirect to `/main/` |
-| `src/components/layout/sidebar/index.tsx` | Branch-aware links via context |
-| `src/components/layout/sidebar/sidebar.module.scss` | Add branch switcher section styles |
-| `src/components/layout/app-shell/index.tsx` | Add crossfade class support |
-| `src/components/layout/app-shell/app-shell.module.scss` | Crossfade transition styles |
-| `src/components/layout/topbar/index.tsx` | Branch-aware home link |
+
+| File                                                    | Change                                                                          |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `src/data/index.ts`                                     | Delegates to `branch-loader` for main; keeps exports for `generateStaticParams` |
+| `src/data/transforms/features.ts`                       | Accept raw data as params instead of importing JSON directly                    |
+| `src/data/cross-links.ts`                               | Accept data as params                                                           |
+| `src/data/cross-links-lifecycle.ts`                     | Accept data as params                                                           |
+| `src/app/layout.tsx`                                    | Simplified — html/body/fonts/styles only (no AppShell, no data)                 |
+| `src/app/page.tsx`                                      | Redirect to `/main/`                                                            |
+| `src/components/layout/sidebar/index.tsx`               | Branch-aware links via context                                                  |
+| `src/components/layout/sidebar/sidebar.module.scss`     | Add branch switcher section styles                                              |
+| `src/components/layout/app-shell/index.tsx`             | Add crossfade class support                                                     |
+| `src/components/layout/app-shell/app-shell.module.scss` | Crossfade transition styles                                                     |
+| `src/components/layout/topbar/index.tsx`                | Branch-aware home link                                                          |
 
 ### Deleted Files
-| File | Reason |
-|------|--------|
-| `src/app/journeys/page.tsx` | Moved under `[branch]/` |
-| `src/app/journeys/[domain]/page.tsx` | Moved |
-| `src/app/journeys/[domain]/[slug]/page.tsx` | Moved |
-| `src/app/journeys/[domain]/[slug]/client.tsx` | Moved |
-| `src/app/data-model/page.tsx` | Moved |
-| `src/app/entity-relationships/page.tsx` | Moved |
-| `src/app/lifecycles/page.tsx` | Moved |
-| `src/app/lifecycles/[slug]/page.tsx` | Moved |
-| `src/app/lifecycles/[slug]/client.tsx` | Moved |
-| `src/app/api-map/page.tsx` | Moved |
-| `src/app/architecture/page.tsx` | Moved |
-| `src/app/architecture/[slug]/page.tsx` | Moved |
-| `src/app/architecture/[slug]/client.tsx` | Moved |
-| `src/app/features/[domain]/page.tsx` | Moved |
-| `src/app/config/page.tsx` | Moved |
-| `src/app/changelog/page.tsx` | Moved |
+
+| File                                          | Reason                  |
+| --------------------------------------------- | ----------------------- |
+| `src/app/journeys/page.tsx`                   | Moved under `[branch]/` |
+| `src/app/journeys/[domain]/page.tsx`          | Moved                   |
+| `src/app/journeys/[domain]/[slug]/page.tsx`   | Moved                   |
+| `src/app/journeys/[domain]/[slug]/client.tsx` | Moved                   |
+| `src/app/data-model/page.tsx`                 | Moved                   |
+| `src/app/entity-relationships/page.tsx`       | Moved                   |
+| `src/app/lifecycles/page.tsx`                 | Moved                   |
+| `src/app/lifecycles/[slug]/page.tsx`          | Moved                   |
+| `src/app/lifecycles/[slug]/client.tsx`        | Moved                   |
+| `src/app/api-map/page.tsx`                    | Moved                   |
+| `src/app/architecture/page.tsx`               | Moved                   |
+| `src/app/architecture/[slug]/page.tsx`        | Moved                   |
+| `src/app/architecture/[slug]/client.tsx`      | Moved                   |
+| `src/app/features/[domain]/page.tsx`          | Moved                   |
+| `src/app/config/page.tsx`                     | Moved                   |
+| `src/app/changelog/page.tsx`                  | Moved                   |
 
 ---
 
 ## Task 1: Branch Types and Registry
 
 **Files:**
+
 - Create: `src/types/branch.ts`
 - Create: `src/data/branch-registry.ts`
 
@@ -195,6 +199,7 @@ git commit -m "feat(branch): add BranchData type and branch registry"
 Create per-branch modules that re-export raw JSON. These are the entry points for the branch loader.
 
 **Files:**
+
 - Create: `src/data/branches/raw-main.ts`
 - Create: `src/data/branches/raw-staging.ts` (points to main data initially)
 
@@ -254,6 +259,7 @@ git commit -m "feat(branch): add raw data bundle modules for main and staging"
 Currently `transforms/features.ts`, `cross-links.ts`, and `cross-links-lifecycle.ts` import raw JSON directly. Refactor them to accept data as parameters so they can be called with any branch's data.
 
 **Files:**
+
 - Modify: `src/data/transforms/features.ts`
 - Modify: `src/data/cross-links.ts`
 - Modify: `src/data/cross-links-lifecycle.ts`
@@ -265,22 +271,27 @@ Remove all direct JSON imports at the top of the file. Change each exported func
 Changes to each function:
 
 `getFeatureDomains()` → `getFeatureDomains(allFeatures: Feature[], allJourneys: RawJourney[])`:
+
 - Remove the local `featuresRaw` and `journeysRaw` references
 - Accept `allFeatures` and `allJourneys` as params
 
 `getFeaturesByDomain(domain)` → `getFeaturesByDomain(allFeatures: Feature[], domain: string)`:
+
 - Accept `allFeatures` as first param
 
 `getDomainForScope(scope)` — no change needed (pure lookup, no data dependency)
 
 `getChangelogByDomain(domain)` → `getChangelogByDomain(rawChangelog: RawChangelogEntry[], domain: string)`:
+
 - Accept raw changelog entries as first param
 - Define `RawChangelogEntry` type inline or import it
 
 `getDashboardMetrics()` → `getDashboardMetrics(data: { features: Feature[]; apiGroups: ApiGroup[]; journeys: RawJourney[]; entities: RawEntity[]; lifecycles: RawLifecycle[] })`:
+
 - Accept a data bag with all needed collections
 
 Remove these imports from the top of the file:
+
 ```ts
 // REMOVE these:
 import apiContractsRaw from '../generated/api-contracts.json';
@@ -296,6 +307,7 @@ import changelogRaw from '../generated/changelog.json';
 This file builds the bidirectional endpoint↔table index at module load time using `apiContractsRaw` and `dataModelRaw`. Refactor so the index-building functions accept data as params.
 
 Remove the top-level JSON imports:
+
 ```ts
 // REMOVE:
 import apiContractsRaw from './generated/api-contracts.json';
@@ -319,6 +331,7 @@ Return an object with the lookup functions. The types `EndpointRef` and `TableRe
 - [ ] **Step 3: Refactor `cross-links-lifecycle.ts`**
 
 Remove direct JSON imports and transform calls:
+
 ```ts
 // REMOVE:
 import lifecyclesRaw from './generated/lifecycles.json';
@@ -347,6 +360,7 @@ The import of `getTablesForEndpoint` from `./cross-links` needs to change — it
 Update `index.ts` to call the refactored functions with the raw data it already has imported. This keeps existing behavior working — `index.ts` still imports from `generated/` directly and passes data to the refactored functions.
 
 For example:
+
 ```ts
 // Before:
 import { getFeatureDomains, getFeaturesByDomain, ... } from './transforms/features';
@@ -380,6 +394,7 @@ git commit -m "refactor(data): parameterize transform and cross-link functions f
 Create the central `loadBranch()` function that takes a branch name, loads its raw JSON bundle, runs all transforms, and returns a typed `BranchData` object.
 
 **Files:**
+
 - Create: `src/data/branch-loader.ts`
 - Modify: `src/data/index.ts` — delegate to branch loader for main
 
@@ -493,6 +508,7 @@ git commit -m "feat(branch): add branch loader with transform pipeline"
 Copy the production JSON files and make targeted modifications to create a meaningful delta for demo purposes.
 
 **Files:**
+
 - Create: `src/data/branches/staging/` (13 JSON files)
 - Modify: `src/data/branches/raw-staging.ts` — point to staging JSON
 
@@ -529,20 +545,33 @@ Add a new entity object to the `entities` array:
   "label": "Wishlists",
   "badges": ["shopping"],
   "fields": [
-    { "name": "id", "type": "uuid", "nullable": false, "isPrimaryKey": true, "default": "gen_random_uuid()" },
-    { "name": "profile_id", "type": "uuid", "nullable": false, "references": { "table": "profiles", "column": "id", "onDelete": "CASCADE" } },
+    {
+      "name": "id",
+      "type": "uuid",
+      "nullable": false,
+      "isPrimaryKey": true,
+      "default": "gen_random_uuid()"
+    },
+    {
+      "name": "profile_id",
+      "type": "uuid",
+      "nullable": false,
+      "references": { "table": "profiles", "column": "id", "onDelete": "CASCADE" }
+    },
     { "name": "name", "type": "text", "nullable": false },
     { "name": "is_public", "type": "boolean", "nullable": false, "default": "false" },
     { "name": "created_at", "type": "timestamptz", "nullable": false, "default": "now()" }
   ],
   "rlsPolicies": [
     { "name": "wishlists_select_own", "operation": "SELECT", "using": "auth.uid() = profile_id" },
-    { "name": "wishlists_insert_own", "operation": "INSERT", "withCheck": "auth.uid() = profile_id" },
+    {
+      "name": "wishlists_insert_own",
+      "operation": "INSERT",
+      "withCheck": "auth.uid() = profile_id"
+    },
     { "name": "wishlists_delete_own", "operation": "DELETE", "using": "auth.uid() = profile_id" }
   ],
-  "indexes": [
-    { "name": "wishlists_profile_id_idx", "columns": ["profile_id"], "unique": false }
-  ],
+  "indexes": [{ "name": "wishlists_profile_id_idx", "columns": ["profile_id"], "unique": false }],
   "triggers": []
 }
 ```
@@ -550,11 +579,13 @@ Add a new entity object to the `entities` array:
 - [ ] **Step 4: Add wishlist ERD node and edges to staging `entity-relationships.json`**
 
 Add to `nodes` array:
+
 ```json
 { "id": "wishlists", "label": "Wishlists" }
 ```
 
 Add to `edges` array:
+
 ```json
 { "source": "wishlists", "target": "profiles", "label": "belongs to", "type": "many-to-one" }
 ```
@@ -562,13 +593,29 @@ Add to `edges` array:
 - [ ] **Step 5: Add wishlist API endpoints to staging `api-contracts.json`**
 
 Add a new group to the `groups` array:
+
 ```json
 {
   "name": "Wishlists",
   "endpoints": [
-    { "method": "GET", "path": "/api/wishlists", "description": "List user wishlists", "auth": true },
-    { "method": "POST", "path": "/api/wishlists", "description": "Create a wishlist", "auth": true },
-    { "method": "DELETE", "path": "/api/wishlists/[id]", "description": "Delete a wishlist", "auth": true }
+    {
+      "method": "GET",
+      "path": "/api/wishlists",
+      "description": "List user wishlists",
+      "auth": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/wishlists",
+      "description": "Create a wishlist",
+      "auth": true
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/wishlists/[id]",
+      "description": "Delete a wishlist",
+      "auth": true
+    }
   ]
 }
 ```
@@ -576,6 +623,7 @@ Add a new group to the `groups` array:
 - [ ] **Step 6: Add `archived` state to listing lifecycle in staging `lifecycles.json`**
 
 Find the lifecycle with `"slug": "listing"` and:
+
 - Add to `states` array: `{ "id": "archived", "label": "Archived" }`
 - Add to `transitions` array: `{ "from": "active", "to": "archived", "label": "Archive" }`
 
@@ -620,6 +668,7 @@ git commit -m "feat(branch): add staging data with wishlist entity and listing l
 Create the React context provider that reads the branch from route params and exposes branch data to all components.
 
 **Files:**
+
 - Create: `src/providers/branch-provider.tsx`
 
 - [ ] **Step 1: Create BranchProvider**
@@ -711,6 +760,7 @@ git commit -m "feat(branch): add BranchProvider with comparison slot for future 
 Move all routes under the `[branch]/` dynamic segment. Create the branch layout that wires the provider. Simplify the root layout. Add root redirect.
 
 **Files:**
+
 - Create: `src/app/[branch]/layout.tsx`
 - Modify: `src/app/layout.tsx`
 - Modify: `src/app/page.tsx` — becomes redirect
@@ -883,6 +933,7 @@ mv src/app/changelog/page.tsx "src/app/[branch]/changelog/page.tsx"
 ```
 
 After moving, remove the now-empty old directories:
+
 ```bash
 rm -rf src/app/journeys src/app/data-model src/app/entity-relationships src/app/lifecycles src/app/api-map src/app/architecture src/app/features src/app/config src/app/changelog
 ```
@@ -941,6 +992,7 @@ Update every page to get data from the `BranchProvider` context (via the layout'
 We'll use pattern 1 for server component pages — each page reads the `branch` param and calls `loadBranch()`. This is simple and explicit.
 
 **Files:**
+
 - Modify: All 15 page files under `src/app/[branch]/`
 
 - [ ] **Step 1: Update `[branch]/page.tsx` (Dashboard)**
@@ -955,11 +1007,7 @@ import type { RawJourney } from '@/data/raw-types';
 
 export const metadata = { title: 'Dashboard | Nessi Docs' };
 
-export default async function DashboardPage({
-  params,
-}: {
-  params: Promise<{ branch: string }>;
-}) {
+export default async function DashboardPage({ params }: { params: Promise<{ branch: string }> }) {
   const { branch } = await params;
   const data = loadBranch(branch);
   if (!data) notFound();
@@ -973,10 +1021,7 @@ export default async function DashboardPage({
         entities: data.entities as unknown as RawEntity[],
         lifecycles: data.lifecycles as unknown as RawLifecycle[],
       })}
-      domains={getFeatureDomains(
-        data.features,
-        data.journeys as unknown as RawJourney[],
-      )}
+      domains={getFeatureDomains(data.features, data.journeys as unknown as RawJourney[])}
       recentChanges={data.changelog.slice(0, 5)}
     />
   );
@@ -993,11 +1038,7 @@ import { loadBranch } from '@/data/branch-loader';
 import { DomainGrid } from '@/features/journeys/domain-grid';
 import { DOMAINS } from '@/constants/domains';
 
-export default async function JourneysIndex({
-  params,
-}: {
-  params: Promise<{ branch: string }>;
-}) {
+export default async function JourneysIndex({ params }: { params: Promise<{ branch: string }> }) {
   const { branch } = await params;
   const data = loadBranch(branch);
   if (!data) notFound();
@@ -1021,12 +1062,14 @@ export default async function JourneysIndex({
 - [ ] **Step 3: Update remaining journey pages**
 
 Apply the same pattern to:
+
 - `[branch]/journeys/[domain]/page.tsx` — use `data.journeys` instead of `getJourneysByDomain()`
 - `[branch]/journeys/[domain]/[slug]/page.tsx` — use `data.journeys.find()` instead of `getJourney()`
 
 Each page receives `params: Promise<{ branch: string; domain?: string; slug?: string }>`, loads branch data, and queries it directly.
 
 Update `generateStaticParams` in each to iterate over all branches:
+
 ```tsx
 import { getBranchNames } from '@/data/branch-registry';
 import { loadBranch } from '@/data/branch-loader';
@@ -1065,6 +1108,7 @@ These pages have dynamic segments beyond `[branch]`. Update `generateStaticParam
 - `[branch]/journeys/[domain]/[slug]/page.tsx`
 
 Pattern:
+
 ```tsx
 export function generateStaticParams() {
   return getBranchNames().flatMap((branch) => {
@@ -1087,6 +1131,7 @@ Expected: PASS — all pages now load branch-specific data based on URL
 - [ ] **Step 8: Verify dev server manually**
 
 Run: `pnpm dev`
+
 - Visit `http://localhost:3000` → should redirect to `/main/`
 - Visit `/main/journeys` → should show journeys
 - Visit `/staging/data-model` → should show data model including wishlists entity
@@ -1106,6 +1151,7 @@ git commit -m "feat(branch): refactor all pages to use branch-specific data from
 Update the sidebar so all links include the active branch prefix. The sidebar reads the branch from the URL (via `usePathname()` or from the `BranchProvider` context).
 
 **Files:**
+
 - Modify: `src/components/layout/sidebar/index.tsx`
 - Modify: `src/components/layout/topbar/index.tsx`
 
@@ -1267,6 +1313,7 @@ Expected: PASS
 - [ ] **Step 4: Verify manually**
 
 Run: `pnpm dev`
+
 - On `/main/journeys`, click "Data Model" in sidebar → should go to `/main/data-model`
 - On `/staging/journeys`, click "Data Model" → should go to `/staging/data-model`
 - Click Nessi logo → should go to `/main/` or `/staging/` depending on current branch
@@ -1285,6 +1332,7 @@ git commit -m "feat(branch): make sidebar and topbar navigation branch-aware"
 Add a branch dropdown to the bottom of the sidebar that shows the current branch and allows switching.
 
 **Files:**
+
 - Create: `src/components/layout/branch-switcher/index.tsx`
 - Create: `src/components/layout/branch-switcher/branch-switcher.module.scss`
 - Modify: `src/components/layout/sidebar/index.tsx` — add switcher
@@ -1542,6 +1590,7 @@ Expected: PASS
 - [ ] **Step 6: Verify manually**
 
 Run: `pnpm dev`
+
 - Branch switcher visible at bottom of sidebar
 - Shows "Production" with green dot on `/main/`
 - Click → dropdown opens upward with both branches
@@ -1563,6 +1612,7 @@ git commit -m "feat(branch): add branch switcher to sidebar"
 Create a minimal toast notification component for branch switch feedback.
 
 **Files:**
+
 - Create: `src/components/ui/toast/index.tsx`
 - Create: `src/components/ui/toast/toast.module.scss`
 - Modify: `src/components/layout/branch-switcher/index.tsx` — trigger toast on switch
@@ -1608,9 +1658,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         <div className={styles.container}>
           {toasts.map((toast) => (
             <div key={toast.id} className={styles.toast}>
-              {toast.color && (
-                <span className={styles.dot} style={{ background: toast.color }} />
-              )}
+              {toast.color && <span className={styles.dot} style={{ background: toast.color }} />}
               <span>{toast.message}</span>
             </div>
           ))}
@@ -1653,7 +1701,9 @@ export function useToast(): ToastContextValue {
   box-shadow: 0 4px 16px rgb(0 0 0 / 30%);
   font-size: 13px;
   color: var(--text-primary);
-  animation: toast-in 200ms ease-out, toast-out 200ms ease-in 2800ms forwards;
+  animation:
+    toast-in 200ms ease-out,
+    toast-out 200ms ease-in 2800ms forwards;
   pointer-events: auto;
 }
 
@@ -1746,6 +1796,7 @@ git commit -m "feat(branch): add toast notifications for branch switching"
 Add a subtle crossfade to the main content area when switching branches.
 
 **Files:**
+
 - Modify: `src/components/layout/app-shell/index.tsx`
 - Modify: `src/components/layout/app-shell/app-shell.module.scss`
 
@@ -1816,6 +1867,7 @@ Expected: PASS
 - [ ] **Step 4: Full manual verification**
 
 Run: `pnpm dev`
+
 - Navigate to `/main/data-model`
 - Click "Staging" in branch switcher
 - Content should fade briefly, then show staging data with wishlists entity
@@ -1844,12 +1896,14 @@ git commit -m "feat(branch): add crossfade transition on branch switch"
 ### What's Ready for Diffing
 
 The architecture is set up so that adding diff support requires:
+
 1. A diff utility: `computeDiff(branchA: BranchData, branchB: BranchData) → DiffResult` — compares arrays by slug/id, detects additions/removals/modifications per domain
 2. A `comparisonBranch` toggle in the UI (the provider already has the slot)
 3. Visual overlay rendering on canvases (colored highlights for added/removed/changed nodes)
 4. A `/diff/main...staging/*` route structure (the app routing already supports adding this)
 
 ### Future Cleanup
+
 - `src/data/index.ts` can be simplified further once all consumers use `loadBranch()` directly
 - Cross-link functions can be pre-computed per branch in the loader and stored on `BranchData`
 - When moving to DB-backed storage, `loadBranch()` becomes an async function and pages add `await`

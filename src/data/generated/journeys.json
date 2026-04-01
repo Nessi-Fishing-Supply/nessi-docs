@@ -245,9 +245,7 @@
       "title": "Account Settings & Profile Completeness",
       "persona": "account",
       "description": "Account settings page with sections for personal info, fishing identity, notifications, seller settings, shipping addresses, linked accounts, and profile completeness tracking.",
-      "relatedIssues": [
-        322
-      ],
+      "relatedIssues": [322],
       "nodes": [
         {
           "id": "settings-sections--entry",
@@ -1312,12 +1310,7 @@
       "title": "Buyer-Seller Messaging",
       "persona": "buyer",
       "description": "Buyers and sellers exchange messages in typed threads (inquiry, direct, offer, custom request) with safety filtering, unread tracking, and archiving.",
-      "relatedIssues": [
-        307,
-        312,
-        313,
-        316
-      ],
+      "relatedIssues": [307, 312, 313, 316],
       "nodes": [
         {
           "id": "messaging-hub--entry",
@@ -2578,12 +2571,7 @@
       "title": "Cart (Guest + Authenticated)",
       "persona": "buyer",
       "description": "Cart system with dual storage: localStorage for guests, DB-backed with price snapshots for authenticated users. Includes merge on login, seller grouping, pre-checkout validation, and block enforcement.",
-      "relatedIssues": [
-        128,
-        129,
-        130,
-        324
-      ],
+      "relatedIssues": [128, 129, 130, 324],
       "nodes": [
         {
           "id": "add-to-cart--entry",
@@ -4347,10 +4335,7 @@
       "title": "Blocked Members",
       "persona": "account",
       "description": "View and manage blocked members — authenticated users can see who they have blocked and unblock them from the account settings page. Block enforcement prevents blocked users from viewing the blocker's profiles, shops, listings, and purchasing their items.",
-      "relatedIssues": [
-        322,
-        324
-      ],
+      "relatedIssues": [322, 324],
       "nodes": [
         {
           "id": "block-a-member--entry",
@@ -5045,11 +5030,7 @@
       "title": "Follow / Unfollow",
       "persona": "buyer",
       "description": "Follow or unfollow members and shops to get updates on their activity.",
-      "relatedIssues": [
-        212,
-        215,
-        294
-      ],
+      "relatedIssues": [212, 215, 294],
       "nodes": [
         {
           "id": "follow--entry",
@@ -5547,9 +5528,7 @@
       "title": "Watchlist & Price Alerts",
       "persona": "buyer",
       "description": "Authenticated members watch listings via a heart icon toggle, view their watchlist page, and receive price drop email alerts when sellers reduce prices.",
-      "relatedIssues": [
-        36
-      ],
+      "relatedIssues": [36],
       "nodes": [
         {
           "id": "watch-toggle--entry",
@@ -7940,14 +7919,7 @@
       "title": "Shop Members (Full Lifecycle)",
       "persona": "shop-owner",
       "description": "Full shop member lifecycle: owner invites via email, invitee accepts (or registers & auto-accepts), member works in shop context with role-based permissions, member leaves or is removed with context revocation.",
-      "relatedIssues": [
-        250,
-        251,
-        252,
-        253,
-        254,
-        255
-      ],
+      "relatedIssues": [250, 251, 252, 253, 254, 255],
       "nodes": [
         {
           "id": "lifecycle-hub--entry",
@@ -9810,10 +9782,7 @@
       "title": "Signup (Email + OTP)",
       "persona": "auth",
       "description": "New user registers with email and password, verifies via 6-digit OTP code, and gets a session. Includes invite auto-accept, cart merge, and recently-viewed merge as background side effects.",
-      "relatedIssues": [
-        159,
-        254
-      ],
+      "relatedIssues": [159, 254],
       "nodes": [
         {
           "id": "register--entry",

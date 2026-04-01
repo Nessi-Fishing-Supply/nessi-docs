@@ -17,42 +17,19 @@
     },
     {
       "name": "listing_condition",
-      "values": [
-        "new_with_tags",
-        "new_without_tags",
-        "like_new",
-        "good",
-        "fair",
-        "poor"
-      ]
+      "values": ["new_with_tags", "new_without_tags", "like_new", "good", "fair", "poor"]
     },
     {
       "name": "listing_status",
-      "values": [
-        "draft",
-        "active",
-        "reserved",
-        "sold",
-        "archived",
-        "deleted"
-      ]
+      "values": ["draft", "active", "reserved", "sold", "archived", "deleted"]
     },
     {
       "name": "shipping_paid_by",
-      "values": [
-        "seller",
-        "buyer",
-        "split"
-      ]
+      "values": ["seller", "buyer", "split"]
     },
     {
       "name": "invite_status",
-      "values": [
-        "pending",
-        "accepted",
-        "expired",
-        "revoked"
-      ]
+      "values": ["pending", "accepted", "expired", "revoked"]
     },
     {
       "name": "report_reason",
@@ -68,86 +45,39 @@
     },
     {
       "name": "report_target_type",
-      "values": [
-        "listing",
-        "member",
-        "shop",
-        "message"
-      ]
+      "values": ["listing", "member", "shop", "message"]
     },
     {
       "name": "report_status",
-      "values": [
-        "pending",
-        "reviewed",
-        "resolved",
-        "dismissed"
-      ]
+      "values": ["pending", "reviewed", "resolved", "dismissed"]
     },
     {
       "name": "member_status",
-      "values": [
-        "onboarding",
-        "active",
-        "suspended",
-        "deleted"
-      ]
+      "values": ["onboarding", "active", "suspended", "deleted"]
     },
     {
       "name": "shop_status",
-      "values": [
-        "active",
-        "suspended",
-        "archived",
-        "deleted"
-      ]
+      "values": ["active", "suspended", "archived", "deleted"]
     },
     {
       "name": "thread_type",
-      "values": [
-        "inquiry",
-        "direct",
-        "offer",
-        "custom_request"
-      ]
+      "values": ["inquiry", "direct", "offer", "custom_request"]
     },
     {
       "name": "thread_status",
-      "values": [
-        "active",
-        "archived",
-        "closed"
-      ]
+      "values": ["active", "archived", "closed"]
     },
     {
       "name": "participant_role",
-      "values": [
-        "buyer",
-        "seller",
-        "initiator",
-        "recipient"
-      ]
+      "values": ["buyer", "seller", "initiator", "recipient"]
     },
     {
       "name": "message_type",
-      "values": [
-        "text",
-        "system",
-        "offer_node",
-        "custom_request_node",
-        "listing_node",
-        "nudge"
-      ]
+      "values": ["text", "system", "offer_node", "custom_request_node", "listing_node", "nudge"]
     },
     {
       "name": "offer_status",
-      "values": [
-        "pending",
-        "accepted",
-        "declined",
-        "countered",
-        "expired"
-      ]
+      "values": ["pending", "accepted", "declined", "countered", "expired"]
     }
   ]
 }
