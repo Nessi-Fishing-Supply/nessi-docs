@@ -5,6 +5,7 @@ import { AppShell } from '@/components/layout/app-shell';
 import { Topbar } from '@/components/layout/topbar';
 import { Sidebar } from '@/components/layout/sidebar';
 import { DetailPanel } from '@/components/layout/detail-panel';
+import { DiffToolbar } from '@/components/layout/diff-toolbar';
 import { SearchTrigger } from '@/features/search/search-trigger';
 import { loadBranch, getAllBranchData } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
@@ -40,6 +41,7 @@ export default async function BranchLayout({
           topbar={<Topbar />}
           sidebar={<Sidebar lifecycles={branchData.lifecycles} featureDomains={featureDomains} />}
           detail={<DetailPanel />}
+          diffToolbar={<DiffToolbar />}
         >
           {children}
         </AppShell>

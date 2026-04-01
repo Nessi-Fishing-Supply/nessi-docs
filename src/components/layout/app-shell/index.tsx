@@ -8,10 +8,11 @@ interface AppShellProps {
   topbar: ReactNode;
   sidebar: ReactNode;
   detail: ReactNode;
+  diffToolbar?: ReactNode;
   children: ReactNode;
 }
 
-export function AppShell({ topbar, sidebar, detail, children }: AppShellProps) {
+export function AppShell({ topbar, sidebar, detail, diffToolbar, children }: AppShellProps) {
   const { activeBranch } = useBranchData();
   const mainRef = useRef<HTMLElement>(null);
   const prevBranch = useRef(activeBranch);
@@ -35,7 +36,8 @@ export function AppShell({ topbar, sidebar, detail, children }: AppShellProps) {
       <header className={styles.topbar}>{topbar}</header>
       <nav className={styles.sidebar}>{sidebar}</nav>
       <main ref={refCallback} className={styles.main}>
-        {children}
+        {diffToolbar}
+        <div className={styles.mainContent}>{children}</div>
       </main>
       <aside className={styles.detail}>{detail}</aside>
     </div>
