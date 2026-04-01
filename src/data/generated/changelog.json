@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(realtime): #56 real-time messaging via Supabase Realtime WebSocket",
+      "number": 341,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/341",
+      "mergedAt": "2026-04-01T16:05:03Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "realtime",
+      "type": "feature"
+    },
+    {
       "title": "feat(notifications): #51 in-app notification center",
       "number": 340,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/340",

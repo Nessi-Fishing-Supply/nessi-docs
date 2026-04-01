@@ -1309,8 +1309,8 @@
       "domain": "shopping",
       "title": "Buyer-Seller Messaging",
       "persona": "buyer",
-      "description": "Buyers and sellers exchange messages in typed threads (inquiry, direct, offer, custom request) with safety filtering, unread tracking, and archiving.",
-      "relatedIssues": [307, 312, 313, 316],
+      "description": "Buyers and sellers exchange messages in typed threads (inquiry, direct, offer, custom request) with realtime delivery, typing indicators, read receipts, online status, safety filtering, unread tracking, and archiving.",
+      "relatedIssues": [307, 312, 313, 316, 56],
       "nodes": [
         {
           "id": "messaging-hub--entry",
@@ -1432,7 +1432,7 @@
           "status": "built",
           "route": "/api/messaging/unread-count",
           "codeRef": "src/app/api/messaging/unread-count/route.ts",
-          "why": "Sum of unread_count across all active participant rows for this user. Drives the inbox badge in the navigation header. Query key: ['messaging', 'unread'].",
+          "why": "Sum of unread_count across all active participant rows for this user. Drives the inbox badge in the navigation header. Query key: ['messaging', 'unread-count']. No polling — invalidated by useRealtimeUnreadCount on participant row changes.",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -1510,7 +1510,7 @@
           "status": "built",
           "route": "/api/messaging/threads",
           "codeRef": "src/app/api/messaging/threads/route.ts",
-          "why": "Body: { type, participantIds, roles, listingId?, shopId? }. Returns 201 for new thread, 409 if a thread with the same participants and type already exists (client should redirect to the existing thread). type must be one of: inquiry, direct, offer, custom_request. listingId required for inquiry; shopId required for custom_request.",
+          "why": "Body: { type, participantIds, roles, listingId?, shopId? }. Returns 201 for new thread, 409 if a thread with the same participants and type already exists (client should redirect to the existing thread). type must be one of: inquiry, direct, offer, custom_request. listingId required for inquiry; shopId required for custom_request. For direct type without a listingId, a transaction history gate applies — returns 403 if neither user has a prior transaction.",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -1548,6 +1548,11 @@
               "httpStatus": 400
             },
             {
+              "condition": "direct type: neither user has a prior transaction",
+              "result": "Returns 403 — Direct messaging requires a prior transaction with this user",
+              "httpStatus": 403
+            },
+            {
               "condition": "Thread already exists",
               "result": "Returns 409 — client redirects to existing thread",
               "httpStatus": 409
@@ -1558,6 +1563,33 @@
               "httpStatus": 500
             }
           ]
+        },
+        {
+          "id": "start-thread--decision-create-thread",
+          "type": "decision",
+          "label": "Result?",
+          "options": [
+            {
+              "label": "201 Created",
+              "to": "start-thread--thread-created"
+            },
+            {
+              "label": "409 Duplicate",
+              "to": "start-thread--thread-created"
+            },
+            {
+              "label": "403 DM gate",
+              "to": "start-thread--dm-gate-blocked"
+            }
+          ]
+        },
+        {
+          "id": "start-thread--dm-gate-blocked",
+          "type": "step",
+          "label": "Show DM Gate Error",
+          "layer": "client",
+          "status": "planned",
+          "notes": "On 403 from POST /api/messaging/threads for a direct thread: the UI should surface a message explaining that direct messages require a completed transaction with this user. The gate is enforced via hasTransactionHistoryServer() which checks total_transactions > 0 on both members — placeholder until a real orders table exists."
         },
         {
           "id": "start-thread--thread-created",
@@ -1668,7 +1700,7 @@
           "status": "built",
           "route": "/api/messaging/threads/[thread_id]/read",
           "codeRef": "src/app/api/messaging/threads/[thread_id]/read/route.ts",
-          "why": "Resets unread_count to 0 on the user's message_thread_participants row. Called automatically on thread open. Drives the unread badge update in the nav — client should invalidate ['messaging', 'unread'] after success.",
+          "why": "Resets unread_count to 0 and sets last_read_at to now on the user's message_thread_participants row. Called automatically on thread open. last_read_at is used by the other participant to determine the read receipt threshold.",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -1688,9 +1720,18 @@
           ]
         },
         {
+          "id": "view-thread--subscribe-realtime",
+          "type": "step",
+          "label": "Subscribe to Messages",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/messaging/hooks/use-realtime-messages.ts",
+          "why": "useRealtimeMessages(threadId, userId) opens a Supabase Realtime channel subscribed to INSERT events on the messages table filtered by thread_id. Incoming messages from other users are prepended to the first page of the useMessages infinite query cache immediately. Messages from the current user are skipped — they are already handled by the optimistic update in useSendMessage. After prepending, the query is also invalidated to hydrate full sender data on the next fetch."
+        },
+        {
           "id": "view-thread--thread-loading",
           "type": "step",
-          "label": "Show Thread Loading Skeleton",
+          "label": "Show Thread Skeleton",
           "layer": "client",
           "status": "built",
           "codeRef": "src/app/(frontend)/messages/[thread_id]/thread-detail-page.tsx",
@@ -1712,7 +1753,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/collapsible-header/index.tsx",
-          "why": "Thread context header above the message area. Renders thread-type-specific content: inquiry threads show participant avatar, name link (/member/{slug}), and a link to the listing (\"About: Listing #{id}\"); offer threads show an OfferBubble with accept/decline actions if the current user is the seller and the offer is pending (counter is out of scope for this PR); direct and custom_request threads show participant avatar and name link. When collapsed, renders a slim bar showing TypeBadge + participant first name. Toggle is aria-expanded and aria-label aware."
+          "why": "Thread context header above the message area. Renders thread-type-specific content: inquiry threads show participant avatar, name link (/member/{slug}), and a link to the listing (\"About: Listing #{id}\"); offer threads show an OfferBubble with accept/decline/counter actions if the current user is the seller and the offer is pending; direct and custom_request threads show participant avatar and name link. When collapsed, renders a slim bar showing TypeBadge + participant first name. Toggle is aria-expanded and aria-label aware."
         },
         {
           "id": "view-thread--thread-view",
@@ -1777,7 +1818,25 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/compose-bar/index.tsx",
-          "why": "Auto-expanding textarea at the bottom of the thread view. Grows up to 5 rows then scrolls. Enter submits the message; Shift+Enter inserts a newline. Send button is disabled when input is empty or a send is in-flight (aria-busy). The +/attachment button is present but non-functional (disabled, tabIndex=-1) — attachment upload is out of scope."
+          "why": "Auto-expanding textarea at the bottom of the thread view. Grows up to 5 rows then scrolls. Enter submits the message; Shift+Enter inserts a newline. Send button is disabled when input is empty or a send is in-flight (aria-busy). Each keystroke calls onTyping() which triggers the Broadcast channel typing event. The +/attachment button is present but non-functional (disabled, tabIndex=-1) — attachment upload is out of scope."
+        },
+        {
+          "id": "send-message--broadcast-typing",
+          "type": "step",
+          "label": "Broadcast Typing",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/messaging/hooks/use-typing-indicator.ts",
+          "why": "useTypingIndicator(threadId, userId) opens a Supabase Realtime Broadcast channel named 'typing-{threadId}'. When the user types, startTyping() sends { userId, threadId } on the 'typing' event. The hook receives incoming events and sets isOtherTyping=true, then auto-clears it after 3 seconds of inactivity via a debounced timeout. The current user's own events are filtered out by comparing payload.userId to currentUserId."
+        },
+        {
+          "id": "send-message--show-typing-indicator",
+          "type": "step",
+          "label": "Show Typing Indicator",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/typing-indicator/index.tsx",
+          "why": "Rendered below the message area when isOtherTyping is true. Shows the other participant's first name + animated three-dot indicator (e.g. 'Alex is typing...'). Uses role=\"status\" aria-live=\"polite\" for screen reader announcements. Auto-disappears after 3 seconds if no new typing event is received."
         },
         {
           "id": "send-message--send-message-api",
@@ -1899,6 +1958,83 @@
           "why": "When the safety filter returns nudge_off_platform or nudge_negotiation, the API inserts a second message with type='nudge' immediately after the user's message. MessageNode renders nudge-type messages as an InlineBanner (info variant) centered in the thread — not attributed to a sender. This guides the user toward platform-native flows (e.g. the offer system) without blocking their original message."
         },
         {
+          "id": "send-message--new-message-pill",
+          "type": "step",
+          "label": "Show New Message Pill",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/app/(frontend)/messages/[thread_id]/thread-detail-page.tsx",
+          "why": "When a new message arrives via Realtime and the user is scrolled more than 150px from the bottom of the message area, a \"New message\" pill button appears at the bottom of the message viewport. Clicking it smooth-scrolls to the bottom and dismisses the pill. If the user is already near the bottom, the view auto-scrolls instead and the pill is never shown."
+        },
+        {
+          "id": "realtime-receive--entry",
+          "type": "entry",
+          "label": "Receive Realtime Message"
+        },
+        {
+          "id": "realtime-receive--realtime-insert",
+          "type": "step",
+          "label": "Receive Message Event",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/messaging/hooks/use-realtime-messages.ts",
+          "why": "Supabase Realtime INSERT event fires on the messages table for the open thread_id channel. The hook prepends the incoming message to the first page of the useMessages cache. Sender data from the Realtime payload has placeholder name fields; a follow-up query invalidation hydrates the full sender profile on the next refetch. Deduplication: if the message ID already exists in the first page (from an optimistic insert by the current user), it is skipped."
+        },
+        {
+          "id": "realtime-receive--scroll-or-pill",
+          "type": "step",
+          "label": "Scroll or Show Pill",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/app/(frontend)/messages/[thread_id]/thread-detail-page.tsx",
+          "why": "On latestMessageId change: if the user is within 150px of the bottom (isNearBottom()), the thread area smooth-scrolls to the bottom. If the user is scrolled further up, the 'New message' pill appears instead to avoid interrupting their scroll position."
+        },
+        {
+          "id": "realtime-receive--read-receipt-shown",
+          "type": "step",
+          "label": "Show Read Receipt",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/message-thread/index.tsx",
+          "why": "Below the last sent text message (identified by lastSentMessageIndex), a 'Read' label appears when otherParticipantLastReadAt is set and is newer than that message's created_at. The last_read_at value comes from the ThreadWithParticipants data returned by useThread() — it is set by PATCH /api/messaging/threads/{id}/read when the other participant opens the thread."
+        },
+        {
+          "id": "online-status--entry",
+          "type": "entry",
+          "label": "Online Status Heartbeat"
+        },
+        {
+          "id": "online-status--send-heartbeat",
+          "type": "step",
+          "label": "Send Heartbeat",
+          "layer": "background",
+          "status": "built",
+          "route": "/api/members/heartbeat",
+          "codeRef": "src/features/messaging/hooks/use-online-status.ts",
+          "why": "useOnlineStatus(enabled) fires PATCH /api/members/heartbeat on mount and then every 60 seconds. The request sets last_seen_at = now() on the members row for the authenticated user. Best-effort — failures are silently swallowed. Enabled is false for unauthenticated users.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "online-status--online-dot",
+          "type": "step",
+          "label": "Show Online Indicator",
+          "layer": "client",
+          "status": "planned",
+          "codeRef": "src/features/messaging/hooks/use-online-status.ts",
+          "notes": "isOnline(lastSeenAt) utility returns true if last_seen_at is within the last 5 minutes. A green dot indicator on participant avatars (thread header, inbox rows) is planned but not yet wired into the UI components. The heartbeat and isOnline() logic are built; the rendering layer is still outstanding."
+        },
+        {
           "id": "manage-thread--entry",
           "type": "entry",
           "label": "Archive a Thread"
@@ -1946,28 +2082,57 @@
         {
           "id": "offer-flow--open-offer-form",
           "type": "step",
-          "label": "Open Offer Form",
+          "label": "Open Offer Sheet",
           "layer": "client",
-          "status": "planned",
-          "notes": "Offer entry UI is Phase 3. OfferBubble component is production-ready and handles all 5 statuses (pending, accepted, declined, countered, expired) — see src/features/messaging/components/offer-bubble/index.tsx. The form/modal to create an offer is not yet built. Should show listing price, min offer floor (70% of price), default prefill (80%), and offer amount input. Uses calculateMinOffer() and calculateDefaultOffer() from offer-validation.ts."
+          "status": "built",
+          "codeRef": "src/features/messaging/components/offer-sheet/index.tsx",
+          "why": "Seller clicks 'Make Offer' in the ComposeBar (available for inquiry threads when currentUserRole is 'buyer'). Sets offerSheetMode='create' and opens the OfferSheet bottom drawer. The sheet shows listing title, price, the 70% minimum floor, and an amount input prefilled at 80% of listing price."
         },
         {
           "id": "offer-flow--validate-offer-amount",
           "type": "step",
           "label": "Validate Offer Amount",
           "layer": "client",
-          "status": "planned",
-          "notes": "Client-side pre-validation using validateOfferAmount(amountCents, listingPriceCents) before submitting. Minimum is 70% of listing price. Shows inline error if below floor."
+          "status": "built",
+          "codeRef": "src/features/messaging/utils/offer-validation.ts",
+          "why": "Client-side validation using validateOfferAmount(amountCents, listingPriceCents) before submitting. Minimum is 70% of listing price (OFFER_MIN_PERCENTAGE = 0.70). Shows inline error if below floor."
         },
         {
           "id": "offer-flow--create-offer-api",
           "type": "step",
           "label": "Submit Offer",
           "layer": "server",
-          "status": "planned",
+          "status": "built",
           "route": "/api/offers",
           "codeRef": "src/app/api/offers/route.ts",
-          "notes": "Route is built (issue #316). Client entry point (offer form/modal) is still planned (Phase 3). Server service createOfferServer() validates: listing is active, buyer is not the seller, amount >= 70% of price, seller is valid; expires stale offers; creates offer thread + offer row in one operation."
+          "why": "createOfferServer() validates: listing is active, buyer is not the seller, amount >= 70% of price, seller is valid; expires stale offers; creates offer thread + offer row in one operation. Returns the created Offer.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Offer amount below 70% floor",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Buyer is the seller",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Listing is not active",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
         },
         {
           "id": "offer-flow--offer-created-email",
@@ -1983,8 +2148,9 @@
           "type": "step",
           "label": "Offer Thread Opens",
           "layer": "client",
-          "status": "planned",
-          "notes": "createOfferServer() creates a thread of type='offer' as part of the offer creation. The buyer should be navigated into that thread where the offer appears as an offer_node message rendered by OfferBubble."
+          "status": "built",
+          "codeRef": "src/app/(frontend)/messages/[thread_id]/thread-detail-page.tsx",
+          "why": "createOfferServer() creates a thread of type='offer' as part of the offer creation. handleOfferCreated() receives the new offer and navigates to /messages/{newOffer.thread_id}, opening the offer thread where the offer appears as an offer_node message rendered by OfferBubble."
         },
         {
           "id": "offer-flow--seller-reviews-offer",
@@ -1993,7 +2159,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/collapsible-header/index.tsx",
-          "why": "CollapsibleHeader shows an OfferBubble for offer-type threads when offer data is loaded. Accept and Decline action buttons are rendered to the seller when offer.status is 'pending' (isSeller check via participant role). Counter-offer is explicitly out of scope for earlier PRs — onCounterOffer is passed as undefined in those builds. Accept/decline/counter trigger useOfferActions mutations with optimistic status updates. OfferBubble handles all 5 statuses: pending, accepted, declined, countered, expired."
+          "why": "CollapsibleHeader shows an OfferBubble for offer-type threads when offer data is loaded. Accept and Decline action buttons are rendered to the seller when offer.status is 'pending' (isSeller check via participant role). Counter-offer opens the OfferSheet in 'counter' mode. Accept/decline/counter trigger useOfferActions mutations with optimistic status updates. OfferBubble handles all 5 statuses: pending, accepted, declined, countered, expired."
         },
         {
           "id": "offer-flow--decision-seller-reviews-offer",
@@ -2251,12 +2417,21 @@
         {
           "id": "unread-badge--poll-unread",
           "type": "step",
-          "label": "Poll Unread Count",
+          "label": "Fetch Unread Count",
           "layer": "server",
           "status": "built",
           "route": "/api/messaging/unread-count",
           "codeRef": "src/app/api/messaging/unread-count/route.ts",
-          "why": "Sums unread_count across all active participant rows. Designed to be called by useUnreadCount() hook on a polling interval or query invalidation. Query key: ['messaging', 'unread']."
+          "why": "Sums unread_count across all active participant rows. useUnreadCount() has no polling interval — the count stays fresh via useRealtimeUnreadCount, which invalidates this query key on any UPDATE to the user's message_thread_participants rows. Query key: ['messages', 'unread-count']."
+        },
+        {
+          "id": "unread-badge--realtime-unread",
+          "type": "step",
+          "label": "Subscribe to Unread Changes",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/messaging/hooks/use-realtime-unread-count.ts",
+          "why": "useRealtimeUnreadCount(userId) subscribes to UPDATE events on message_thread_participants filtered by member_id. On any change, it invalidates both ['messages', 'unread-count'] and ['messages', 'threads'] query keys, triggering a refetch of the badge count and thread list. This replaces the previous polling-based approach."
         },
         {
           "id": "unread-badge--render-badge",
@@ -2340,6 +2515,25 @@
         },
         {
           "from": "start-thread--create-thread",
+          "to": "start-thread--decision-create-thread"
+        },
+        {
+          "from": "start-thread--decision-create-thread",
+          "to": "start-thread--thread-created",
+          "opt": "201 Created"
+        },
+        {
+          "from": "start-thread--decision-create-thread",
+          "to": "start-thread--thread-created",
+          "opt": "409 Duplicate"
+        },
+        {
+          "from": "start-thread--decision-create-thread",
+          "to": "start-thread--dm-gate-blocked",
+          "opt": "403 DM gate"
+        },
+        {
+          "from": "start-thread--dm-gate-blocked",
           "to": "start-thread--thread-created"
         },
         {
@@ -2381,6 +2575,10 @@
         },
         {
           "from": "view-thread--mark-read",
+          "to": "view-thread--subscribe-realtime"
+        },
+        {
+          "from": "view-thread--subscribe-realtime",
           "to": "view-thread--thread-loading"
         },
         {
@@ -2418,6 +2616,14 @@
         },
         {
           "from": "send-message--compose-message",
+          "to": "send-message--broadcast-typing"
+        },
+        {
+          "from": "send-message--broadcast-typing",
+          "to": "send-message--show-typing-indicator"
+        },
+        {
+          "from": "send-message--show-typing-indicator",
           "to": "send-message--send-message-api"
         },
         {
@@ -2463,6 +2669,30 @@
         {
           "from": "send-message--message-delivered",
           "to": "send-message--nudge-system-message"
+        },
+        {
+          "from": "send-message--nudge-system-message",
+          "to": "send-message--new-message-pill"
+        },
+        {
+          "from": "realtime-receive--entry",
+          "to": "realtime-receive--realtime-insert"
+        },
+        {
+          "from": "realtime-receive--realtime-insert",
+          "to": "realtime-receive--scroll-or-pill"
+        },
+        {
+          "from": "realtime-receive--scroll-or-pill",
+          "to": "realtime-receive--read-receipt-shown"
+        },
+        {
+          "from": "online-status--entry",
+          "to": "online-status--send-heartbeat"
+        },
+        {
+          "from": "online-status--send-heartbeat",
+          "to": "online-status--online-dot"
         },
         {
           "from": "manage-thread--entry",
@@ -2576,6 +2806,10 @@
         },
         {
           "from": "unread-badge--poll-unread",
+          "to": "unread-badge--realtime-unread"
+        },
+        {
+          "from": "unread-badge--realtime-unread",
           "to": "unread-badge--render-badge"
         }
       ]
@@ -6095,8 +6329,8 @@
       "domain": "account",
       "title": "Notification Center",
       "persona": "auth",
-      "description": "Bell icon in navbar with unread count badge, activity feed dropdown with notification list, mark-as-read, and notification creation via messaging integration.",
-      "relatedIssues": [51],
+      "description": "Bell icon in navbar with unread count badge, activity feed dropdown with notification list, mark-as-read, realtime delivery via Supabase Realtime, and browser push notifications.",
+      "relatedIssues": [51, 56],
       "nodes": [
         {
           "id": "notifications-hub--entry",
@@ -6122,8 +6356,8 @@
               "to": "notifications-hub--open-panel"
             },
             {
-              "label": "Background poll",
-              "to": "notifications-hub--poll-unread-count"
+              "label": "New event arrives",
+              "to": "notifications-hub--realtime-notification-insert"
             }
           ]
         },
@@ -6333,40 +6567,45 @@
           "why": "After mutation settles, the 'Mark all as read' button disappears (hasUnread becomes false). All notification items lose their unread dot and bold title styling. The badge on the bell icon drops to 0 and disappears."
         },
         {
-          "id": "unread-count-polling--entry",
+          "id": "realtime-delivery--entry",
           "type": "entry",
-          "label": "Unread Count Polling"
+          "label": "Realtime Notification Delivery"
         },
         {
-          "id": "unread-count-polling--poll-unread-count",
+          "id": "realtime-delivery--realtime-notification-insert",
           "type": "step",
-          "label": "Poll Unread Count",
-          "layer": "server",
+          "label": "Receive Realtime Event",
+          "layer": "background",
           "status": "built",
-          "route": "/api/notifications/unread-count",
-          "codeRef": "src/app/api/notifications/unread-count/route.ts",
-          "why": "useUnreadNotificationCount() runs with refetchInterval: 30000 — polls every 30 seconds while the app is open. Returns { count: number }. Query key: ['notifications', 'unread-count']. Supabase Realtime to replace polling is tracked in issue #56.",
-          "errorCases": [
-            {
-              "condition": "No authenticated session",
-              "result": "Returns 401 Unauthorized",
-              "httpStatus": 401
-            },
-            {
-              "condition": "Database error",
-              "result": "Returns 500 Internal Server Error",
-              "httpStatus": 500
-            }
-          ]
+          "codeRef": "src/features/notifications/hooks/use-realtime-notifications.ts",
+          "why": "useRealtimeNotifications(userId) subscribes to INSERT events on the notifications table filtered by user_id via Supabase Realtime. On any new row, it invalidates both ['notifications'] and ['notifications', 'unread-count'] query keys, which triggers a refetch of the notification list and badge count. Replaces the previous 30-second polling interval on useUnreadNotificationCount."
         },
         {
-          "id": "unread-count-polling--update-badge",
+          "id": "realtime-delivery--update-badge",
           "type": "step",
           "label": "Update Bell Badge",
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/notifications/components/notification-bell/index.tsx",
-          "why": "useUnreadNotificationCount() drives the badge count displayed on the bell. Badge shows numeric count capped at '9+'. Badge is hidden entirely when count is 0. aria-label on the bell button updates to include the count when unread > 0."
+          "why": "useUnreadNotificationCount() drives the badge count displayed on the bell. No polling — count stays fresh via the Realtime invalidation from useRealtimeNotifications. Badge shows numeric count capped at '9+'. Badge is hidden entirely when count is 0. aria-label on the bell button updates to include the count when unread > 0."
+        },
+        {
+          "id": "realtime-delivery--browser-notification",
+          "type": "step",
+          "label": "Fire Browser Notification",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/notifications/utils/browser-notifications.ts",
+          "why": "Inside the Realtime onPayload handler, showBrowserNotification(title, body) is called if the notification row has a title. Uses the Web Notifications API: checks Notification.permission === 'granted' before calling new Notification(title, { body }). Silently no-ops if the API is unavailable (SSR guard) or permission is not granted. Browser permission must be requested separately via requestNotificationPermission()."
+        },
+        {
+          "id": "realtime-delivery--permission-prompt",
+          "type": "step",
+          "label": "Request Notification Permission",
+          "layer": "client",
+          "status": "planned",
+          "codeRef": "src/features/notifications/utils/browser-notifications.ts",
+          "notes": "requestNotificationPermission() is implemented but not yet called from the UI. A permission prompt should be surfaced at an appropriate moment (e.g., first time the user opens the notification panel, or after they receive their first notification) to improve browser notification opt-in rates. Should only prompt once and store the result."
         },
         {
           "id": "notification-dispatch--entry",
@@ -6389,7 +6628,7 @@
           "layer": "server",
           "status": "built",
           "codeRef": "src/features/notifications/services/notifications-server.ts",
-          "why": "createNotificationServer() inserts a row into the notifications table using the admin client (bypasses RLS, required for cross-user notification creation). After insert, counts all notifications for the user. If count > 100, fetches the oldest (count - 100) rows and deletes them — enforcing the 100-notification cap per user.",
+          "why": "createNotificationServer() inserts a row into the notifications table using the admin client (bypasses RLS, required for cross-user notification creation). After insert, counts all notifications for the user. If count > 100, fetches the oldest (count - 100) rows and deletes them — enforcing the 100-notification cap per user. The INSERT event on the notifications table triggers the Supabase Realtime subscription in useRealtimeNotifications on the recipient's client.",
           "errorCases": [
             {
               "condition": "Insert fails",
@@ -6414,8 +6653,8 @@
           "label": "Notification Appears",
           "layer": "client",
           "status": "built",
-          "codeRef": "src/features/notifications/hooks/use-unread-notification-count.ts",
-          "why": "The new notification becomes visible to the recipient on the next 30-second poll cycle. When the user opens the panel, useNotifications() fetches the list which now includes the new item. Real-time delivery via Supabase Realtime is planned for issue #56."
+          "codeRef": "src/features/notifications/hooks/use-realtime-notifications.ts",
+          "why": "The new notification row INSERT triggers the Realtime subscription in useRealtimeNotifications. Both ['notifications'] and ['notifications', 'unread-count'] are invalidated, causing the badge count to increment and the notification list to include the new item the next time the panel is opened. If the user already has the panel open, useNotifications() refetches and the new item appears in the list."
         },
         {
           "id": "panel-close--entry",
@@ -6509,12 +6748,20 @@
           "to": "mark-all-read--mark-all-read-done"
         },
         {
-          "from": "unread-count-polling--entry",
-          "to": "unread-count-polling--poll-unread-count"
+          "from": "realtime-delivery--entry",
+          "to": "realtime-delivery--realtime-notification-insert"
         },
         {
-          "from": "unread-count-polling--poll-unread-count",
-          "to": "unread-count-polling--update-badge"
+          "from": "realtime-delivery--realtime-notification-insert",
+          "to": "realtime-delivery--update-badge"
+        },
+        {
+          "from": "realtime-delivery--update-badge",
+          "to": "realtime-delivery--browser-notification"
+        },
+        {
+          "from": "realtime-delivery--browser-notification",
+          "to": "realtime-delivery--permission-prompt"
         },
         {
           "from": "notification-dispatch--entry",

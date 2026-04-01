@@ -755,6 +755,18 @@
           "sourceFile": "src/app/api/members/block/route.ts"
         },
         {
+          "method": "PATCH",
+          "path": "/api/members/heartbeat",
+          "label": "Heartbeat Member",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Update the current user's last seen timestamp for online status",
+          "tags": [],
+          "sourceFile": "src/app/api/members/heartbeat/route.ts"
+        },
+        {
           "method": "GET",
           "path": "/api/members/seller-preconditions",
           "label": "List Seller Precondition",
@@ -855,7 +867,7 @@
           "label": "List Thread",
           "auth": "user",
           "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
+          "errorCodes": [400, 401, 403, 409, 500],
           "requestFields": [],
           "description": "List the authenticated user's message threads with optional type filter",
           "tags": [],
@@ -867,7 +879,7 @@
           "label": "Threads Messaging",
           "auth": "user",
           "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
+          "errorCodes": [400, 401, 403, 409, 500],
           "requestFields": [],
           "description": "Create a new message thread between two members",
           "tags": [],
