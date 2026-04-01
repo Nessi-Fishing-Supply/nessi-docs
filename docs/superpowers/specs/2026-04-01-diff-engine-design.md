@@ -34,10 +34,10 @@ The branch system is in place: URL-based branching (`/main/`, `/staging/`), `Bra
 type DiffStatus = 'added' | 'removed' | 'modified' | 'unchanged';
 
 interface DiffSet<T> {
-  added: T[];                   // exists on head, not on base
-  removed: T[];                 // exists on base, not on head
-  modified: ModifiedItem<T>[];  // exists on both, fields differ
-  unchanged: T[];               // identical on both
+  added: T[]; // exists on head, not on base
+  removed: T[]; // exists on base, not on head
+  modified: ModifiedItem<T>[]; // exists on both, fields differ
+  unchanged: T[]; // identical on both
   /** Quick lookup: item key → status */
   statusMap: Map<string, DiffStatus>;
 }
@@ -49,7 +49,7 @@ interface ModifiedItem<T> {
 }
 
 interface FieldChange {
-  field: string;       // top-level property name, e.g. "description", "fields"
+  field: string; // top-level property name, e.g. "description", "fields"
   baseValue: unknown;
   headValue: unknown;
 }
@@ -79,16 +79,16 @@ interface DiffResult {
 
 Items are matched between base and head by a stable key per domain:
 
-| Domain | Key |
-|--------|-----|
-| entities | `name` |
-| journeys | `slug` |
-| lifecycles | `slug` |
-| apiGroups | `name` |
-| archDiagrams | `slug` |
-| features | `slug` |
-| erdNodes | `id` |
-| configEnums | `name` (or `slug` — check the type) |
+| Domain       | Key                                 |
+| ------------ | ----------------------------------- |
+| entities     | `name`                              |
+| journeys     | `slug`                              |
+| lifecycles   | `slug`                              |
+| apiGroups    | `name`                              |
+| archDiagrams | `slug`                              |
+| features     | `slug`                              |
+| erdNodes     | `id`                                |
+| configEnums  | `name` (or `slug` — check the type) |
 
 If a key exists on both sides, the item is compared field-by-field (top-level properties). If fields differ, it's `modified` with a `FieldChange` list. If only on head, `added`. If only on base, `removed`.
 
@@ -128,7 +128,7 @@ interface ApiGroupDiff {
 ### 1.6 `computeDiff` Function
 
 ```ts
-function computeDiff(base: BranchData, head: BranchData): DiffResult
+function computeDiff(base: BranchData, head: BranchData): DiffResult;
 ```
 
 Pure function. No side effects. Memoizable. Takes two `BranchData` objects and returns the complete diff.
@@ -142,7 +142,7 @@ function useDiffMode(): {
   diffResult: DiffResult | null;
   activate: (branchName: string) => void;
   deactivate: () => void;
-}
+};
 ```
 
 - Reads `?compare=` from the URL search params
@@ -158,12 +158,12 @@ function useDiffMode(): {
 
 Consistent with the existing changelog `CHANGE_TYPE_CONFIG`:
 
-| Status | Color | Hex | Usage |
-|--------|-------|-----|-------|
-| Added | Green | `#3d8c75` | Left border, subtle bg tint, badges |
-| Modified | Blue | `#7b8fcd` | Left border, subtle bg tint, badges |
-| Removed | Red | `#b84040` | Left border, subtle bg tint, ghost styling |
-| Unchanged | — | — | Dimmed to ~50% opacity in diff mode |
+| Status    | Color | Hex       | Usage                                      |
+| --------- | ----- | --------- | ------------------------------------------ |
+| Added     | Green | `#3d8c75` | Left border, subtle bg tint, badges        |
+| Modified  | Blue  | `#7b8fcd` | Left border, subtle bg tint, badges        |
+| Removed   | Red   | `#b84040` | Left border, subtle bg tint, ghost styling |
+| Unchanged | —     | —         | Dimmed to ~50% opacity in diff mode        |
 
 These are defined as CSS custom properties for diff mode:
 
@@ -186,10 +186,12 @@ These are defined as CSS custom properties for diff mode:
 **Location:** Sidebar, in the switcher section at the bottom — directly above the branch switcher button.
 
 **Appearance:**
+
 - When no comparison active: A subtle "Compare..." button/link below the branch switcher
 - When comparison active: Shows "vs **Main**" (or whatever the comparison branch is) with a dismiss (X) button
 
 **Behavior:**
+
 - Click opens a dropdown listing all branches except the active one
 - Selecting a branch adds `?compare=branchName` to the current URL
 - Dismiss removes the query param
@@ -199,6 +201,7 @@ These are defined as CSS custom properties for diff mode:
 **Location:** Top of the main content area, between the page header and the content. Persistent while diff mode is active.
 
 **Content:**
+
 - Left: "Comparing against **Production**" (or the comparison branch label)
 - Center: Summary counts — "3 added · 1 modified · 0 removed" with colored dots (page-specific counts, not global)
 - Right: Dismiss button (X) to exit diff mode
@@ -208,8 +211,9 @@ These are defined as CSS custom properties for diff mode:
 ### 3.3 Diff Legend (Canvas Views)
 
 Replaces or augments the existing canvas legend when diff mode is active. Shows:
+
 - Green dot + "Added"
-- Blue dot + "Modified"  
+- Blue dot + "Modified"
 - Red dot + "Removed"
 - Gray dot + "Unchanged"
 
@@ -222,17 +226,20 @@ Applies to: Data Model, API Map, Config, Lifecycles list, Features, Architecture
 ### 4.1 Row-Level Treatment
 
 **Added rows:**
+
 - Left border: 2px solid `var(--diff-added)`
 - Background: `var(--diff-added-bg)`
 - Small "NEW" pill badge next to the item name (same green)
 - Normal interactivity (expandable, clickable)
 
 **Modified rows:**
+
 - Left border: 2px solid `var(--diff-modified)`
 - Background: `var(--diff-modified-bg)`
 - When expanded: changed fields highlighted with a subtle blue underline or background. Shows the base value struck through and the head value next to it (for simple fields like description, name). For complex fields (arrays), shows a count: "3 → 5 fields"
 
 **Removed rows:**
+
 - Left border: 2px solid `var(--diff-removed)`
 - Background: `var(--diff-removed-bg)`
 - Text at ~60% opacity (ghosted)
@@ -240,6 +247,7 @@ Applies to: Data Model, API Map, Config, Lifecycles list, Features, Architecture
 - Shown at the bottom of their category group, separated by a subtle "Removed" section label
 
 **Unchanged rows:**
+
 - Opacity reduced to `var(--diff-dim-opacity)` (~50%)
 - Normal interactivity preserved (can still expand/click)
 
@@ -260,18 +268,21 @@ Applies to: Journeys, ERD, Lifecycle detail, Architecture diagrams.
 ### 5.1 Node Treatment
 
 **Added nodes:**
+
 - Border color: `var(--diff-added)` (replaces the normal category/layer color)
 - Subtle green glow (similar to selection glow but green)
 - Full opacity
 - Tooltip includes "New on {branch}" context
 
 **Modified nodes:**
+
 - Border color: `var(--diff-modified)`
 - Subtle blue glow
 - Full opacity
 - Tooltip includes "Changed" with a list of modified fields
 
 **Removed nodes:**
+
 - Rendered as ghost nodes at their base-branch position
 - Border color: `var(--diff-removed)`, dashed border style
 - Opacity ~40%
@@ -279,12 +290,14 @@ Applies to: Journeys, ERD, Lifecycle detail, Architecture diagrams.
 - Label still visible for context
 
 **Unchanged nodes:**
+
 - Opacity reduced to ~60%
 - Normal interactivity preserved (trace mode, tooltips still work)
 
 ### 5.2 Edge Treatment
 
 Edges follow the status of their most "significant" connected node:
+
 - If either endpoint is added → edge is green (added)
 - If either endpoint is removed → edge is red, dashed (removed)
 - If either endpoint is modified → edge is blue (modified)
@@ -297,11 +310,13 @@ When diff mode is active, the canvas legend gets a "Diff" section appended (or r
 ### 5.4 Brand-New Canvases
 
 If a journey/lifecycle/architecture diagram exists only on the current branch (entirely new):
+
 - Canvas renders normally with full styling (no diff coloring needed — everything is "new")
 - Diff toolbar banner shows: "This {type} only exists on {branch} — not present on {comparison branch}"
 - No dimming since there's nothing to compare
 
 If a diagram was removed (exists only on base):
+
 - The page still renders (using base data) but all nodes are ghost-styled (removed treatment)
 - Diff toolbar: "This {type} was removed — it exists on {comparison branch} but not on {branch}"
 
@@ -312,6 +327,7 @@ If a diagram was removed (exists only on base):
 ### 6.1 Sidebar
 
 When diff mode is active, sidebar nav items that correspond to domains with changes get a small colored dot:
+
 - Green dot: domain has additions
 - Blue dot: domain has modifications
 - If both: blue dot (modifications are more interesting than additions)
@@ -321,6 +337,7 @@ Feature domain links in the sidebar: if a feature domain only exists on the curr
 ### 6.2 Journey Domain Grid
 
 Domain cards on the journeys index page show diff badges:
+
 - "2 new journeys" (green badge)
 - "1 modified" (blue badge)
 - If a domain only exists on the current branch, the entire card gets the added treatment
@@ -345,6 +362,7 @@ Same as list views — added/modified/removed row treatment on list items.
 10. Sidebar shows diff dots on affected domains
 
 **Exiting diff mode:**
+
 - Click X on the diff toolbar banner
 - Click X on the comparison indicator in the sidebar
 - Select a different branch in the comparison dropdown (switches comparison)
@@ -355,6 +373,7 @@ Same as list views — added/modified/removed row treatment on list items.
 ## 8. Implementation Scope
 
 ### Phase 1 (This Spec)
+
 - Diff engine (`computeDiff`, `DiffResult`, `DiffSet`)
 - `useDiffMode` hook
 - Comparison dropdown in sidebar
@@ -363,6 +382,7 @@ Same as list views — added/modified/removed row treatment on list items.
 - List view diff treatment (Data Model, API Map, Lifecycles list, Architecture list)
 
 ### Phase 2 (Separate Spec)
+
 - Canvas view diff treatment (Journeys, ERD, Lifecycle detail, Architecture canvases)
 - Sidebar diff dots
 - Journey domain grid diff badges
@@ -372,6 +392,7 @@ Same as list views — added/modified/removed row treatment on list items.
 ### Why Phase the Canvas Work
 
 Canvas diff rendering is significantly more complex than list diff rendering — it requires:
+
 - Injecting ghost nodes from the base branch into the current layout
 - Modifying the shared canvas infrastructure (node components, edge components, legend)
 - Handling layout recomputation when ghost nodes are added
@@ -384,25 +405,27 @@ List views are self-contained per-component changes. Canvas views touch shared i
 ## 9. File Map
 
 ### New Files
-| File | Purpose |
-|------|---------|
-| `src/data/diff-engine.ts` | `computeDiff()`, `DiffResult`, `DiffSet`, types |
-| `src/hooks/use-diff-mode.ts` | `useDiffMode()` hook — reads query param, computes diff |
-| `src/components/layout/comparison-selector/index.tsx` | Comparison dropdown in sidebar |
-| `src/components/layout/comparison-selector/comparison-selector.module.scss` | Styles |
-| `src/components/layout/diff-toolbar/index.tsx` | Diff banner at top of content area |
-| `src/components/layout/diff-toolbar/diff-toolbar.module.scss` | Styles |
-| `src/styles/variables/diff.scss` | Diff color CSS custom properties |
+
+| File                                                                        | Purpose                                                 |
+| --------------------------------------------------------------------------- | ------------------------------------------------------- |
+| `src/data/diff-engine.ts`                                                   | `computeDiff()`, `DiffResult`, `DiffSet`, types         |
+| `src/hooks/use-diff-mode.ts`                                                | `useDiffMode()` hook — reads query param, computes diff |
+| `src/components/layout/comparison-selector/index.tsx`                       | Comparison dropdown in sidebar                          |
+| `src/components/layout/comparison-selector/comparison-selector.module.scss` | Styles                                                  |
+| `src/components/layout/diff-toolbar/index.tsx`                              | Diff banner at top of content area                      |
+| `src/components/layout/diff-toolbar/diff-toolbar.module.scss`               | Styles                                                  |
+| `src/styles/variables/diff.scss`                                            | Diff color CSS custom properties                        |
 
 ### Modified Files
-| File | Change |
-|------|--------|
-| `src/components/layout/sidebar/index.tsx` | Add ComparisonSelector below BranchSwitcher |
-| `src/components/layout/sidebar/sidebar.module.scss` | Space for comparison selector |
-| `src/components/layout/app-shell/index.tsx` | Render DiffToolbar when diff mode active |
-| `src/features/data-model/entity-list/index.tsx` | Diff-aware row styling |
-| `src/features/api-map/api-list/index.tsx` | Diff-aware row styling |
-| `src/features/lifecycles/lifecycle-list/index.tsx` | Diff-aware row styling |
-| `src/features/architecture/architecture-list/index.tsx` | Diff-aware row styling |
-| `src/features/config/config-list/index.tsx` | Diff-aware row styling |
-| `src/styles/globals.scss` | Import diff variables |
+
+| File                                                    | Change                                      |
+| ------------------------------------------------------- | ------------------------------------------- |
+| `src/components/layout/sidebar/index.tsx`               | Add ComparisonSelector below BranchSwitcher |
+| `src/components/layout/sidebar/sidebar.module.scss`     | Space for comparison selector               |
+| `src/components/layout/app-shell/index.tsx`             | Render DiffToolbar when diff mode active    |
+| `src/features/data-model/entity-list/index.tsx`         | Diff-aware row styling                      |
+| `src/features/api-map/api-list/index.tsx`               | Diff-aware row styling                      |
+| `src/features/lifecycles/lifecycle-list/index.tsx`      | Diff-aware row styling                      |
+| `src/features/architecture/architecture-list/index.tsx` | Diff-aware row styling                      |
+| `src/features/config/config-list/index.tsx`             | Diff-aware row styling                      |
+| `src/styles/globals.scss`                               | Import diff variables                       |
