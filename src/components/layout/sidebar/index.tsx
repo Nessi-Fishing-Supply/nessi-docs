@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -37,6 +37,16 @@ const REFERENCE_ITEMS = [
   { id: 'changelog', label: 'Changelog', icon: HiOutlineClock, path: '/changelog' },
 ];
 
+const NAV_TO_DOMAIN: Record<string, string> = {
+  journeys: 'journeys',
+  api: 'apiGroups',
+  data: 'entities',
+  erd: 'erdNodes',
+  lifecycles: 'lifecycles',
+  architecture: 'archDiagrams',
+  config: 'configEnums',
+};
+
 function DiffNavItem() {
   const branchHref = useBranchHref();
   const pathname = usePathname();
@@ -54,6 +64,100 @@ function DiffNavItem() {
       <HiOutlineSwitchHorizontal className={styles.navIcon} />
       <span>Compare Overview</span>
     </Link>
+  );
+}
+
+function DiffDots({ children }: { children: (dots: Map<string, string>) => React.ReactNode }) {
+  const { isActive, diffResult } = useDiffMode();
+
+  const dots = useMemo(() => {
+    const map = new Map<string, string>();
+    if (!isActive || !diffResult) return map;
+    for (const [navId, domainKey] of Object.entries(NAV_TO_DOMAIN)) {
+      const domain = diffResult.summary.byDomain[domainKey];
+      if (!domain) continue;
+      if (domain.modified > 0) {
+        map.set(navId, 'var(--diff-modified)');
+      } else if (domain.added > 0) {
+        map.set(navId, 'var(--diff-added)');
+      } else if (domain.removed > 0) {
+        map.set(navId, 'var(--diff-removed)');
+      }
+    }
+    return map;
+  }, [isActive, diffResult]);
+
+  return <>{children(dots)}</>;
+}
+
+interface NavContentProps {
+  dots: Map<string, string>;
+  pathname: string;
+  branchPrefix: string;
+  branchHref: (path: string) => string;
+  featureDomains: { slug: string; label: string }[];
+}
+
+function NavContent({ dots, pathname, branchPrefix, branchHref, featureDomains }: NavContentProps) {
+  return (
+    <>
+      <div className={styles.sectionLabel}>System Views</div>
+      <div className={styles.nav}>
+        {SYSTEM_ITEMS.map((item) => {
+          const Icon = item.icon;
+          const isActive = pathname.startsWith(`${branchPrefix}${item.path}`);
+          const dotColor = dots.get(item.id);
+          return (
+            <Link
+              key={item.id}
+              href={branchHref(item.path)}
+              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+            >
+              <Icon className={styles.navIcon} />
+              <span>{item.label}</span>
+              {dotColor && <span className={styles.diffDot} style={{ background: dotColor }} />}
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className={styles.sectionLabel}>Features</div>
+      <div className={styles.nav}>
+        {featureDomains.map((domain) => {
+          const isActive = pathname.startsWith(`${branchPrefix}/features/${domain.slug}`);
+          return (
+            <Link
+              key={domain.slug}
+              href={branchHref(`/features/${domain.slug}`)}
+              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+            >
+              <HiOutlineLightningBolt className={styles.navIcon} />
+              <span>{domain.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className={styles.sectionLabel}>Reference</div>
+      <div className={styles.nav}>
+        {REFERENCE_ITEMS.map((item) => {
+          const Icon = item.icon;
+          const isActive = pathname.startsWith(`${branchPrefix}${item.path}`);
+          const dotColor = dots.get(item.id);
+          return (
+            <Link
+              key={item.id}
+              href={branchHref(item.path)}
+              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+            >
+              <Icon className={styles.navIcon} />
+              <span>{item.label}</span>
+              {dotColor && <span className={styles.diffDot} style={{ background: dotColor }} />}
+            </Link>
+          );
+        })}
+      </div>
+    </>
   );
 }
 
@@ -81,58 +185,29 @@ export function Sidebar({ featureDomains }: SidebarProps) {
           <span>Dashboard</span>
         </Link>
 
-        <div className={styles.sectionLabel}>System Views</div>
-        <div className={styles.nav}>
-          {SYSTEM_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname.startsWith(`${branchPrefix}${item.path}`);
-            return (
-              <Link
-                key={item.id}
-                href={branchHref(item.path)}
-                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-              >
-                <Icon className={styles.navIcon} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className={styles.sectionLabel}>Features</div>
-        <div className={styles.nav}>
-          {featureDomains.map((domain) => {
-            const isActive = pathname.startsWith(`${branchPrefix}/features/${domain.slug}`);
-            return (
-              <Link
-                key={domain.slug}
-                href={branchHref(`/features/${domain.slug}`)}
-                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-              >
-                <HiOutlineLightningBolt className={styles.navIcon} />
-                <span>{domain.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className={styles.sectionLabel}>Reference</div>
-        <div className={styles.nav}>
-          {REFERENCE_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname.startsWith(`${branchPrefix}${item.path}`);
-            return (
-              <Link
-                key={item.id}
-                href={branchHref(item.path)}
-                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-              >
-                <Icon className={styles.navIcon} />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
+        <Suspense
+          fallback={
+            <NavContent
+              dots={new Map()}
+              pathname={pathname}
+              branchPrefix={branchPrefix}
+              branchHref={branchHref}
+              featureDomains={featureDomains}
+            />
+          }
+        >
+          <DiffDots>
+            {(dots) => (
+              <NavContent
+                dots={dots}
+                pathname={pathname}
+                branchPrefix={branchPrefix}
+                branchHref={branchHref}
+                featureDomains={featureDomains}
+              />
+            )}
+          </DiffDots>
+        </Suspense>
       </div>
 
       <div className={styles.switcherSection}>

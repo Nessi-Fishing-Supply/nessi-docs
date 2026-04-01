@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { DOMAINS } from '@/constants/domains';
@@ -20,5 +21,9 @@ export default async function JourneysIndex({ params }: { params: Promise<{ bran
     };
   }).filter((d) => d.journeyCount > 0);
 
-  return <DomainGrid domains={domains} />;
+  return (
+    <Suspense>
+      <DomainGrid domains={domains} />
+    </Suspense>
+  );
 }
