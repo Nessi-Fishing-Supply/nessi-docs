@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(notifications): #51 in-app notification center",
+      "number": 340,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/340",
+      "mergedAt": "2026-04-01T14:56:33Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "notifications",
+      "type": "feature"
+    },
+    {
       "title": "feat(messaging): #317 offer expiry cron job",
       "number": 339,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/339",

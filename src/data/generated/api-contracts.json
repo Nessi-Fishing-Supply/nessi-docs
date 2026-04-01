@@ -888,6 +888,59 @@
       ]
     },
     {
+      "name": "Notifications",
+      "endpoints": [
+        {
+          "method": "PATCH",
+          "path": "/api/notifications/:id/read",
+          "label": "Read :Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 404, 500],
+          "requestFields": [],
+          "description": "Mark a single notification as read",
+          "tags": [],
+          "sourceFile": "src/app/api/notifications/[id]/read/route.ts"
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/notifications/read-all",
+          "label": "Read All Notification",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Mark all notifications as read for the authenticated user",
+          "tags": [],
+          "sourceFile": "src/app/api/notifications/read-all/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/notifications",
+          "label": "List Notification",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "List notifications for the authenticated user with pagination",
+          "tags": [],
+          "sourceFile": "src/app/api/notifications/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/notifications/unread-count",
+          "label": "List Unread Count",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Get the unread notification count for the authenticated user",
+          "tags": [],
+          "sourceFile": "src/app/api/notifications/unread-count/route.ts"
+        }
+      ]
+    },
+    {
       "name": "Offers",
       "endpoints": [
         {

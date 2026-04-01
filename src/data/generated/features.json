@@ -436,6 +436,34 @@
       ]
     },
     {
+      "slug": "notifications",
+      "name": "Notifications",
+      "description": "In-app notification center — bell icon in the navbar with unread count badge, activity feed of recent events, mark-as-read functionality. Notifications are created server-side by other features (messaging, offers, orders, watchlist) as fire-and-forget side effects.",
+      "componentCount": 3,
+      "endpointCount": 4,
+      "hookCount": 4,
+      "serviceCount": 2,
+      "entities": ["notifications"],
+      "journeySlugs": ["notifications"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "notifications",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "notifications",
+          "href": "/journeys/notifications"
+        },
+        {
+          "type": "api-group",
+          "label": "Notifications",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
       "slug": "orders",
       "name": "Orders",
       "description": "Order tracking and management for buyers and sellers.",
