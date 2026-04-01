@@ -50,6 +50,7 @@
 }
 
 .diffNavItem {
+  margin-top: 6px;
   border-left-color: var(--diff-modified);
 
   &.active {

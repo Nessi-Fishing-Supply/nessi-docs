@@ -52,7 +52,7 @@ function DiffNavItem() {
       className={`${styles.navItem} ${styles.diffNavItem} ${isOnDiffPage ? styles.active : ''}`}
     >
       <HiOutlineSwitchHorizontal className={styles.navIcon} />
-      <span>Diff Overview</span>
+      <span>Compare Overview</span>
     </Link>
   );
 }
@@ -136,6 +136,7 @@ export function Sidebar({ featureDomains }: SidebarProps) {
       </div>
 
       <div className={styles.switcherSection}>
+        <div className={styles.sectionLabel}>Branch</div>
         <BranchSwitcher />
         <div className={styles.comparisonSection}>
           <Suspense>

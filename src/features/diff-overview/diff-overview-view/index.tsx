@@ -254,7 +254,7 @@ export function DiffOverviewView() {
   return (
     <div className={styles.container}>
       <PageHeader
-        title="Diff Overview"
+        title="Compare Overview"
         subtitle={`Comparing against ${comparisonLabel}`}
         metrics={[
           { value: added, label: 'added' },
