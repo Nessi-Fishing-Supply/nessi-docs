@@ -15,20 +15,21 @@ import {
   HiOutlineChip,
 } from 'react-icons/hi';
 import type { Lifecycle } from '@/types/lifecycle';
+import { useBranchData } from '@/providers/branch-provider';
 import styles from './sidebar.module.scss';
 
 const SYSTEM_ITEMS = [
-  { id: 'journeys', label: 'Journeys', icon: HiOutlineMap, href: '/journeys' },
-  { id: 'api', label: 'API Map', icon: HiOutlineServer, href: '/api-map' },
-  { id: 'data', label: 'Data Model', icon: HiOutlineDatabase, href: '/data-model' },
-  { id: 'erd', label: 'Relationships', icon: HiOutlineLink, href: '/entity-relationships' },
-  { id: 'lifecycles', label: 'Lifecycles', icon: HiOutlineRefresh, href: '/lifecycles' },
-  { id: 'architecture', label: 'Architecture', icon: HiOutlineChip, href: '/architecture' },
+  { id: 'journeys', label: 'Journeys', icon: HiOutlineMap, path: '/journeys' },
+  { id: 'api', label: 'API Map', icon: HiOutlineServer, path: '/api-map' },
+  { id: 'data', label: 'Data Model', icon: HiOutlineDatabase, path: '/data-model' },
+  { id: 'erd', label: 'Relationships', icon: HiOutlineLink, path: '/entity-relationships' },
+  { id: 'lifecycles', label: 'Lifecycles', icon: HiOutlineRefresh, path: '/lifecycles' },
+  { id: 'architecture', label: 'Architecture', icon: HiOutlineChip, path: '/architecture' },
 ];
 
 const REFERENCE_ITEMS = [
-  { id: 'config', label: 'Config', icon: HiOutlineCog, href: '/config' },
-  { id: 'changelog', label: 'Changelog', icon: HiOutlineClock, href: '/changelog' },
+  { id: 'config', label: 'Config', icon: HiOutlineCog, path: '/config' },
+  { id: 'changelog', label: 'Changelog', icon: HiOutlineClock, path: '/changelog' },
 ];
 
 interface SidebarProps {
@@ -38,12 +39,18 @@ interface SidebarProps {
 
 export function Sidebar({ featureDomains }: SidebarProps) {
   const pathname = usePathname();
+  const { activeBranch } = useBranchData();
+  const branchPrefix = `/${activeBranch}`;
 
-  const isDashboardActive = pathname === '/';
+  const isDashboardActive =
+    pathname === branchPrefix || pathname === `${branchPrefix}/`;
 
   return (
     <div className={styles.sidebar}>
-      <Link href="/" className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}>
+      <Link
+        href={`${branchPrefix}/`}
+        className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}
+      >
         <HiOutlineHome className={styles.navIcon} />
         <span>Dashboard</span>
       </Link>
@@ -52,11 +59,12 @@ export function Sidebar({ featureDomains }: SidebarProps) {
       <div className={styles.nav}>
         {SYSTEM_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname.startsWith(item.href);
+          const fullHref = `${branchPrefix}${item.path}`;
+          const isActive = pathname.startsWith(fullHref);
           return (
             <Link
               key={item.id}
-              href={item.href}
+              href={fullHref}
               className={`${styles.navItem} ${isActive ? styles.active : ''}`}
             >
               <Icon className={styles.navIcon} />
@@ -69,11 +77,12 @@ export function Sidebar({ featureDomains }: SidebarProps) {
       <div className={styles.sectionLabel}>Features</div>
       <div className={styles.nav}>
         {featureDomains.map((domain) => {
-          const isActive = pathname.startsWith(`/features/${domain.slug}`);
+          const fullHref = `${branchPrefix}/features/${domain.slug}`;
+          const isActive = pathname.startsWith(fullHref);
           return (
             <Link
               key={domain.slug}
-              href={`/features/${domain.slug}`}
+              href={fullHref}
               className={`${styles.navItem} ${isActive ? styles.active : ''}`}
             >
               <HiOutlineLightningBolt className={styles.navIcon} />
@@ -87,11 +96,12 @@ export function Sidebar({ featureDomains }: SidebarProps) {
       <div className={styles.nav}>
         {REFERENCE_ITEMS.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname.startsWith(item.href);
+          const fullHref = `${branchPrefix}${item.path}`;
+          const isActive = pathname.startsWith(fullHref);
           return (
             <Link
               key={item.id}
-              href={item.href}
+              href={fullHref}
               className={`${styles.navItem} ${isActive ? styles.active : ''}`}
             >
               <Icon className={styles.navIcon} />
