@@ -545,5 +545,7 @@
 }
 
 .diff_unchanged {
-  opacity: var(--diff-dim-opacity);
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: default;
 }

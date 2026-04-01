@@ -60,6 +60,23 @@ function getEntityDiffStatus(
   return statusMap.get(entityName) ?? null;
 }
 
+function diffSort<T>(
+  items: T[],
+  getKey: (item: T) => string,
+  statusMap: Map<string, DiffStatus> | undefined,
+): T[] {
+  if (!statusMap) return items;
+  return [...items].sort((a, b) => {
+    const aStatus = statusMap.get(getKey(a));
+    const bStatus = statusMap.get(getKey(b));
+    const aChanged = aStatus === 'added' || aStatus === 'modified';
+    const bChanged = bStatus === 'added' || bStatus === 'modified';
+    if (aChanged && !bChanged) return -1;
+    if (!aChanged && bChanged) return 1;
+    return 0;
+  });
+}
+
 /* ── Filter Bar ── */
 
 function FilterBar({
@@ -163,8 +180,10 @@ function EntityRow({
       <BorderTrace active={highlight || isHighlighted} />
       <button
         className={styles.entityRowHeader}
-        onClick={diffStatus === 'removed' ? undefined : onToggle}
-        style={diffStatus === 'removed' ? { cursor: 'default' } : undefined}
+        onClick={diffStatus === 'removed' || diffStatus === 'unchanged' ? undefined : onToggle}
+        style={
+          diffStatus === 'removed' || diffStatus === 'unchanged' ? { cursor: 'default' } : undefined
+        }
       >
         <span className={styles.entityName}>{entity.name}</span>
         {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
@@ -406,13 +425,18 @@ export function EntityList({ entities }: EntityListProps) {
 
   const grouped = useMemo(() => {
     return CATEGORY_ORDER.filter((cat) => activeCategories.has(cat) && allCategoryNames.has(cat))
-      .map((cat) => ({
-        category: cat,
-        label: CATEGORY_LABELS[cat] ?? cat,
-        entities: entities.filter((e) => e.badge === cat),
-      }))
+      .map((cat) => {
+        const catEntities = entities.filter((e) => e.badge === cat);
+        return {
+          category: cat,
+          label: CATEGORY_LABELS[cat] ?? cat,
+          entities: isDiffMode
+            ? diffSort(catEntities, (e) => e.name, entityStatusMap)
+            : catEntities,
+        };
+      })
       .filter((g) => g.entities.length > 0 || removedEntities.some((e) => e.badge === g.category));
-  }, [entities, activeCategories, allCategoryNames, removedEntities]);
+  }, [entities, activeCategories, allCategoryNames, removedEntities, isDiffMode, entityStatusMap]);
 
   const toggleCategory = (name: string) => {
     setActiveCategories((prev) => {

@@ -316,7 +316,17 @@ function EndpointRow({
       }
     >
       <BorderTrace active={highlight} />
-      <button className={styles.epRowHeader} onClick={() => setIsOpen((p) => !p)}>
+      <button
+        className={styles.epRowHeader}
+        onClick={
+          diffStatus === 'removed' || diffStatus === 'unchanged'
+            ? undefined
+            : () => setIsOpen((p) => !p)
+        }
+        style={
+          diffStatus === 'removed' || diffStatus === 'unchanged' ? { cursor: 'default' } : undefined
+        }
+      >
         <span className={styles.methodBadge}>{endpoint.method}</span>
         {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
         <span className={styles.epPath}>
@@ -384,6 +394,25 @@ function buildResponseCodes(errorCodes?: number[]): ResponseCode[] {
   return codes;
 }
 
+/* ── Helpers ── */
+
+function diffSort<T>(
+  items: T[],
+  getKey: (item: T) => string,
+  statusMap: Map<string, DiffStatus> | undefined,
+): T[] {
+  if (!statusMap) return items;
+  return [...items].sort((a, b) => {
+    const aStatus = statusMap.get(getKey(a));
+    const bStatus = statusMap.get(getKey(b));
+    const aChanged = aStatus === 'added' || aStatus === 'modified';
+    const bChanged = bStatus === 'added' || bStatus === 'modified';
+    if (aChanged && !bChanged) return -1;
+    if (!aChanged && bChanged) return 1;
+    return 0;
+  });
+}
+
 /* ── Main Component ── */
 
 interface ApiListProps {
@@ -443,12 +472,31 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
   const filteredGroups = useMemo(() => {
     return groups
       .filter((g) => activeGroups.has(g.name))
-      .map((g) => ({
-        ...g,
-        endpoints: g.endpoints.filter((ep) => activeMethods.has(ep.method)),
-      }))
+      .map((g) => {
+        const filtered = g.endpoints.filter((ep) => activeMethods.has(ep.method));
+        const sorted = isDiffMode
+          ? diffSort(
+              filtered,
+              (ep) => `${ep.method}:${ep.path}`,
+              (() => {
+                if (!apiGroupDiffs) return undefined;
+                const gd = apiGroupDiffs.find((d) => d.group.name === g.name);
+                if (!gd) return undefined;
+                const map = new Map<string, DiffStatus>();
+                for (const ep of gd.endpointDiffs.added)
+                  map.set(`${ep.method}:${ep.path}`, 'added');
+                for (const ep of gd.endpointDiffs.unchanged)
+                  map.set(`${ep.method}:${ep.path}`, 'unchanged');
+                for (const m of gd.endpointDiffs.modified)
+                  map.set(`${m.head.method}:${m.head.path}`, 'modified');
+                return map;
+              })(),
+            )
+          : filtered;
+        return { ...g, endpoints: sorted };
+      })
       .filter((g) => g.endpoints.length > 0);
-  }, [groups, activeGroups, activeMethods]);
+  }, [groups, activeGroups, activeMethods, isDiffMode, apiGroupDiffs]);
 
   let staggerIndex = 0;
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import type { ConfigEnum } from '@/types/config-ref';
 import type { Role } from '@/types/permission';
 import type { DiffStatus } from '@/types/diff';
@@ -14,6 +14,23 @@ import styles from './config-list.module.scss';
 
 const ROLES_SLUG = '__roles__';
 
+function diffSort<T>(
+  items: T[],
+  getKey: (item: T) => string,
+  statusMap: Map<string, DiffStatus> | undefined,
+): T[] {
+  if (!statusMap) return items;
+  return [...items].sort((a, b) => {
+    const aStatus = statusMap.get(getKey(a));
+    const bStatus = statusMap.get(getKey(b));
+    const aChanged = aStatus === 'added' || aStatus === 'modified';
+    const bChanged = bStatus === 'added' || bStatus === 'modified';
+    if (aChanged && !bChanged) return -1;
+    if (!aChanged && bChanged) return 1;
+    return 0;
+  });
+}
+
 interface ConfigListProps {
   enums: ConfigEnum[];
   roles?: Role[];
@@ -26,6 +43,11 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
   const [openSlugs, setOpenSlugs] = useState<Set<string>>(new Set());
   const [highlightSlug, setHighlightSlug] = useState<string | null>(null);
   const blockRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+
+  const sortedEnums = useMemo(
+    () => diffSort(enums, (e) => e.slug, configStatusMap),
+    [enums, configStatusMap],
+  );
 
   const totalValues = enums.reduce((sum, e) => sum + e.values.length, 0);
 
@@ -51,6 +73,7 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
   }, []);
 
   const toggleSlug = (slug: string) => {
+    if (isDiffMode && configStatusMap?.get(slug) === 'unchanged') return;
     const willOpen = !openSlugs.has(slug);
     setOpenSlugs((prev) => {
       const next = new Set(prev);
@@ -93,7 +116,7 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
             <span className={styles.tocCount}>{roles.length}</span>
           </button>
         )}
-        {enums.map((e) => (
+        {sortedEnums.map((e) => (
           <button
             key={e.slug}
             className={`${styles.tocItem} ${openSlugs.has(e.slug) ? styles.tocItemActive : ''}`}
@@ -184,7 +207,7 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
         )}
 
         {/* Config Enum Blocks */}
-        {enums.map((e) => {
+        {sortedEnums.map((e) => {
           const isOpen = openSlugs.has(e.slug);
           return (
             <div

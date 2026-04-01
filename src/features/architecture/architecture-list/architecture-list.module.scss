@@ -93,5 +93,6 @@
 }
 
 .diff_unchanged {
-  opacity: var(--diff-dim-opacity) !important;
+  opacity: 0.3 !important;
+  pointer-events: none;
 }
