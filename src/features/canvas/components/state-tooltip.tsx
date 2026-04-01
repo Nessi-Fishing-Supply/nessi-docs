@@ -15,6 +15,8 @@ interface StateTooltipProps {
   diffStatus?: DiffStatus | null;
   diffChanges?: NodeChange[];
   diffOnly?: boolean;
+  activeBranchLabel?: string;
+  compareBranchLabel?: string;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
@@ -25,6 +27,8 @@ export function StateTooltip({
   diffStatus,
   diffChanges,
   diffOnly,
+  activeBranchLabel,
+  compareBranchLabel,
   onMouseEnter,
   onMouseLeave,
 }: StateTooltipProps) {
@@ -123,7 +127,12 @@ export function StateTooltip({
 
           {/* Diff changes */}
           {diffStatus && diffStatus !== 'unchanged' && (
-            <DiffTooltipSection status={diffStatus} changes={diffChanges} />
+            <DiffTooltipSection
+              status={diffStatus}
+              changes={diffChanges}
+              activeBranchLabel={activeBranchLabel}
+              compareBranchLabel={compareBranchLabel}
+            />
           )}
 
           {/* Normal content — hidden in diff-only mode */}

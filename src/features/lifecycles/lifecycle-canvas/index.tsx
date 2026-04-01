@@ -16,6 +16,7 @@ import {
   type PortSide,
 } from '@/features/canvas/utils/geometry';
 import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
+import { useBranchData } from '@/providers/branch-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 
@@ -182,7 +183,11 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
   });
 
   // Diff mode integration
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, compareBranch, diffResult } = useDiffMode();
+  const { activeBranch, branches } = useBranchData();
+  const activeBranchLabel = branches.find((b) => b.name === activeBranch)?.label ?? activeBranch;
+  const compareBranchLabel =
+    branches.find((b) => b.name === compareBranch)?.label ?? compareBranch ?? '';
 
   // Get base lifecycle for node-level comparison
   const baseLifecycle =
@@ -423,6 +428,8 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
               diffStatus={tooltipDiffStatus}
               diffChanges={isDiffMode ? changesMap.get(state.id) : undefined}
               diffOnly={isDiffMode}
+              activeBranchLabel={isDiffMode ? activeBranchLabel : undefined}
+              compareBranchLabel={isDiffMode ? compareBranchLabel : undefined}
               onMouseEnter={() => {
                 if (hoverTimer.current) clearTimeout(hoverTimer.current);
               }}
