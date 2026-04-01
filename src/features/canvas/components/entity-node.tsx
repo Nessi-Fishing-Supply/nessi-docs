@@ -3,6 +3,7 @@
 import { useState, memo } from 'react';
 import { ERD_NODE_WIDTH, ERD_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { ErdNode } from '@/types/entity-relationship';
+import type { DiffStatus } from '@/types/diff';
 
 const BADGE_COLORS: Record<string, string> = {
   core: '#3d8c75', // teal — primary marketplace entities
@@ -32,21 +33,65 @@ interface EntityNodeProps {
   node: ErdNode;
   isSelected?: boolean;
   onClick?: () => void;
+  diffStatus?: DiffStatus | null;
 }
 
-export const EntityNode = memo(function EntityNode({ node, isSelected, onClick }: EntityNodeProps) {
+export const EntityNode = memo(function EntityNode({
+  node,
+  isSelected,
+  onClick,
+  diffStatus,
+}: EntityNodeProps) {
   const [hovered, setHovered] = useState(false);
-  const color = BADGE_COLORS[node.badge ?? ''] ?? DEFAULT_COLOR;
-  const showHoverGlow = hovered && !isSelected;
+
+  const naturalColor = BADGE_COLORS[node.badge ?? ''] ?? DEFAULT_COLOR;
+  const isGhost = diffStatus === 'removed';
+
+  const color =
+    diffStatus === 'added'
+      ? '#3d8c75'
+      : diffStatus === 'modified'
+        ? '#7b8fcd'
+        : diffStatus === 'removed'
+          ? '#b84040'
+          : naturalColor;
+
+  const diffOpacity = isGhost ? 0.4 : diffStatus === 'unchanged' ? 0.6 : 1;
+
+  const showDiffGlow = (diffStatus === 'added' || diffStatus === 'modified') && !isSelected;
+  const showHoverGlow = hovered && !isSelected && !isGhost;
 
   return (
     <g
       transform={`translate(${node.x},${node.y})`}
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ cursor: 'pointer' }}
+      onClick={isGhost ? undefined : onClick}
+      onMouseEnter={isGhost ? undefined : () => setHovered(true)}
+      onMouseLeave={isGhost ? undefined : () => setHovered(false)}
+      style={{
+        cursor: isGhost ? 'default' : 'pointer',
+        opacity: diffOpacity,
+        transition: 'opacity 400ms ease-out',
+        pointerEvents: isGhost ? 'none' : undefined,
+      }}
     >
+      {/* Diff glow */}
+      {showDiffGlow && (
+        <>
+          <defs>
+            <radialGradient id={`erd-diff-${node.id}`}>
+              <stop offset="0%" stopColor={color} stopOpacity={0.12} />
+              <stop offset="100%" stopColor={color} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <circle
+            cx={ERD_NODE_WIDTH / 2}
+            cy={ERD_NODE_HEIGHT / 2}
+            r={ERD_NODE_WIDTH * 0.55}
+            fill={`url(#erd-diff-${node.id})`}
+            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
+          />
+        </>
+      )}
       {/* Hover glow */}
       {showHoverGlow && (
         <>
@@ -103,6 +148,7 @@ export const EntityNode = memo(function EntityNode({ node, isSelected, onClick }
         fill={hexToRgba(color, 0.08)}
         stroke={isSelected ? color : hovered ? hexToRgba(color, 0.4) : hexToRgba(color, 0.2)}
         strokeWidth={isSelected ? 1.5 : 1}
+        strokeDasharray={isGhost ? '4 3' : undefined}
       />
       {/* Left accent bar */}
       <rect x={0} y={8} width={3} height={ERD_NODE_HEIGHT - 16} rx={1.5} fill={color} />
