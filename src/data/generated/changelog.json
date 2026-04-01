@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(messaging): #319 image and media attachment support",
+      "number": 342,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/342",
+      "mergedAt": "2026-04-01T17:53:50Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "messaging",
+      "type": "feature"
+    },
+    {
       "title": "feat(realtime): #56 real-time messaging via Supabase Realtime WebSocket",
       "number": 341,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/341",

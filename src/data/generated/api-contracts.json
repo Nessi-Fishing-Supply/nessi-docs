@@ -862,6 +862,18 @@
           "sourceFile": "src/app/api/messaging/threads/[thread_id]/route.ts"
         },
         {
+          "method": "POST",
+          "path": "/api/messaging/threads/:thread_id/upload",
+          "label": "Upload :Thread Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 403, 422, 500],
+          "requestFields": [],
+          "description": "Upload images in a message thread",
+          "tags": ["file-upload"],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/upload/route.ts"
+        },
+        {
           "method": "GET",
           "path": "/api/messaging/threads",
           "label": "List Thread",

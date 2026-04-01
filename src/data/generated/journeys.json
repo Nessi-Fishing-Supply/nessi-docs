@@ -1310,7 +1310,7 @@
       "title": "Buyer-Seller Messaging",
       "persona": "buyer",
       "description": "Buyers and sellers exchange messages in typed threads (inquiry, direct, offer, custom request) with realtime delivery, typing indicators, read receipts, online status, safety filtering, unread tracking, and archiving.",
-      "relatedIssues": [307, 312, 313, 316, 56],
+      "relatedIssues": [307, 312, 313, 316, 56, 319],
       "nodes": [
         {
           "id": "messaging-hub--entry",
@@ -1346,6 +1346,10 @@
             {
               "label": "Send Message",
               "to": "messaging-hub--compose-message"
+            },
+            {
+              "label": "Send Photo",
+              "to": "messaging-hub--open-photo-action-menu"
             },
             {
               "label": "Block User",
@@ -1486,7 +1490,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/thread-list/index.tsx",
-          "why": "ThreadList renders a <ul> of ThreadRow components. Each ThreadRow links to /messages/{thread_id} and shows: other participant avatar, name (bold if unread), TypeBadge (colored pill for thread type), last_message_preview truncated, relative timestamp (Just now / Xm ago / Xh ago / Yesterday / MMM D), and an unread dot indicator."
+          "why": "ThreadList renders a <ul> of ThreadRow components. Each ThreadRow links to /messages/{thread_id} and shows: other participant avatar, name (bold if unread), TypeBadge (colored pill for thread type), last_message_preview truncated, relative timestamp (Just now / Xm ago / Xh ago / Yesterday / MMM D), and an unread dot indicator. When last_message_preview equals 'Sent a photo' (IMAGE_MESSAGE_PREVIEW constant), a HiCamera icon is prepended to the preview text."
         },
         {
           "id": "view-inbox--inbox-empty",
@@ -1818,7 +1822,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/compose-bar/index.tsx",
-          "why": "Auto-expanding textarea at the bottom of the thread view. Grows up to 5 rows then scrolls. Enter submits the message; Shift+Enter inserts a newline. Send button is disabled when input is empty or a send is in-flight (aria-busy). Each keystroke calls onTyping() which triggers the Broadcast channel typing event. The +/attachment button is present but non-functional (disabled, tabIndex=-1) — attachment upload is out of scope."
+          "why": "Auto-expanding textarea at the bottom of the thread view. Grows up to 5 rows then scrolls. Enter submits the message; Shift+Enter inserts a newline. Send button is disabled when input is empty or a send is in-flight (aria-busy). Each keystroke calls onTyping() which triggers the Broadcast channel typing event (throttled to once per second). The + button opens an action menu with: 'Send Photo' (opens file picker for up to 4 images), 'Make an Offer' (inquiry threads only, buyer role only), and 'Share a Listing' (disabled — not yet built). Menu closes on outside click or Escape."
         },
         {
           "id": "send-message--broadcast-typing",
@@ -1937,7 +1941,7 @@
           "layer": "background",
           "status": "built",
           "codeRef": "src/app/api/messaging/threads/[thread_id]/messages/route.ts",
-          "why": "Fire-and-forget: dispatched for text-type messages only (type === 'text'). Fetches sender name from members table, truncates message content to 100 chars for the notification body, then calls dispatchNotification() for each non-sender participant. type: 'new_message', link: /messages/{thread_id}. Runs in a separate void async IIFE after the email notification block — never blocks the API response."
+          "why": "Fire-and-forget: dispatched for text-type messages only via the send-message API route (type === 'text'). Fetches sender name from members table, truncates message content to 100 chars for the notification body, then calls dispatchNotification() for each non-sender participant. type: 'new_message', link: /messages/{thread_id}. Runs in a separate void async IIFE after the email notification block — never blocks the API response."
         },
         {
           "id": "send-message--message-delivered",
@@ -1965,6 +1969,243 @@
           "status": "built",
           "codeRef": "src/app/(frontend)/messages/[thread_id]/thread-detail-page.tsx",
           "why": "When a new message arrives via Realtime and the user is scrolled more than 150px from the bottom of the message area, a \"New message\" pill button appears at the bottom of the message viewport. Clicking it smooth-scrolls to the bottom and dismisses the pill. If the user is already near the bottom, the view auto-scrolls instead and the pill is never shown."
+        },
+        {
+          "id": "send-image-message--entry",
+          "type": "entry",
+          "label": "Send an Image Message"
+        },
+        {
+          "id": "send-image-message--open-photo-action-menu",
+          "type": "step",
+          "label": "Open Action Menu",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/compose-bar/index.tsx",
+          "why": "User taps the + button in the ComposeBar. A popover menu opens with role='menu': 'Send Photo' (HiCamera icon), 'Make an Offer' (inquiry threads, buyer role only), and 'Share a Listing' (disabled). Clicking 'Send Photo' calls handlePhotoSelect(), closes the menu, and programmatically clicks the hidden file input. Menu closes on outside click or Escape."
+        },
+        {
+          "id": "send-image-message--select-files",
+          "type": "step",
+          "label": "Select Images from File Picker",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/compose-bar/index.tsx",
+          "why": "Hidden <input type='file' accept='image/jpeg,image/png,image/webp,image/gif' multiple> opens the native file picker. On change, handleFileChange() validates: MIME type (JPEG/PNG/WebP/GIF only), file size (5MB max per file), and count (max 4 files — first 4 accepted, rest silently dropped with a count warning). Valid files are stored in selectedFiles state. Input value is reset so the same file can be re-selected."
+        },
+        {
+          "id": "send-image-message--decision-select-files",
+          "type": "decision",
+          "label": "Validation result?",
+          "options": [
+            {
+              "label": "Valid",
+              "to": "send-image-message--show-preview-strip"
+            },
+            {
+              "label": "Invalid type or size",
+              "to": "send-image-message--client-validation-error"
+            }
+          ]
+        },
+        {
+          "id": "send-image-message--client-validation-error",
+          "type": "step",
+          "label": "Show Validation Error",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/compose-bar/index.tsx",
+          "why": "If any file fails MIME or size validation: imageError state is set and a <p role='alert'> renders below the ImagePreviewStrip with the error text (e.g. 'Invalid file type. Accepted: JPEG, PNG, WebP, GIF' or 'One or more files exceed the 5MB limit'). No files are accepted. If count exceeds 4, first 4 are accepted and error reads 'Maximum 4 images per message. Only the first 4 were selected.'"
+        },
+        {
+          "id": "send-image-message--show-preview-strip",
+          "type": "step",
+          "label": "Show Image Preview Strip",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/image-preview-strip/index.tsx",
+          "why": "ImagePreviewStrip renders above the compose bar textarea when selectedFiles is non-empty. Shows a horizontal thumbnail list using URL.createObjectURL() for each file (revoked on unmount). Each thumbnail has an 'X' remove button. A count indicator shows '{n}/4'. A send button (HiPaperAirplane icon) triggers handleSendImages(). Strip returns null when no files are selected."
+        },
+        {
+          "id": "send-image-message--trigger-image-send",
+          "type": "step",
+          "label": "Tap Send in Preview Strip",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/compose-bar/index.tsx",
+          "why": "User taps the send button in the ImagePreviewStrip. handleSendImages() calls sendImages(selectedFiles) via useSendImages mutation. The send button in the strip is disabled and aria-busy during the upload. The main textarea send button is also disabled while isUploadPending is true."
+        },
+        {
+          "id": "send-image-message--optimistic-image-message",
+          "type": "step",
+          "label": "Prepend Optimistic Message",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/features/messaging/hooks/use-send-images.ts",
+          "why": "useSendImages onMutate: cancels in-flight messages queries, snapshots previous state, then prepends an optimistic MessageWithSender (type: 'image', content: 'Sent a photo', metadata: null) to the first page of the useMessages infinite query cache. The optimistic message has a random UUID and a placeholder sender with empty name fields. On error: cache is rolled back via the snapshot context."
+        },
+        {
+          "id": "send-image-message--upload-images-api",
+          "type": "step",
+          "label": "Upload Images",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/messaging/threads/[thread_id]/upload",
+          "codeRef": "src/app/api/messaging/threads/[thread_id]/upload/route.ts",
+          "why": "multipart/form-data body: files[] (1–4 files). Auth check → participant check (403 if not participant) → block check (403 if recipient has blocked sender) → file count validation (max 4) → per-file MIME and size validation (422 on failure). For each file: scanImage() moderation → Sharp resize to 1200×1200 max (fit: inside, no upscale) → convert to WebP at 80% quality → upload to 'message-images' bucket at threads/{thread_id}/{message_id}/{uuid}.webp. On any upload failure, already-uploaded files are cleaned up. Calls createMessageServer() with type: 'image' and metadata: { images: ImageAttachment[] }. Returns 201 MessageWithSender.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "User is not a thread participant",
+              "result": "Returns 403 Forbidden",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Recipient has blocked the sender",
+              "result": "Returns 403 — You cannot send messages to this user",
+              "httpStatus": 403
+            },
+            {
+              "condition": "No files in request body",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "More than 4 files submitted",
+              "result": "Returns 400 — Too many files. Maximum is 4",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Invalid MIME type",
+              "result": "Returns 422 — Invalid file type. Accepted: JPEG, PNG, WebP, GIF",
+              "httpStatus": 422
+            },
+            {
+              "condition": "File exceeds 5MB",
+              "result": "Returns 422 — File exceeds 5MB limit",
+              "httpStatus": 422
+            },
+            {
+              "condition": "Image fails moderation scan",
+              "result": "Returns 422 — Image failed moderation check. Already-uploaded files in the batch are deleted from storage.",
+              "httpStatus": 422
+            },
+            {
+              "condition": "Supabase Storage upload failure",
+              "result": "Returns 500 — Failed to upload image. Already-uploaded files in the batch are deleted.",
+              "httpStatus": 500
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "send-image-message--decision-upload-images-api",
+          "type": "decision",
+          "label": "Upload result?",
+          "options": [
+            {
+              "label": "201 Created",
+              "to": "send-image-message--update-thread-meta-image"
+            },
+            {
+              "label": "422 Moderation failed",
+              "to": "send-image-message--image-upload-error-toast"
+            },
+            {
+              "label": "403 Blocked",
+              "to": "send-image-message--image-upload-error-toast"
+            },
+            {
+              "label": "4xx/5xx other",
+              "to": "send-image-message--image-upload-error-toast"
+            }
+          ]
+        },
+        {
+          "id": "send-image-message--image-moderation",
+          "type": "step",
+          "label": "Scan Image",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/messaging/utils/image-moderation.ts",
+          "why": "scanImage(buffer) runs before each file is processed by Sharp. Currently a pass-through stub that always returns { passed: true } — will be wired to the real image scanner when issue #318 (platform-wide content moderation) lands. Returns { passed: boolean; reason?: string }."
+        },
+        {
+          "id": "send-image-message--update-thread-meta-image",
+          "type": "step",
+          "label": "Update Thread Preview",
+          "layer": "server",
+          "status": "built",
+          "codeRef": "src/features/messaging/services/messaging-server.ts",
+          "why": "createMessageServer() sets last_message_preview to 'Sent a photo' (IMAGE_MESSAGE_PREVIEW) and updates last_message_at on the message_threads row. Increments unread_count on all other participants' message_thread_participants rows."
+        },
+        {
+          "id": "send-image-message--image-upload-email",
+          "type": "step",
+          "label": "Notify Recipient by Email",
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/app/api/messaging/threads/[thread_id]/upload/route.ts",
+          "why": "Fire-and-forget: sent only when the recipient's unread_count transitions from 0 to 1. Uses the newMessage email template with messagePreview: 'Sent a photo'. Subject: 'New message from {senderName}'. Deep link to the thread. Checks notification_preferences.email.community_messages before sending. Silently catches all errors."
+        },
+        {
+          "id": "send-image-message--image-upload-in-app",
+          "type": "step",
+          "label": "In-App Notification",
+          "layer": "background",
+          "status": "built",
+          "codeRef": "src/app/api/messaging/threads/[thread_id]/upload/route.ts",
+          "why": "Fire-and-forget: dispatched for each non-sender participant regardless of unread count. Calls dispatchNotification() with type: 'new_message', body: 'Sent a photo', link: /messages/{thread_id}. Runs in the same void async IIFE as the email notification — never blocks the API response."
+        },
+        {
+          "id": "send-image-message--image-upload-error-toast",
+          "type": "step",
+          "label": "Show Upload Error",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/compose-bar/index.tsx",
+          "why": "On useSendImages onError: the optimistic message is rolled back from the cache, selectedFiles state is preserved (user can retry), and the onError callback sets imageError state. The <p role='alert'> renders the error message below the preview strip."
+        },
+        {
+          "id": "send-image-message--image-message-rendered",
+          "type": "step",
+          "label": "Render Image Message",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/message-node/image-node.tsx",
+          "why": "MessageThread renders type='image' messages via ImageNode. The optimistic message has metadata: null so renders a loading placeholder; on query invalidation and refetch, the real metadata ({ images: ImageAttachment[] }) hydrates and ImageNode renders the grid. Layout adapts to image count: 1 image = full-width; 2 images = side-by-side; 3–4 images = 2×2 grid. Each image is a <button> triggering the lightbox at that index. Uses next/image with fill and object-fit: cover."
+        },
+        {
+          "id": "send-image-message--decision-image-message-rendered",
+          "type": "decision",
+          "label": "User taps image?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "send-image-message--open-lightbox"
+            },
+            {
+              "label": "No",
+              "to": "send-image-message--image-message-rendered"
+            }
+          ]
+        },
+        {
+          "id": "send-image-message--open-lightbox",
+          "type": "step",
+          "label": "Open Image Lightbox",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/messaging/components/image-lightbox/index.tsx",
+          "why": "Tapping any image in an ImageNode calls onImageClick(index), which sets lightboxOpen=true and lightboxInitialIndex to the tapped index on MessageThread. ImageLightbox renders via ReactDOM.createPortal to #modal-root. Shows the tapped image full-screen (next/image fill, object-fit: contain). Multi-image messages show Prev/Next chevron buttons and a '{current} / {total}' counter. Escape key closes. Arrow keys navigate. Focus trap active — Tab cycles within the lightbox. Body scroll locked while open. On close, focus returns to the triggering image button."
         },
         {
           "id": "realtime-receive--entry",
@@ -2673,6 +2914,102 @@
         {
           "from": "send-message--nudge-system-message",
           "to": "send-message--new-message-pill"
+        },
+        {
+          "from": "send-image-message--entry",
+          "to": "send-image-message--open-photo-action-menu"
+        },
+        {
+          "from": "send-image-message--open-photo-action-menu",
+          "to": "send-image-message--select-files"
+        },
+        {
+          "from": "send-image-message--select-files",
+          "to": "send-image-message--decision-select-files"
+        },
+        {
+          "from": "send-image-message--decision-select-files",
+          "to": "send-image-message--show-preview-strip",
+          "opt": "Valid"
+        },
+        {
+          "from": "send-image-message--decision-select-files",
+          "to": "send-image-message--client-validation-error",
+          "opt": "Invalid type or size"
+        },
+        {
+          "from": "send-image-message--client-validation-error",
+          "to": "send-image-message--show-preview-strip"
+        },
+        {
+          "from": "send-image-message--show-preview-strip",
+          "to": "send-image-message--trigger-image-send"
+        },
+        {
+          "from": "send-image-message--trigger-image-send",
+          "to": "send-image-message--optimistic-image-message"
+        },
+        {
+          "from": "send-image-message--optimistic-image-message",
+          "to": "send-image-message--upload-images-api"
+        },
+        {
+          "from": "send-image-message--upload-images-api",
+          "to": "send-image-message--decision-upload-images-api"
+        },
+        {
+          "from": "send-image-message--decision-upload-images-api",
+          "to": "send-image-message--update-thread-meta-image",
+          "opt": "201 Created"
+        },
+        {
+          "from": "send-image-message--decision-upload-images-api",
+          "to": "send-image-message--image-upload-error-toast",
+          "opt": "422 Moderation failed"
+        },
+        {
+          "from": "send-image-message--decision-upload-images-api",
+          "to": "send-image-message--image-upload-error-toast",
+          "opt": "403 Blocked"
+        },
+        {
+          "from": "send-image-message--decision-upload-images-api",
+          "to": "send-image-message--image-upload-error-toast",
+          "opt": "4xx/5xx other"
+        },
+        {
+          "from": "send-image-message--image-moderation",
+          "to": "send-image-message--update-thread-meta-image"
+        },
+        {
+          "from": "send-image-message--update-thread-meta-image",
+          "to": "send-image-message--image-upload-email"
+        },
+        {
+          "from": "send-image-message--image-upload-email",
+          "to": "send-image-message--image-upload-in-app"
+        },
+        {
+          "from": "send-image-message--image-upload-in-app",
+          "to": "send-image-message--image-upload-error-toast"
+        },
+        {
+          "from": "send-image-message--image-upload-error-toast",
+          "to": "send-image-message--image-message-rendered"
+        },
+        {
+          "from": "send-image-message--image-message-rendered",
+          "to": "send-image-message--decision-image-message-rendered"
+        },
+        {
+          "from": "send-image-message--decision-image-message-rendered",
+          "to": "send-image-message--open-lightbox",
+          "opt": "Yes"
+        },
+        {
+          "from": "send-image-message--decision-image-message-rendered",
+          "to": "send-image-message--image-message-rendered",
+          "opt": "No"
         },
         {
           "from": "realtime-receive--entry",
