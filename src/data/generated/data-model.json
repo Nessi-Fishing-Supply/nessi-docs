@@ -70,7 +70,10 @@
           "nullable": false
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260325100000_create_addresses.sql",
       "rlsPolicies": [
         {
@@ -98,7 +101,9 @@
       "indexes": [
         {
           "name": "addresses_user_id_idx",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "unique": false
         }
       ],
@@ -177,7 +182,9 @@
           }
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260323000000_create_cart_items.sql",
       "rlsPolicies": [
         {
@@ -205,12 +212,16 @@
       "indexes": [
         {
           "name": "cart_items_user_id_idx",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "unique": false
         },
         {
           "name": "cart_items_listing_id_idx",
-          "columns": ["listing_id"],
+          "columns": [
+            "listing_id"
+          ],
           "unique": false
         }
       ],
@@ -315,7 +326,10 @@
           "nullable": false
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260326200000_create_follows.sql",
       "rlsPolicies": [
         {
@@ -337,12 +351,17 @@
       "indexes": [
         {
           "name": "follows_follower_id_idx",
-          "columns": ["follower_id"],
+          "columns": [
+            "follower_id"
+          ],
           "unique": false
         },
         {
           "name": "follows_target_type_target_id_idx",
-          "columns": ["target_type", "target_id"],
+          "columns": [
+            "target_type",
+            "target_id"
+          ],
           "unique": false
         }
       ],
@@ -395,7 +414,9 @@
           "nullable": true
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "rlsPolicies": [
         {
           "name": "Product images are viewable by everyone",
@@ -625,7 +646,10 @@
           "nullable": true
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "rlsPolicies": [
         {
           "name": "Products are viewable by everyone",
@@ -694,72 +718,101 @@
       "indexes": [
         {
           "name": "products_member_id_idx",
-          "columns": ["member_id"],
+          "columns": [
+            "member_id"
+          ],
           "unique": false
         },
         {
           "name": "products_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "listings_search_vector_idx",
-          "columns": ["search_vector"],
+          "columns": [
+            "search_vector"
+          ],
           "unique": false
         },
         {
           "name": "listings_title_trgm_idx",
-          "columns": ["title"],
+          "columns": [
+            "title"
+          ],
           "unique": false
         },
         {
           "name": "listings_seller_id_idx",
-          "columns": ["seller_id"],
+          "columns": [
+            "seller_id"
+          ],
           "unique": false
         },
         {
           "name": "listings_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "listings_member_id_idx",
-          "columns": ["member_id"],
+          "columns": [
+            "member_id"
+          ],
           "unique": false
         },
         {
           "name": "listings_status_idx",
-          "columns": ["status"],
+          "columns": [
+            "status"
+          ],
           "unique": false
         },
         {
           "name": "listings_category_idx",
-          "columns": ["category"],
+          "columns": [
+            "category"
+          ],
           "unique": false
         },
         {
           "name": "listings_condition_idx",
-          "columns": ["condition"],
+          "columns": [
+            "condition"
+          ],
           "unique": false
         },
         {
           "name": "listings_created_at_idx",
-          "columns": ["created_at"],
+          "columns": [
+            "created_at"
+          ],
           "unique": false
         },
         {
           "name": "listings_price_cents_idx",
-          "columns": ["price_cents"],
+          "columns": [
+            "price_cents"
+          ],
           "unique": false
         },
         {
           "name": "listings_active_feed_idx",
-          "columns": ["status", "published_at"],
+          "columns": [
+            "status",
+            "published_at"
+          ],
           "unique": false
         },
         {
           "name": "listings_active_partial_idx",
-          "columns": ["published_at"],
+          "columns": [
+            "published_at"
+          ],
           "unique": false
         }
       ],
@@ -822,7 +875,9 @@
           "default": "gen_random_uuid()"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260330000001_create_offers_and_blocks.sql",
       "rlsPolicies": [
         {
@@ -849,12 +904,16 @@
       "indexes": [
         {
           "name": "idx_member_blocks_blocker_id",
-          "columns": ["blocker_id"],
+          "columns": [
+            "blocker_id"
+          ],
           "unique": false
         },
         {
           "name": "idx_member_blocks_blocked_id",
-          "columns": ["blocked_id"],
+          "columns": [
+            "blocked_id"
+          ],
           "unique": false
         }
       ],
@@ -1007,7 +1066,10 @@
           "nullable": true
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260319000000_create_profiles_table.sql",
       "rlsPolicies": [
         {
@@ -1046,32 +1108,44 @@
       "indexes": [
         {
           "name": "profiles_display_name_unique",
-          "columns": ["LOWERdisplay_name"],
+          "columns": [
+            "LOWERdisplay_name"
+          ],
           "unique": true
         },
         {
           "name": "profiles_slug_unique",
-          "columns": ["slug"],
+          "columns": [
+            "slug"
+          ],
           "unique": true
         },
         {
           "name": "profiles_home_state_idx",
-          "columns": ["home_state"],
+          "columns": [
+            "home_state"
+          ],
           "unique": false
         },
         {
           "name": "profiles_is_seller_idx",
-          "columns": ["is_seller"],
+          "columns": [
+            "is_seller"
+          ],
           "unique": false
         },
         {
           "name": "profiles_shop_name_unique",
-          "columns": ["LOWERshop_name"],
+          "columns": [
+            "LOWERshop_name"
+          ],
           "unique": true
         },
         {
           "name": "members_status_idx",
-          "columns": ["status"],
+          "columns": [
+            "status"
+          ],
           "unique": false
         }
       ],
@@ -1168,7 +1242,9 @@
           "default": "0"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql",
       "rlsPolicies": [
         {
@@ -1185,12 +1261,17 @@
       "indexes": [
         {
           "name": "idx_message_thread_participants_member_thread",
-          "columns": ["member_id", "thread_id"],
+          "columns": [
+            "member_id",
+            "thread_id"
+          ],
           "unique": false
         },
         {
           "name": "idx_message_thread_participants_member_id",
-          "columns": ["member_id"],
+          "columns": [
+            "member_id"
+          ],
           "unique": false
         }
       ],
@@ -1271,7 +1352,10 @@
           "default": "now()"
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql",
       "rlsPolicies": [
         {
@@ -1283,22 +1367,30 @@
       "indexes": [
         {
           "name": "idx_message_threads_type",
-          "columns": ["type"],
+          "columns": [
+            "type"
+          ],
           "unique": false
         },
         {
           "name": "idx_message_threads_listing_id",
-          "columns": ["listing_id"],
+          "columns": [
+            "listing_id"
+          ],
           "unique": false
         },
         {
           "name": "idx_message_threads_shop_id",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "idx_message_threads_last_message_at",
-          "columns": ["last_message_at"],
+          "columns": [
+            "last_message_at"
+          ],
           "unique": false
         }
       ],
@@ -1381,7 +1473,10 @@
           "default": "'text'"
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql",
       "rlsPolicies": [
         {
@@ -1398,12 +1493,17 @@
       "indexes": [
         {
           "name": "idx_messages_thread_created_at",
-          "columns": ["thread_id", "created_at"],
+          "columns": [
+            "thread_id",
+            "created_at"
+          ],
           "unique": false
         },
         {
           "name": "idx_messages_sender_id",
-          "columns": ["sender_id"],
+          "columns": [
+            "sender_id"
+          ],
           "unique": false
         }
       ],
@@ -1567,7 +1667,10 @@
           "default": "now()"
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260330000001_create_offers_and_blocks.sql",
       "rlsPolicies": [
         {
@@ -1589,17 +1692,26 @@
       "indexes": [
         {
           "name": "idx_offers_listing_buyer_status",
-          "columns": ["listing_id", "buyer_id", "status"],
+          "columns": [
+            "listing_id",
+            "buyer_id",
+            "status"
+          ],
           "unique": false
         },
         {
           "name": "idx_offers_thread_id",
-          "columns": ["thread_id"],
+          "columns": [
+            "thread_id"
+          ],
           "unique": false
         },
         {
           "name": "idx_offers_status_expires_at",
-          "columns": ["status", "expires_at"],
+          "columns": [
+            "status",
+            "expires_at"
+          ],
           "unique": false
         }
       ],
@@ -1656,7 +1768,9 @@
           "default": "false"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260327155304_watchers_and_price_drop_notifications.sql",
       "rlsPolicies": [
         {
@@ -1674,7 +1788,10 @@
       "indexes": [
         {
           "name": "price_drop_notifications_processed_created_at_idx",
-          "columns": ["processed", "created_at"],
+          "columns": [
+            "processed",
+            "created_at"
+          ],
           "unique": false
         }
       ],
@@ -1718,7 +1835,10 @@
           "default": "now()"
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260324000000_create_recently_viewed.sql",
       "rlsPolicies": [
         {
@@ -1746,17 +1866,24 @@
       "indexes": [
         {
           "name": "idx_recently_viewed_user_id",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "unique": false
         },
         {
           "name": "idx_recently_viewed_user_viewed",
-          "columns": ["user_id", "viewed_at"],
+          "columns": [
+            "user_id",
+            "viewed_at"
+          ],
           "unique": false
         },
         {
           "name": "idx_recently_viewed_listing_id",
-          "columns": ["listing_id"],
+          "columns": [
+            "listing_id"
+          ],
           "unique": false
         }
       ],
@@ -1804,7 +1931,9 @@
           "isUnique": true
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260321100000_listings_schema.sql",
       "rlsPolicies": [
         {
@@ -1816,7 +1945,9 @@
       "indexes": [
         {
           "name": "search_suggestions_term_trgm_idx",
-          "columns": ["term"],
+          "columns": [
+            "term"
+          ],
           "unique": false
         }
       ],
@@ -1894,7 +2025,9 @@
           "default": "gen_random_uuid()"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260325000000_create_shop_invites.sql",
       "rlsPolicies": [
         {
@@ -1906,17 +2039,24 @@
       "indexes": [
         {
           "name": "shop_invites_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_invites_email_idx",
-          "columns": ["email"],
+          "columns": [
+            "email"
+          ],
           "unique": false
         },
         {
           "name": "shop_invites_pending_unique",
-          "columns": ["shop_id", "email"],
+          "columns": [
+            "shop_id",
+            "email"
+          ],
           "unique": true
         }
       ],
@@ -1970,7 +2110,9 @@
           }
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260320000003_create_shops_shop_members_slugs_tables.sql",
       "rlsPolicies": [
         {
@@ -2012,22 +2154,30 @@
       "indexes": [
         {
           "name": "shop_members_one_owner_per_shop",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": true
         },
         {
           "name": "shop_members_member_id_idx",
-          "columns": ["member_id"],
+          "columns": [
+            "member_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_members_one_owner_per_shop",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": true
         },
         {
           "name": "shop_members_role_id_idx",
-          "columns": ["role_id"],
+          "columns": [
+            "role_id"
+          ],
           "unique": false
         }
       ],
@@ -2100,7 +2250,9 @@
           "default": "gen_random_uuid()"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260325200000_create_shop_ownership_transfers.sql",
       "rlsPolicies": [
         {
@@ -2112,22 +2264,30 @@
       "indexes": [
         {
           "name": "shop_ownership_transfers_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_ownership_transfers_from_member_id_idx",
-          "columns": ["from_member_id"],
+          "columns": [
+            "from_member_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_ownership_transfers_to_member_id_idx",
-          "columns": ["to_member_id"],
+          "columns": [
+            "to_member_id"
+          ],
           "unique": false
         },
         {
           "name": "shop_ownership_transfers_pending_unique",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": true
         }
       ],
@@ -2188,7 +2348,9 @@
           "default": "0"
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260324100000_create_shop_roles_migrate_role_id.sql",
       "rlsPolicies": [
         {
@@ -2205,17 +2367,24 @@
       "indexes": [
         {
           "name": "shop_roles_shop_slug_unique",
-          "columns": ["shop_id", "slug"],
+          "columns": [
+            "shop_id",
+            "slug"
+          ],
           "unique": true
         },
         {
           "name": "shop_roles_system_slug_unique",
-          "columns": ["slug"],
+          "columns": [
+            "slug"
+          ],
           "unique": true
         },
         {
           "name": "shop_roles_shop_id_idx",
-          "columns": ["shop_id"],
+          "columns": [
+            "shop_id"
+          ],
           "unique": false
         }
       ],
@@ -2358,7 +2527,10 @@
           "default": "NOW()"
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260320000003_create_shops_shop_members_slugs_tables.sql",
       "rlsPolicies": [
         {
@@ -2390,22 +2562,30 @@
       "indexes": [
         {
           "name": "shops_owner_id_idx",
-          "columns": ["owner_id"],
+          "columns": [
+            "owner_id"
+          ],
           "unique": false
         },
         {
           "name": "shops_is_verified_idx",
-          "columns": ["is_verified"],
+          "columns": [
+            "is_verified"
+          ],
           "unique": false
         },
         {
           "name": "shops_subscription_tier_idx",
-          "columns": ["subscription_tier"],
+          "columns": [
+            "subscription_tier"
+          ],
           "unique": false
         },
         {
           "name": "shops_status_idx",
-          "columns": ["status"],
+          "columns": [
+            "status"
+          ],
           "unique": false
         }
       ],
@@ -2445,7 +2625,9 @@
           "isPrimaryKey": true
         }
       ],
-      "badges": ["RLS"],
+      "badges": [
+        "RLS"
+      ],
       "sourceFile": "supabase/migrations/20260320000003_create_shops_shop_members_slugs_tables.sql",
       "rlsPolicies": [
         {
@@ -2457,7 +2639,10 @@
       "indexes": [
         {
           "name": "slugs_entity_lookup",
-          "columns": ["entity_type", "entity_id"],
+          "columns": [
+            "entity_type",
+            "entity_id"
+          ],
           "unique": true
         }
       ],
@@ -2506,7 +2691,10 @@
           "default": "now()"
         }
       ],
-      "badges": ["RLS", "Triggers"],
+      "badges": [
+        "RLS",
+        "Triggers"
+      ],
       "sourceFile": "supabase/migrations/20260327155304_watchers_and_price_drop_notifications.sql",
       "rlsPolicies": [
         {
@@ -2528,7 +2716,9 @@
       "indexes": [
         {
           "name": "watchers_user_id_idx",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "unique": false
         }
       ],

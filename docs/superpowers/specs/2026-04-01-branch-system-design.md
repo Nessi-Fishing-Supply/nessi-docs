@@ -78,11 +78,11 @@ interface BranchData {
 ```ts
 // src/data/branch-registry.ts
 interface BranchInfo {
-  name: string; // URL segment: 'main', 'staging'
-  label: string; // Display: 'Production', 'Staging'
+  name: string;        // URL segment: 'main', 'staging'
+  label: string;       // Display: 'Production', 'Staging'
   description: string; // 'Live production data', 'Pre-release changes'
-  color: string; // Dot color in switcher: green, orange, etc.
-  isDefault: boolean; // true for 'main'
+  color: string;       // Dot color in switcher: green, orange, etc.
+  isDefault: boolean;  // true for 'main'
 }
 ```
 
@@ -212,7 +212,7 @@ Lives in `src/app/[branch]/layout.tsx`. Wraps `DocsProvider`. Reads the `[branch
 ### 3.3 Hook
 
 ```ts
-function useBranchData(): BranchContextValue;
+function useBranchData(): BranchContextValue
 ```
 
 All page components use this hook instead of importing data directly from `@/data`.
@@ -253,7 +253,6 @@ The Nessi logo in the topbar links to `/${activeBranch}/` instead of `/`.
 ### 5.1 Crossfade
 
 On branch switch (detected via route param change in BranchProvider):
-
 - Main content area fades out (opacity 1→0, 150ms)
 - Data swaps
 - Main content area fades in (opacity 0→1, 150ms)
