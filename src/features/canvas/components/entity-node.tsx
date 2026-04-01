@@ -56,9 +56,10 @@ export const EntityNode = memo(function EntityNode({
           ? '#b84040'
           : naturalColor;
 
-  const diffOpacity = isGhost ? 0.4 : diffStatus === 'unchanged' ? 0.6 : 1;
+  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
 
-  const showDiffGlow = (diffStatus === 'added' || diffStatus === 'modified') && !isSelected;
+  const showDiffGlow = isDiffChanged && !isSelected;
   const showHoverGlow = hovered && !isSelected && !isGhost;
 
   return (
@@ -79,16 +80,16 @@ export const EntityNode = memo(function EntityNode({
         <>
           <defs>
             <radialGradient id={`erd-diff-${node.id}`}>
-              <stop offset="0%" stopColor={color} stopOpacity={0.12} />
+              <stop offset="0%" stopColor={color} stopOpacity={0.3} />
               <stop offset="100%" stopColor={color} stopOpacity={0} />
             </radialGradient>
           </defs>
           <circle
             cx={ERD_NODE_WIDTH / 2}
             cy={ERD_NODE_HEIGHT / 2}
-            r={ERD_NODE_WIDTH * 0.55}
+            r={ERD_NODE_WIDTH * 0.7}
             fill={`url(#erd-diff-${node.id})`}
-            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
+            style={{ animation: 'glow-pulse 2.5s ease-in-out infinite' }}
           />
         </>
       )}
@@ -145,9 +146,17 @@ export const EntityNode = memo(function EntityNode({
         width={ERD_NODE_WIDTH}
         height={ERD_NODE_HEIGHT}
         rx={6}
-        fill={hexToRgba(color, 0.08)}
-        stroke={isSelected ? color : hovered ? hexToRgba(color, 0.4) : hexToRgba(color, 0.2)}
-        strokeWidth={isSelected ? 1.5 : 1}
+        fill={hexToRgba(color, isDiffChanged ? 0.18 : 0.08)}
+        stroke={
+          isDiffChanged
+            ? color
+            : isSelected
+              ? color
+              : hovered
+                ? hexToRgba(color, 0.4)
+                : hexToRgba(color, 0.2)
+        }
+        strokeWidth={isDiffChanged ? 2 : isSelected ? 1.5 : 1}
         strokeDasharray={isGhost ? '4 3' : undefined}
       />
       {/* Left accent bar */}

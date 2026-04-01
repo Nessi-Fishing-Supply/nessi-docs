@@ -61,20 +61,20 @@ export function Edge({
 
   if (diffStatus) {
     if (diffStatus === 'added') {
-      stroke = 'rgba(61,140,117,0.7)';
+      stroke = 'rgba(61,140,117,0.85)';
       marker = 'url(#arrow-diff-added)';
       opacity = 1;
     } else if (diffStatus === 'modified') {
-      stroke = 'rgba(123,143,205,0.7)';
+      stroke = 'rgba(123,143,205,0.85)';
       marker = 'url(#arrow-diff-modified)';
       opacity = 1;
     } else if (diffStatus === 'removed') {
       stroke = 'rgba(184,64,64,0.5)';
       computedStrokeDasharray = '3 5';
       marker = 'url(#arrow-diff-removed)';
-      opacity = 0.5;
+      opacity = 0.4;
     } else if (diffStatus === 'unchanged') {
-      opacity = 0.15;
+      opacity = 0.08;
     }
   }
 

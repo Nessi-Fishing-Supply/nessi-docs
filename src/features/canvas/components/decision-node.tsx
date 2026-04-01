@@ -62,7 +62,7 @@ export const DecisionNode = memo(function DecisionNode({
           ? '#b84040'
           : DECISION_COLOR;
 
-  const diffOpacity = isGhost ? 0.4 : diffStatus === 'unchanged' ? 0.6 : 1;
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
   const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
 
   const showDiffGlow = diffStatus === 'added' || diffStatus === 'modified';
@@ -88,7 +88,7 @@ export const DecisionNode = memo(function DecisionNode({
         <>
           <defs>
             <radialGradient id={`dec-diff-${x}-${y}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.12} />
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.3} />
               <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
             </radialGradient>
           </defs>

@@ -263,18 +263,20 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
 
         if (edgeDiffStatus) {
           if (edgeDiffStatus === 'added') {
-            edgeStroke = 'rgba(61,140,117,0.7)';
+            edgeStroke = 'rgba(61,140,117,0.85)';
             edgeMarker = 'url(#arrow-diff-added)';
+            edgeOpacity = 1;
           } else if (edgeDiffStatus === 'modified') {
-            edgeStroke = 'rgba(123,143,205,0.7)';
+            edgeStroke = 'rgba(123,143,205,0.85)';
             edgeMarker = 'url(#arrow-diff-modified)';
+            edgeOpacity = 1;
           } else if (edgeDiffStatus === 'removed') {
             edgeStroke = 'rgba(184,64,64,0.5)';
             edgeMarker = 'url(#arrow-diff-removed)';
             edgeDash = '3 5';
-            edgeOpacity = 0.5;
+            edgeOpacity = 0.4;
           } else if (edgeDiffStatus === 'unchanged') {
-            edgeOpacity = 0.15;
+            edgeOpacity = 0.08;
           }
         }
 

@@ -52,7 +52,7 @@ export const EntryNode = memo(function EntryNode({
           ? '#b84040'
           : ENTRY_COLOR;
 
-  const diffOpacity = isGhost ? 0.4 : diffStatus === 'unchanged' ? 0.6 : 1;
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
   const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
 
   const showGlow = (hovered || isActive) && !isGhost;
@@ -76,7 +76,7 @@ export const EntryNode = memo(function EntryNode({
         <>
           <defs>
             <radialGradient id={`entry-diff-${x}-${y}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.12} />
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.3} />
               <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
             </radialGradient>
           </defs>

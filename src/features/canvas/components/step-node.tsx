@@ -167,7 +167,7 @@ export const StepNode = memo(function StepNode({
           : layerCfg.color;
 
   // Diff opacity takes precedence over planned opacity; trace dimming overrides everything
-  const diffOpacity = isGhost ? 0.4 : diffStatus === 'unchanged' ? 0.6 : 1;
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
   const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : isPlanned ? 0.45 : 1;
 
   const errorCount = node.errorCases?.length ?? 0;
@@ -210,7 +210,7 @@ export const StepNode = memo(function StepNode({
         <>
           <defs>
             <radialGradient id={`step-diff-${node.id}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.12} />
+              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.3} />
               <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
             </radialGradient>
           </defs>
