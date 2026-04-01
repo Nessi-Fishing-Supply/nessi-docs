@@ -383,8 +383,13 @@ export function EntityList({ entities }: EntityListProps) {
     for (const e of entities) {
       if (e.badge) cats.add(e.badge);
     }
+    if (isDiffMode && diffResult) {
+      for (const e of diffResult.entities.removed) {
+        if (e.badge) cats.add(e.badge);
+      }
+    }
     return cats;
-  }, [entities]);
+  }, [entities, isDiffMode, diffResult]);
 
   const categories = useMemo(() => {
     return CATEGORY_ORDER.filter((cat) => allCategoryNames.has(cat)).map((cat) => ({
@@ -394,6 +399,11 @@ export function EntityList({ entities }: EntityListProps) {
     }));
   }, [entities, allCategoryNames]);
 
+  const removedEntities = useMemo(() => {
+    if (!isDiffMode || !diffResult) return [];
+    return diffResult.entities.removed;
+  }, [isDiffMode, diffResult]);
+
   const grouped = useMemo(() => {
     return CATEGORY_ORDER.filter((cat) => activeCategories.has(cat) && allCategoryNames.has(cat))
       .map((cat) => ({
@@ -401,13 +411,8 @@ export function EntityList({ entities }: EntityListProps) {
         label: CATEGORY_LABELS[cat] ?? cat,
         entities: entities.filter((e) => e.badge === cat),
       }))
-      .filter((g) => g.entities.length > 0);
-  }, [entities, activeCategories, allCategoryNames]);
-
-  const removedEntities = useMemo(() => {
-    if (!isDiffMode || !diffResult) return [];
-    return diffResult.entities.removed;
-  }, [isDiffMode, diffResult]);
+      .filter((g) => g.entities.length > 0 || removedEntities.some((e) => e.badge === g.category));
+  }, [entities, activeCategories, allCategoryNames, removedEntities]);
 
   const toggleCategory = (name: string) => {
     setActiveCategories((prev) => {
