@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
 import { StalenessBanner } from '@/components/layout/staleness-banner';
 import { DeviceGate } from '@/components/layout/device-gate';
+import { ToastProvider } from '@/components/ui/toast';
 import '@/styles/globals.scss';
 
 const dmSans = DM_Sans({
@@ -22,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={dmSans.className}>
         <StalenessBanner />
         <DeviceGate />
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

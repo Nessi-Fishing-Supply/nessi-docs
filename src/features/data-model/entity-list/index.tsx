@@ -15,24 +15,22 @@ import styles from './entity-list.module.scss';
 
 const CATEGORY_ORDER = [
   'core',
-  'lifecycle',
-  'junction',
-  'config',
-  'media',
-  'tracking',
-  'discovery',
+  'shops',
+  'commerce',
+  'social',
+  'messaging',
+  'content',
   'user',
   'system',
 ];
 
 const CATEGORY_LABELS: Record<string, string> = {
   core: 'Core Entities',
-  lifecycle: 'Lifecycle & State',
-  junction: 'Junction Tables',
-  config: 'Configuration',
-  media: 'Media',
-  tracking: 'Tracking',
-  discovery: 'Discovery',
+  shops: 'Shop Management',
+  commerce: 'Commerce',
+  social: 'Social',
+  messaging: 'Messaging',
+  content: 'Content & Discovery',
   user: 'User Data',
   system: 'System',
 };
