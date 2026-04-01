@@ -6,6 +6,11 @@ import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
 
 const DECISION_COLOR = '#a78bfa';
+const DIFF_COLORS: Record<string, string> = {
+  added: '#3d8c75',
+  modified: '#7b8fcd',
+  removed: '#b84040',
+};
 
 /** Clean snake_case/SCREAMING_CASE into title case: "email_not_confirmed" → "Email Not Confirmed" */
 function humanize(text: string): string {
@@ -52,20 +57,19 @@ export const DecisionNode = memo(function DecisionNode({
   const cx = x + DECISION_SIZE / 2;
   const cy = y + DECISION_SIZE / 2;
   const isGhost = diffStatus === 'removed';
+  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
 
-  const effectiveColor =
-    diffStatus === 'added'
-      ? '#3d8c75'
-      : diffStatus === 'modified'
-        ? '#7b8fcd'
-        : diffStatus === 'removed'
-          ? '#b84040'
-          : DECISION_COLOR;
+  // Diff color only when changed — never overrides natural color
+  const diffColor = isDiffChanged ? DIFF_COLORS[diffStatus!] : undefined;
 
-  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
+  // Interaction: disabled for ghosts and unchanged nodes
+  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
+
+  // Opacity: ghost → 0.35, unchanged → 0.2, dimmed → 0.15, else 1
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
   const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
 
-  const showDiffGlow = diffStatus === 'added' || diffStatus === 'modified';
+  const showDiffGlow = isDiffChanged;
 
   const parsedOptions = options.map((opt) => ({
     ...opt,
@@ -75,21 +79,37 @@ export const DecisionNode = memo(function DecisionNode({
   // Measure pill width from short label
   const pillW = Math.max(DECISION_SIZE + 10, ...parsedOptions.map((o) => o.short.length * 7 + 24));
 
+  // Outer ring radius: slightly larger than the diamond's half-diagonal
+  const diamondHalf = (DECISION_SIZE - 12) / 2;
+  const ringRadius = Math.round(diamondHalf * Math.SQRT2 + 6);
+
   return (
     <g
       style={{
         opacity,
         transition: 'opacity 400ms ease-out',
-        pointerEvents: isGhost ? 'none' : undefined,
+        pointerEvents: isInteractive ? undefined : 'none',
       }}
     >
+      {/* Outer diff ring — circle outline around the diamond, only for added/modified */}
+      {diffColor && (
+        <circle
+          cx={cx}
+          cy={cy}
+          r={ringRadius}
+          fill="none"
+          stroke={diffColor}
+          strokeWidth={1.5}
+          strokeOpacity={0.7}
+        />
+      )}
       {/* Diff glow — centered on diamond */}
-      {showDiffGlow && (
+      {showDiffGlow && diffColor && (
         <>
           <defs>
             <radialGradient id={`dec-diff-${x}-${y}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.3} />
-              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
+              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
             </radialGradient>
           </defs>
           <circle
@@ -109,8 +129,8 @@ export const DecisionNode = memo(function DecisionNode({
           width={DECISION_SIZE - 12}
           height={DECISION_SIZE - 12}
           rx={4}
-          fill={hexToRgba(effectiveColor, 0.12)}
-          stroke={hexToRgba(effectiveColor, 0.35)}
+          fill={hexToRgba(DECISION_COLOR, 0.12)}
+          stroke={hexToRgba(DECISION_COLOR, 0.35)}
           strokeWidth={1}
           strokeDasharray={isGhost ? '4 3' : undefined}
         />
@@ -120,7 +140,7 @@ export const DecisionNode = memo(function DecisionNode({
       <text
         x={cx}
         y={cy + 4}
-        fill={effectiveColor}
+        fill={DECISION_COLOR}
         fontSize={14}
         fontWeight={700}
         textAnchor="middle"
@@ -144,17 +164,17 @@ export const DecisionNode = memo(function DecisionNode({
           <g
             key={opt.label}
             transform={`translate(${cx - pillW / 2},${py})`}
-            onClick={isGhost ? undefined : () => onChoose?.(opt.label, opt.to)}
-            onMouseEnter={isGhost ? undefined : () => setHoveredPill(opt.label)}
-            onMouseLeave={isGhost ? undefined : () => setHoveredPill(null)}
-            style={{ cursor: isGhost ? 'default' : 'pointer', opacity: pillOpacity }}
+            onClick={isInteractive ? () => onChoose?.(opt.label, opt.to) : undefined}
+            onMouseEnter={isInteractive ? () => setHoveredPill(opt.label) : undefined}
+            onMouseLeave={isInteractive ? () => setHoveredPill(null) : undefined}
+            style={{ cursor: isInteractive ? 'pointer' : 'default', opacity: pillOpacity }}
           >
             <rect
               width={pillW}
               height={20}
               rx={10}
-              fill={hexToRgba(effectiveColor, isChosen ? 0.2 : isHovPill ? 0.14 : 0.08)}
-              stroke={hexToRgba(effectiveColor, isChosen ? 0.5 : isHovPill ? 0.35 : 0.2)}
+              fill={hexToRgba(DECISION_COLOR, isChosen ? 0.2 : isHovPill ? 0.14 : 0.08)}
+              stroke={hexToRgba(DECISION_COLOR, isChosen ? 0.5 : isHovPill ? 0.35 : 0.2)}
               strokeWidth={0.8}
             />
             <text

@@ -9,6 +9,12 @@ import type { DiffStatus } from '@/types/diff';
 const LABEL_MAX = 20;
 const SUBLABEL_MAX = 22;
 
+const DIFF_COLORS: Record<string, string> = {
+  added: '#3d8c75',
+  modified: '#7b8fcd',
+  removed: '#b84040',
+};
+
 const METHOD_VERBS: Record<string, string> = {
   GET: 'Fetch',
   POST: 'Create',
@@ -155,24 +161,23 @@ export const StepNode = memo(function StepNode({
   const status = node.status ?? 'planned';
   const isPlanned = status === 'planned';
   const layerCfg = LAYER_CONFIG[layer];
+  const nodeColor = layerCfg.color;
   const isGhost = diffStatus === 'removed';
+  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
 
-  const effectiveColor =
-    diffStatus === 'added'
-      ? '#3d8c75'
-      : diffStatus === 'modified'
-        ? '#7b8fcd'
-        : diffStatus === 'removed'
-          ? '#b84040'
-          : layerCfg.color;
+  // Diff color only when changed — never for unchanged or no diff
+  const diffColor = isDiffChanged ? DIFF_COLORS[diffStatus!] : undefined;
 
-  // Diff opacity takes precedence over planned opacity; trace dimming overrides everything
-  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
+  // Interaction: disabled for ghosts and unchanged nodes
+  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
+
+  // Opacity: ghost → 0.35, unchanged → 0.2, dimmed → 0.15, planned (no diff) → 0.45, else 1
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
   const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : isPlanned ? 0.45 : 1;
 
   const errorCount = node.errorCases?.length ?? 0;
-  const showGlow = hovered && !isSelected && !isPlanned && !isGhost;
-  const showDiffGlow = (diffStatus === 'added' || diffStatus === 'modified') && !isSelected;
+  const showGlow = hovered && !isSelected && !isPlanned && !isGhost && isInteractive;
+  const showDiffGlow = isDiffChanged && !isSelected;
 
   const displayLabel = cleanLabel(node.label, node.route);
 
@@ -195,23 +200,37 @@ export const StepNode = memo(function StepNode({
   return (
     <g
       transform={`translate(${node.x},${node.y})`}
-      onClick={isGhost ? undefined : onClick}
-      onMouseEnter={isGhost ? undefined : () => setHovered(true)}
-      onMouseLeave={isGhost ? undefined : () => setHovered(false)}
+      onClick={isInteractive ? onClick : undefined}
+      onMouseEnter={isInteractive ? () => setHovered(true) : undefined}
+      onMouseLeave={isInteractive ? () => setHovered(false) : undefined}
       style={{
-        cursor: isGhost ? 'default' : 'pointer',
+        cursor: isInteractive ? 'pointer' : 'default',
         opacity,
         transition: 'opacity 400ms ease-out',
-        pointerEvents: isGhost ? 'none' : undefined,
+        pointerEvents: isInteractive ? undefined : 'none',
       }}
     >
+      {/* Outer diff ring — only for added/modified */}
+      {diffColor && (
+        <rect
+          x={-4}
+          y={-4}
+          width={NODE_WIDTH + 8}
+          height={NODE_HEIGHT + 8}
+          rx={12}
+          fill="none"
+          stroke={diffColor}
+          strokeWidth={1.5}
+          strokeOpacity={0.7}
+        />
+      )}
       {/* Diff glow */}
-      {showDiffGlow && (
+      {showDiffGlow && diffColor && (
         <>
           <defs>
             <radialGradient id={`step-diff-${node.id}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.3} />
-              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
+              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
             </radialGradient>
           </defs>
           <circle
@@ -228,8 +247,8 @@ export const StepNode = memo(function StepNode({
         <>
           <defs>
             <radialGradient id={`hover-${node.id}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.08} />
-              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+              <stop offset="0%" stopColor={nodeColor} stopOpacity={0.08} />
+              <stop offset="100%" stopColor={nodeColor} stopOpacity={0} />
             </radialGradient>
           </defs>
           <circle
@@ -245,8 +264,8 @@ export const StepNode = memo(function StepNode({
         <>
           <defs>
             <radialGradient id={`glow-${node.id}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.15} />
-              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+              <stop offset="0%" stopColor={nodeColor} stopOpacity={0.15} />
+              <stop offset="100%" stopColor={nodeColor} stopOpacity={0} />
             </radialGradient>
           </defs>
           <circle
@@ -258,33 +277,33 @@ export const StepNode = memo(function StepNode({
           />
         </>
       )}
-      {/* Background */}
+      {/* Background — always uses natural node color */}
       <rect
         width={NODE_WIDTH}
         height={NODE_HEIGHT}
         rx={6}
-        fill={hexToRgba(effectiveColor, isPlanned && !diffStatus ? 0.03 : 0.08)}
+        fill={hexToRgba(nodeColor, isPlanned && !diffStatus ? 0.03 : 0.08)}
         stroke={
           isSelected
-            ? effectiveColor
+            ? nodeColor
             : hovered
-              ? hexToRgba(effectiveColor, 0.4)
-              : hexToRgba(effectiveColor, isPlanned && !diffStatus ? 0.12 : 0.2)
+              ? hexToRgba(nodeColor, 0.4)
+              : hexToRgba(nodeColor, isPlanned && !diffStatus ? 0.12 : 0.2)
         }
         strokeWidth={isSelected ? 1.5 : 1}
         strokeDasharray={isGhost ? '4 3' : isPlanned && !diffStatus ? '4 3' : undefined}
       />
       {/* Left accent */}
-      <rect x={0} y={6} width={2.5} height={NODE_HEIGHT - 12} rx={1} fill={effectiveColor} />
+      <rect x={0} y={6} width={2.5} height={NODE_HEIGHT - 12} rx={1} fill={nodeColor} />
 
       {/* Top-right: method pill OR layer dot */}
       {httpMethod ? (
         <g transform={`translate(${NODE_WIDTH - methodPillW - 6}, 5)`}>
-          <rect width={methodPillW} height={14} rx={3} fill={hexToRgba(effectiveColor, 0.2)} />
+          <rect width={methodPillW} height={14} rx={3} fill={hexToRgba(nodeColor, 0.2)} />
           <text
             x={methodPillW / 2}
             y={10}
-            fill={effectiveColor}
+            fill={nodeColor}
             fontSize={8}
             fontWeight={700}
             textAnchor="middle"
@@ -294,7 +313,7 @@ export const StepNode = memo(function StepNode({
           </text>
         </g>
       ) : (
-        <circle cx={NODE_WIDTH - 10} cy={10} r={3} fill={effectiveColor} opacity={0.6} />
+        <circle cx={NODE_WIDTH - 10} cy={10} r={3} fill={nodeColor} opacity={0.6} />
       )}
 
       {/* Label */}

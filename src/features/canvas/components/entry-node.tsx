@@ -5,6 +5,12 @@ import { NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
 
 const ENTRY_COLOR = '#3ba8d4';
+const DIFF_COLORS: Record<string, string> = {
+  added: '#3d8c75',
+  modified: '#7b8fcd',
+  removed: '#b84040',
+};
+
 import { TT_BG, TT_BORDER, TT_SHADOW } from '../constants/tooltip-styles';
 
 const ENTRY_W = 160;
@@ -42,42 +48,55 @@ export const EntryNode = memo(function EntryNode({
   const [hovered, setHovered] = useState(false);
   const h = NODE_HEIGHT;
   const isGhost = diffStatus === 'removed';
+  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
 
-  const effectiveColor =
-    diffStatus === 'added'
-      ? '#3d8c75'
-      : diffStatus === 'modified'
-        ? '#7b8fcd'
-        : diffStatus === 'removed'
-          ? '#b84040'
-          : ENTRY_COLOR;
+  // Diff color only when changed — never overrides natural color
+  const diffColor = isDiffChanged ? DIFF_COLORS[diffStatus!] : undefined;
 
-  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.25 : 1;
+  // Interaction: disabled for ghosts and unchanged nodes
+  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
+
+  // Opacity: ghost → 0.35, unchanged → 0.2, dimmed → 0.15, else 1
+  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
   const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
 
-  const showGlow = (hovered || isActive) && !isGhost;
-  const showDiffGlow = (diffStatus === 'added' || diffStatus === 'modified') && !isActive;
+  const showGlow = (hovered || isActive) && !isGhost && isInteractive;
+  const showDiffGlow = isDiffChanged && !isActive;
 
   return (
     <g
       transform={`translate(${x},${y})`}
-      onClick={isGhost ? undefined : onClick}
-      onMouseEnter={isGhost ? undefined : () => setHovered(true)}
-      onMouseLeave={isGhost ? undefined : () => setHovered(false)}
+      onClick={isInteractive ? onClick : undefined}
+      onMouseEnter={isInteractive ? () => setHovered(true) : undefined}
+      onMouseLeave={isInteractive ? () => setHovered(false) : undefined}
       style={{
-        cursor: isGhost ? 'default' : 'pointer',
+        cursor: isInteractive ? 'pointer' : 'default',
         opacity,
         transition: 'opacity 400ms ease-out',
-        pointerEvents: isGhost ? 'none' : undefined,
+        pointerEvents: isInteractive ? undefined : 'none',
       }}
     >
+      {/* Outer diff ring — pill shape, only for added/modified */}
+      {diffColor && (
+        <rect
+          x={-4}
+          y={-4}
+          width={ENTRY_W + 8}
+          height={h + 8}
+          rx={(h + 8) / 2}
+          fill="none"
+          stroke={diffColor}
+          strokeWidth={1.5}
+          strokeOpacity={0.7}
+        />
+      )}
       {/* Diff glow */}
-      {showDiffGlow && (
+      {showDiffGlow && diffColor && (
         <>
           <defs>
             <radialGradient id={`entry-diff-${x}-${y}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={0.3} />
-              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
+              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
             </radialGradient>
           </defs>
           <ellipse
@@ -95,8 +114,8 @@ export const EntryNode = memo(function EntryNode({
         <>
           <defs>
             <radialGradient id={`entry-glow-${x}-${y}`}>
-              <stop offset="0%" stopColor={effectiveColor} stopOpacity={isActive ? 0.18 : 0.1} />
-              <stop offset="100%" stopColor={effectiveColor} stopOpacity={0} />
+              <stop offset="0%" stopColor={ENTRY_COLOR} stopOpacity={isActive ? 0.18 : 0.1} />
+              <stop offset="100%" stopColor={ENTRY_COLOR} stopOpacity={0} />
             </radialGradient>
           </defs>
           <ellipse
@@ -109,13 +128,13 @@ export const EntryNode = memo(function EntryNode({
           />
         </>
       )}
-      {/* Background pill */}
+      {/* Background pill — always uses natural ENTRY_COLOR */}
       <rect
         width={ENTRY_W}
         height={h}
         rx={h / 2}
-        fill={hexToRgba(effectiveColor, isActive ? 0.15 : 0.1)}
-        stroke={hexToRgba(effectiveColor, hovered || isActive ? 0.5 : 0.3)}
+        fill={hexToRgba(ENTRY_COLOR, isActive ? 0.15 : 0.1)}
+        stroke={hexToRgba(ENTRY_COLOR, hovered || isActive ? 0.5 : 0.3)}
         strokeWidth={isActive ? 1.5 : 1}
         strokeDasharray={isGhost ? '4 3' : undefined}
       />
@@ -123,7 +142,7 @@ export const EntryNode = memo(function EntryNode({
       <text
         x={16}
         y={h / 2 + 1}
-        fill={effectiveColor}
+        fill={ENTRY_COLOR}
         fontSize={11}
         fontWeight={600}
         dominantBaseline="central"
@@ -183,8 +202,8 @@ export const EntryNode = memo(function EntryNode({
                     fontSize: '9px',
                     padding: '1px 7px',
                     borderRadius: '10px',
-                    background: `${effectiveColor}1a`,
-                    color: effectiveColor,
+                    background: `${ENTRY_COLOR}1a`,
+                    color: ENTRY_COLOR,
                   }}
                 >
                   Entry Point
