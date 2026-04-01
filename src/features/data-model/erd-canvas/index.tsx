@@ -306,7 +306,7 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
         if (!isNodeVisible(fromNode) || !isNodeVisible(toNode)) return null;
 
         const isLit = litEdges.has(i);
-        const isDimmed = hasTrace && !isLit;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
 
         const sibling = siblingMap.get(i);
         const perpOffset =
@@ -412,10 +412,14 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
         const entity = entityMap.get(node.id);
         const isPinned = pinnedNodeId === node.id;
         const isLit = litNodes.has(node.id);
-        const isDimmed = hasTrace && !isLit;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
         const nodeDiffStatus: DiffStatus | null = isDiffMode
           ? (erdNodeStatusMap?.get(node.id) ?? null)
           : null;
+        const isChangedNode = nodeDiffStatus === 'added' || nodeDiffStatus === 'modified';
+
+        // In diff mode: only changed nodes get hover tooltips
+        const suppressTooltip = isDiffMode ? !isChangedNode : isDimmed;
 
         return (
           <g
@@ -423,24 +427,29 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
             style={{
               opacity: isDimmed ? 0.15 : 1,
               transition: 'opacity 400ms ease-out',
+              pointerEvents: isDiffMode && !isChangedNode ? 'none' : undefined,
             }}
           >
-            <EntityTooltip node={node} entity={entity} suppressTooltip={isDimmed}>
+            <EntityTooltip node={node} entity={entity} suppressTooltip={suppressTooltip}>
               <EntityNode
                 node={node}
-                isSelected={isPinned}
+                isSelected={!isDiffMode && isPinned}
                 diffStatus={nodeDiffStatus}
-                onClick={() => {
-                  // Toggle trace focus
-                  toggleFocus(node.id);
+                onClick={
+                  isDiffMode
+                    ? undefined
+                    : () => {
+                        // Toggle trace focus
+                        toggleFocus(node.id);
 
-                  if (isPinned) {
-                    setPinnedNodeId(null);
-                  } else {
-                    setPinnedNodeId(node.id);
-                    if (entity) setSelectedItem({ type: 'entity', entity });
-                  }
-                }}
+                        if (isPinned) {
+                          setPinnedNodeId(null);
+                        } else {
+                          setPinnedNodeId(node.id);
+                          if (entity) setSelectedItem({ type: 'entity', entity });
+                        }
+                      }
+                }
               />
             </EntityTooltip>
           </g>

@@ -194,7 +194,7 @@ export function JourneyCanvas({
         if (!isNodeVisible(fromNode) || !isNodeVisible(toNode)) return null;
 
         const isLit = litEdges.has(i);
-        const isDimmed = hasPath && !isLit;
+        const isDimmed = !isDiffMode && hasPath && !isLit;
         const isBackEdge = backEdges.has(i);
         const isDecisionBranch = decisionBranchTargets.get(edge.from)?.has(edge.to) ?? false;
         const edgeDiffStatus = getEdgeDiffStatus(edge.from, edge.to);
@@ -234,8 +234,11 @@ export function JourneyCanvas({
       {journey.nodes.map((node) => {
         if (!isNodeVisible(node)) return null;
         const isLit = litNodes.has(node.id);
-        const isDimmed = hasPath && !isLit;
-        const isSelected = pinnedNodes.has(node.id);
+        const isDimmed = !isDiffMode && hasPath && !isLit;
+        const isSelected = !isDiffMode && pinnedNodes.has(node.id);
+
+        const nodeDiffStatus = isDiffMode ? (nodeStatusMap.get(node.id) ?? null) : null;
+        const isChangedNode = nodeDiffStatus === 'added' || nodeDiffStatus === 'modified';
 
         const nodeEntered = entered.has(node.id);
 
@@ -247,6 +250,7 @@ export function JourneyCanvas({
                 opacity: nodeEntered ? 1 : 0,
                 transform: nodeEntered ? 'translateY(0)' : 'translateY(8px)',
                 transition: 'opacity 300ms ease-out, transform 300ms ease-out',
+                pointerEvents: isDiffMode && !isChangedNode ? 'none' : undefined,
               }}
             >
               <EntryNode
@@ -255,7 +259,7 @@ export function JourneyCanvas({
                 label={node.label}
                 isDimmed={isDimmed}
                 isActive={activeEntryId === node.id}
-                diffStatus={isDiffMode ? (nodeStatusMap.get(node.id) ?? null) : null}
+                diffStatus={nodeDiffStatus}
                 meta={{
                   description: journey.description,
                   persona: PERSONA_CONFIG[journey.persona]?.label,
@@ -267,7 +271,7 @@ export function JourneyCanvas({
                     0,
                   ),
                 }}
-                onClick={() => startFromEntry(node.id)}
+                onClick={isDiffMode ? undefined : () => startFromEntry(node.id)}
               />
             </g>
           );
@@ -283,6 +287,7 @@ export function JourneyCanvas({
                 opacity: nodeEntered ? 1 : 0,
                 transform: nodeEntered ? 'translateY(0)' : 'translateY(8px)',
                 transition: 'opacity 300ms ease-out, transform 300ms ease-out',
+                pointerEvents: isDiffMode && !isChangedNode ? 'none' : undefined,
               }}
             >
               <DecisionNode
@@ -292,12 +297,19 @@ export function JourneyCanvas({
                 options={node.options ?? []}
                 chosenOpt={chosenOpt}
                 isDimmed={isDimmed}
-                diffStatus={isDiffMode ? (nodeStatusMap.get(node.id) ?? null) : null}
-                onChoose={(opt, targetId) => handleDecisionChoose(node.id, opt, targetId)}
+                diffStatus={nodeDiffStatus}
+                onChoose={
+                  isDiffMode
+                    ? undefined
+                    : (opt, targetId) => handleDecisionChoose(node.id, opt, targetId)
+                }
               />
             </g>
           );
         }
+
+        // In diff mode: only changed nodes get hover tooltips
+        const suppressTooltip = isDiffMode ? !isChangedNode : isDimmed;
 
         return (
           <g
@@ -306,15 +318,16 @@ export function JourneyCanvas({
               opacity: nodeEntered ? 1 : 0,
               transform: nodeEntered ? 'translateY(0)' : 'translateY(8px)',
               transition: 'opacity 300ms ease-out, transform 300ms ease-out',
+              pointerEvents: isDiffMode && !isChangedNode ? 'none' : undefined,
             }}
           >
-            <NodeTooltip node={node} suppressTooltip={isDimmed} isSelected={isSelected}>
+            <NodeTooltip node={node} suppressTooltip={suppressTooltip} isSelected={isSelected}>
               <StepNode
                 node={node}
                 isSelected={isSelected}
                 isDimmed={isDimmed}
-                diffStatus={isDiffMode ? (nodeStatusMap.get(node.id) ?? null) : null}
-                onClick={() => handleNodeClick(node)}
+                diffStatus={nodeDiffStatus}
+                onClick={isDiffMode ? undefined : () => handleNodeClick(node)}
               />
             </NodeTooltip>
           </g>

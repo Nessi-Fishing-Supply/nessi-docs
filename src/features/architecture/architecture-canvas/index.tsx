@@ -191,7 +191,7 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
 
         const path = edgePath(from, to);
         const isLit = litEdges.has(i);
-        const isDimmed = hasTrace && !isLit;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
         const edgeDiffStatus = isDiffMode
           ? getEdgeDiffStatus(conn.from, conn.to, nodeStatusMap)
           : null;
@@ -260,7 +260,7 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
 
         const path = edgePath(from, to);
         const isLit = litEdges.has(i);
-        const isDimmed = hasTrace && !isLit;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
         const edgeDiffStatus = isDiffMode
           ? getEdgeDiffStatus(conn.from, conn.to, nodeStatusMap)
           : null;
@@ -287,13 +287,14 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
       {/* Nodes */}
       {layout.positionedNodes.map((pn) => {
         const isLit = litNodes.has(pn.node.id);
-        const isDimmed = hasTrace && !isLit;
-        const isSelected = isLit && hasTrace;
+        const isDimmed = !isDiffMode && hasTrace && !isLit;
+        const isSelected = !isDiffMode && isLit && hasTrace;
         const isHovered = hoveredNodeId === pn.node.id;
         const layerColor =
           layout.positionedLayers.find((l) => l.layer.id === pn.layerId)?.layer.color ?? '#78756f';
 
         const nodeDiffStatus = isDiffMode ? (nodeStatusMap.get(pn.node.id) ?? null) : null;
+        const isChangedNode = nodeDiffStatus === 'added' || nodeDiffStatus === 'modified';
 
         // Diff color overrides
         let rectFill = `${layerColor}1e`;
@@ -333,15 +334,17 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
               opacity: nodeOpacity,
               transition: 'opacity 400ms ease-out',
               cursor: isRemoved ? 'default' : 'pointer',
+              pointerEvents: isDiffMode && !isChangedNode ? 'none' : undefined,
             }}
             onMouseEnter={() => {
               if (hoverTimer.current) clearTimeout(hoverTimer.current);
-              if (!isDimmed && !isRemoved) setHoveredNodeId(pn.node.id);
+              const canHover = isDiffMode ? isChangedNode : !isDimmed && !isRemoved;
+              if (canHover) setHoveredNodeId(pn.node.id);
             }}
             onMouseLeave={() => {
               hoverTimer.current = setTimeout(() => setHoveredNodeId(null), 120);
             }}
-            onClick={() => !isRemoved && toggleFocus(pn.node.id)}
+            onClick={() => !isRemoved && !isDiffMode && toggleFocus(pn.node.id)}
           >
             {/* Hover glow */}
             {isHovered && !isSelected && !isRemoved && (
