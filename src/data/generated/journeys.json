@@ -1310,7 +1310,7 @@
       "title": "Buyer-Seller Messaging",
       "persona": "buyer",
       "description": "Buyers and sellers exchange messages in typed threads (inquiry, direct, offer, custom request) with safety filtering, unread tracking, and archiving.",
-      "relatedIssues": [307, 312, 313],
+      "relatedIssues": [307, 312, 313, 316],
       "nodes": [
         {
           "id": "messaging-hub--entry",
@@ -1863,6 +1863,15 @@
           "why": "createMessageServer() updates last_message_at and last_message_preview on the message_threads row, and increments unread_count on all other participants' message_thread_participants rows."
         },
         {
+          "id": "send-message--new-message-email",
+          "type": "step",
+          "label": "Notify Recipient",
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/features/messaging/utils/notification-email.ts",
+          "why": "Fire-and-forget: sent only when the recipient's unread_count transitions from 0 to 1 (i.e. this is their first unread message in the thread). Subject: 'New message from {senderName}'. Includes message preview (truncated at 200 chars) and a deep link to the thread. Template: src/features/email/templates/new-message.ts."
+        },
+        {
           "id": "send-message--message-delivered",
           "type": "step",
           "label": "Message Appears",
@@ -1948,7 +1957,17 @@
           "layer": "server",
           "status": "planned",
           "route": "/api/offers",
-          "notes": "Offer API routes are not yet built (Phase 3). Server service createOfferServer() is built at src/features/messaging/services/offers-server.ts. It validates: listing is active, buyer is not the seller, amount >= 70% of price, seller is valid; expires stale offers; creates inquiry thread + offer row in one operation."
+          "codeRef": "src/app/api/offers/route.ts",
+          "notes": "Route is built (issue #316). Client entry point (offer form/modal) is still planned (Phase 3). Server service createOfferServer() validates: listing is active, buyer is not the seller, amount >= 70% of price, seller is valid; expires stale offers; creates offer thread + offer row in one operation."
+        },
+        {
+          "id": "offer-flow--offer-created-email",
+          "type": "step",
+          "label": "Notify Seller",
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/features/messaging/utils/notification-email.ts",
+          "why": "Fire-and-forget email to seller after offer creation. Subject: 'New offer on {listingTitle}'. Includes offer amount and a CTA linking to the offer thread. Template: src/features/email/templates/offer-notification.ts (type: 'received')."
         },
         {
           "id": "offer-flow--offer-thread-created",
@@ -1965,7 +1984,159 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/collapsible-header/index.tsx",
-          "why": "CollapsibleHeader shows an OfferBubble for offer-type threads when offer data is loaded. Accept and Decline action buttons are rendered to the seller when offer.status is 'pending' (isSeller check via participant role). Counter-offer is explicitly out of scope for this PR — onCounterOffer is passed as undefined. Accept/decline trigger useOfferActions mutations with optimistic status updates. OfferBubble handles all 5 statuses: pending, accepted, declined, countered, expired."
+          "why": "CollapsibleHeader shows an OfferBubble for offer-type threads when offer data is loaded. Accept and Decline action buttons are rendered to the seller when offer.status is 'pending' (isSeller check via participant role). Counter-offer is explicitly out of scope for earlier PRs — onCounterOffer is passed as undefined in those builds. Accept/decline/counter trigger useOfferActions mutations with optimistic status updates. OfferBubble handles all 5 statuses: pending, accepted, declined, countered, expired."
+        },
+        {
+          "id": "offer-flow--decision-seller-reviews-offer",
+          "type": "decision",
+          "label": "Seller action?",
+          "options": [
+            {
+              "label": "Accept",
+              "to": "offer-flow--accept-offer-api"
+            },
+            {
+              "label": "Decline",
+              "to": "offer-flow--decline-offer-api"
+            },
+            {
+              "label": "Counter",
+              "to": "offer-flow--counter-offer-api"
+            }
+          ]
+        },
+        {
+          "id": "offer-flow--accept-offer-api",
+          "type": "step",
+          "label": "Accept Offer",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/offers/[id]/accept",
+          "codeRef": "src/app/api/offers/[id]/accept/route.ts",
+          "why": "Seller-only, pending-only. Calls acceptOfferServer() which sets offer status to 'accepted' and inserts a system message into the thread. Returns 403 if caller is not the seller; 409 if offer is no longer pending.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Caller is not the seller",
+              "result": "Returns 403 Forbidden",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Offer is no longer pending",
+              "result": "Returns 409 Conflict",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "offer-flow--offer-accepted-email",
+          "type": "step",
+          "label": "Notify Buyer Accepted",
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/features/messaging/utils/notification-email.ts",
+          "why": "Fire-and-forget email to buyer after seller accepts the offer. Subject: 'Your offer on {listingTitle} was accepted!'. CTA label: 'Continue to Checkout'. Template: src/features/email/templates/offer-notification.ts (type: 'accepted')."
+        },
+        {
+          "id": "offer-flow--decline-offer-api",
+          "type": "step",
+          "label": "Decline Offer",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/offers/[id]/decline",
+          "codeRef": "src/app/api/offers/[id]/decline/route.ts",
+          "why": "Seller-only, pending-only. Calls declineOfferServer() which sets offer status to 'declined' and inserts a system message into the thread. Returns 403 if caller is not the seller; 409 if offer is no longer pending.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "Caller is not the seller",
+              "result": "Returns 403 Forbidden",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Offer is no longer pending",
+              "result": "Returns 409 Conflict",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "offer-flow--offer-declined-email",
+          "type": "step",
+          "label": "Notify Buyer Declined",
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/features/messaging/utils/notification-email.ts",
+          "why": "Fire-and-forget email to buyer after seller declines the offer. Subject: 'Your offer on {listingTitle} was declined'. CTA label: 'View Thread'. Template: src/features/email/templates/offer-notification.ts (type: 'declined')."
+        },
+        {
+          "id": "offer-flow--counter-offer-api",
+          "type": "step",
+          "label": "Counter Offer",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/offers/[id]/counter",
+          "codeRef": "src/app/api/offers/[id]/counter/route.ts",
+          "why": "Seller-only. Calls counterOfferServer() which marks the original offer as 'countered' and creates a new offer row with buyer/seller roles swapped and parent_offer_id set. Returns 403 if caller is not the seller; 409 if offer is no longer pending; 400 if amountCents is missing or below floor.",
+          "errorCases": [
+            {
+              "condition": "No authenticated session",
+              "result": "Returns 401 Unauthorized",
+              "httpStatus": 401
+            },
+            {
+              "condition": "amountCents missing from request body",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Caller is not the seller",
+              "result": "Returns 403 Forbidden",
+              "httpStatus": 403
+            },
+            {
+              "condition": "Offer is no longer pending",
+              "result": "Returns 409 Conflict",
+              "httpStatus": 409
+            },
+            {
+              "condition": "Counter amount below 70% floor or zero",
+              "result": "Returns 400 Bad Request",
+              "httpStatus": 400
+            },
+            {
+              "condition": "Database error",
+              "result": "Returns 500 Internal Server Error",
+              "httpStatus": 500
+            }
+          ]
+        },
+        {
+          "id": "offer-flow--offer-countered-email",
+          "type": "step",
+          "label": "Notify Buyer Countered",
+          "layer": "email",
+          "status": "built",
+          "codeRef": "src/features/messaging/utils/notification-email.ts",
+          "why": "Fire-and-forget email to the original offerer after a counter is made. Subject: 'Counter offer on {listingTitle}'. CTA label: 'View Counter Offer'. Template: src/features/email/templates/offer-notification.ts (type: 'countered')."
         },
         {
           "id": "offer-flow--offer-expires",
@@ -2268,6 +2439,10 @@
         },
         {
           "from": "send-message--update-thread-meta",
+          "to": "send-message--new-message-email"
+        },
+        {
+          "from": "send-message--new-message-email",
           "to": "send-message--message-delivered"
         },
         {
@@ -2296,6 +2471,10 @@
         },
         {
           "from": "offer-flow--create-offer-api",
+          "to": "offer-flow--offer-created-email"
+        },
+        {
+          "from": "offer-flow--offer-created-email",
           "to": "offer-flow--offer-thread-created"
         },
         {
@@ -2304,6 +2483,45 @@
         },
         {
           "from": "offer-flow--seller-reviews-offer",
+          "to": "offer-flow--decision-seller-reviews-offer"
+        },
+        {
+          "from": "offer-flow--decision-seller-reviews-offer",
+          "to": "offer-flow--accept-offer-api",
+          "opt": "Accept"
+        },
+        {
+          "from": "offer-flow--decision-seller-reviews-offer",
+          "to": "offer-flow--decline-offer-api",
+          "opt": "Decline"
+        },
+        {
+          "from": "offer-flow--decision-seller-reviews-offer",
+          "to": "offer-flow--counter-offer-api",
+          "opt": "Counter"
+        },
+        {
+          "from": "offer-flow--accept-offer-api",
+          "to": "offer-flow--offer-accepted-email"
+        },
+        {
+          "from": "offer-flow--offer-accepted-email",
+          "to": "offer-flow--decline-offer-api"
+        },
+        {
+          "from": "offer-flow--decline-offer-api",
+          "to": "offer-flow--offer-declined-email"
+        },
+        {
+          "from": "offer-flow--offer-declined-email",
+          "to": "offer-flow--counter-offer-api"
+        },
+        {
+          "from": "offer-flow--counter-offer-api",
+          "to": "offer-flow--offer-countered-email"
+        },
+        {
+          "from": "offer-flow--offer-countered-email",
           "to": "offer-flow--offer-expires"
         },
         {

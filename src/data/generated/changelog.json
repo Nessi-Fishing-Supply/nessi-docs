@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(messaging): #316 add email notifications for messaging and offer events",
+      "number": 338,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/338",
+      "mergedAt": "2026-04-01T13:45:05Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "messaging",
+      "type": "feature"
+    },
+    {
       "title": "feat(messaging): #315 wire up messaging entry points across the app",
       "number": 337,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/337",
