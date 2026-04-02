@@ -128,10 +128,38 @@
   --color-red-500: #b84040;
   --color-red-600: #991b1b;
 
-  // Extended neutral (fine grain for dark theme surfaces)
+  // Extended neutral (fine grain for dark theme)
   --color-neutral-850: #1e2028;
   --color-neutral-875: #1a1d24;
   --color-neutral-950: #0f1319;
+
+  // Dark surfaces (cool blue-tinted, dark theme specific)
+  --color-dark-50: #283044;
+  --color-dark-100: #1e2636;
+  --color-dark-200: #161c26;
+  --color-dark-300: #0f1319;
+  --color-dark-300-rgb: 15 19 25;
+  --color-dark-400: #0c0f12;
+  --color-dark-500: #090b0e;
+
+  // Warm neutral text (dark theme specific)
+  --color-warm-100: #e8e6e1;
+  --color-warm-200: #9a9790;
+  --color-warm-300: #6a6860;
+  --color-warm-400: #4a4840;
+
+  // Light surfaces (light theme specific)
+  --color-light-50: #f8f7f5;
+  --color-light-100: #f4f3f1;
+  --color-light-200: #f0efed;
+  --color-light-300: #e8e7e5;
+  --color-light-400: #e0dfdd;
+
+  // Cool neutral text (light theme specific)
+  --color-cool-100: #1a1a1a;
+  --color-cool-200: #4a4a4a;
+  --color-cool-300: #7a7a7a;
+  --color-cool-400: #a0a0a0;
 
   // Surfaces
   --surface-page: var(--color-surface-300);

@@ -1,51 +1,51 @@
 // Dark mode surface colors for docs app
 :root,
 [data-theme='dark'] {
-  --bg-body: #090b0e;
-  --bg-panel: #0f1319;
-  --bg-panel-rgb: 15 19 25;
-  --bg-raised: #161c26;
-  --bg-hover: #1e2636;
-  --bg-active: #283044;
-  --bg-input: #0c0f12;
+  --bg-body: var(--color-dark-500);
+  --bg-panel: var(--color-dark-300);
+  --bg-panel-rgb: var(--color-dark-300-rgb);
+  --bg-raised: var(--color-dark-200);
+  --bg-hover: var(--color-dark-100);
+  --bg-active: var(--color-dark-50);
+  --bg-input: var(--color-dark-400);
 
   // Text
-  --text-primary: #e8e6e1;
-  --text-secondary: #9a9790;
-  --text-muted: #6a6860;
-  --text-dim: #4a4840;
+  --text-primary: var(--color-warm-100);
+  --text-secondary: var(--color-warm-200);
+  --text-muted: var(--color-warm-300);
+  --text-dim: var(--color-warm-400);
 
   // Borders
-  --border-subtle: rgb(var(--color-white-rgb) / 5%);
-  --border-medium: rgb(var(--color-white-rgb) / 9%);
-  --border-strong: rgb(var(--color-white-rgb) / 15%);
+  --border-subtle: rgb(var(--color-white-rgb) / var(--opacity-4));
+  --border-medium: rgb(var(--color-white-rgb) / var(--opacity-8));
+  --border-strong: rgb(var(--color-white-rgb) / var(--opacity-16));
 
   // Glow effects
-  --glow-green: rgb(var(--color-primary-400-rgb) / 30%);
-  --glow-orange: rgb(var(--color-accent-500-rgb) / 25%);
+  --glow-green: rgb(var(--color-primary-400-rgb) / var(--opacity-32));
+  --glow-orange: rgb(var(--color-accent-500-rgb) / var(--opacity-24));
 
-  // Transitions
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --transition-fast: 150ms var(--ease-out);
-  --transition-base: 250ms var(--ease-out);
+  // Transitions (reference animation tokens)
+  --ease-out: var(--easing-out);
+  --ease-spring: var(--easing-spring);
+  --transition-fast: var(--duration-200) var(--easing-out);
+  --transition-base: var(--duration-300) var(--easing-out);
 }
 
 // Light theme (designed but not activated until toggle UI is built)
 [data-theme='light'] {
-  --bg-body: #f8f7f5;
-  --bg-panel: #fff;
-  --bg-raised: #f0efed;
-  --bg-hover: #e8e7e5;
-  --bg-active: #e0dfdd;
-  --bg-input: #f4f3f1;
-  --text-primary: #1a1a1a;
-  --text-secondary: #4a4a4a;
-  --text-muted: #7a7a7a;
-  --text-dim: #a0a0a0;
-  --border-subtle: rgb(var(--color-black-rgb) / 6%);
-  --border-medium: rgb(var(--color-black-rgb) / 12%);
-  --border-strong: rgb(var(--color-black-rgb) / 20%);
-  --glow-green: rgb(var(--color-primary-400-rgb) / 20%);
-  --glow-orange: rgb(var(--color-accent-500-rgb) / 15%);
+  --bg-body: var(--color-light-50);
+  --bg-panel: var(--color-white);
+  --bg-raised: var(--color-light-200);
+  --bg-hover: var(--color-light-300);
+  --bg-active: var(--color-light-400);
+  --bg-input: var(--color-light-100);
+  --text-primary: var(--color-cool-100);
+  --text-secondary: var(--color-cool-200);
+  --text-muted: var(--color-cool-300);
+  --text-dim: var(--color-cool-400);
+  --border-subtle: rgb(var(--color-black-rgb) / var(--opacity-4));
+  --border-medium: rgb(var(--color-black-rgb) / var(--opacity-12));
+  --border-strong: rgb(var(--color-black-rgb) / var(--opacity-20));
+  --glow-green: rgb(var(--color-primary-400-rgb) / var(--opacity-20));
+  --glow-orange: rgb(var(--color-accent-500-rgb) / var(--opacity-16));
 }
