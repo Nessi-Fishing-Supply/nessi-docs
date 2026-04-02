@@ -3,7 +3,7 @@
   font-size: var(--font-size-200);
   color: var(--color-primary-400);
   text-decoration: none;
-  padding: 4px 0;
+  padding: var(--spacing-100) 0;
   transition: color var(--transition-fast);
 
   &:hover {

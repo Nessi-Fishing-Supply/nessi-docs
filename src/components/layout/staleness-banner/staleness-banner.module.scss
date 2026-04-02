@@ -1,13 +1,13 @@
 .banner {
   background: var(--color-warning-bg, var(--color-warning-500));
   color: var(--color-warning-text, var(--color-white));
-  padding: 8px 16px;
+  padding: var(--spacing-200) var(--spacing-400);
   font-size: 0.8rem;
   text-align: center;
 
   code {
     background: rgb(0 0 0 / 15%);
-    padding: 1px 5px;
+    padding: 1px var(--spacing-125);
     border-radius: 3px;
   }
 }

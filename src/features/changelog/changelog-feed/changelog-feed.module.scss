@@ -1,5 +1,5 @@
 .container {
-  padding: 24px 28px;
+  padding: var(--spacing-600) var(--spacing-650);
   overflow-y: auto;
   height: 100%;
 }
@@ -9,13 +9,13 @@
 .filterBar {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 20px;
+  gap: var(--spacing-100);
+  margin-bottom: var(--spacing-500);
 }
 
 .filterChip {
   font-size: var(--font-size-300);
-  padding: 4px 12px;
+  padding: var(--spacing-100) var(--spacing-300);
   border-radius: 20px;
   background: var(--bg-raised);
   border: 1px solid var(--border-subtle);
@@ -43,13 +43,13 @@
   flex-direction: column;
   gap: 0;
   border-left: 1px solid var(--border-subtle);
-  padding-left: 20px;
-  margin-left: 6px;
+  padding-left: var(--spacing-500);
+  margin-left: var(--spacing-150);
 }
 
 .entry {
   position: relative;
-  padding-bottom: 28px;
+  padding-bottom: var(--spacing-650);
 
   &:last-child {
     padding-bottom: 0;
@@ -59,7 +59,7 @@
 .dot {
   position: absolute;
   left: -26px;
-  top: 3px;
+  top: var(--spacing-75);
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -70,8 +70,8 @@
 .entryHeader {
   display: flex;
   align-items: baseline;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: var(--spacing-250);
+  margin-bottom: var(--spacing-300);
 }
 
 .date {
@@ -92,13 +92,13 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--spacing-200);
 }
 
 .changeItem {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: var(--spacing-200);
   flex-wrap: wrap;
 }
 
@@ -108,7 +108,7 @@
   font-family: var(--font-family-mono);
   border: 1px solid;
   border-radius: 3px;
-  padding: 1px 5px;
+  padding: 1px var(--spacing-125);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -127,7 +127,7 @@
   color: var(--color-primary-400);
   margin-left: auto;
   text-decoration: none;
-  padding: 1px 6px;
+  padding: 1px var(--spacing-150);
   border-radius: 3px;
   background: rgb(61 140 117 / 8%);
   transition:
@@ -147,14 +147,14 @@
   font-family: var(--font-family-mono);
   color: var(--text-dim);
   margin-left: auto;
-  padding: 1px 6px;
+  padding: 1px var(--spacing-150);
   border-radius: 3px;
   border: 1px dashed rgb(255 255 255 / 8%);
   cursor: help;
 }
 
 .emptyState {
-  padding: 40px 0;
+  padding: var(--spacing-800) 0;
   text-align: center;
   font-size: var(--font-size-400);
   color: var(--text-dim);

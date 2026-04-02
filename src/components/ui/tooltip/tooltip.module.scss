@@ -11,7 +11,7 @@
   max-width: 320px;
   overflow-wrap: break-word;
   word-break: break-all;
-  padding: 8px 12px;
+  padding: var(--spacing-200) var(--spacing-300);
   border-radius: 6px;
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);

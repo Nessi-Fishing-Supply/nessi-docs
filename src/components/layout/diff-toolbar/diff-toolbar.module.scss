@@ -1,8 +1,8 @@
 .toolbar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 8px 20px;
+  gap: var(--spacing-300);
+  padding: var(--spacing-200) var(--spacing-500);
   background: linear-gradient(
     90deg,
     rgb(123 143 205 / 8%) 0%,
@@ -20,7 +20,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--diff-modified);
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   border: 1px solid var(--diff-modified-border);
   background: var(--diff-modified-bg);
@@ -30,13 +30,13 @@
 .branchComparison {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
 }
 
 .branchBadge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: var(--spacing-125);
   font-size: var(--font-size-400);
   font-weight: 600;
   color: var(--text-primary);
@@ -77,7 +77,7 @@
 .counts {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--spacing-150);
   margin-left: auto;
 }
 
@@ -86,7 +86,7 @@
   font-size: var(--font-size-200);
   font-weight: 600;
   letter-spacing: 0.04em;
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 10px;
   line-height: 1.4;
   text-decoration: none;

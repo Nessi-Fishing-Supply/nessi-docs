@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 var(--spacing-500);
   height: 48px;
 }
 
@@ -14,7 +14,7 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-250);
 }
 
 .logo {
@@ -32,5 +32,5 @@
 .controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
 }

@@ -4,47 +4,47 @@
   font-weight: 600;
   font-size: var(--font-size-700);
   color: var(--text-primary);
-  margin: 0 0 8px;
+  margin: 0 0 var(--spacing-200);
 }
 
 .panelTitleMono {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-600);
-  margin: 0 0 4px;
+  margin: 0 0 var(--spacing-100);
 }
 
 .description {
   font-size: var(--font-size-200);
   color: var(--text-secondary);
   line-height: 1.5;
-  margin: 0 0 12px;
+  margin: 0 0 var(--spacing-300);
 }
 
 .descriptionMuted {
   font-size: var(--font-size-200);
   color: var(--text-muted);
   line-height: 1.5;
-  margin: 0 0 12px;
+  margin: 0 0 var(--spacing-300);
 }
 
 .badgeRow {
   display: flex;
-  gap: 6px;
-  margin-bottom: 12px;
+  gap: var(--spacing-150);
+  margin-bottom: var(--spacing-300);
   flex-wrap: wrap;
 }
 
 .context {
   font-size: var(--font-size-200);
   color: var(--text-muted);
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-100);
 }
 
 .codeBlock {
   font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
   background: var(--bg-input);
-  padding: 6px 8px;
+  padding: var(--spacing-150) var(--spacing-200);
   border-radius: 4px;
   border: 1px solid var(--border-subtle);
   display: block;
@@ -66,11 +66,11 @@
 
 .errorCard {
   font-size: var(--font-size-200);
-  padding: 6px 8px;
+  padding: var(--spacing-150) var(--spacing-200);
   background: rgb(184 64 64 / 6%);
   border: 1px solid rgb(184 64 64 / 12%);
   border-radius: 4px;
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-100);
 }
 
 .errorCondition {
@@ -87,15 +87,15 @@
 .transitionRow {
   font-size: var(--font-size-200);
   color: var(--text-secondary);
-  padding: 4px 8px;
+  padding: var(--spacing-100) var(--spacing-200);
   background: var(--bg-raised);
   border-radius: 4px;
-  margin-bottom: 3px;
+  margin-bottom: var(--spacing-75);
 }
 
 .transitionArrow {
   color: var(--text-dim);
-  margin: 0 6px;
+  margin: 0 var(--spacing-150);
 }
 
 .transitionMuted {
@@ -105,27 +105,27 @@
 .terminalState {
   font-size: var(--font-size-200);
   color: var(--color-destructive-400);
-  padding: 8px 10px;
+  padding: var(--spacing-200) var(--spacing-250);
   background: rgb(184 64 64 / 6%);
   border: 1px solid rgb(184 64 64 / 12%);
   border-radius: 4px;
-  margin-top: 12px;
+  margin-top: var(--spacing-300);
 }
 
 .statusItem {
   font-size: var(--font-size-100);
-  padding: 3px 8px;
+  padding: var(--spacing-75) var(--spacing-200);
   border-radius: 3px;
-  margin-bottom: 2px;
+  margin-bottom: var(--spacing-50);
 }
 
 .statRow {
   display: flex;
-  gap: 12px;
+  gap: var(--spacing-300);
   font-size: var(--font-size-100);
   color: var(--text-dim);
   font-family: var(--font-family-mono);
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-300);
 }
 
 .sourceCode {
@@ -133,16 +133,16 @@
   font-family: var(--font-family-mono);
   color: var(--text-secondary);
   background: var(--bg-raised);
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 3px;
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-300);
 }
 
 .linkList {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-100);
 }
 
 .fieldTable {

@@ -5,9 +5,9 @@
 .trigger {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
   width: 100%;
-  padding: 8px 12px;
+  padding: var(--spacing-200) var(--spacing-300);
   background: var(--bg-raised);
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
@@ -60,9 +60,9 @@
 .option {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
   width: 100%;
-  padding: 10px 12px;
+  padding: var(--spacing-250) var(--spacing-300);
   background: none;
   border: none;
   color: var(--text-secondary);
@@ -83,7 +83,7 @@
 .optionText {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--spacing-50);
 }
 
 .optionLabel {

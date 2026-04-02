@@ -1,6 +1,6 @@
 .bar {
   display: flex;
-  gap: 4px;
+  gap: var(--spacing-100);
   flex-wrap: wrap;
 }
 
@@ -9,7 +9,7 @@
   font-size: var(--font-size-200);
   font-weight: 600;
   letter-spacing: 0.04em;
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 10px;
   line-height: 1.4;
   border: 1px solid var(--border-medium);
@@ -49,6 +49,6 @@
 }
 
 .count {
-  margin-left: 2px;
+  margin-left: var(--spacing-50);
   opacity: 0.8;
 }

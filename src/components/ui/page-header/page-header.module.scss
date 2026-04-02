@@ -1,6 +1,6 @@
 .header {
   position: relative;
-  padding: 18px 20px;
+  padding: var(--spacing-450) var(--spacing-500);
   border-radius: 10px;
   background: linear-gradient(
     135deg,
@@ -10,7 +10,7 @@
   );
   border: 1px solid rgb(61 140 117 / 10%);
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-400);
 
   &::before {
     content: '';
@@ -28,14 +28,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--spacing-400);
   position: relative;
 }
 
 .titleLeft {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: var(--spacing-250);
 }
 
 .title {
@@ -50,7 +50,7 @@
 .badge {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-100);
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   background: rgb(61 140 117 / 12%);
   color: var(--color-primary-400);
@@ -60,14 +60,14 @@
 .subtitle {
   font-size: var(--font-size-400);
   color: var(--text-muted);
-  margin: 4px 0 0;
+  margin: var(--spacing-100) 0 0;
   position: relative;
 }
 
 .stats {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--spacing-400);
   position: relative;
 }
 
@@ -81,10 +81,10 @@
   color: var(--text-primary);
   font-weight: 600;
   font-size: var(--font-size-700);
-  margin-right: 3px;
+  margin-right: var(--spacing-75);
 }
 
 .children {
   position: relative;
-  margin-top: 12px;
+  margin-top: var(--spacing-300);
 }

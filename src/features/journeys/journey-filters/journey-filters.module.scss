@@ -8,14 +8,14 @@
 
 .toggle {
   position: absolute;
-  top: 8px;
-  right: 12px;
+  top: var(--spacing-200);
+  right: var(--spacing-300);
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   border-radius: 6px;
   color: var(--text-secondary);
   font-size: var(--font-size-300);
-  padding: 5px 12px;
+  padding: var(--spacing-125) var(--spacing-300);
   cursor: pointer;
   z-index: 6;
 
@@ -26,8 +26,8 @@
 
 .bar {
   display: flex;
-  gap: 16px;
-  padding: 8px 12px;
+  gap: var(--spacing-400);
+  padding: var(--spacing-200) var(--spacing-300);
   background: rgb(15 19 25 / 92%);
   border-bottom: 1px solid var(--border-subtle);
   backdrop-filter: blur(8px);
@@ -36,7 +36,7 @@
 .group {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--spacing-150);
 }
 
 .groupLabel {
@@ -44,11 +44,11 @@
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-right: 4px;
+  margin-right: var(--spacing-100);
 }
 
 .chip {
-  padding: 3px 10px;
+  padding: var(--spacing-75) var(--spacing-250);
   border-radius: 12px;
   font-size: var(--font-size-200);
   border: 1px solid transparent;

@@ -3,9 +3,9 @@
   color: var(--text-dim);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin: 0 0 4px;
+  margin: 0 0 var(--spacing-100);
 }
 
 .spaced {
-  margin-top: 12px;
+  margin-top: var(--spacing-300);
 }

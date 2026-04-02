@@ -1,10 +1,10 @@
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
   font-size: var(--font-size-400);
   color: var(--text-dim);
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-400);
   animation: fade-in 200ms ease-out;
 }
 
@@ -34,7 +34,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--spacing-150);
 }
 
 .switcherBtn {
@@ -75,14 +75,14 @@
     0 4px 20px rgb(0 0 0 / 60%),
     0 8px 40px rgb(0 0 0 / 30%);
   z-index: 20;
-  padding: 4px;
+  padding: var(--spacing-100);
   animation: fade-in 120ms ease-out;
 }
 
 .dropdownItem {
   display: block;
   width: 100%;
-  padding: 8px 12px;
+  padding: var(--spacing-200) var(--spacing-300);
   border-radius: 6px;
   text-decoration: none;
   transition: background 100ms var(--ease-out);

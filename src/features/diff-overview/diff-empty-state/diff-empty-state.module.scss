@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  padding: 40px 20px;
+  padding: var(--spacing-800) var(--spacing-500);
 }
 
 .content {
@@ -15,7 +15,7 @@
 }
 
 .icon {
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-500);
   opacity: 0.4;
 }
 
@@ -23,14 +23,14 @@
   font-size: var(--font-size-900);
   font-weight: 600;
   color: var(--text-primary);
-  margin: 0 0 8px;
+  margin: 0 0 var(--spacing-200);
   letter-spacing: -0.02em;
 }
 
 .subtext {
   font-size: var(--font-size-500);
   color: var(--text-muted);
-  margin: 0 0 24px;
+  margin: 0 0 var(--spacing-600);
   line-height: 1.5;
 }
 
@@ -42,7 +42,7 @@
 .selectorBtn {
   display: block;
   width: 100%;
-  padding: 10px 16px;
+  padding: var(--spacing-250) var(--spacing-400);
   font-size: var(--font-size-500);
   color: var(--text-muted);
   background: var(--bg-raised);
@@ -64,11 +64,11 @@
   top: 100%;
   left: 0;
   right: 0;
-  margin-top: 4px;
+  margin-top: var(--spacing-100);
   background: var(--bg-raised);
   border: 1px solid var(--border-medium);
   border-radius: 8px;
-  padding: 4px;
+  padding: var(--spacing-100);
   z-index: 20;
   box-shadow: 0 4px 16px rgb(0 0 0 / 40%);
 }
@@ -76,9 +76,9 @@
 .option {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-250);
   width: 100%;
-  padding: 10px 12px;
+  padding: var(--spacing-250) var(--spacing-300);
   border: none;
   background: transparent;
   border-radius: 6px;
@@ -101,7 +101,7 @@
 .optionText {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--spacing-50);
 }
 
 .optionLabel {

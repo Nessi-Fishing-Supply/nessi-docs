@@ -1,7 +1,7 @@
 @use 'mixins/diff' as *;
 
 .container {
-  padding: 24px 28px;
+  padding: var(--spacing-600) var(--spacing-650);
   overflow-y: auto;
   height: 100%;
 }
@@ -11,14 +11,14 @@
 .filterBar {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 0;
-  margin-bottom: 4px;
+  gap: var(--spacing-150);
+  padding: var(--spacing-250) 0;
+  margin-bottom: var(--spacing-100);
   flex-wrap: wrap;
 }
 
 .diffFilterRow {
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-300);
 }
 
 .filterLabel {
@@ -27,13 +27,13 @@
   letter-spacing: 0.08em;
   color: var(--text-muted);
   font-weight: 600;
-  margin-right: 2px;
+  margin-right: var(--spacing-50);
   white-space: nowrap;
 }
 
 .filterChip {
   font-size: var(--font-size-400);
-  padding: 4px 12px;
+  padding: var(--spacing-100) var(--spacing-300);
   border-radius: 6px;
   background: rgb(255 255 255 / 3%);
   border: 1px solid rgb(255 255 255 / 6%);
@@ -43,7 +43,7 @@
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--spacing-100);
 
   &:hover {
     border-color: rgb(255 255 255 / 12%);
@@ -70,7 +70,7 @@
 // ─── Entity Container ───
 
 .entityContainer {
-  padding-top: 4px;
+  padding-top: var(--spacing-100);
 }
 
 // ─── Group Dividers ───
@@ -78,8 +78,8 @@
 .groupDivider {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 16px 0 8px;
+  gap: var(--spacing-250);
+  margin: var(--spacing-400) 0 var(--spacing-200);
 
   &:first-child {
     margin-top: 0;
@@ -103,7 +103,7 @@
   font-size: var(--font-size-300);
   color: var(--text-muted);
   background: rgb(255 255 255 / 5%);
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   font-family: var(--font-family-mono);
 }
@@ -111,7 +111,7 @@
 // ─── Entity Row ───
 
 .entityRow {
-  margin-bottom: 2px;
+  margin-bottom: var(--spacing-50);
   border-radius: 8px;
   border: 1px solid transparent;
   transition: all 150ms ease-out;
@@ -135,9 +135,9 @@
 .entityRowHeader {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-250);
   width: 100%;
-  padding: 11px 14px;
+  padding: var(--spacing-300) var(--spacing-350);
   background: none;
   border: none;
   cursor: pointer;
@@ -177,7 +177,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   color: var(--text-muted);
   background: rgb(255 255 255 / 4%);
@@ -187,7 +187,7 @@
   font-size: var(--font-size-200);
   color: var(--text-muted);
   text-decoration: none;
-  padding: 1px 8px;
+  padding: 1px var(--spacing-200);
   border-radius: 4px;
   background: rgb(95 127 191 / 10%);
   border: 1px solid rgb(95 127 191 / 15%);
@@ -206,7 +206,7 @@
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
   flex-shrink: 0;
 }
 
@@ -215,7 +215,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-primary-400);
   background: rgb(61 140 117 / 10%);
@@ -226,7 +226,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-accent-500);
   background: rgb(226 119 57 / 10%);
@@ -237,7 +237,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-purple-300);
   background: rgb(139 92 246 / 10%);
@@ -286,16 +286,16 @@
 }
 
 .splitLeft {
-  padding: 16px 18px;
+  padding: var(--spacing-400) var(--spacing-450);
   border-right: 1px solid var(--border-subtle);
 }
 
 .splitRight {
-  padding: 16px 18px;
+  padding: var(--spacing-400) var(--spacing-450);
 }
 
 .fullWidth {
-  padding: 16px 18px;
+  padding: var(--spacing-400) var(--spacing-450);
 }
 
 // ─── Field Table ───
@@ -316,7 +316,7 @@
   color: var(--text-muted);
   font-weight: 600;
   text-align: left;
-  padding: 6px 8px 8px;
+  padding: var(--spacing-150) var(--spacing-200) var(--spacing-200);
   border-bottom: 1px solid var(--border-medium);
   position: sticky;
   top: 0;
@@ -337,7 +337,7 @@
 }
 
 .fieldRow td {
-  padding: 7px 8px;
+  padding: var(--spacing-200) var(--spacing-200);
   border-bottom: 1px solid var(--border-subtle);
   vertical-align: middle;
 }
@@ -399,12 +399,12 @@
 .tagNull {
   display: inline-block;
   font-size: var(--font-size-100);
-  padding: 2px 6px;
+  padding: var(--spacing-50) var(--spacing-150);
   border-radius: 3px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-left: 5px;
+  margin-left: var(--spacing-125);
   vertical-align: middle;
 }
 
@@ -443,7 +443,7 @@
 .metaSections {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--spacing-350);
 }
 
 .sectionLabel {
@@ -452,16 +452,16 @@
   letter-spacing: 0.08em;
   color: var(--text-secondary);
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-200);
 }
 
 .metaRow {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
+  gap: var(--spacing-250);
+  padding: var(--spacing-200) var(--spacing-250);
   border-radius: 5px;
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-100);
   background: rgb(255 255 255 / 2%);
 }
 
@@ -471,7 +471,7 @@
   font-weight: 700;
 
   // color and background set via inline styles (method-colored)
-  padding: 3px 8px;
+  padding: var(--spacing-75) var(--spacing-200);
   border-radius: 4px;
   min-width: 56px;
   text-align: center;
@@ -509,7 +509,7 @@
   font-weight: 700;
   color: var(--color-accent-500);
   background: rgb(226 119 57 / 10%);
-  padding: 3px 8px;
+  padding: var(--spacing-75) var(--spacing-200);
   border-radius: 4px;
 }
 
@@ -533,7 +533,7 @@
 
 .indexUnique {
   font-size: var(--font-size-100);
-  padding: 2px 6px;
+  padding: var(--spacing-50) var(--spacing-150);
   border-radius: 3px;
   font-weight: 700;
   text-transform: uppercase;
@@ -561,8 +561,8 @@
 
 .diffCounts {
   display: flex;
-  gap: 8px;
-  margin-left: 8px;
+  gap: var(--spacing-200);
+  margin-left: var(--spacing-200);
   font-size: var(--font-size-200);
   font-family: var(--font-family-mono);
 }

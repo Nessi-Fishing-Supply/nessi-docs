@@ -7,7 +7,7 @@
   background: var(--bg-body);
   align-items: center;
   justify-content: center;
-  padding: 32px;
+  padding: var(--spacing-700);
 
   @media (width <= 1023px) {
     display: flex;
@@ -21,28 +21,28 @@
 
 .icon {
   color: var(--text-dim);
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-600);
 }
 
 .title {
   font-size: var(--font-size-1000);
   font-weight: 400;
   color: var(--text-primary);
-  margin: 0 0 12px;
+  margin: 0 0 var(--spacing-300);
 }
 
 .message {
   font-size: var(--font-size-600);
   color: var(--text-muted);
   line-height: 1.6;
-  margin: 0 0 24px;
+  margin: 0 0 var(--spacing-600);
 }
 
 .url {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-300);
   color: var(--text-dim);
-  padding: 8px 16px;
+  padding: var(--spacing-200) var(--spacing-400);
   background: var(--bg-raised);
   border: 1px solid var(--border-subtle);
   border-radius: 6px;

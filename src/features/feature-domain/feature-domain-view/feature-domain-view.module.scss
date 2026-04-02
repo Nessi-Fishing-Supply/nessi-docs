@@ -3,7 +3,7 @@
 // ─── Container ───
 
 .container {
-  padding: 24px 28px;
+  padding: var(--spacing-600) var(--spacing-650);
   overflow-y: auto;
   height: 100%;
 }
@@ -14,16 +14,16 @@
   background: rgb(255 255 255 / 3%);
   border: 1px solid rgb(255 255 255 / 6%);
   border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 20px;
+  padding: var(--spacing-600);
+  margin-bottom: var(--spacing-500);
 }
 
 .heroHeader {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: var(--spacing-400);
+  margin-bottom: var(--spacing-400);
 }
 
 .heroTitle {
@@ -36,19 +36,19 @@
 .heroDescription {
   font-size: var(--font-size-500);
   color: var(--text-secondary);
-  margin: 4px 0 0;
+  margin: var(--spacing-100) 0 0;
   line-height: 1.5;
 }
 
 .heroBadges {
   display: flex;
-  gap: 6px;
+  gap: var(--spacing-150);
   flex-wrap: wrap;
 }
 
 .heroBadge {
   font-size: var(--font-size-300);
-  padding: 4px 10px;
+  padding: var(--spacing-100) var(--spacing-250);
   border-radius: 5px;
   background: rgb(255 255 255 / 4%);
   color: var(--text-muted);
@@ -64,15 +64,15 @@
   letter-spacing: 0.08em;
   font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 4px;
-  margin-top: 4px;
+  margin-bottom: var(--spacing-100);
+  margin-top: var(--spacing-100);
 }
 
 .featureContainer {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding-top: 4px;
+  gap: var(--spacing-150);
+  padding-top: var(--spacing-100);
 }
 
 .featureRow {
@@ -113,9 +113,9 @@
 .featureRowHeader {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-250);
   width: 100%;
-  padding: 14px 16px;
+  padding: var(--spacing-350) var(--spacing-400);
   background: none;
   border: none;
   cursor: pointer;
@@ -140,7 +140,7 @@
 .featureBadges {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--spacing-150);
   margin-left: auto;
   flex-shrink: 0;
 }
@@ -148,7 +148,7 @@
 .featureBadge {
   font-size: var(--font-size-200);
   font-family: var(--font-family-mono);
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   background: rgb(255 255 255 / 5%);
   color: var(--text-muted);
@@ -177,18 +177,18 @@
   border-top: 1px solid rgb(61 140 117 / 10%);
   border-radius: 0 0 8px 8px;
   background: rgb(15 19 25 / 50%);
-  padding: 18px 20px;
+  padding: var(--spacing-450) var(--spacing-500);
 }
 
 .expansionDescription {
   font-size: var(--font-size-500);
   color: var(--text-secondary);
   line-height: 1.55;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-400);
 }
 
 .expansionSection {
-  margin-bottom: 14px;
+  margin-bottom: var(--spacing-350);
 
   &:last-child {
     margin-bottom: 0;
@@ -201,24 +201,24 @@
   letter-spacing: 0.08em;
   color: var(--text-dim);
   font-weight: 600;
-  margin-bottom: 8px;
-  padding-bottom: 4px;
+  margin-bottom: var(--spacing-200);
+  padding-bottom: var(--spacing-100);
   border-bottom: 1px solid var(--border-subtle);
 }
 
 .linkList {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-100);
 }
 
 .linkItem {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-400);
-  padding: 7px 12px;
+  padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
   transition: all 150ms ease-out;
@@ -278,12 +278,12 @@
 // ─── Footer ───
 
 .footer {
-  margin-top: 24px;
+  margin-top: var(--spacing-600);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  gap: var(--spacing-500);
   border-top: 1px solid var(--border-subtle);
-  padding-top: 20px;
+  padding-top: var(--spacing-500);
 }
 
 .footerSection {
@@ -294,7 +294,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-250);
 }
 
 .footerTitle {
@@ -303,7 +303,7 @@
   letter-spacing: 0.08em;
   font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-250);
 
   .footerTitleRow & {
     margin-bottom: 0;
@@ -324,13 +324,13 @@
 .footerList {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--spacing-150);
 }
 
 .changeEntry {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
   font-size: var(--font-size-400);
   color: var(--text-secondary);
 }
@@ -348,7 +348,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   white-space: nowrap;
   flex-shrink: 0;
@@ -357,11 +357,11 @@
 .journeyLink {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--spacing-150);
   font-size: var(--font-size-400);
   color: var(--color-primary-400);
   background: rgb(61 140 117 / 6%);
-  padding: 7px 12px;
+  padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
   transition: all 150ms ease-out;
@@ -375,12 +375,12 @@
 .entityLink {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--spacing-150);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-400);
   color: var(--color-purple-500);
   background: rgb(155 123 212 / 6%);
-  padding: 7px 12px;
+  padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
   transition: all 150ms ease-out;
@@ -411,13 +411,13 @@
 // ─── Diff Mode ───
 
 .diffFilterRow {
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-300);
 }
 
 .featureRowTitle {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
 }
 
 .diff_added {

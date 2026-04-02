@@ -5,20 +5,20 @@
   justify-content: center;
   height: 100%;
   text-align: center;
-  padding: 20px;
+  padding: var(--spacing-500);
 }
 
 .emptyIcon {
   font-size: var(--font-size-1400);
   color: var(--text-dim);
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-300);
   opacity: 0.5;
 }
 
 .emptyText {
   font-size: var(--font-size-500);
   color: var(--text-secondary);
-  margin: 0 0 6px;
+  margin: 0 0 var(--spacing-150);
 }
 
 .emptyHint {
@@ -30,7 +30,7 @@
 .panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--spacing-400);
 
   /* Bump panel font sizes — global tokens (9px/10px) are too small for this context */
   --font-size-100: 11px;

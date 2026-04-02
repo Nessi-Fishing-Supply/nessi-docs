@@ -1,7 +1,7 @@
 @use 'mixins/diff' as *;
 
 .container {
-  padding: 24px 28px;
+  padding: var(--spacing-600) var(--spacing-650);
   overflow-y: auto;
   height: 100%;
 }
@@ -11,15 +11,15 @@
 .toc {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 28px;
+  gap: var(--spacing-100);
+  margin-bottom: var(--spacing-650);
 }
 
 .tocItem {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
+  gap: var(--spacing-150);
+  padding: var(--spacing-125) var(--spacing-300);
   border-radius: 20px;
   background: var(--bg-raised);
   border: 1px solid var(--border-subtle);
@@ -54,7 +54,7 @@
   font-family: var(--font-family-mono);
   font-size: var(--font-size-100);
   color: var(--text-dim);
-  padding: 1px 5px;
+  padding: 1px var(--spacing-125);
   border-radius: 8px;
   background: var(--bg-body);
   transition: all 150ms ease;
@@ -65,7 +65,7 @@
 .enums {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--spacing-100);
 }
 
 .enumBlock {
@@ -86,9 +86,9 @@
 .enumHeader {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-250);
   width: 100%;
-  padding: 10px 14px;
+  padding: var(--spacing-250) var(--spacing-350);
   background: var(--bg-raised);
   border: none;
   cursor: pointer;
@@ -127,21 +127,21 @@
 // ─── Enum Body ───
 
 .enumBody {
-  padding: 14px 16px;
+  padding: var(--spacing-350) var(--spacing-400);
 }
 
 .enumDescription {
   font-size: var(--font-size-400);
   color: var(--text-secondary);
   line-height: 1.55;
-  margin: 0 0 14px;
+  margin: 0 0 var(--spacing-350);
 }
 
 .sourceRow {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: var(--spacing-200);
+  margin-bottom: var(--spacing-400);
 }
 
 .sourceLabel {
@@ -157,7 +157,7 @@
   font-size: var(--font-size-200);
   color: var(--text-muted);
   background: var(--bg-input);
-  padding: 3px 8px;
+  padding: var(--spacing-75) var(--spacing-200);
   border-radius: 4px;
   border: 1px solid var(--border-subtle);
   white-space: nowrap;
@@ -177,7 +177,7 @@
   display: grid;
   grid-template-columns: 200px 160px 1fr;
   gap: 0;
-  padding: 6px 12px;
+  padding: var(--spacing-150) var(--spacing-300);
   background: var(--bg-raised);
   border-bottom: 1px solid var(--border-subtle);
   font-size: var(--font-size-100);
@@ -191,7 +191,7 @@
   display: grid;
   grid-template-columns: 200px 160px 1fr;
   gap: 0;
-  padding: 7px 12px;
+  padding: var(--spacing-200) var(--spacing-300);
   font-size: var(--font-size-300);
   border-bottom: 1px solid var(--border-subtle);
   align-items: baseline;
@@ -228,15 +228,15 @@
 .roleCards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: var(--spacing-200);
+  margin-bottom: var(--spacing-400);
 }
 
 .roleCard {
   background: var(--bg-panel);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: var(--spacing-350) var(--spacing-400);
   cursor: pointer;
   text-align: left;
   transition: border-color 150ms ease;
@@ -250,7 +250,7 @@
   display: block;
   font-size: var(--font-size-500);
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: var(--spacing-150);
 }
 
 .roleDescription {
@@ -276,7 +276,7 @@
 }
 
 .featureCol {
-  padding: 10px 16px;
+  padding: var(--spacing-250) var(--spacing-400);
   font-size: var(--font-size-200);
   font-family: var(--font-family-mono);
   color: var(--text-dim);
@@ -285,7 +285,7 @@
 }
 
 .roleCol {
-  padding: 10px 0;
+  padding: var(--spacing-250) 0;
   font-size: var(--font-size-300);
   font-weight: 600;
   text-align: center;
@@ -308,10 +308,10 @@
 }
 
 .featureInfo {
-  padding: 10px 16px;
+  padding: var(--spacing-250) var(--spacing-400);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--spacing-50);
 }
 
 .featureLabel {
@@ -329,14 +329,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 0;
+  padding: var(--spacing-250) 0;
   border-left: 1px solid var(--border-subtle);
 }
 
 .levelBadge {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-200);
-  padding: 2px 7px;
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   border: 1px solid;
   line-height: 1.4;
@@ -344,7 +344,7 @@
 }
 
 .diffFilterRow {
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-300);
 }
 
 .valueRowAdded {

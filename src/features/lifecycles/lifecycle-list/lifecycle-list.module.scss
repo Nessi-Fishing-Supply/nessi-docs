@@ -1,5 +1,5 @@
 .container {
-  padding: 24px 28px;
+  padding: var(--spacing-600) var(--spacing-650);
   overflow-y: auto;
   height: 100%;
 }
@@ -7,16 +7,16 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--spacing-250);
 }
 
 .row {
   display: flex;
   align-items: center;
-  padding: 14px 18px;
+  padding: var(--spacing-350) var(--spacing-450);
   border-radius: 8px;
   cursor: pointer;
-  gap: 14px;
+  gap: var(--spacing-350);
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   backdrop-filter: blur(8px);
@@ -41,7 +41,7 @@
 .rowTitle {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-200);
   font-size: var(--font-size-600);
   font-weight: 500;
   color: var(--text-primary);
@@ -50,13 +50,13 @@
 .rowDesc {
   font-size: var(--font-size-400);
   color: var(--text-secondary);
-  margin-top: 3px;
+  margin-top: var(--spacing-75);
 }
 
 .rowMeta {
   display: flex;
-  gap: 12px;
-  margin-top: 4px;
+  gap: var(--spacing-300);
+  margin-top: var(--spacing-100);
   font-size: var(--font-size-200);
 }
 
@@ -77,7 +77,7 @@
 
 .sourceBadge {
   font-size: var(--font-size-300);
-  padding: 3px 9px;
+  padding: var(--spacing-75) var(--spacing-200);
   border-radius: 10px;
   white-space: nowrap;
   flex-shrink: 0;
@@ -99,7 +99,7 @@
 }
 
 .diffFilterRow {
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-300);
 }
 
 // ─── Diff Mode ───
