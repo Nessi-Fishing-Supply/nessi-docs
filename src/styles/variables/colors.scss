@@ -84,6 +84,28 @@
   --color-info-500: #1e4a40;
   --color-info-700: #0e2822;
 
+  // Blue (for diff-modified, links)
+  --color-blue-100: #dbeafe;
+  --color-blue-200: #bfdbfe;
+  --color-blue-300: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #7b8fcd;
+  --color-blue-600: #5b6eae;
+  --color-blue-700: #4a5a8f;
+
+  // Red (for diff-removed, destructive states)
+  --color-red-100: #fee2e2;
+  --color-red-200: #fecaca;
+  --color-red-300: #fca5a5;
+  --color-red-400: #f87171;
+  --color-red-500: #b84040;
+  --color-red-600: #991b1b;
+
+  // Extended neutral (fine grain for dark theme surfaces)
+  --color-neutral-850: #1e2028;
+  --color-neutral-875: #1a1d24;
+  --color-neutral-950: #0f1319;
+
   // Surfaces
   --surface-page: var(--color-surface-300);
   --surface-raised: var(--color-surface-200);
