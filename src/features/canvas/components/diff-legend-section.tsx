@@ -1,10 +1,11 @@
 import { hexToRgba } from '../utils/geometry';
+import { DIFF_COLORS } from '@/constants/diff';
 
 const DIFF_ENTRIES = [
-  { label: 'New', color: '#3d8c75' },
-  { label: 'Modified', color: '#7b8fcd' },
-  { label: 'Removed', color: '#b84040' },
-  { label: 'Unchanged', color: '#6a6860' },
+  { label: 'New', color: DIFF_COLORS.added },
+  { label: 'Modified', color: DIFF_COLORS.modified },
+  { label: 'Removed', color: DIFF_COLORS.removed },
+  { label: 'Unchanged', color: DIFF_COLORS.unchanged },
 ];
 
 export function DiffLegendSection() {

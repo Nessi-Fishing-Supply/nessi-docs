@@ -4,13 +4,9 @@ import { useState, memo } from 'react';
 import type { DecisionOption } from '@/types/journey';
 import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
+import { DIFF_COLORS } from '@/constants/diff';
 
 const DECISION_COLOR = '#a78bfa';
-const DIFF_COLORS: Record<string, string> = {
-  added: '#3d8c75',
-  modified: '#7b8fcd',
-  removed: '#b84040',
-};
 
 /** Clean snake_case/SCREAMING_CASE into title case: "email_not_confirmed" → "Email Not Confirmed" */
 function humanize(text: string): string {

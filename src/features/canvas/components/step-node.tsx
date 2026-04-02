@@ -4,16 +4,11 @@ import { useState, memo } from 'react';
 import { LAYER_CONFIG, type JourneyNode } from '@/types/journey';
 import { NODE_WIDTH, NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
+import { DIFF_COLORS } from '@/constants/diff';
 
 // Max chars for label and sublabel
 const LABEL_MAX = 20;
 const SUBLABEL_MAX = 22;
-
-const DIFF_COLORS: Record<string, string> = {
-  added: '#3d8c75',
-  modified: '#7b8fcd',
-  removed: '#b84040',
-};
 
 const METHOD_VERBS: Record<string, string> = {
   GET: 'Fetch',

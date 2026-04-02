@@ -4,6 +4,7 @@ import { useState, memo } from 'react';
 import { ERD_NODE_WIDTH, ERD_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { ErdNode } from '@/types/entity-relationship';
 import type { DiffStatus } from '@/types/diff';
+import { DIFF_COLORS } from '@/constants/diff';
 
 const BADGE_COLORS: Record<string, string> = {
   core: '#3d8c75', // teal — primary marketplace entities
@@ -16,13 +17,6 @@ const BADGE_COLORS: Record<string, string> = {
 };
 
 const DEFAULT_COLOR = '#8a8580';
-
-const DIFF_COLORS: Record<NonNullable<DiffStatus>, string> = {
-  added: '#3d8c75',
-  modified: '#7b8fcd',
-  removed: '#b84040',
-  unchanged: '',
-};
 
 const LABEL_MAX = 20;
 

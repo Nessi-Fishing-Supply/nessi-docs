@@ -1,12 +1,7 @@
 import type { DiffStatus } from '@/types/diff';
 import type { NodeChange } from '../hooks/use-diff-nodes';
 import { sectionLabel } from '../constants/tooltip-styles';
-
-const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  added: { label: 'New', color: '#3d8c75', bg: 'rgba(61,140,117,0.12)' },
-  modified: { label: 'Modified', color: '#7b8fcd', bg: 'rgba(123,143,205,0.12)' },
-  removed: { label: 'Removed', color: '#b84040', bg: 'rgba(184,64,64,0.12)' },
-};
+import { DIFF_STATUS_CONFIG } from '@/constants/diff';
 
 function formatValue(val: unknown): string {
   if (val === undefined || val === null) return '(none)';
@@ -31,7 +26,7 @@ export function DiffTooltipSection({
   activeBranchLabel,
   compareBranchLabel,
 }: DiffTooltipSectionProps) {
-  const config = STATUS_CONFIG[status];
+  const config = DIFF_STATUS_CONFIG[status as keyof typeof DIFF_STATUS_CONFIG];
   if (!config) return null;
 
   const activeLabel = activeBranchLabel || 'Current';

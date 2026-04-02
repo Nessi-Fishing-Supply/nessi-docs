@@ -3,13 +3,9 @@
 import { useState, memo } from 'react';
 import { NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
+import { DIFF_COLORS } from '@/constants/diff';
 
 const ENTRY_COLOR = '#3ba8d4';
-const DIFF_COLORS: Record<string, string> = {
-  added: '#3d8c75',
-  modified: '#7b8fcd',
-  removed: '#b84040',
-};
 
 import { TT_BG, TT_BORDER, TT_SHADOW } from '../constants/tooltip-styles';
 

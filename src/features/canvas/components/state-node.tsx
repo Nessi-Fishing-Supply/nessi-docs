@@ -5,12 +5,7 @@ import { LIFECYCLE_NODE_WIDTH, LIFECYCLE_NODE_HEIGHT, hexToRgba } from '../utils
 import type { LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
 import type { DiffStatus } from '@/types/diff';
-
-const DIFF_COLORS: Record<string, string> = {
-  added: '#3d8c75',
-  modified: '#7b8fcd',
-  removed: '#b84040',
-};
+import { DIFF_COLORS } from '@/constants/diff';
 
 interface StateNodeProps {
   state: LifecycleState;
