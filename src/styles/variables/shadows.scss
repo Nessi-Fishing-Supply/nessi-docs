@@ -2,13 +2,21 @@
 /// Shadows — Design System v1
 ////////////////////
 :root {
-  --shadow-100: 0 1px 2px rgb(0 0 0 / 6%);
-  --shadow-200: 0 2px 8px rgb(0 0 0 / 8%), 0 1px 2px rgb(0 0 0 / 4%);
-  --shadow-300: 0 4px 16px rgb(0 0 0 / 10%), 0 2px 4px rgb(0 0 0 / 6%);
-  --shadow-400: 0 8px 32px rgb(0 0 0 / 12%), 0 4px 8px rgb(0 0 0 / 6%);
-  --shadow-500: 0 16px 48px rgb(0 0 0 / 15%), 0 8px 16px rgb(0 0 0 / 6%);
-  --shadow-sell: 0 4px 12px rgb(226 119 57 / 45%);
-  --shadow-focus-primary: 0 0 0 3px rgb(30 74 64 / 28%);
-  --shadow-focus-accent: 0 0 0 3px rgb(226 119 57 / 28%);
-  --shadow-focus-error: 0 0 0 3px rgb(185 28 28 / 22%);
+  --shadow-100: 0 1px 2px rgb(var(--color-black-rgb) / var(--opacity-8));
+  --shadow-200:
+    0 2px 8px rgb(var(--color-black-rgb) / var(--opacity-8)),
+    0 1px 2px rgb(var(--color-black-rgb) / var(--opacity-4));
+  --shadow-300:
+    0 4px 16px rgb(var(--color-black-rgb) / var(--opacity-12)),
+    0 2px 4px rgb(var(--color-black-rgb) / var(--opacity-8));
+  --shadow-400:
+    0 8px 32px rgb(var(--color-black-rgb) / var(--opacity-12)),
+    0 4px 8px rgb(var(--color-black-rgb) / var(--opacity-8));
+  --shadow-500:
+    0 16px 48px rgb(var(--color-black-rgb) / var(--opacity-16)),
+    0 8px 16px rgb(var(--color-black-rgb) / var(--opacity-8));
+  --shadow-sell: 0 4px 12px rgb(var(--color-accent-500-rgb) / var(--opacity-50));
+  --shadow-focus-primary: 0 0 0 3px rgb(var(--color-primary-500-rgb) / var(--opacity-32));
+  --shadow-focus-accent: 0 0 0 3px rgb(var(--color-accent-500-rgb) / var(--opacity-32));
+  --shadow-focus-error: 0 0 0 3px rgb(var(--color-error-500-rgb) / var(--opacity-24));
 }

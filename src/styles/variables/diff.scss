@@ -1,8 +1,8 @@
 // Diff mode colors — matches CHANGE_TYPE_CONFIG from changelog
 :root {
-  --diff-added: var(--color-primary-400, #3d8c75);
-  --diff-modified: var(--color-blue-500, #7b8fcd);
-  --diff-removed: var(--color-red-500, #b84040);
+  --diff-added: var(--color-primary-400);
+  --diff-modified: var(--color-blue-500);
+  --diff-removed: var(--color-red-500);
   --diff-added-bg: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
   --diff-modified-bg: rgb(var(--color-blue-500-rgb) / var(--opacity-12));
   --diff-removed-bg: rgb(var(--color-destructive-400-rgb) / var(--opacity-12));
