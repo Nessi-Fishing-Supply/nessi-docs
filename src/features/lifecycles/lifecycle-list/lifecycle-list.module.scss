@@ -103,6 +103,7 @@
 }
 
 // ─── Diff Mode ───
+// !important needed to override base card styles on .row
 
 .diff_added {
   border-left: 2px solid var(--diff-added) !important;

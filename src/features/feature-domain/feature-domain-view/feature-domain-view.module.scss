@@ -1,3 +1,5 @@
+@use 'mixins/diff' as *;
+
 // ─── Container ───
 
 .container {
@@ -419,35 +421,23 @@
 }
 
 .diff_added {
-  border-left: 2px solid var(--diff-added);
-  background: var(--diff-added-bg);
+  @include diff-row('added');
 }
-
 .diff_modified {
-  border-left: 2px solid var(--diff-modified);
-  background: var(--diff-modified-bg);
+  @include diff-row('modified');
 }
-
 .diff_removed {
-  border-left: 2px solid var(--diff-removed);
-  background: var(--diff-removed-bg);
-  opacity: 0.7;
+  @include diff-row('removed');
 }
 
 .linkDiff_added {
-  background: var(--diff-added-bg);
-  border-left: 2px solid var(--diff-added);
+  @include diff-row('added');
 }
-
 .linkDiff_modified {
-  background: var(--diff-modified-bg);
-  border-left: 2px solid var(--diff-modified);
+  @include diff-row('modified');
 }
-
 .linkDiff_removed {
-  background: var(--diff-removed-bg);
-  border-left: 2px solid var(--diff-removed);
-  opacity: 0.7;
+  @include diff-row('removed');
 }
 
 // ─── Empty State ───
