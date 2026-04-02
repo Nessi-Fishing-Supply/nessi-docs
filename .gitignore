@@ -25,6 +25,9 @@ pnpm-debug.log*
 # superpowers brainstorm state
 .superpowers/
 
+# git worktrees
+.worktrees/
+
 # playwright MCP
 .playwright-mcp/
 
