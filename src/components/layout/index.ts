@@ -1,4 +1,5 @@
 export { AppShell } from './app-shell';
+export { CollapsibleRow } from './collapsible-row';
 export { DetailPanel } from './detail-panel';
 export { DeviceGate } from './device-gate';
 export { DiffToolbar } from './diff-toolbar';

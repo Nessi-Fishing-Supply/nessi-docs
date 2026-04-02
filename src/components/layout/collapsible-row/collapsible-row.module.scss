@@ -1,0 +1,61 @@
+@use 'mixins/diff' as *;
+
+.row {
+  margin-bottom: var(--spacing-50);
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 150ms ease-out;
+  animation: row-enter 200ms ease-out both;
+  animation-delay: var(--stagger);
+  position: relative;
+
+  &:hover {
+    border-color: var(--border-subtle);
+  }
+}
+
+.open {
+  border-color: var(--border-medium);
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
+}
+
+.header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-200) var(--spacing-300);
+  gap: var(--spacing-200);
+  user-select: none;
+}
+
+.content {
+  padding: 0 var(--spacing-300) var(--spacing-300);
+}
+
+.diff_added {
+  @include diff-row('added');
+}
+
+.diff_modified {
+  @include diff-row('modified');
+}
+
+.diff_removed {
+  @include diff-row('removed');
+}
+
+.diff_unchanged {
+  @include diff-unchanged;
+}
+
+@keyframes row-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
