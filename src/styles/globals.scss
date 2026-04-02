@@ -17,6 +17,9 @@
 
 // Mixins
 @use 'mixins/breakpoints' as *;
+@use 'mixins/layout' as *;
+@use 'mixins/diff' as *;
+@use 'mixins/typography' as *;
 
 // Global Styles
 * {

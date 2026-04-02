@@ -1,0 +1,35 @@
+/// Horizontal flex row with centered alignment.
+/// @param {Length} $gap [var(--spacing-200)] — gap between items
+@mixin flex-row($gap: var(--spacing-200)) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+/// Vertical flex column.
+/// @param {Length} $gap [var(--spacing-200)] — gap between items
+@mixin flex-col($gap: var(--spacing-200)) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+/// Centered flex container (both axes).
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/// Scrollable overflow container with thin scrollbar.
+@mixin overflow-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+/// Standard page content container.
+@mixin page-container {
+  padding: var(--spacing-600) var(--spacing-700);
+  overflow-y: auto;
+  height: 100%;
+}
