@@ -1,0 +1,37 @@
+@use 'mixins/diff' as *;
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-100);
+
+  th {
+    text-align: left;
+    padding: var(--spacing-100) var(--spacing-200);
+    color: var(--text-muted);
+    font-weight: var(--font-weight-500);
+    font-size: var(--font-size-100);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  td {
+    padding: var(--spacing-100) var(--spacing-200);
+    color: var(--text-secondary);
+    border-bottom: 1px solid rgb(var(--color-white-rgb) / var(--opacity-100));
+    font-family: var(--font-family-mono);
+  }
+
+  tbody tr:hover td {
+    background: rgb(var(--color-white-rgb) / var(--opacity-100));
+  }
+}
+
+.fieldChanged {
+  @include diff-field('modified');
+}
+
+.fieldAdded {
+  @include diff-field('added');
+}
