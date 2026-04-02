@@ -4,7 +4,8 @@ import { useState, memo } from 'react';
 import type { DecisionOption } from '@/types/journey';
 import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
-import { DIFF_COLORS } from '@/constants/diff';
+import { useNodeState } from '../hooks/use-node-state';
+import { NodeGlow } from './node-glow';
 
 const DECISION_COLOR = '#a78bfa';
 
@@ -52,18 +53,11 @@ export const DecisionNode = memo(function DecisionNode({
   const [hoveredPill, setHoveredPill] = useState<string | null>(null);
   const cx = x + DECISION_SIZE / 2;
   const cy = y + DECISION_SIZE / 2;
-  const isGhost = diffStatus === 'removed';
-  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
 
-  // Diff color only when changed — never overrides natural color
-  const diffColor = isDiffChanged ? DIFF_COLORS[diffStatus!] : undefined;
-
-  // Interaction: disabled for ghosts and unchanged nodes
-  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
-
-  // Opacity: ghost → 0.35, unchanged → 0.2, dimmed → 0.15, else 1
-  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
-  const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
+  const { containerStyle, isGhost, isDiffChanged, diffColor, isInteractive } = useNodeState({
+    diffStatus,
+    isDimmed,
+  });
 
   const showDiffGlow = isDiffChanged;
 
@@ -80,13 +74,7 @@ export const DecisionNode = memo(function DecisionNode({
   const ringRadius = Math.round(diamondHalf * Math.SQRT2 + 6);
 
   return (
-    <g
-      style={{
-        opacity,
-        transition: 'opacity 400ms ease-out',
-        pointerEvents: isInteractive ? undefined : 'none',
-      }}
-    >
+    <g style={containerStyle}>
       {/* Outer diff ring — circle outline around the diamond, only for added/modified */}
       {diffColor && (
         <circle
@@ -101,21 +89,14 @@ export const DecisionNode = memo(function DecisionNode({
       )}
       {/* Diff glow — centered on diamond */}
       {showDiffGlow && diffColor && (
-        <>
-          <defs>
-            <radialGradient id={`dec-diff-${x}-${y}`}>
-              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
-              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
-            </radialGradient>
-          </defs>
-          <circle
-            cx={cx}
-            cy={cy}
-            r={DECISION_SIZE * 0.55}
-            fill={`url(#dec-diff-${x}-${y})`}
-            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
-          />
-        </>
+        <NodeGlow
+          id={`${x}-${y}`}
+          type="diff"
+          color={diffColor}
+          cx={cx}
+          cy={cy}
+          rx={DECISION_SIZE * 0.55}
+        />
       )}
       {/* Diamond — no hover, not interactive (pills below are the actions) */}
       <g transform={`translate(${cx},${cy}) rotate(45)`} style={{ cursor: 'default' }}>
