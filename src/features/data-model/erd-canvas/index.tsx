@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
 import type { Entity } from '@/types/data-model';
 import type { DiffStatus } from '@/types/diff';
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { EntityNode } from '@/features/canvas/components/entity-node';
@@ -165,7 +165,7 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
   const [visibleCategories, setVisibleCategories] = useState<Set<string>>(
     () => new Set(ALL_CATEGORIES),
   );
-  const { setSelectedItem } = useDocsContext();
+  const setSelectedItem = useAppStore.getState().selectItem;
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const erdNodeStatusMap = isDiffMode ? diffResult?.erdNodes.statusMap : undefined;
   const ghostErdNodes: ErdNode[] = isDiffMode ? (diffResult?.erdNodes.removed ?? []) : [];

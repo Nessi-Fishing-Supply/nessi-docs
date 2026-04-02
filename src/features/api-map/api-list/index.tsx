@@ -12,7 +12,7 @@ import { FieldTable, type FieldTableColumn } from '@/components/data-display/fie
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { useDiffMode } from '@/hooks/use-diff-mode';
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { Badge } from '@/components/indicators/badge';
 import {
   DiffFilterBar,
@@ -346,7 +346,7 @@ interface ApiListProps {
 
 export function ApiList({ groups, totalEndpoints }: ApiListProps) {
   const branchHref = useBranchHref();
-  const { setSelectedItem } = useDocsContext();
+  const setSelectedItem = useAppStore.getState().selectItem;
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const apiGroupDiffs = isDiffMode ? diffResult?.apiGroupDiffs : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { StepPanel } from './panels/step-panel';
 import { EntityPanel } from './panels/entity-panel';
 import { LifecyclePanel } from './panels/lifecycle-panel';
@@ -11,7 +11,7 @@ import { DiffPanel } from './panels/diff-panel';
 import styles from './detail-panel.module.scss';
 
 export function DetailPanel() {
-  const { selectedItem } = useDocsContext();
+  const selectedItem = useAppStore.use.selectedItem();
 
   if (!selectedItem) {
     return (

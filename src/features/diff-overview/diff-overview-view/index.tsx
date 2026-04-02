@@ -13,7 +13,7 @@ import {
   HiOutlineCog,
 } from 'react-icons/hi';
 import { useBranchData, useBranchHref } from '@/providers/branch-provider';
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { PageHeader } from '@/components/layout/page-header';
 import { DiffEmptyState } from '@/features/diff-overview/diff-empty-state';
@@ -243,7 +243,8 @@ const DOMAINS: DomainConfig[] = [
 export function DiffOverviewView() {
   const { activeBranch, branches } = useBranchData();
   const branchHref = useBranchHref();
-  const { selectedItem, setSelectedItem } = useDocsContext();
+  const selectedItem = useAppStore.use.selectedItem();
+  const setSelectedItem = useAppStore.getState().selectItem;
   const { isActive, compareBranch, diffResult } = useDiffMode();
   const searchParams = useSearchParams();
   const initialStatus = searchParams.get('status') as StatusFilter | null;

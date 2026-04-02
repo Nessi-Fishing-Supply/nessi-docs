@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import type { Journey, JourneyNode, StepLayer, StepStatus } from '@/types/journey';
 import { PERSONA_CONFIG } from '@/types/journey';
 import type { DiffStatus } from '@/types/diff';
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { useViewport } from '@/features/canvas/hooks/use-viewport';
 import { usePathTrace } from '@/features/canvas/hooks/use-path-trace';
@@ -43,7 +43,9 @@ export function JourneyCanvas({
   onResetFilters,
   filtersAreDirty,
 }: JourneyCanvasProps) {
-  const { selectedItem, setSelectedItem, clearSelection } = useDocsContext();
+  const selectedItem = useAppStore.use.selectedItem();
+  const setSelectedItem = useAppStore.getState().selectItem;
+  const clearSelection = useAppStore.getState().clearSelection;
   const {
     chosenPath,
     choosePath,

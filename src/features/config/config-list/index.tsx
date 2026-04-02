@@ -5,7 +5,7 @@ import type { ConfigEnum } from '@/types/config-ref';
 import type { Role } from '@/types/permission';
 import type { FieldChange } from '@/types/diff';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
@@ -103,7 +103,7 @@ function EnumBody({
 /* ── Roles Body ── */
 
 function RolesBody({ roles }: { roles: Role[] }) {
-  const { setSelectedItem } = useDocsContext();
+  const setSelectedItem = useAppStore.getState().selectItem;
 
   return (
     <div className={styles.enumBody}>
@@ -172,7 +172,7 @@ interface ConfigListProps {
 }
 
 export function ConfigList({ enums, roles }: ConfigListProps) {
-  const { setSelectedItem } = useDocsContext();
+  const setSelectedItem = useAppStore.getState().selectItem;
   const branchHref = useBranchHref();
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const configStatusMap = isDiffMode ? diffResult?.configEnums.statusMap : undefined;

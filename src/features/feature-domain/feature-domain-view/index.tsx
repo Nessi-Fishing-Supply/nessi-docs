@@ -7,7 +7,7 @@ import type { FeatureDomain } from '@/types/dashboard';
 import type { ChangelogEntry, ChangeType } from '@/types/changelog';
 import type { DiffStatus, FieldChange } from '@/types/diff';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useBranchHref } from '@/providers/branch-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { Badge } from '@/components/indicators/badge';
@@ -219,7 +219,7 @@ export function FeatureDomainView({
   entities,
 }: FeatureDomainViewProps) {
   const branchHref = useBranchHref();
-  const { setSelectedItem } = useDocsContext();
+  const setSelectedItem = useAppStore.getState().selectItem;
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const featureStatusMap = isDiffMode ? diffResult?.features.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');

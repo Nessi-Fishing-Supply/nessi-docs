@@ -12,7 +12,7 @@ import { FieldTable, type FieldTableColumn } from '@/components/data-display/fie
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { Tooltip } from '@/components/data-display';
 import { useDiffMode } from '@/hooks/use-diff-mode';
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { Badge } from '@/components/indicators/badge';
 import {
   DiffFilterBar,
@@ -318,7 +318,7 @@ interface EntityListProps {
 
 export function EntityList({ entities }: EntityListProps) {
   const branchHref = useBranchHref();
-  const { setSelectedItem } = useDocsContext();
+  const setSelectedItem = useAppStore.getState().selectItem;
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const entityStatusMap = isDiffMode ? diffResult?.entities.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');

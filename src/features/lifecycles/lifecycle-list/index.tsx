@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import type { Lifecycle } from '@/types/lifecycle';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
-import { useDocsContext } from '@/providers/docs-provider';
+import { useAppStore } from '@/stores/app-store';
 import { PageHeader } from '@/components/layout/page-header';
 import { ListRow } from '@/components/layout/list-row';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
@@ -45,7 +45,7 @@ function sourceLabel(source?: string): string {
 
 export function LifecycleList({ lifecycles }: LifecycleListProps) {
   const branchHref = useBranchHref();
-  const { setSelectedItem } = useDocsContext();
+  const setSelectedItem = useAppStore.getState().selectItem;
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const lifecycleStatusMap = isDiffMode ? diffResult?.lifecycles.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
