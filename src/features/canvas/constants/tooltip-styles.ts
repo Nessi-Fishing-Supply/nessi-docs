@@ -1,12 +1,13 @@
 import type React from 'react';
+import { CANVAS_COLORS } from './canvas-colors';
 
-export const TT_BG = 'rgba(15,19,25,0.97)';
-export const TT_BORDER = 'rgba(255,255,255,0.12)';
-export const TT_SHADOW = '0 4px 20px rgba(0,0,0,0.6), 0 8px 40px rgba(0,0,0,0.3)';
+export const TT_BG = CANVAS_COLORS.bgPanel;
+export const TT_BORDER = CANVAS_COLORS.borderSubtle;
+export const TT_SHADOW = CANVAS_COLORS.tooltipShadow;
 
 export const sectionLabel: React.CSSProperties = {
   fontSize: '9px',
-  color: '#4a4840',
+  color: CANVAS_COLORS.textDim,
   textTransform: 'uppercase',
   letterSpacing: '0.06em',
   marginBottom: '3px',
@@ -15,7 +16,7 @@ export const sectionLabel: React.CSSProperties = {
 export const monoBlock: React.CSSProperties = {
   fontSize: '10px',
   fontFamily: 'var(--font-family-mono)',
-  background: 'rgba(255,255,255,0.04)',
+  background: CANVAS_COLORS.bgSubtle,
   padding: '4px 8px',
   borderRadius: '4px',
 };
