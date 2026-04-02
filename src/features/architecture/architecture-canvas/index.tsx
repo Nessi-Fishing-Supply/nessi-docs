@@ -11,7 +11,7 @@ import { useDiffMode } from '@/hooks/use-diff-mode';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 import { computeLayout, NODE_WIDTH, NODE_HEIGHT, LAYER_PADDING } from './arch-layout';
 import { useArchTrace } from './use-arch-trace';
-import { ArchTooltip } from './arch-tooltip';
+import { ArchTooltip } from '@/features/canvas/components/arch-tooltip';
 
 /* ------------------------------------------------------------------ */
 /*  Edge path                                                          */
