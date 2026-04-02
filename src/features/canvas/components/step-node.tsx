@@ -4,7 +4,8 @@ import { useState, memo } from 'react';
 import { LAYER_CONFIG, type JourneyNode } from '@/types/journey';
 import { NODE_WIDTH, NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
-import { DIFF_COLORS } from '@/constants/diff';
+import { useNodeState } from '../hooks/use-node-state';
+import { NodeGlow } from './node-glow';
 
 // Max chars for label and sublabel
 const LABEL_MAX = 20;
@@ -157,22 +158,18 @@ export const StepNode = memo(function StepNode({
   const isPlanned = status === 'planned';
   const layerCfg = LAYER_CONFIG[layer];
   const nodeColor = layerCfg.color;
-  const isGhost = diffStatus === 'removed';
-  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
 
-  // Diff color only when changed — never for unchanged or no diff
-  const diffColor = isDiffChanged ? DIFF_COLORS[diffStatus!] : undefined;
-
-  // Interaction: disabled for ghosts and unchanged nodes
-  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
-
-  // Opacity: ghost → 0.35, unchanged → 0.2, dimmed → 0.15, planned (no diff) → 0.45, else 1
-  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
-  const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : isPlanned ? 0.45 : 1;
+  const { containerStyle, isGhost, isDiffChanged, diffColor, isInteractive } = useNodeState({
+    diffStatus,
+    isDimmed,
+    isPlanned,
+    isHovered: hovered,
+    isSelected,
+  });
 
   const errorCount = node.errorCases?.length ?? 0;
-  const showGlow = hovered && !isSelected && !isPlanned && !isGhost && isInteractive;
   const showDiffGlow = isDiffChanged && !isSelected;
+  const showGlow = hovered && !isSelected && !isPlanned && !isGhost && isInteractive;
 
   const displayLabel = cleanLabel(node.label, node.route);
 
@@ -198,12 +195,7 @@ export const StepNode = memo(function StepNode({
       onClick={isInteractive ? onClick : undefined}
       onMouseEnter={isInteractive ? () => setHovered(true) : undefined}
       onMouseLeave={isInteractive ? () => setHovered(false) : undefined}
-      style={{
-        cursor: isInteractive ? 'pointer' : 'default',
-        opacity,
-        transition: 'opacity 400ms ease-out',
-        pointerEvents: isInteractive ? undefined : 'none',
-      }}
+      style={containerStyle}
     >
       {/* Outer diff ring — only for added/modified */}
       {diffColor && (
@@ -221,56 +213,36 @@ export const StepNode = memo(function StepNode({
       )}
       {/* Diff glow */}
       {showDiffGlow && diffColor && (
-        <>
-          <defs>
-            <radialGradient id={`step-diff-${node.id}`}>
-              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
-              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
-            </radialGradient>
-          </defs>
-          <circle
-            cx={NODE_WIDTH / 2}
-            cy={NODE_HEIGHT / 2}
-            r={NODE_WIDTH * 0.55}
-            fill={`url(#step-diff-${node.id})`}
-            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
-          />
-        </>
+        <NodeGlow
+          id={node.id}
+          type="diff"
+          color={diffColor}
+          cx={NODE_WIDTH / 2}
+          cy={NODE_HEIGHT / 2}
+          rx={NODE_WIDTH * 0.55}
+        />
       )}
       {/* Hover glow */}
       {showGlow && (
-        <>
-          <defs>
-            <radialGradient id={`hover-${node.id}`}>
-              <stop offset="0%" stopColor={nodeColor} stopOpacity={0.08} />
-              <stop offset="100%" stopColor={nodeColor} stopOpacity={0} />
-            </radialGradient>
-          </defs>
-          <circle
-            cx={NODE_WIDTH / 2}
-            cy={NODE_HEIGHT / 2}
-            r={NODE_WIDTH * 0.55}
-            fill={`url(#hover-${node.id})`}
-          />
-        </>
+        <NodeGlow
+          id={node.id}
+          type="hover"
+          color={nodeColor}
+          cx={NODE_WIDTH / 2}
+          cy={NODE_HEIGHT / 2}
+          rx={NODE_WIDTH * 0.55}
+        />
       )}
       {/* Selection glow */}
       {isSelected && (
-        <>
-          <defs>
-            <radialGradient id={`glow-${node.id}`}>
-              <stop offset="0%" stopColor={nodeColor} stopOpacity={0.15} />
-              <stop offset="100%" stopColor={nodeColor} stopOpacity={0} />
-            </radialGradient>
-          </defs>
-          <circle
-            cx={NODE_WIDTH / 2}
-            cy={NODE_HEIGHT / 2}
-            r={NODE_WIDTH * 0.6}
-            fill={`url(#glow-${node.id})`}
-            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
-          />
-        </>
+        <NodeGlow
+          id={node.id}
+          type="selection"
+          color={nodeColor}
+          cx={NODE_WIDTH / 2}
+          cy={NODE_HEIGHT / 2}
+          rx={NODE_WIDTH * 0.6}
+        />
       )}
       {/* Background — always uses natural node color */}
       <rect
