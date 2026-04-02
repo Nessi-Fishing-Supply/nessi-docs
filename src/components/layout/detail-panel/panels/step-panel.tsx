@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { JourneyNode, Journey } from '@/types/journey';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { getLinksForRoute } from '@/data';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { Badge } from '@/components/indicators';
 import { SectionLabel } from '@/components/layout';
 import { InfoBlock, CrossLink } from '@/components/data-display';

@@ -19,7 +19,7 @@ import {
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { FEATURE_TO_DOMAIN } from '@/data/transforms/features';
 import type { Lifecycle } from '@/types/lifecycle';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';
 import styles from './sidebar.module.scss';
 
