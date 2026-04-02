@@ -5,13 +5,13 @@ import Link from 'next/link';
 import type { ApiGroup, ApiEndpoint, RequestField } from '@/types/api-contract';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import { FieldTable, type FieldTableColumn } from '@/components/data-display/field-table';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { GitHubLink } from '@/components/data-display/github-link';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { useAppStore } from '@/stores/app-store';
 import { Badge } from '@/components/indicators/badge';
 import {
@@ -347,7 +347,7 @@ interface ApiListProps {
 export function ApiList({ groups, totalEndpoints }: ApiListProps) {
   const branchHref = useBranchHref();
   const setSelectedItem = useAppStore.getState().selectItem;
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
   const apiGroupDiffs = isDiffMode ? diffResult?.apiGroupDiffs : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
 

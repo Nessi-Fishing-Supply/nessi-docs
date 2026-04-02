@@ -21,7 +21,7 @@ import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { Legend } from '@/features/canvas/components/legend';
 import { CanvasEmptyState } from '@/features/canvas/components/canvas-empty-state';
 import { detectJourneyBackEdges } from '@/data/index';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 
 interface JourneyCanvasProps {
@@ -57,7 +57,7 @@ export function JourneyCanvas({
     hasPath,
   } = usePathTrace(journey.nodes, journey.edges);
   // Diff mode integration
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
   const baseJourney =
     isDiffMode && diffResult
       ? (diffResult.journeys.modified.find((m) => m.base.slug === journey.slug)?.base ?? null)

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import styles from './diff-toolbar.module.scss';
 
 /** Map URL path segments to diff summary domain keys. */
@@ -27,7 +27,7 @@ export function DiffToolbar() {
   const activeBranch = useAppStore.use.activeBranch();
   const branches = useAppStore.use.branches();
   const pathname = usePathname();
-  const { isActive, compareBranch, diffResult } = useDiffMode();
+  const { isActive, compareBranch, diffResult } = useDiffResult();
 
   if (!isActive || !diffResult) return null;
 

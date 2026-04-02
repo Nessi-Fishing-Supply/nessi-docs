@@ -3,12 +3,12 @@
 import { useState, useMemo } from 'react';
 import type { Lifecycle } from '@/types/lifecycle';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';
 import { PageHeader } from '@/components/layout/page-header';
 import { ListRow } from '@/components/layout/list-row';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { Badge } from '@/components/indicators/badge';
 import type { DiffStatusFilter } from '@/components/layout/filter-bar/diff-filter-bar';
 import styles from './lifecycle-list.module.scss';
@@ -46,7 +46,7 @@ function sourceLabel(source?: string): string {
 export function LifecycleList({ lifecycles }: LifecycleListProps) {
   const branchHref = useBranchHref();
   const setSelectedItem = useAppStore.getState().selectItem;
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
   const lifecycleStatusMap = isDiffMode ? diffResult?.lifecycles.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
 

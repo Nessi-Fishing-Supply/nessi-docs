@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import type { ArchDiagram } from '@/types/architecture';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { Badge } from '@/components/indicators/badge';
 import { PageHeader } from '@/components/layout/page-header';
 import { ListRow } from '@/components/layout/list-row';
@@ -25,7 +25,7 @@ const CATEGORY_CONFIG: Record<string, { label: string; color: string }> = {
 export function ArchitectureList({ diagrams }: ArchitectureListProps) {
   const branchHref = useBranchHref();
   const setSelectedItem = useAppStore.getState().selectItem;
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
   const archStatusMap = isDiffMode ? diffResult?.archDiagrams.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
 

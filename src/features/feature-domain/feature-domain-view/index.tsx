@@ -8,8 +8,8 @@ import type { ChangelogEntry, ChangeType } from '@/types/changelog';
 import type { DiffStatus, FieldChange } from '@/types/diff';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
 import { useAppStore } from '@/stores/app-store';
-import { useBranchHref } from '@/providers/branch-provider';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useBranchHref } from '@/hooks/use-branch-href';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { Badge } from '@/components/indicators/badge';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import {
@@ -220,7 +220,7 @@ export function FeatureDomainView({
 }: FeatureDomainViewProps) {
   const branchHref = useBranchHref();
   const setSelectedItem = useAppStore.getState().selectItem;
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
   const featureStatusMap = isDiffMode ? diffResult?.features.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
 

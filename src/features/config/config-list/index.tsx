@@ -6,10 +6,10 @@ import type { Role } from '@/types/permission';
 import type { FieldChange } from '@/types/diff';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
 import { useAppStore } from '@/stores/app-store';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { Badge } from '@/components/indicators/badge';
 import {
   DiffFilterBar,
@@ -174,7 +174,7 @@ interface ConfigListProps {
 export function ConfigList({ enums, roles }: ConfigListProps) {
   const setSelectedItem = useAppStore.getState().selectItem;
   const branchHref = useBranchHref();
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
   const configStatusMap = isDiffMode ? diffResult?.configEnums.statusMap : undefined;
   const [openSlugs, setOpenSlugs] = useState<Set<string>>(new Set());
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');

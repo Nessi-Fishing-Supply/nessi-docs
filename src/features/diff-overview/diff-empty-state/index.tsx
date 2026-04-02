@@ -2,13 +2,13 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useUrlSync } from '@/hooks/use-url-sync';
 import styles from './diff-empty-state.module.scss';
 
 export function DiffEmptyState() {
   const activeBranch = useAppStore.use.activeBranch();
   const branches = useAppStore.use.branches();
-  const { activate } = useDiffMode();
+  const { activateDiff } = useUrlSync();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -56,7 +56,7 @@ export function DiffEmptyState() {
                   key={b.name}
                   className={styles.option}
                   onClick={() => {
-                    activate(b.name);
+                    activateDiff(b.name);
                     setOpen(false);
                   }}
                 >

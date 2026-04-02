@@ -7,7 +7,7 @@ import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { LabelPill } from '@/features/canvas/components/label-pill';
 import { smoothPath, type PortSide } from '@/features/canvas/utils/geometry';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 import { computeLayout, NODE_WIDTH, NODE_HEIGHT, LAYER_PADDING } from './arch-layout';
 import { useArchTrace } from './use-arch-trace';
@@ -81,7 +81,7 @@ export function ArchitectureCanvas({ diagram }: ArchitectureCanvasProps) {
   );
 
   // Diff mode integration
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
 
   const baseDiagram = useMemo(() => {
     if (!isDiffMode || !diffResult) return null;

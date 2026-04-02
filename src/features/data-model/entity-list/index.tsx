@@ -5,13 +5,13 @@ import Link from 'next/link';
 import type { Entity, EntityField } from '@/types/data-model';
 import { getMethodColors } from '@/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation, getLifecycleForEntity } from '@/data';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import { FieldTable, type FieldTableColumn } from '@/components/data-display/field-table';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { Tooltip } from '@/components/data-display';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { useAppStore } from '@/stores/app-store';
 import { Badge } from '@/components/indicators/badge';
 import {
@@ -319,7 +319,7 @@ interface EntityListProps {
 export function EntityList({ entities }: EntityListProps) {
   const branchHref = useBranchHref();
   const setSelectedItem = useAppStore.getState().selectItem;
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
   const entityStatusMap = isDiffMode ? diffResult?.entities.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
 

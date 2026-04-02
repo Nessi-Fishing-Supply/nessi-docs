@@ -5,7 +5,7 @@ import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
 import type { Entity } from '@/types/data-model';
 import type { DiffStatus } from '@/types/diff';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { EntityNode } from '@/features/canvas/components/entity-node';
 import { EntityTooltip } from '@/features/canvas/components/entity-tooltip';
@@ -166,7 +166,7 @@ export function ErdCanvas({ nodes, edges, entities, categoryGroups }: ErdCanvasP
     () => new Set(ALL_CATEGORIES),
   );
   const setSelectedItem = useAppStore.getState().selectItem;
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
   const erdNodeStatusMap = isDiffMode ? diffResult?.erdNodes.statusMap : undefined;
   const ghostErdNodes: ErdNode[] = isDiffMode ? (diffResult?.erdNodes.removed ?? []) : [];
   const erdEdgeStatusMap = isDiffMode ? diffResult?.erdEdges.statusMap : undefined;

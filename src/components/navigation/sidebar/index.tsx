@@ -16,7 +16,7 @@ import {
   HiOutlineChip,
   HiOutlineSwitchHorizontal,
 } from 'react-icons/hi';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { FEATURE_TO_DOMAIN } from '@/data/transforms/features';
 import type { Lifecycle } from '@/types/lifecycle';
 import { useBranchHref } from '@/hooks/use-branch-href';
@@ -50,7 +50,7 @@ const NAV_TO_DOMAIN: Record<string, string> = {
 function DiffNavItem() {
   const branchHref = useBranchHref();
   const pathname = usePathname();
-  const { isActive } = useDiffMode();
+  const { isActive } = useDiffResult();
 
   if (!isActive) return null;
 
@@ -80,7 +80,7 @@ interface DiffNavData {
 }
 
 function DiffDots({ children }: { children: (data: DiffNavData) => React.ReactNode }) {
-  const { isActive, diffResult } = useDiffMode();
+  const { isActive, diffResult } = useDiffResult();
 
   const dots = useMemo(() => {
     const map = new Map<string, DomainDots>();

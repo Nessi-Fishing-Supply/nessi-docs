@@ -2,13 +2,15 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
+import { useUrlSync } from '@/hooks/use-url-sync';
 import styles from './comparison-selector.module.scss';
 
 export function ComparisonSelector() {
   const activeBranch = useAppStore.use.activeBranch();
   const branches = useAppStore.use.branches();
-  const { isActive, compareBranch, activate, deactivate } = useDiffMode();
+  const { isActive, compareBranch } = useDiffResult();
+  const { activateDiff, deactivateDiff } = useUrlSync();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -36,7 +38,7 @@ export function ComparisonSelector() {
           </span>
           <button
             className={styles.dismissBtn}
-            onClick={deactivate}
+            onClick={deactivateDiff}
             aria-label="Exit comparison mode"
           >
             &times;
@@ -59,7 +61,7 @@ export function ComparisonSelector() {
               key={b.name}
               className={styles.option}
               onClick={() => {
-                activate(b.name);
+                activateDiff(b.name);
                 setOpen(false);
               }}
               role="option"

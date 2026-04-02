@@ -3,8 +3,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import type { DomainWithStats } from '@/data';
-import { useBranchHref } from '@/providers/branch-provider';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useBranchHref } from '@/hooks/use-branch-href';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { PageHeader } from '@/components/layout/page-header';
 import styles from './domain-grid.module.scss';
 
@@ -19,7 +19,7 @@ export function DomainGrid({ domains }: DomainGridProps) {
     requestAnimationFrame(() => setEntered(true));
   }, []);
 
-  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, diffResult } = useDiffResult();
 
   const domainDiffCounts = useMemo(() => {
     if (!isDiffMode || !diffResult)

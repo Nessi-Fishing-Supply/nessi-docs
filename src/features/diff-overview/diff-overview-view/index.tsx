@@ -12,9 +12,9 @@ import {
   HiOutlineLightningBolt,
   HiOutlineCog,
 } from 'react-icons/hi';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { PageHeader } from '@/components/layout/page-header';
 import { DiffEmptyState } from '@/features/diff-overview/diff-empty-state';
 import { DiffDomainGroup, type ChangeItem } from '@/features/diff-overview/diff-domain-group';
@@ -246,7 +246,7 @@ export function DiffOverviewView() {
   const branchHref = useBranchHref();
   const selectedItem = useAppStore.use.selectedItem();
   const setSelectedItem = useAppStore.getState().selectItem;
-  const { isActive, compareBranch, diffResult } = useDiffMode();
+  const { isActive, compareBranch, diffResult } = useDiffResult();
   const searchParams = useSearchParams();
   const initialStatus = searchParams.get('status') as StatusFilter | null;
   const [statusFilter, setStatusFilter] = useState<StatusFilter>(

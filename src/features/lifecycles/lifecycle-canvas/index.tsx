@@ -17,7 +17,7 @@ import {
 } from '@/features/canvas/utils/geometry';
 import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDiffResult } from '@/hooks/use-diff-result';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 
 interface LifecycleCanvasProps {
@@ -183,7 +183,7 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
   });
 
   // Diff mode integration
-  const { isActive: isDiffMode, compareBranch, diffResult } = useDiffMode();
+  const { isActive: isDiffMode, compareBranch, diffResult } = useDiffResult();
   const activeBranch = useAppStore.use.activeBranch();
   const branches = useAppStore.use.branches();
   const activeBranchLabel = branches.find((b) => b.name === activeBranch)?.label ?? activeBranch;
