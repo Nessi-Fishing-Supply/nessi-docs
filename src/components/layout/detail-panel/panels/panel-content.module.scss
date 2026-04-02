@@ -2,26 +2,26 @@
 
 .panelTitle {
   font-weight: 600;
-  font-size: var(--font-size-700);
+  font-size: var(--font-size-400);
   color: var(--text-primary);
   margin: 0 0 var(--spacing-200);
 }
 
 .panelTitleMono {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-600);
+  font-size: var(--font-size-300);
   margin: 0 0 var(--spacing-100);
 }
 
 .description {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-secondary);
   line-height: 1.5;
   margin: 0 0 var(--spacing-300);
 }
 
 .descriptionMuted {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-muted);
   line-height: 1.5;
   margin: 0 0 var(--spacing-300);
@@ -35,7 +35,7 @@
 }
 
 .context {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-muted);
   margin-bottom: var(--spacing-100);
 }
@@ -65,7 +65,7 @@
 }
 
 .errorCard {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   padding: var(--spacing-200) var(--spacing-200);
   background: rgb(var(--color-destructive-400-rgb) / var(--opacity-200));
   border: 1px solid rgb(var(--color-destructive-400-rgb) / var(--opacity-300));
@@ -85,7 +85,7 @@
 }
 
 .transitionRow {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-secondary);
   padding: var(--spacing-100) var(--spacing-200);
   background: var(--bg-raised);
@@ -103,7 +103,7 @@
 }
 
 .terminalState {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--color-destructive-400);
   padding: var(--spacing-200) var(--spacing-200);
   background: rgb(var(--color-destructive-400-rgb) / var(--opacity-200));

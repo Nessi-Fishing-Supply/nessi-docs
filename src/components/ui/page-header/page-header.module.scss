@@ -43,7 +43,7 @@
 }
 
 .title {
-  font-size: var(--font-size-1100);
+  font-size: var(--font-size-700);
   color: var(--text-primary);
   margin: 0;
   font-weight: 600;
@@ -62,7 +62,7 @@
 }
 
 .subtitle {
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   margin: var(--spacing-100) 0 0;
   position: relative;
@@ -76,7 +76,7 @@
 }
 
 .stat {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   color: var(--text-secondary);
 }
 
@@ -84,7 +84,7 @@
   font-family: var(--font-family-mono);
   color: var(--text-primary);
   font-weight: 600;
-  font-size: var(--font-size-700);
+  font-size: var(--font-size-400);
   margin-right: var(--spacing-100);
 }
 

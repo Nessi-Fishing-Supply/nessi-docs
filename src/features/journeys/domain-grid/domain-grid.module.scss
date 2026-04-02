@@ -39,19 +39,19 @@
 }
 
 .cardName {
-  font-size: var(--font-size-700);
+  font-size: var(--font-size-400);
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .cardCount {
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   font-family: var(--font-family-mono);
   color: var(--text-muted);
 }
 
 .cardDesc {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   color: var(--text-secondary);
   line-height: 1.5;
   margin-bottom: var(--spacing-300);
@@ -66,7 +66,7 @@
 .statGroup {
   display: flex;
   gap: var(--spacing-200);
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   font-family: var(--font-family-mono);
   color: var(--text-muted);
 }
@@ -80,7 +80,7 @@
 
 .diffPill {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   font-weight: 600;
   padding: var(--spacing-50) var(--spacing-200);
   border-radius: 10px;

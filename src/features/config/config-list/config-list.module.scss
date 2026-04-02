@@ -23,7 +23,7 @@
   border-radius: 20px;
   background: var(--bg-raised);
   border: 1px solid var(--border-subtle);
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 150ms ease;
@@ -106,20 +106,20 @@
 }
 
 .enumName {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .enumCount {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-dim);
   margin-left: auto;
 }
 
 .chevron {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-dim);
   flex-shrink: 0;
 }
@@ -131,7 +131,7 @@
 }
 
 .enumDescription {
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-secondary);
   line-height: 1.55;
   margin: 0 0 var(--spacing-300);
@@ -154,7 +154,7 @@
 
 .sourceValue {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-muted);
   background: var(--bg-input);
   padding: var(--spacing-100) var(--spacing-200);
@@ -192,7 +192,7 @@
   grid-template-columns: 200px 160px 1fr;
   gap: 0;
   padding: var(--spacing-200) var(--spacing-300);
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   border-bottom: 1px solid var(--border-subtle);
   align-items: baseline;
   transition: background 100ms ease;
@@ -208,17 +208,17 @@
 
 .valueCode {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--color-primary-400);
 }
 
 .valueLabel {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-primary);
 }
 
 .valueDesc {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   line-height: 1.45;
 }
@@ -248,13 +248,13 @@
 
 .roleName {
   display: block;
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   font-weight: 600;
   margin-bottom: var(--spacing-200);
 }
 
 .roleDescription {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.5;
@@ -277,7 +277,7 @@
 
 .featureCol {
   padding: var(--spacing-200) var(--spacing-400);
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
   color: var(--text-dim);
   text-transform: uppercase;
@@ -286,7 +286,7 @@
 
 .roleCol {
   padding: var(--spacing-200) 0;
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   font-weight: 600;
   text-align: center;
   border-left: 1px solid var(--border-subtle);
@@ -315,13 +315,13 @@
 }
 
 .featureLabel {
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-primary);
   font-weight: 500;
 }
 
 .featureDescription {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-muted);
 }
 
@@ -335,7 +335,7 @@
 
 .levelBadge {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   border: 1px solid;

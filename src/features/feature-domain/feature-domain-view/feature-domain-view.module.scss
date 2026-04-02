@@ -27,14 +27,14 @@
 }
 
 .heroTitle {
-  font-size: var(--font-size-900);
+  font-size: var(--font-size-600);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
 }
 
 .heroDescription {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   color: var(--text-secondary);
   margin: var(--spacing-100) 0 0;
   line-height: 1.5;
@@ -47,7 +47,7 @@
 }
 
 .heroBadge {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   padding: var(--spacing-100) var(--spacing-200);
   border-radius: 5px;
   background: rgb(var(--color-white-rgb) / var(--opacity-100));
@@ -131,7 +131,7 @@
 }
 
 .featureName {
-  font-size: var(--font-size-600);
+  font-size: var(--font-size-300);
   font-weight: 600;
   color: var(--text-primary);
   flex-shrink: 0;
@@ -146,7 +146,7 @@
 }
 
 .featureBadge {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
   padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
@@ -161,7 +161,7 @@
 }
 
 .chevron {
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   transition: transform 200ms ease-out;
   flex-shrink: 0;
@@ -181,7 +181,7 @@
 }
 
 .expansionDescription {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   color: var(--text-secondary);
   line-height: 1.55;
   margin-bottom: var(--spacing-400);
@@ -217,7 +217,7 @@
   align-items: center;
   gap: var(--spacing-200);
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
@@ -265,7 +265,7 @@
 }
 
 .linkArrowSmall {
-  font-size: var(--font-size-600);
+  font-size: var(--font-size-300);
   opacity: 0.4;
   margin-left: auto;
   transition: opacity 150ms ease;
@@ -311,7 +311,7 @@
 }
 
 .footerViewAll {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   text-decoration: none;
   transition: color 150ms ease;
@@ -331,7 +331,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-200);
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-secondary);
 }
 
@@ -358,7 +358,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-200);
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--color-primary-400);
   background: rgb(var(--color-primary-400-rgb) / var(--opacity-200));
   padding: var(--spacing-200) var(--spacing-300);
@@ -377,7 +377,7 @@
   align-items: center;
   gap: var(--spacing-200);
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--color-purple-500);
   background: rgb(var(--color-purple-500-rgb) / var(--opacity-200));
   padding: var(--spacing-200) var(--spacing-300);
@@ -392,13 +392,13 @@
 }
 
 .footerLinkMeta {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-dim);
   margin-left: auto;
 }
 
 .linkArrow {
-  font-size: var(--font-size-600);
+  font-size: var(--font-size-300);
   opacity: 0.4;
   transition: opacity 150ms ease;
 
@@ -451,6 +451,6 @@
   align-items: center;
   justify-content: center;
   min-height: 200px;
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-dim);
 }

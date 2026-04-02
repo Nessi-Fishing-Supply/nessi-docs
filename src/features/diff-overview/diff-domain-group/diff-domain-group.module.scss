@@ -22,7 +22,7 @@
 }
 
 .headerIcon {
-  font-size: var(--font-size-600);
+  font-size: var(--font-size-300);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -30,7 +30,7 @@
 }
 
 .headerDomain {
-  font-size: var(--font-size-600);
+  font-size: var(--font-size-300);
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -40,7 +40,7 @@
   gap: var(--spacing-200);
   margin-left: auto;
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
 }
 
 .countAdded {
@@ -56,7 +56,7 @@
 }
 
 .chevron {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   flex-shrink: 0;
   margin-left: var(--spacing-100);
@@ -110,7 +110,7 @@
 }
 
 .rowLabel {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   color: var(--text-primary);
   font-family: var(--font-family-mono);
 }
@@ -120,7 +120,7 @@
 }
 
 .fieldCount {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   margin-left: auto;
 }

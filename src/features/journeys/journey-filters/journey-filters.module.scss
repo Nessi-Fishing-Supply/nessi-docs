@@ -14,7 +14,7 @@
   border: 1px solid var(--border-medium);
   border-radius: 6px;
   color: var(--text-secondary);
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   padding: var(--spacing-100) var(--spacing-300);
   cursor: pointer;
   z-index: 6;
@@ -50,7 +50,7 @@
 .chip {
   padding: var(--spacing-100) var(--spacing-200);
   border-radius: 12px;
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   border: 1px solid transparent;
   background: var(--chip-bg);
   color: var(--text-muted);

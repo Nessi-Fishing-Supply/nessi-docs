@@ -8,22 +8,18 @@
   --font-family-sans: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
   --font-family-mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
 
-  // Font sizes (fixed scale)
-  --font-size-100: 9px;
-  --font-size-200: 10px;
-  --font-size-300: 11px;
-  --font-size-400: 12px;
-  --font-size-500: 13px;
-  --font-size-600: 14px;
-  --font-size-700: 16px;
-  --font-size-800: 18px;
-  --font-size-900: 20px;
-  --font-size-1000: 22px;
-  --font-size-1100: 24px;
-  --font-size-1200: 24px;
-  --font-size-1300: 28px;
-  --font-size-1400: 32px;
-  --font-size-1500: 40px;
+  // Font sizes (major third scale, 10px minimum)
+  --font-size-100: 10px;
+  --font-size-200: 12px;
+  --font-size-300: 14px;
+  --font-size-400: 16px;
+  --font-size-500: 18px;
+  --font-size-600: 20px;
+  --font-size-700: 24px;
+  --font-size-800: 28px;
+  --font-size-900: 32px;
+  --font-size-1000: 40px;
+  --font-size-1100: 48px;
 
   // Font weights
   --font-weight-300: 300;
@@ -50,9 +46,9 @@
 // Responsive overrides for heading sizes (768px+)
 @include breakpoint(md) {
   :root {
-    --font-size-1200: 28px;
-    --font-size-1300: 32px;
-    --font-size-1400: 40px;
-    --font-size-1500: 48px;
+    --font-size-800: 32px;
+    --font-size-900: 40px;
+    --font-size-1000: 48px;
+    --font-size-1100: 56px;
   }
 }

@@ -14,7 +14,7 @@
 }
 
 .filterChip {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   padding: var(--spacing-100) var(--spacing-300);
   border-radius: 20px;
   background: var(--bg-raised);
@@ -75,14 +75,14 @@
 }
 
 .date {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   font-weight: 500;
   color: var(--text-primary);
   font-family: var(--font-family-mono);
 }
 
 .changeCount {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-muted);
 }
 
@@ -114,7 +114,7 @@
 }
 
 .description {
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-secondary);
   flex: 1;
   min-width: 0;
@@ -122,7 +122,7 @@
 
 .area {
   flex-shrink: 0;
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
   color: var(--color-primary-400);
   margin-left: auto;
@@ -143,7 +143,7 @@
 .areaMuted,
 .areaUnscoped {
   flex-shrink: 0;
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
   color: var(--text-dim);
   margin-left: auto;
@@ -156,13 +156,13 @@
 .emptyState {
   padding: var(--spacing-800) 0;
   text-align: center;
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-dim);
 }
 
 .prLink {
   flex-shrink: 0;
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
   color: var(--text-muted);
   text-decoration: none;

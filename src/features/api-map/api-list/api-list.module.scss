@@ -22,7 +22,7 @@
 }
 
 .filterLabel {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
@@ -32,7 +32,7 @@
 }
 
 .filterChip {
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   padding: var(--spacing-100) var(--spacing-300);
   border-radius: 6px;
   background: rgb(var(--color-white-rgb) / var(--opacity-100));
@@ -59,7 +59,7 @@
 }
 
 .chipCount {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-muted);
 
   .filterChipActive & {
@@ -77,7 +77,7 @@
 
 .methodChip {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   font-weight: 700;
   text-transform: uppercase;
   padding: var(--spacing-100) var(--spacing-200);
@@ -121,7 +121,7 @@
 }
 
 .groupName {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -134,7 +134,7 @@
 }
 
 .groupCount {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   background: rgb(var(--color-white-rgb) / var(--opacity-100));
   padding: var(--spacing-50) var(--spacing-200);
@@ -201,7 +201,7 @@
 
 .methodBadge {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   font-weight: 700;
   text-transform: uppercase;
   color: var(--method-color);
@@ -215,7 +215,7 @@
 
 .epPath {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
@@ -233,7 +233,7 @@
 }
 
 .epAccess {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--color-primary-350);
   background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
   padding: var(--spacing-100) var(--spacing-200);
@@ -256,7 +256,7 @@
 }
 
 .epErrors {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--color-red-350);
   background: rgb(var(--color-destructive-400-rgb) / var(--opacity-300));
   padding: var(--spacing-100) var(--spacing-200);
@@ -275,7 +275,7 @@
 }
 
 .epChevron {
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   transition: transform 200ms ease-out;
 
@@ -294,7 +294,7 @@
 }
 
 .epDescription {
-  font-size: var(--font-size-500);
+  font-size: var(--font-size-300);
   color: var(--text-secondary);
   line-height: 1.5;
   margin: 0 0 var(--spacing-300);
@@ -315,7 +315,7 @@
 }
 
 .detailLabel {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -360,20 +360,20 @@
 
 .fieldName {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-primary);
   min-width: 90px;
 }
 
 .fieldType {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   color: var(--text-secondary);
   min-width: 60px;
 }
 
 .fieldReq {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--color-accent-500);
   font-weight: 600;
 }
@@ -393,7 +393,7 @@
   padding: var(--spacing-100) var(--spacing-200);
   border-radius: 5px;
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   font-weight: 600;
 }
 
@@ -410,7 +410,7 @@
 }
 
 .statusDesc {
-  font-size: var(--font-size-300);
+  font-size: var(--font-size-200);
   font-weight: 400;
   color: var(--text-secondary);
   font-family: var(--font-family-sans);
@@ -427,7 +427,7 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-100);
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--color-primary-350);
   padding: var(--spacing-100) var(--spacing-200);
   border-radius: 5px;
@@ -489,7 +489,7 @@
 }
 
 .errorText {
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--text-secondary);
   line-height: 1.4;
 }
@@ -508,7 +508,7 @@
   gap: var(--spacing-100);
   padding: var(--spacing-100) var(--spacing-200);
   border-radius: 6px;
-  font-size: var(--font-size-200);
+  font-size: var(--font-size-100);
   color: var(--color-primary-400);
   background: rgb(var(--color-primary-400-rgb) / var(--opacity-200));
   border: 1px solid rgb(var(--color-primary-400-rgb) / var(--opacity-300));
@@ -538,7 +538,7 @@
   align-items: center;
   justify-content: center;
   min-height: 200px;
-  font-size: var(--font-size-400);
+  font-size: var(--font-size-200);
   color: var(--text-dim);
 }
 
