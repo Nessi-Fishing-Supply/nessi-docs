@@ -197,7 +197,7 @@
 }
 
 .domainCardName {
-  font-size: 16px;
+  font-size: var(--font-size-700);
   font-weight: 600;
   color: var(--text-primary);
 }
