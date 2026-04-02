@@ -7,7 +7,7 @@ import type { FieldChange } from '@/types/diff';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
 import { useDocsContext } from '@/providers/docs-provider';
 import { useBranchHref } from '@/providers/branch-provider';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/layout/page-header';
 import { BorderTrace } from '@/components/data-display/border-trace';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { DiffBadge } from '@/components/ui/diff-badge';

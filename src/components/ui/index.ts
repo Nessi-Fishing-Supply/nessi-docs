@@ -1,2 +1,3 @@
-export { SectionLabel } from './section-label';
-export { PageHeader } from './page-header';
+export { DiffBadge } from './diff-badge';
+export { DiffFilterBar } from './diff-filter-bar';
+export type { DiffStatusFilter } from './diff-filter-bar';

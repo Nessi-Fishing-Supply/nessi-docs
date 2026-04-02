@@ -6,7 +6,7 @@ import type { Lifecycle } from '@/types/lifecycle';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
 import { useDocsContext } from '@/providers/docs-provider';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/layout/page-header';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { DiffBadge } from '@/components/ui/diff-badge';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';

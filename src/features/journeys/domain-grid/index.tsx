@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { DomainWithStats } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/layout/page-header';
 import styles from './domain-grid.module.scss';
 
 interface DomainGridProps {

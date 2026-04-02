@@ -1,7 +1,7 @@
 import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
 import { Badge } from '@/components/indicators';
-import { SectionLabel } from '@/components/ui';
+import { SectionLabel } from '@/components/layout';
 import styles from './panel-content.module.scss';
 
 interface LifecyclePanelProps {

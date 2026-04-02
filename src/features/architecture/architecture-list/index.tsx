@@ -8,7 +8,7 @@ import { useDocsContext } from '@/providers/docs-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { DiffBadge } from '@/components/ui/diff-badge';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/layout/page-header';
 import styles from './architecture-list.module.scss';
 
 interface ArchitectureListProps {

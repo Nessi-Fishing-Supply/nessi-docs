@@ -6,7 +6,7 @@ import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { getLinksForRoute } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
 import { Badge } from '@/components/indicators';
-import { SectionLabel } from '@/components/ui';
+import { SectionLabel } from '@/components/layout';
 import { InfoBlock, CrossLink } from '@/components/data-display';
 import { GitHubLink } from '@/components/data-display/github-link';
 import styles from './panel-content.module.scss';

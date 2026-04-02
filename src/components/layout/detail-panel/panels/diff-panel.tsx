@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { DiffBadge } from '@/components/ui/diff-badge';
 import { Badge } from '@/components/indicators';
-import { SectionLabel } from '@/components/ui';
+import { SectionLabel } from '@/components/layout';
 import { KeyValueRow } from '@/components/data-display';
 import type { DiffItemSelection } from '@/types/docs-context';
 import type { DiffStatus } from '@/types/diff';

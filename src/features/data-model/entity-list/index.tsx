@@ -6,7 +6,7 @@ import type { Entity } from '@/types/data-model';
 import { getMethodColors } from '@/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation, getLifecycleForEntity } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/layout/page-header';
 import { BorderTrace } from '@/components/data-display/border-trace';
 import { Tooltip } from '@/components/data-display';
 import { useDiffMode } from '@/hooks/use-diff-mode';

@@ -6,7 +6,7 @@ import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
 import { useBranchHref } from '@/providers/branch-provider';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/layout/page-header';
 import { BorderTrace } from '@/components/data-display/border-trace';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { useDiffMode } from '@/hooks/use-diff-mode';

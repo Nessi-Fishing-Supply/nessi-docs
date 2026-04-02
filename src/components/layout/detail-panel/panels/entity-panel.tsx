@@ -1,6 +1,6 @@
 import type { Entity } from '@/types/data-model';
 import { Badge } from '@/components/indicators';
-import { SectionLabel } from '@/components/ui';
+import { SectionLabel } from '@/components/layout';
 import { InfoBlock, KeyValueRow } from '@/components/data-display';
 import styles from './panel-content.module.scss';
 

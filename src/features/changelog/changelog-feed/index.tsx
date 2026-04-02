@@ -8,7 +8,7 @@ import { getDomainForScope } from '@/data';
 import { DOMAINS } from '@/constants/domains';
 import { useBranchHref } from '@/providers/branch-provider';
 import { formatDate } from '@/constants/dates';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/layout/page-header';
 import { Tooltip } from '@/components/data-display';
 import styles from './changelog-feed.module.scss';
 

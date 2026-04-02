@@ -15,7 +15,7 @@ import {
 import { useBranchData, useBranchHref } from '@/providers/branch-provider';
 import { useDocsContext } from '@/providers/docs-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
-import { PageHeader } from '@/components/ui/page-header';
+import { PageHeader } from '@/components/layout/page-header';
 import { DiffEmptyState } from '@/features/diff-overview/diff-empty-state';
 import { DiffDomainGroup, type ChangeItem } from '@/features/diff-overview/diff-domain-group';
 import type { DiffResult, DiffSet, ApiGroupDiff } from '@/types/diff';
