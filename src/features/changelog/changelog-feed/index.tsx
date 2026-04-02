@@ -6,7 +6,7 @@ import type { ChangelogEntry } from '@/types/changelog';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
 import { getDomainForScope } from '@/data';
 import { DOMAINS } from '@/constants/domains';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { formatDate } from '@/constants/dates';
 import { PageHeader } from '@/components/layout/page-header';
 import { Tooltip } from '@/components/data-display';

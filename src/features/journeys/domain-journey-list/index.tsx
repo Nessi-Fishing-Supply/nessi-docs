@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { Journey } from '@/types/journey';
 import { PERSONA_CONFIG } from '@/types/journey';
 import type { DomainConfig } from '@/constants/domains';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import styles from './domain-journey-list.module.scss';
 

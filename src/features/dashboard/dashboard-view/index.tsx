@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
 import type { ChangelogEntry } from '@/types/changelog';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { formatDate } from '@/constants/dates';
 import styles from './dashboard-view.module.scss';
 

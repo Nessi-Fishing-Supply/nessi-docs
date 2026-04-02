@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import type { Journey, StepLayer, StepStatus } from '@/types/journey';
 import { getDomainConfig } from '@/constants/domains';
-import { useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import type { SwitcherItem } from '@/components/navigation/breadcrumb';
 import { JourneyCanvas } from '@/features/journeys/journey-canvas';
