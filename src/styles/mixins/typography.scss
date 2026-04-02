@@ -1,0 +1,22 @@
+/// Monospace text for code, field names, paths.
+@mixin text-mono {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-300);
+  letter-spacing: 0.02em;
+}
+
+/// Small label text (section headers, filter labels).
+@mixin text-label {
+  font-size: var(--font-size-200);
+  font-weight: var(--font-weight-600);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+/// Section header text.
+@mixin text-section-header {
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-600);
+  color: var(--text-primary);
+}
