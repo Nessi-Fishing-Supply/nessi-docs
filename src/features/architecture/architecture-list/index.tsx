@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
+import { useState, useMemo } from 'react';
 import type { ArchDiagram } from '@/types/architecture';
 import { useBranchHref } from '@/providers/branch-provider';
 import { useDocsContext } from '@/providers/docs-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { Badge } from '@/components/indicators/badge';
-import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import { PageHeader } from '@/components/layout/page-header';
+import { ListRow } from '@/components/layout/list-row';
+import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
+import type { DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import styles from './architecture-list.module.scss';
 
 interface ArchitectureListProps {
@@ -27,10 +28,6 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const archStatusMap = isDiffMode ? diffResult?.archDiagrams.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
-  const [entered, setEntered] = useState(false);
-  useEffect(() => {
-    requestAnimationFrame(() => setEntered(true));
-  }, []);
 
   const diffCounts = useMemo(() => {
     if (!archStatusMap) return { added: 0, modified: 0, removed: 0 };
@@ -77,6 +74,8 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
   );
   const totalConnections = diagrams.reduce((s, d) => s + d.connections.length, 0);
 
+  const total = diffCounts.added + diffCounts.modified + diffCounts.removed;
+
   return (
     <div className={styles.container}>
       <PageHeader
@@ -89,25 +88,49 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
       />
 
       {isDiffMode && (
-        <div className={styles.diffFilterRow}>
-          <DiffFilterBar active={diffFilter} onChange={setDiffFilter} counts={diffCounts} />
-        </div>
+        <FilterBar className={styles.filterBar}>
+          <FilterChip
+            label="All Changes"
+            active={diffFilter === 'all'}
+            onToggle={() => setDiffFilter('all')}
+            count={total}
+          />
+          {diffCounts.added > 0 && (
+            <FilterChip
+              label="New"
+              active={diffFilter === 'added'}
+              onToggle={() => setDiffFilter('added')}
+              count={diffCounts.added}
+            />
+          )}
+          {diffCounts.modified > 0 && (
+            <FilterChip
+              label="Modified"
+              active={diffFilter === 'modified'}
+              onToggle={() => setDiffFilter('modified')}
+              count={diffCounts.modified}
+            />
+          )}
+          {diffCounts.removed > 0 && (
+            <FilterChip
+              label="Removed"
+              active={diffFilter === 'removed'}
+              onToggle={() => setDiffFilter('removed')}
+              count={diffCounts.removed}
+            />
+          )}
+        </FilterBar>
       )}
 
       <div className={styles.list}>
-        {filteredDiagrams.map((d, i) => {
+        {filteredDiagrams.map((d, idx) => {
           const nodeCount = d.layers.reduce((s, l) => s + l.nodes.length, 0);
           const cat = CATEGORY_CONFIG[d.category] ?? {
             label: d.category,
             color: 'rgba(106,104,96,0.5)',
           };
           const dStatus = archStatusMap?.get(d.slug) ?? 'unchanged';
-          const rowClass = `${styles.row} ${archStatusMap ? styles[`diff_${dStatus}`] : ''}`;
-          const rowStyle = {
-            opacity: entered ? 1 : 0,
-            transform: entered ? 'translateY(0)' : 'translateY(4px)',
-            transition: `opacity 200ms ease-out ${i * 30}ms, transform 200ms ease-out ${i * 30}ms, background 150ms ease-out`,
-          };
+
           const handleClick = () => {
             if (isDiffMode && dStatus !== 'unchanged') {
               setSelectedItem({
@@ -123,8 +146,15 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
               });
             }
           };
-          const rowContent = (
-            <>
+
+          return (
+            <ListRow
+              key={d.slug}
+              href={branchHref(`/architecture/${d.slug}`)}
+              staggerIndex={idx}
+              diffStatus={archStatusMap ? dStatus : undefined}
+              onClick={handleClick}
+            >
               <div className={styles.rowContent}>
                 <div className={styles.rowTitle}>
                   {d.title}
@@ -142,19 +172,7 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
               <span className={styles.statCount}>{nodeCount} nodes</span>
               <span className={styles.statCount}>{d.connections.length} edges</span>
               <span className={styles.chevron}>&rsaquo;</span>
-            </>
-          );
-
-          return (
-            <Link
-              key={d.slug}
-              href={branchHref(`/architecture/${d.slug}`)}
-              className={rowClass}
-              style={rowStyle}
-              onClick={handleClick}
-            >
-              {rowContent}
-            </Link>
+            </ListRow>
           );
         })}
         {removedDiagrams.map((d) => {
@@ -166,8 +184,7 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
           return (
             <div
               key={`removed-${d.slug}`}
-              className={`${styles.row} ${styles.diff_removed}`}
-              style={{ opacity: 0.6 }}
+              className={styles.removedRow}
               onClick={() => {
                 setSelectedItem({
                   type: 'diff-item',

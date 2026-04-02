@@ -4,33 +4,14 @@
   height: 100%;
 }
 
+.filterBar {
+  margin-bottom: var(--spacing-300);
+}
+
 .list {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-200);
-}
-
-.row {
-  display: flex;
-  align-items: center;
-  padding: var(--spacing-300) var(--spacing-400);
-  border-radius: 8px;
-  cursor: pointer;
-  gap: var(--spacing-300);
-  background: var(--bg-panel);
-  border: 1px solid var(--border-medium);
-  backdrop-filter: blur(8px);
-  text-decoration: none;
-  transition:
-    border-color 200ms var(--ease-out),
-    transform 200ms var(--ease-out),
-    box-shadow 200ms var(--ease-out);
-
-  &:hover {
-    border-color: var(--border-strong);
-    transform: scale(1.005);
-    box-shadow: 0 4px 20px rgb(var(--color-black-rgb) / var(--opacity-700));
-  }
 }
 
 .rowContent {
@@ -98,30 +79,19 @@
   flex-shrink: 0;
 }
 
-.diffFilterRow {
-  margin-bottom: var(--spacing-300);
-}
+// ─── Removed rows (not navigable) ───
 
-// ─── Diff Mode ───
-// !important needed to override base card styles on .row
-
-.diff_added {
-  border-left: 2px solid var(--diff-added) !important;
-  background: var(--diff-added-bg) !important;
-}
-
-.diff_modified {
-  border-left: 2px solid var(--diff-modified) !important;
-  background: var(--diff-modified-bg) !important;
-}
-
-.diff_removed {
-  border-left: 2px solid var(--diff-removed) !important;
-  background: var(--diff-removed-bg) !important;
-  opacity: 0.7 !important;
-}
-
-.diff_unchanged {
-  opacity: 0.3 !important;
-  pointer-events: none;
+.removedRow {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-300) var(--spacing-400);
+  border-radius: 8px;
+  cursor: pointer;
+  gap: var(--spacing-300);
+  border-left: 2px solid var(--diff-removed);
+  background: var(--diff-removed-bg);
+  border-top: 1px solid transparent;
+  border-right: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+  opacity: 0.7;
 }

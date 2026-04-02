@@ -6,10 +6,11 @@ interface ListRowProps {
   href: string;
   staggerIndex: number;
   diffStatus?: DiffStatus;
+  onClick?: () => void;
   children: React.ReactNode;
 }
 
-export function ListRow({ href, staggerIndex, diffStatus, children }: ListRowProps) {
+export function ListRow({ href, staggerIndex, diffStatus, onClick, children }: ListRowProps) {
   const diffClass =
     diffStatus && diffStatus !== 'unchanged'
       ? styles[`diff_${diffStatus}`]
@@ -22,6 +23,7 @@ export function ListRow({ href, staggerIndex, diffStatus, children }: ListRowPro
       href={href}
       className={`${styles.row} ${diffClass}`}
       style={{ '--stagger': `${staggerIndex * 30}ms` } as React.CSSProperties}
+      onClick={onClick}
     >
       {children}
     </Link>

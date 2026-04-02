@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
+import { useState, useMemo } from 'react';
 import type { Lifecycle } from '@/types/lifecycle';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
 import { useDocsContext } from '@/providers/docs-provider';
 import { PageHeader } from '@/components/layout/page-header';
+import { ListRow } from '@/components/layout/list-row';
+import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { Badge } from '@/components/indicators/badge';
-import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
+import type { DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import styles from './lifecycle-list.module.scss';
 
 interface LifecycleListProps {
@@ -48,10 +49,6 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const lifecycleStatusMap = isDiffMode ? diffResult?.lifecycles.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
-  const [entered, setEntered] = useState(false);
-  useEffect(() => {
-    requestAnimationFrame(() => setEntered(true));
-  }, []);
 
   const diffCounts = useMemo(() => {
     if (!lifecycleStatusMap) return { added: 0, modified: 0, removed: 0 };
@@ -93,6 +90,8 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
   const totalStates = lifecycles.reduce((s, l) => s + l.states.length, 0);
   const totalTransitions = lifecycles.reduce((s, l) => s + l.transitions.length, 0);
 
+  const total = diffCounts.added + diffCounts.modified + diffCounts.removed;
+
   return (
     <div className={styles.container}>
       <PageHeader
@@ -105,20 +104,44 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
       />
 
       {isDiffMode && (
-        <div className={styles.diffFilterRow}>
-          <DiffFilterBar active={diffFilter} onChange={setDiffFilter} counts={diffCounts} />
-        </div>
+        <FilterBar className={styles.filterBar}>
+          <FilterChip
+            label="All Changes"
+            active={diffFilter === 'all'}
+            onToggle={() => setDiffFilter('all')}
+            count={total}
+          />
+          {diffCounts.added > 0 && (
+            <FilterChip
+              label="New"
+              active={diffFilter === 'added'}
+              onToggle={() => setDiffFilter('added')}
+              count={diffCounts.added}
+            />
+          )}
+          {diffCounts.modified > 0 && (
+            <FilterChip
+              label="Modified"
+              active={diffFilter === 'modified'}
+              onToggle={() => setDiffFilter('modified')}
+              count={diffCounts.modified}
+            />
+          )}
+          {diffCounts.removed > 0 && (
+            <FilterChip
+              label="Removed"
+              active={diffFilter === 'removed'}
+              onToggle={() => setDiffFilter('removed')}
+              count={diffCounts.removed}
+            />
+          )}
+        </FilterBar>
       )}
 
       <div className={styles.list}>
-        {filteredLifecycles.map((lc, i) => {
+        {filteredLifecycles.map((lc, idx) => {
           const lcStatus = lifecycleStatusMap?.get(lc.slug) ?? 'unchanged';
-          const rowClass = `${styles.row} ${lifecycleStatusMap ? styles[`diff_${lcStatus}`] : ''}`;
-          const rowStyle = {
-            opacity: entered ? 1 : 0,
-            transform: entered ? 'translateY(0)' : 'translateY(4px)',
-            transition: `opacity 200ms ease-out ${i * 30}ms, transform 200ms ease-out ${i * 30}ms, background 150ms ease-out`,
-          };
+
           const handleClick = () => {
             if (isDiffMode && lcStatus !== 'unchanged') {
               setSelectedItem({
@@ -134,8 +157,15 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
               });
             }
           };
-          const rowContent = (
-            <>
+
+          return (
+            <ListRow
+              key={lc.slug}
+              href={branchHref(`/lifecycles/${lc.slug}`)}
+              staggerIndex={idx}
+              diffStatus={lifecycleStatusMap ? lcStatus : undefined}
+              onClick={handleClick}
+            >
               <div className={styles.rowContent}>
                 <div className={styles.rowTitle}>
                   {lc.name}
@@ -181,26 +211,13 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
               <span className={styles.statCount}>{lc.states.length} states</span>
               <span className={styles.statCount}>{lc.transitions.length} transitions</span>
               <span className={styles.chevron}>&rsaquo;</span>
-            </>
-          );
-
-          return (
-            <Link
-              key={lc.slug}
-              href={branchHref(`/lifecycles/${lc.slug}`)}
-              className={rowClass}
-              style={rowStyle}
-              onClick={handleClick}
-            >
-              {rowContent}
-            </Link>
+            </ListRow>
           );
         })}
         {removedLifecycles.map((lc) => (
           <div
             key={`removed-${lc.slug}`}
-            className={`${styles.row} ${styles.diff_removed}`}
-            style={{ opacity: 0.6 }}
+            className={styles.removedRow}
             onClick={() => {
               setSelectedItem({
                 type: 'diff-item',
