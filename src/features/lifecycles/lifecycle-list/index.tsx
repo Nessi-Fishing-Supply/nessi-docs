@@ -3,33 +3,17 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import type { Lifecycle } from '@/types/lifecycle';
-import type { DiffStatus } from '@/types/diff';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
+import { useDocsContext } from '@/providers/docs-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { DiffBadge } from '@/components/ui/diff-badge';
+import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import styles from './lifecycle-list.module.scss';
 
 interface LifecycleListProps {
   lifecycles: Lifecycle[];
-}
-
-function diffSort<T>(
-  items: T[],
-  getKey: (item: T) => string,
-  statusMap: Map<string, DiffStatus> | undefined,
-): T[] {
-  if (!statusMap) return items;
-  return [...items].sort((a, b) => {
-    const aStatus = statusMap.get(getKey(a));
-    const bStatus = statusMap.get(getKey(b));
-    const aChanged = aStatus === 'added' || aStatus === 'modified';
-    const bChanged = bStatus === 'added' || bStatus === 'modified';
-    if (aChanged && !bChanged) return -1;
-    if (!aChanged && bChanged) return 1;
-    return 0;
-  });
 }
 
 function sourceColor(source?: string): string {
@@ -60,17 +44,51 @@ function sourceLabel(source?: string): string {
 
 export function LifecycleList({ lifecycles }: LifecycleListProps) {
   const branchHref = useBranchHref();
+  const { setSelectedItem } = useDocsContext();
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const lifecycleStatusMap = isDiffMode ? diffResult?.lifecycles.statusMap : undefined;
+  const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
   const [entered, setEntered] = useState(false);
   useEffect(() => {
     requestAnimationFrame(() => setEntered(true));
   }, []);
 
-  const sortedLifecycles = useMemo(
-    () => diffSort(lifecycles, (lc) => lc.slug, lifecycleStatusMap),
-    [lifecycles, lifecycleStatusMap],
-  );
+  const diffCounts = useMemo(() => {
+    if (!lifecycleStatusMap) return { added: 0, modified: 0, removed: 0 };
+    let added = 0;
+    let modified = 0;
+    let removed = 0;
+    lifecycleStatusMap.forEach((status) => {
+      if (status === 'added') added++;
+      else if (status === 'modified') modified++;
+      else if (status === 'removed') removed++;
+    });
+    if (diffResult) removed += diffResult.lifecycles.removed.length;
+    return { added, modified, removed };
+  }, [lifecycleStatusMap, diffResult]);
+
+  /* Merge production lifecycles with added lifecycles from diff */
+  const allLifecycles = useMemo(() => {
+    if (!isDiffMode || !diffResult) return lifecycles;
+    const addedLifecycles = diffResult.lifecycles.added ?? [];
+    return [...lifecycles, ...addedLifecycles];
+  }, [lifecycles, isDiffMode, diffResult]);
+
+  const filteredLifecycles = useMemo(() => {
+    if (!isDiffMode) return allLifecycles;
+    return allLifecycles.filter((lc) => {
+      const status = lifecycleStatusMap?.get(lc.slug) ?? 'unchanged';
+      if (status === 'unchanged') return false;
+      if (diffFilter === 'all') return true;
+      return status === diffFilter;
+    });
+  }, [allLifecycles, isDiffMode, lifecycleStatusMap, diffFilter]);
+
+  const removedLifecycles = useMemo(() => {
+    if (!isDiffMode || !diffResult) return [];
+    if (diffFilter !== 'all' && diffFilter !== 'removed') return [];
+    return diffResult.lifecycles.removed;
+  }, [isDiffMode, diffResult, diffFilter]);
 
   const totalStates = lifecycles.reduce((s, l) => s + l.states.length, 0);
   const totalTransitions = lifecycles.reduce((s, l) => s + l.transitions.length, 0);
@@ -86,26 +104,42 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
         ]}
       />
 
+      {isDiffMode && (
+        <div className={styles.diffFilterRow}>
+          <DiffFilterBar active={diffFilter} onChange={setDiffFilter} counts={diffCounts} />
+        </div>
+      )}
+
       <div className={styles.list}>
-        {sortedLifecycles.map((lc, i) => {
+        {filteredLifecycles.map((lc, i) => {
           const lcStatus = lifecycleStatusMap?.get(lc.slug) ?? 'unchanged';
-          const isUnchanged = isDiffMode && lcStatus === 'unchanged';
           const rowClass = `${styles.row} ${lifecycleStatusMap ? styles[`diff_${lcStatus}`] : ''}`;
           const rowStyle = {
             opacity: entered ? 1 : 0,
             transform: entered ? 'translateY(0)' : 'translateY(4px)',
             transition: `opacity 200ms ease-out ${i * 30}ms, transform 200ms ease-out ${i * 30}ms, background 150ms ease-out`,
           };
+          const handleClick = () => {
+            if (isDiffMode && lcStatus !== 'unchanged') {
+              setSelectedItem({
+                type: 'diff-item',
+                item: {
+                  key: lc.slug,
+                  label: lc.name,
+                  status: lcStatus,
+                  domain: 'Lifecycles',
+                  href: branchHref(`/lifecycles/${lc.slug}`),
+                  data: lc,
+                },
+              });
+            }
+          };
           const rowContent = (
             <>
               <div className={styles.rowContent}>
                 <div className={styles.rowTitle}>
                   {lc.name}
-                  {(() => {
-                    const status = lifecycleStatusMap?.get(lc.slug);
-                    if (!status || status === 'unchanged') return null;
-                    return <DiffBadge status={status} />;
-                  })()}
+                  {lcStatus !== 'unchanged' && <DiffBadge status={lcStatus} />}
                 </div>
                 <div className={styles.rowDesc}>{lc.description}</div>
                 <div className={styles.rowMeta}>
@@ -150,44 +184,48 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
             </>
           );
 
-          if (isUnchanged) {
-            return (
-              <div key={lc.slug} className={rowClass} style={rowStyle}>
-                {rowContent}
-              </div>
-            );
-          }
-
           return (
             <Link
               key={lc.slug}
               href={branchHref(`/lifecycles/${lc.slug}`)}
               className={rowClass}
               style={rowStyle}
+              onClick={handleClick}
             >
               {rowContent}
             </Link>
           );
         })}
-        {isDiffMode &&
-          diffResult &&
-          diffResult.lifecycles.removed.map((lc) => (
-            <div
-              key={`removed-${lc.slug}`}
-              className={`${styles.row} ${styles.diff_removed}`}
-              style={{ opacity: 0.6 }}
-            >
-              <div className={styles.rowContent}>
-                <div className={styles.rowTitle}>
-                  {lc.name}
-                  <DiffBadge status="removed" />
-                </div>
-                <div className={styles.rowDesc}>{lc.description}</div>
+        {removedLifecycles.map((lc) => (
+          <div
+            key={`removed-${lc.slug}`}
+            className={`${styles.row} ${styles.diff_removed}`}
+            style={{ opacity: 0.6 }}
+            onClick={() => {
+              setSelectedItem({
+                type: 'diff-item',
+                item: {
+                  key: lc.slug,
+                  label: lc.name,
+                  status: 'removed',
+                  domain: 'Lifecycles',
+                  href: branchHref(`/lifecycles/${lc.slug}`),
+                  data: lc,
+                },
+              });
+            }}
+          >
+            <div className={styles.rowContent}>
+              <div className={styles.rowTitle}>
+                {lc.name}
+                <DiffBadge status="removed" />
               </div>
-              <span className={styles.statCount}>{lc.states.length} states</span>
-              <span className={styles.statCount}>{lc.transitions.length} transitions</span>
+              <div className={styles.rowDesc}>{lc.description}</div>
             </div>
-          ))}
+            <span className={styles.statCount}>{lc.states.length} states</span>
+            <span className={styles.statCount}>{lc.transitions.length} transitions</span>
+          </div>
+        ))}
       </div>
     </div>
   );

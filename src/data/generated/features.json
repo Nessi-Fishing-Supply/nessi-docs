@@ -8,9 +8,7 @@
       "endpointCount": 3,
       "hookCount": 1,
       "serviceCount": 2,
-      "entities": [
-        "addresses"
-      ],
+      "entities": ["addresses"],
       "journeySlugs": [],
       "links": [
         {
@@ -33,12 +31,8 @@
       "endpointCount": 4,
       "hookCount": 0,
       "serviceCount": 4,
-      "entities": [
-        "members"
-      ],
-      "journeySlugs": [
-        "signup"
-      ],
+      "entities": ["members"],
+      "journeySlugs": ["signup"],
       "links": [
         {
           "type": "entity",
@@ -65,13 +59,8 @@
       "endpointCount": 1,
       "hookCount": 1,
       "serviceCount": 2,
-      "entities": [
-        "member_blocks",
-        "members"
-      ],
-      "journeySlugs": [
-        "member-block-management"
-      ],
+      "entities": ["member_blocks", "members"],
+      "journeySlugs": ["member-block-management"],
       "links": [
         {
           "type": "entity",
@@ -103,19 +92,8 @@
       "endpointCount": 6,
       "hookCount": 3,
       "serviceCount": 2,
-      "entities": [
-        "cart_items",
-        "listings",
-        "member_blocks",
-        "members",
-        "shops"
-      ],
-      "journeySlugs": [
-        "cart",
-        "login",
-        "member-block-management",
-        "signup"
-      ],
+      "entities": ["cart_items", "listings", "member_blocks", "members", "shops"],
+      "journeySlugs": ["cart", "login", "member-block-management", "signup"],
       "links": [
         {
           "type": "entity",
@@ -214,10 +192,7 @@
       "hookCount": 0,
       "serviceCount": 2,
       "entities": [],
-      "journeySlugs": [
-        "member-watchlist",
-        "shop-members"
-      ],
+      "journeySlugs": ["member-watchlist", "shop-members"],
       "links": [
         {
           "type": "journey",
@@ -239,9 +214,7 @@
       "endpointCount": 2,
       "hookCount": 2,
       "serviceCount": 2,
-      "entities": [
-        "flags"
-      ],
+      "entities": ["flags"],
       "journeySlugs": [],
       "links": [
         {
@@ -264,14 +237,8 @@
       "endpointCount": 4,
       "hookCount": 4,
       "serviceCount": 2,
-      "entities": [
-        "follows",
-        "members",
-        "shops"
-      ],
-      "journeySlugs": [
-        "member-follow"
-      ],
+      "entities": ["follows", "members", "shops"],
+      "journeySlugs": ["member-follow"],
       "links": [
         {
           "type": "entity",
@@ -308,12 +275,7 @@
       "endpointCount": 15,
       "hookCount": 11,
       "serviceCount": 7,
-      "entities": [
-        "follows",
-        "listings",
-        "members",
-        "shops"
-      ],
+      "entities": ["follows", "listings", "members", "shops"],
       "journeySlugs": [
         "browse-and-search",
         "member-block-management",
@@ -382,12 +344,8 @@
       "endpointCount": 7,
       "hookCount": 2,
       "serviceCount": 4,
-      "entities": [
-        "members"
-      ],
-      "journeySlugs": [
-        "member-block-management"
-      ],
+      "entities": ["members"],
+      "journeySlugs": ["member-block-management"],
       "links": [
         {
           "type": "entity",
@@ -423,10 +381,7 @@
         "messages",
         "offers"
       ],
-      "journeySlugs": [
-        "buyer-seller-messaging",
-        "member-block-management"
-      ],
+      "journeySlugs": ["buyer-seller-messaging", "member-block-management"],
       "links": [
         {
           "type": "entity",
@@ -528,16 +483,8 @@
       "endpointCount": 2,
       "hookCount": 5,
       "serviceCount": 2,
-      "entities": [
-        "members",
-        "recently_viewed",
-        "shops"
-      ],
-      "journeySlugs": [
-        "login",
-        "recently-viewed",
-        "signup"
-      ],
+      "entities": ["members", "recently_viewed", "shops"],
+      "journeySlugs": ["login", "recently-viewed", "signup"],
       "links": [
         {
           "type": "entity",
@@ -596,16 +543,8 @@
       "endpointCount": 17,
       "hookCount": 5,
       "serviceCount": 5,
-      "entities": [
-        "shop_members",
-        "shops",
-        "slugs"
-      ],
-      "journeySlugs": [
-        "member-block-management",
-        "shop-members",
-        "signup"
-      ],
+      "entities": ["shop_members", "shops", "slugs"],
+      "journeySlugs": ["member-block-management", "shop-members", "signup"],
       "links": [
         {
           "type": "entity",
@@ -652,12 +591,8 @@
       "endpointCount": 2,
       "hookCount": 3,
       "serviceCount": 2,
-      "entities": [
-        "watchers"
-      ],
-      "journeySlugs": [
-        "member-watchlist"
-      ],
+      "entities": ["watchers"],
+      "journeySlugs": ["member-watchlist"],
       "links": [
         {
           "type": "entity",

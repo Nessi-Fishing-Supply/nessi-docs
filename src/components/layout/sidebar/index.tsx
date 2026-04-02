@@ -17,10 +17,9 @@ import {
   HiOutlineSwitchHorizontal,
 } from 'react-icons/hi';
 import { useDiffMode } from '@/hooks/use-diff-mode';
+import { FEATURE_TO_DOMAIN } from '@/data/transforms/features';
 import type { Lifecycle } from '@/types/lifecycle';
 import { useBranchData, useBranchHref } from '@/providers/branch-provider';
-import { BranchSwitcher } from '@/components/layout/branch-switcher';
-import { ComparisonSelector } from '@/components/layout/comparison-selector';
 import styles from './sidebar.module.scss';
 
 const SYSTEM_ITEMS = [
@@ -67,96 +66,190 @@ function DiffNavItem() {
   );
 }
 
-function DiffDots({ children }: { children: (dots: Map<string, string>) => React.ReactNode }) {
+interface DomainDots {
+  added: number;
+  modified: number;
+  removed: number;
+}
+
+interface DiffNavData {
+  dots: Map<string, DomainDots>;
+  isDiffMode: boolean;
+  featureDomainDots: Map<string, DomainDots>;
+}
+
+function DiffDots({ children }: { children: (data: DiffNavData) => React.ReactNode }) {
   const { isActive, diffResult } = useDiffMode();
 
   const dots = useMemo(() => {
-    const map = new Map<string, string>();
+    const map = new Map<string, DomainDots>();
     if (!isActive || !diffResult) return map;
     for (const [navId, domainKey] of Object.entries(NAV_TO_DOMAIN)) {
       const domain = diffResult.summary.byDomain[domainKey];
       if (!domain) continue;
-      if (domain.modified > 0) {
-        map.set(navId, 'var(--diff-modified)');
-      } else if (domain.added > 0) {
-        map.set(navId, 'var(--diff-added)');
-      } else if (domain.removed > 0) {
-        map.set(navId, 'var(--diff-removed)');
+      if (domain.added > 0 || domain.modified > 0 || domain.removed > 0) {
+        map.set(navId, domain);
       }
     }
     return map;
   }, [isActive, diffResult]);
 
-  return <>{children(dots)}</>;
+  const featureDomainDots = useMemo(() => {
+    const map = new Map<string, DomainDots>();
+    if (!isActive || !diffResult) return map;
+    const bump = (domain: string, key: 'added' | 'modified' | 'removed') => {
+      const prev = map.get(domain) ?? { added: 0, modified: 0, removed: 0 };
+      prev[key]++;
+      map.set(domain, prev);
+    };
+    for (const f of diffResult.features.added) {
+      const domain = FEATURE_TO_DOMAIN[f.slug];
+      if (domain) bump(domain, 'added');
+    }
+    for (const f of diffResult.features.removed) {
+      const domain = FEATURE_TO_DOMAIN[f.slug];
+      if (domain) bump(domain, 'removed');
+    }
+    for (const m of diffResult.features.modified) {
+      const domain = FEATURE_TO_DOMAIN[m.head.slug];
+      if (domain) bump(domain, 'modified');
+    }
+    return map;
+  }, [isActive, diffResult]);
+
+  return <>{children({ dots, isDiffMode: isActive, featureDomainDots })}</>;
+}
+
+function DiffIndicator({ counts }: { counts: DomainDots }) {
+  return (
+    <span className={styles.diffDots}>
+      {counts.added > 0 && <span className={styles.diffDotAdded} />}
+      {counts.modified > 0 && <span className={styles.diffDotModified} />}
+      {counts.removed > 0 && <span className={styles.diffDotRemoved} />}
+    </span>
+  );
 }
 
 interface NavContentProps {
-  dots: Map<string, string>;
+  dots: Map<string, DomainDots>;
+  isDiffMode: boolean;
+  featureDomainDots: Map<string, DomainDots>;
   pathname: string;
   branchPrefix: string;
   branchHref: (path: string) => string;
   featureDomains: { slug: string; label: string }[];
 }
 
-function NavContent({ dots, pathname, branchPrefix, branchHref, featureDomains }: NavContentProps) {
+function NavContent({
+  dots,
+  isDiffMode,
+  featureDomainDots,
+  pathname,
+  branchPrefix,
+  branchHref,
+  featureDomains,
+}: NavContentProps) {
+  // In diff mode, only show system items that have changes
+  const visibleSystemItems = isDiffMode
+    ? SYSTEM_ITEMS.filter((item) => dots.has(item.id))
+    : SYSTEM_ITEMS;
+
+  // In diff mode, only show feature domains with changes
+  const visibleFeatureDomains = isDiffMode
+    ? featureDomains.filter((d) => featureDomainDots.has(d.slug))
+    : featureDomains;
+
+  // In diff mode, only show reference items with changes (hides Changelog)
+  const visibleReferenceItems = isDiffMode
+    ? REFERENCE_ITEMS.filter((item) => dots.has(item.id))
+    : REFERENCE_ITEMS;
+
+  const isDashboardActive = pathname === branchPrefix || pathname === `${branchPrefix}/`;
+
   return (
     <>
-      <div className={styles.sectionLabel}>System Views</div>
-      <div className={styles.nav}>
-        {SYSTEM_ITEMS.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname.startsWith(`${branchPrefix}${item.path}`);
-          const dotColor = dots.get(item.id);
-          return (
-            <Link
-              key={item.id}
-              href={branchHref(item.path)}
-              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-            >
-              <Icon className={styles.navIcon} />
-              <span>{item.label}</span>
-              {dotColor && <span className={styles.diffDot} style={{ background: dotColor }} />}
-            </Link>
-          );
-        })}
-      </div>
+      {!isDiffMode && (
+        <Link
+          href={branchHref('/')}
+          className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}
+        >
+          <HiOutlineHome className={styles.navIcon} />
+          <span>Dashboard</span>
+        </Link>
+      )}
 
-      <div className={styles.sectionLabel}>Features</div>
-      <div className={styles.nav}>
-        {featureDomains.map((domain) => {
-          const isActive = pathname.startsWith(`${branchPrefix}/features/${domain.slug}`);
-          return (
-            <Link
-              key={domain.slug}
-              href={branchHref(`/features/${domain.slug}`)}
-              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-            >
-              <HiOutlineLightningBolt className={styles.navIcon} />
-              <span>{domain.label}</span>
-            </Link>
-          );
-        })}
-      </div>
+      {isDiffMode && <DiffNavItem />}
 
-      <div className={styles.sectionLabel}>Reference</div>
-      <div className={styles.nav}>
-        {REFERENCE_ITEMS.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname.startsWith(`${branchPrefix}${item.path}`);
-          const dotColor = dots.get(item.id);
-          return (
-            <Link
-              key={item.id}
-              href={branchHref(item.path)}
-              className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-            >
-              <Icon className={styles.navIcon} />
-              <span>{item.label}</span>
-              {dotColor && <span className={styles.diffDot} style={{ background: dotColor }} />}
-            </Link>
-          );
-        })}
-      </div>
+      {visibleSystemItems.length > 0 && (
+        <>
+          <div className={styles.sectionLabel}>System Views</div>
+          <div className={styles.nav}>
+            {visibleSystemItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname.startsWith(`${branchPrefix}${item.path}`);
+              const counts = dots.get(item.id);
+              return (
+                <Link
+                  key={item.id}
+                  href={branchHref(item.path)}
+                  className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                >
+                  <Icon className={styles.navIcon} />
+                  <span>{item.label}</span>
+                  {counts && <DiffIndicator counts={counts} />}
+                </Link>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {visibleFeatureDomains.length > 0 && (
+        <>
+          <div className={styles.sectionLabel}>Features</div>
+          <div className={styles.nav}>
+            {visibleFeatureDomains.map((domain) => {
+              const isActive = pathname.startsWith(`${branchPrefix}/features/${domain.slug}`);
+              const fdCounts = featureDomainDots.get(domain.slug);
+              return (
+                <Link
+                  key={domain.slug}
+                  href={branchHref(`/features/${domain.slug}`)}
+                  className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                >
+                  <HiOutlineLightningBolt className={styles.navIcon} />
+                  <span>{domain.label}</span>
+                  {fdCounts && <DiffIndicator counts={fdCounts} />}
+                </Link>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {visibleReferenceItems.length > 0 && (
+        <>
+          <div className={styles.sectionLabel}>Reference</div>
+          <div className={styles.nav}>
+            {visibleReferenceItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname.startsWith(`${branchPrefix}${item.path}`);
+              const counts = dots.get(item.id);
+              return (
+                <Link
+                  key={item.id}
+                  href={branchHref(item.path)}
+                  className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                >
+                  <Icon className={styles.navIcon} />
+                  <span>{item.label}</span>
+                  {counts && <DiffIndicator counts={counts} />}
+                </Link>
+              );
+            })}
+          </div>
+        </>
+      )}
     </>
   );
 }
@@ -172,23 +265,15 @@ export function Sidebar({ featureDomains }: SidebarProps) {
   const branchHref = useBranchHref();
   const branchPrefix = `/${activeBranch}`;
 
-  const isDashboardActive = pathname === branchPrefix || pathname === `${branchPrefix}/`;
-
   return (
     <div className={styles.sidebar}>
       <div className={styles.navContent}>
-        <Link
-          href={branchHref('/')}
-          className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}
-        >
-          <HiOutlineHome className={styles.navIcon} />
-          <span>Dashboard</span>
-        </Link>
-
         <Suspense
           fallback={
             <NavContent
               dots={new Map()}
+              isDiffMode={false}
+              featureDomainDots={new Map()}
               pathname={pathname}
               branchPrefix={branchPrefix}
               branchHref={branchHref}
@@ -197,9 +282,11 @@ export function Sidebar({ featureDomains }: SidebarProps) {
           }
         >
           <DiffDots>
-            {(dots) => (
+            {({ dots, isDiffMode: diffActive, featureDomainDots: fdd }) => (
               <NavContent
                 dots={dots}
+                isDiffMode={diffActive}
+                featureDomainDots={fdd}
                 pathname={pathname}
                 branchPrefix={branchPrefix}
                 branchHref={branchHref}
@@ -207,19 +294,6 @@ export function Sidebar({ featureDomains }: SidebarProps) {
               />
             )}
           </DiffDots>
-        </Suspense>
-      </div>
-
-      <div className={styles.switcherSection}>
-        <div className={styles.sectionLabel}>Branch</div>
-        <BranchSwitcher />
-        <div className={styles.comparisonSection}>
-          <Suspense>
-            <ComparisonSelector />
-          </Suspense>
-        </div>
-        <Suspense>
-          <DiffNavItem />
         </Suspense>
       </div>
     </div>

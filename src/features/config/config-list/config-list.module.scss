@@ -341,6 +341,15 @@
   letter-spacing: 0.02em;
 }
 
+.diffFilterRow {
+  margin-bottom: 12px;
+}
+
+.valueRowAdded {
+  background: var(--diff-added-bg);
+  border-left: 2px solid var(--diff-added);
+}
+
 // ─── Diff Mode ───
 
 .diff_added {
@@ -356,8 +365,7 @@
 .diff_removed {
   border-left: 2px solid var(--diff-removed);
   background: var(--diff-removed-bg);
-  opacity: 0.6;
-  pointer-events: none;
+  opacity: 0.7;
 }
 
 .diff_unchanged {

@@ -3,7 +3,7 @@
     {
       "slug": "addresses",
       "name": "Addresses",
-      "description": "Saved shipping addresses for authenticated buyers — store and reuse up to 5 addresses for faster checkout. Full CRUD operations with a single default address per user. The 5-address cap is enforced at both the server service layer (for user-friendly error messages) and via a database trigger (as a hard constraint).",
+      "description": "Saved shipping addresses for authenticated buyers \u2014 store and reuse up to 5 addresses for faster checkout. Full CRUD operations with a single default address per user. The 5-address cap is enforced at both the server service layer (for user-friendly error messages) and via a database trigger (as a hard constraint).",
       "componentCount": 3,
       "endpointCount": 3,
       "hookCount": 1,
@@ -26,7 +26,7 @@
     {
       "slug": "auth",
       "name": "Auth",
-      "description": "Authentication feature using Supabase Auth with cookie-based sessions via @supabase/ssr. Covers login, registration, 6-digit OTP code verification, and password reset. Users never leave the app — all verification happens inline via OTP input.",
+      "description": "Authentication feature using Supabase Auth with cookie-based sessions via @supabase/ssr. Covers login, registration, 6-digit OTP code verification, and password reset. Users never leave the app \u2014 all verification happens inline via OTP input.",
       "componentCount": 7,
       "endpointCount": 4,
       "hookCount": 0,
@@ -87,10 +87,10 @@
     {
       "slug": "cart",
       "name": "Cart",
-      "description": "The cart provides authenticated users with a persistent shopping cart backed by the cart_items database table. Items are capped at 25 per user, expire after 30 days, and snapshot the listing price at the time of addition for price-change detection. Guest users use a localStorage-based cart that merges into the authenticated cart on login.",
+      "description": "The cart provides authenticated users with a persistent shopping cart backed by the cart_items database table. Items are capped at 25 per user, expire after 30 days, and snapshot the listing price at the time of addition for price-change detection. Guest users use a localStorage-based cart that merges into the authenticated cart on login. Now includes quantity validation against listing availability.",
       "componentCount": 4,
       "endpointCount": 6,
-      "hookCount": 3,
+      "hookCount": 4,
       "serviceCount": 2,
       "entities": ["cart_items", "listings", "member_blocks", "members", "shops"],
       "journeySlugs": ["cart", "login", "member-block-management", "signup"],
@@ -150,7 +150,7 @@
     {
       "slug": "context",
       "name": "Context",
-      "description": "The context feature manages which entity (member or shop) the user is currently acting as in the Nessi dashboard. This is the architectural backbone for context switching — it determines which identity is active and what data the dashboard displays.",
+      "description": "The context feature manages which entity (member or shop) the user is currently acting as in the Nessi dashboard. This is the architectural backbone for context switching \u2014 it determines which identity is active and what data the dashboard displays.",
       "componentCount": 1,
       "endpointCount": 0,
       "hookCount": 0,
@@ -174,7 +174,7 @@
     {
       "slug": "editorial",
       "name": "Editorial",
-      "description": "Discovery and editorial content — shop highlights, maker stories, featured listings, and social proof.",
+      "description": "Discovery and editorial content \u2014 shop highlights, maker stories, featured listings, and social proof.",
       "componentCount": 14,
       "endpointCount": 0,
       "hookCount": 0,
@@ -270,8 +270,8 @@
     {
       "slug": "listings",
       "name": "Listings",
-      "description": "Listings are the core marketplace entities in Nessi — individual items posted for sale by members or shops. This feature provides the full data layer (types, services, hooks), validations, UI components, and pages for creating, editing, and managing listings. Related tickets: #21 (photo infrastructure), #5 (create wizard), #7 (edit wizard).",
-      "componentCount": 60,
+      "description": "Listings are the core marketplace entities in Nessi \u2014 individual items posted for sale by members or shops. This feature provides the full data layer (types, services, hooks), validations, UI components, and pages for creating, editing, and managing listings. Related tickets: #21 (photo infrastructure), #5 (create wizard), #7 (edit wizard). Now includes bulk actions for multi-select publish/archive/delete from the seller dashboard.",
+      "componentCount": 63,
       "endpointCount": 15,
       "hookCount": 11,
       "serviceCount": 7,
@@ -579,6 +579,72 @@
         {
           "type": "api-group",
           "label": "Watchlist",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "wishlists",
+      "name": "Wishlists",
+      "description": "Curated product wishlists that members can create, name, and optionally share. Wishlists support private, shared (link-only), and public visibility. Items are tracked for availability changes and price drops.",
+      "componentCount": 5,
+      "endpointCount": 4,
+      "hookCount": 3,
+      "serviceCount": 2,
+      "entities": ["wishlists", "listings", "members"],
+      "journeySlugs": ["wishlist-management"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "wishlists",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "listings",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "wishlist-management",
+          "href": "/journeys/wishlist-management"
+        },
+        {
+          "type": "api-group",
+          "label": "Wishlists",
+          "href": "/api-map"
+        }
+      ]
+    },
+    {
+      "slug": "search-filters",
+      "name": "Search Filters",
+      "description": "Advanced search filtering with faceted navigation. Supports filtering by category, condition, price range, species, location (state), and shipping options. Filter state is persisted in URL search params for shareability.",
+      "componentCount": 8,
+      "endpointCount": 1,
+      "hookCount": 2,
+      "serviceCount": 1,
+      "entities": ["listings", "search_suggestions"],
+      "journeySlugs": ["browse-and-search"],
+      "links": [
+        {
+          "type": "entity",
+          "label": "listings",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "search_suggestions",
+          "href": "/data-model"
+        },
+        {
+          "type": "journey",
+          "label": "browse-and-search",
+          "href": "/journeys/browse-and-search"
+        },
+        {
+          "type": "api-group",
+          "label": "Listings",
           "href": "/api-map"
         }
       ]

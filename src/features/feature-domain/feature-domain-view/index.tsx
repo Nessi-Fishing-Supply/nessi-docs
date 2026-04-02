@@ -1,12 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import type { Feature } from '@/types/feature';
 import type { FeatureDomain } from '@/types/dashboard';
 import type { ChangelogEntry, ChangeType } from '@/types/changelog';
+import type { DiffStatus, FieldChange } from '@/types/diff';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
+import { useDocsContext } from '@/providers/docs-provider';
 import { useBranchHref } from '@/providers/branch-provider';
+import { useDiffMode } from '@/hooks/use-diff-mode';
+import { DiffBadge } from '@/components/ui/diff-badge';
+import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import { BorderTrace } from '@/components/ui/border-trace';
 import styles from './feature-domain-view.module.scss';
 
@@ -54,6 +59,8 @@ function FeatureRow({
   onToggle,
   onOpen,
   journeyDomainMap,
+  diffStatus,
+  crossDiffStatuses,
 }: {
   feature: Feature;
   staggerIndex: number;
@@ -61,6 +68,8 @@ function FeatureRow({
   onToggle: () => void;
   onOpen: () => void;
   journeyDomainMap: Map<string, string>;
+  diffStatus?: DiffStatus | null;
+  crossDiffStatuses?: Map<string, DiffStatus>;
 }) {
   const branchHref = useBranchHref();
   const [isDeepLinkTarget] = useState(
@@ -100,14 +109,17 @@ function FeatureRow({
     <div
       ref={rowRef}
       id={feature.slug}
-      className={`${styles.featureRow} ${isOpen ? styles.featureRowOpen : ''}`}
+      className={`${styles.featureRow} ${isOpen ? styles.featureRowOpen : ''} ${diffStatus && diffStatus !== 'unchanged' ? styles[`diff_${diffStatus}`] : ''}`}
       style={
         { '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms` } as React.CSSProperties
       }
     >
       <BorderTrace active={highlight} />
       <button className={styles.featureRowHeader} onClick={onToggle}>
-        <span className={styles.featureName}>{feature.name}</span>
+        <span className={styles.featureRowTitle}>
+          <span className={styles.featureName}>{feature.name}</span>
+          {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
+        </span>
         <span className={styles.featureBadges}>
           {feature.componentCount > 0 && (
             <span className={styles.featureBadge}>
@@ -139,17 +151,21 @@ function FeatureRow({
             <div className={styles.expansionSection}>
               <div className={styles.sectionLabel}>API Endpoints</div>
               <div className={styles.linkList}>
-                {apiLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={resolveHref(link, journeyDomainMap, branchHref)}
-                    onClick={clearHash}
-                    className={`${styles.linkItem} ${styles.linkApi}`}
-                  >
-                    <span>{link.label}</span>
-                    <span className={styles.linkArrowSmall}>&rsaquo;</span>
-                  </Link>
-                ))}
+                {apiLinks.map((link) => {
+                  const ls = crossDiffStatuses?.get(link.label);
+                  return (
+                    <Link
+                      key={link.label}
+                      href={resolveHref(link, journeyDomainMap, branchHref)}
+                      onClick={clearHash}
+                      className={`${styles.linkItem} ${styles.linkApi} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
+                    >
+                      <span>{link.label}</span>
+                      {ls && ls !== 'unchanged' && <DiffBadge status={ls} />}
+                      <span className={styles.linkArrowSmall}>&rsaquo;</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -158,17 +174,21 @@ function FeatureRow({
             <div className={styles.expansionSection}>
               <div className={styles.sectionLabel}>Related Entities</div>
               <div className={styles.linkList}>
-                {entityLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={resolveHref(link, journeyDomainMap, branchHref)}
-                    onClick={clearHash}
-                    className={`${styles.linkItem} ${styles.linkEntity}`}
-                  >
-                    <span>{link.label}</span>
-                    <span className={styles.linkArrowSmall}>&rsaquo;</span>
-                  </Link>
-                ))}
+                {entityLinks.map((link) => {
+                  const ls = crossDiffStatuses?.get(link.label);
+                  return (
+                    <Link
+                      key={link.label}
+                      href={resolveHref(link, journeyDomainMap, branchHref)}
+                      onClick={clearHash}
+                      className={`${styles.linkItem} ${styles.linkEntity} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
+                    >
+                      <span>{link.label}</span>
+                      {ls && ls !== 'unchanged' && <DiffBadge status={ls} />}
+                      <span className={styles.linkArrowSmall}>&rsaquo;</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -177,17 +197,21 @@ function FeatureRow({
             <div className={styles.expansionSection}>
               <div className={styles.sectionLabel}>Related Journeys</div>
               <div className={styles.linkList}>
-                {journeyLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={resolveHref(link, journeyDomainMap, branchHref)}
-                    onClick={clearHash}
-                    className={`${styles.linkItem} ${styles.linkJourney}`}
-                  >
-                    <span>{link.label}</span>
-                    <span className={styles.linkArrowSmall}>&rsaquo;</span>
-                  </Link>
-                ))}
+                {journeyLinks.map((link) => {
+                  const ls = crossDiffStatuses?.get(link.label);
+                  return (
+                    <Link
+                      key={link.label}
+                      href={resolveHref(link, journeyDomainMap, branchHref)}
+                      onClick={clearHash}
+                      className={`${styles.linkItem} ${styles.linkJourney} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
+                    >
+                      <span>{link.label}</span>
+                      {ls && ls !== 'unchanged' && <DiffBadge status={ls} />}
+                      <span className={styles.linkArrowSmall}>&rsaquo;</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -196,17 +220,21 @@ function FeatureRow({
             <div className={styles.expansionSection}>
               <div className={styles.sectionLabel}>Related Lifecycles</div>
               <div className={styles.linkList}>
-                {lifecycleLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={resolveHref(link, journeyDomainMap, branchHref)}
-                    onClick={clearHash}
-                    className={`${styles.linkItem} ${styles.linkLifecycle}`}
-                  >
-                    <span>{link.label}</span>
-                    <span className={styles.linkArrowSmall}>&rsaquo;</span>
-                  </Link>
-                ))}
+                {lifecycleLinks.map((link) => {
+                  const ls = crossDiffStatuses?.get(link.label);
+                  return (
+                    <Link
+                      key={link.label}
+                      href={resolveHref(link, journeyDomainMap, branchHref)}
+                      onClick={clearHash}
+                      className={`${styles.linkItem} ${styles.linkLifecycle} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
+                    >
+                      <span>{link.label}</span>
+                      {ls && ls !== 'unchanged' && <DiffBadge status={ls} />}
+                      <span className={styles.linkArrowSmall}>&rsaquo;</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -234,16 +262,108 @@ export function FeatureDomainView({
   entities,
 }: FeatureDomainViewProps) {
   const branchHref = useBranchHref();
+  const { setSelectedItem } = useDocsContext();
+  const { isActive: isDiffMode, diffResult } = useDiffMode();
+  const featureStatusMap = isDiffMode ? diffResult?.features.statusMap : undefined;
+  const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
+
   const journeyDomainMap = new Map(journeys.map((j) => [j.slug, j.domain]));
   const [openFeatures, setOpenFeatures] = useState<Set<string>>(new Set());
 
+  const diffCounts = useMemo(() => {
+    if (!diffResult) return { added: 0, modified: 0, removed: 0 };
+    // Only count features that belong to this domain
+    const domainSlugs = new Set(features.map((f) => f.slug));
+    const addedInDomain = diffResult.features.added.filter((f) => domainSlugs.has(f.slug));
+    const modifiedInDomain = diffResult.features.modified.filter((m) =>
+      domainSlugs.has(m.head.slug),
+    );
+    const removedInDomain = diffResult.features.removed.filter((f) => domainSlugs.has(f.slug));
+    return {
+      added: addedInDomain.length,
+      modified: modifiedInDomain.length,
+      removed: removedInDomain.length,
+    };
+  }, [diffResult, features]);
+
+  const changedFieldsMap = useMemo(() => {
+    const map = new Map<string, FieldChange[]>();
+    if (!diffResult) return map;
+    for (const mod of diffResult.features.modified) {
+      map.set(mod.head.slug, mod.changes);
+    }
+    return map;
+  }, [diffResult]);
+
+  // Build cross-domain diff status map for linked items (entities, journeys, lifecycles, api groups)
+  const crossDiffStatuses = useMemo(() => {
+    const map = new Map<string, DiffStatus>();
+    if (!isDiffMode || !diffResult) return map;
+    // Entities — keyed by name
+    for (const [key, status] of diffResult.entities.statusMap) {
+      if (status !== 'unchanged') map.set(key, status);
+    }
+    // Journeys — keyed by slug
+    for (const [key, status] of diffResult.journeys.statusMap) {
+      if (status !== 'unchanged') map.set(key, status);
+    }
+    // Lifecycles — keyed by slug
+    for (const [key, status] of diffResult.lifecycles.statusMap) {
+      if (status !== 'unchanged') map.set(key, status);
+    }
+    // API groups — keyed by name
+    for (const [key, status] of diffResult.apiGroups.statusMap) {
+      if (status !== 'unchanged') map.set(key, status);
+    }
+    return map;
+  }, [isDiffMode, diffResult]);
+
+  const addedFeatures = useMemo(() => {
+    if (!isDiffMode || !diffResult) return [];
+    const domainSlugs = new Set(features.map((f) => f.slug));
+    return diffResult.features.added.filter((f) => domainSlugs.has(f.slug));
+  }, [isDiffMode, diffResult, features]);
+
+  const filteredFeatures = useMemo(() => {
+    if (!isDiffMode || !featureStatusMap) return features;
+    if (diffFilter === 'all') {
+      return features.filter((f) => {
+        const s = featureStatusMap.get(f.slug);
+        return s === 'added' || s === 'modified' || s === 'removed';
+      });
+    }
+    return features.filter((f) => featureStatusMap.get(f.slug) === diffFilter);
+  }, [features, isDiffMode, featureStatusMap, diffFilter]);
+
   const toggleFeature = (slug: string) => {
+    if (isDiffMode && featureStatusMap?.get(slug) === 'unchanged') return;
+    const willOpen = !openFeatures.has(slug);
     setOpenFeatures((prev) => {
       const next = new Set(prev);
       if (next.has(slug)) next.delete(slug);
       else next.add(slug);
       return next;
     });
+    if (willOpen && isDiffMode) {
+      const feat =
+        features.find((f) => f.slug === slug) ?? addedFeatures.find((f) => f.slug === slug);
+      if (!feat) return;
+      const status = featureStatusMap?.get(slug);
+      if (status && status !== 'unchanged') {
+        setSelectedItem({
+          type: 'diff-item',
+          item: {
+            key: slug,
+            label: feat.name,
+            status,
+            domain: 'Features',
+            href: branchHref(`/features/${domain.slug}#${slug}`),
+            changedFields: changedFieldsMap.get(slug),
+            data: feat,
+          },
+        });
+      }
+    }
   };
 
   const openFeature = (slug: string) => {
@@ -272,10 +392,17 @@ export function FeatureDomainView({
         </div>
       </div>
 
+      {/* ── Diff Filter Bar ── */}
+      {isDiffMode && (
+        <div className={styles.diffFilterRow}>
+          <DiffFilterBar active={diffFilter} onChange={setDiffFilter} counts={diffCounts} />
+        </div>
+      )}
+
       {/* ── Feature Rows ── */}
       <div className={styles.featureSectionLabel}>Features</div>
       <div className={styles.featureContainer}>
-        {features.map((feature, idx) => (
+        {filteredFeatures.map((feature, idx) => (
           <FeatureRow
             key={feature.slug}
             feature={feature}
@@ -284,16 +411,37 @@ export function FeatureDomainView({
             onToggle={() => toggleFeature(feature.slug)}
             onOpen={() => openFeature(feature.slug)}
             journeyDomainMap={journeyDomainMap}
+            diffStatus={featureStatusMap?.get(feature.slug)}
+            crossDiffStatuses={isDiffMode ? crossDiffStatuses : undefined}
           />
         ))}
 
-        {features.length === 0 && (
-          <div className={styles.emptyState}>No features in this domain.</div>
+        {/* Added features (diff mode only) */}
+        {isDiffMode &&
+          (diffFilter === 'all' || diffFilter === 'added') &&
+          addedFeatures.map((feature, idx) => (
+            <FeatureRow
+              key={`added-${feature.slug}`}
+              feature={feature}
+              staggerIndex={filteredFeatures.length + idx}
+              isOpen={openFeatures.has(feature.slug)}
+              onToggle={() => toggleFeature(feature.slug)}
+              onOpen={() => openFeature(feature.slug)}
+              journeyDomainMap={journeyDomainMap}
+              diffStatus="added"
+              crossDiffStatuses={crossDiffStatuses}
+            />
+          ))}
+
+        {filteredFeatures.length === 0 && addedFeatures.length === 0 && (
+          <div className={styles.emptyState}>
+            {isDiffMode ? 'No feature changes in this domain.' : 'No features in this domain.'}
+          </div>
         )}
       </div>
 
-      {/* ── Footer ── */}
-      {(changelog.length > 0 || journeys.length > 0 || entities.length > 0) && (
+      {/* ── Footer — hidden in diff mode ── */}
+      {!isDiffMode && (changelog.length > 0 || journeys.length > 0 || entities.length > 0) && (
         <div className={styles.footer}>
           {changelog.length > 0 && (
             <div className={styles.footerSection}>

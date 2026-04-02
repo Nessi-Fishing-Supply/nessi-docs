@@ -294,6 +294,18 @@
           "description": "Checks that all cart items are still available and valid before checkout.",
           "tags": [],
           "sourceFile": "src/app/api/cart/validate/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/cart/count",
+          "label": "Cart Count",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Returns the number of items in the authenticated user's cart. Used by the navbar cart badge.",
+          "tags": [],
+          "sourceFile": "src/app/api/cart/count/route.ts"
         }
       ]
     },
@@ -506,7 +518,7 @@
               "required": true
             }
           ],
-          "description": "Changes a listing's status — such as publishing, archiving, or marking it sold.",
+          "description": "Changes a listing's status \u2014 such as publishing, archiving, or marking it sold.",
           "tags": [],
           "sourceFile": "src/app/api/listings/[id]/status/route.ts"
         },
@@ -614,7 +626,7 @@
           "access": ["Member", "Shop"],
           "errorCodes": [400, 401, 403, 500],
           "requestFields": [],
-          "description": "Returns a paginated list of active listings, with optional filters and sorting.",
+          "description": "Returns paginated active listings for the browse page. Supports cursor-based pagination, sorting by newest/price/relevance, and optional category filtering.",
           "tags": [],
           "sourceFile": "src/app/api/listings/route.ts"
         },
@@ -700,6 +712,44 @@
           "description": "Uploads a photo for a listing, resizes it, and saves both full and thumbnail versions.",
           "tags": ["file-upload"],
           "sourceFile": "src/app/api/listings/upload/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/listings/search",
+          "label": "Search Listings",
+          "auth": "none",
+          "access": ["Public"],
+          "errorCodes": [400, 500],
+          "requestFields": [
+            {
+              "name": "q",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "category",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "condition",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "min_price",
+              "type": "number",
+              "required": false
+            },
+            {
+              "name": "max_price",
+              "type": "number",
+              "required": false
+            }
+          ],
+          "description": "Full-text search across active listings with faceted filtering by category, condition, price range, species, and location.",
+          "tags": [],
+          "sourceFile": "src/app/api/listings/search/route.ts"
         }
       ]
     },

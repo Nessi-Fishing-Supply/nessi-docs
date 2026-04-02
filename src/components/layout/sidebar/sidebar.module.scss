@@ -10,20 +10,6 @@
   padding: 12px 8px;
 }
 
-.switcherSection {
-  padding: 8px;
-  border-top: 1px solid var(--border-subtle);
-
-  .sectionLabel {
-    padding-top: 4px;
-    padding-bottom: 6px;
-  }
-}
-
-.comparisonSection {
-  margin-top: 6px;
-}
-
 .nav {
   display: flex;
   flex-direction: column;
@@ -116,12 +102,32 @@
   flex-shrink: 0;
 }
 
-.diffDot {
+.diffDots {
+  display: flex;
+  gap: 3px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.diffDotAdded {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  flex-shrink: 0;
-  margin-left: auto;
+  background: var(--diff-added);
+}
+
+.diffDotModified {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--diff-modified);
+}
+
+.diffDotRemoved {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--diff-removed);
 }
 
 .badge {

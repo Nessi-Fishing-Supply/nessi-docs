@@ -7,6 +7,7 @@ import { LifecyclePanel } from './panels/lifecycle-panel';
 import { FeaturePanel } from './panels/feature-panel';
 import { PermissionPanel } from './panels/permission-panel';
 import { ConfigPanel } from './panels/config-panel';
+import { DiffPanel } from './panels/diff-panel';
 import styles from './detail-panel.module.scss';
 
 export function DetailPanel() {
@@ -34,6 +35,7 @@ export function DetailPanel() {
       {selectedItem.type === 'feature' && <FeaturePanel feature={selectedItem.feature} />}
       {selectedItem.type === 'role' && <PermissionPanel role={selectedItem.role} />}
       {selectedItem.type === 'config-enum' && <ConfigPanel configEnum={selectedItem.configEnum} />}
+      {selectedItem.type === 'diff-item' && <DiffPanel item={selectedItem.item} />}
     </div>
   );
 }

@@ -288,6 +288,11 @@
       "from": "wishlists",
       "to": "members",
       "label": "profile_id"
+    },
+    {
+      "from": "wishlists",
+      "to": "listings",
+      "label": "listing_id"
     }
   ]
 }

@@ -3,33 +3,18 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import type { ConfigEnum } from '@/types/config-ref';
 import type { Role } from '@/types/permission';
-import type { DiffStatus } from '@/types/diff';
+import type { FieldChange } from '@/types/diff';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
 import { useDocsContext } from '@/providers/docs-provider';
+import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { DiffBadge } from '@/components/ui/diff-badge';
+import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import styles from './config-list.module.scss';
 
 const ROLES_SLUG = '__roles__';
-
-function diffSort<T>(
-  items: T[],
-  getKey: (item: T) => string,
-  statusMap: Map<string, DiffStatus> | undefined,
-): T[] {
-  if (!statusMap) return items;
-  return [...items].sort((a, b) => {
-    const aStatus = statusMap.get(getKey(a));
-    const bStatus = statusMap.get(getKey(b));
-    const aChanged = aStatus === 'added' || aStatus === 'modified';
-    const bChanged = bStatus === 'added' || bStatus === 'modified';
-    if (aChanged && !bChanged) return -1;
-    if (!aChanged && bChanged) return 1;
-    return 0;
-  });
-}
 
 interface ConfigListProps {
   enums: ConfigEnum[];
@@ -38,16 +23,47 @@ interface ConfigListProps {
 
 export function ConfigList({ enums, roles }: ConfigListProps) {
   const { setSelectedItem } = useDocsContext();
+  const branchHref = useBranchHref();
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const configStatusMap = isDiffMode ? diffResult?.configEnums.statusMap : undefined;
   const [openSlugs, setOpenSlugs] = useState<Set<string>>(new Set());
   const [highlightSlug, setHighlightSlug] = useState<string | null>(null);
   const blockRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
 
-  const sortedEnums = useMemo(
-    () => diffSort(enums, (e) => e.slug, configStatusMap),
-    [enums, configStatusMap],
-  );
+  const diffCounts = useMemo(() => {
+    if (!diffResult) return { added: 0, modified: 0, removed: 0 };
+    return {
+      added: diffResult.configEnums.added.length,
+      modified: diffResult.configEnums.modified.length,
+      removed: diffResult.configEnums.removed.length,
+    };
+  }, [diffResult]);
+
+  const changedFieldsMap = useMemo(() => {
+    const map = new Map<string, FieldChange[]>();
+    if (!diffResult) return map;
+    for (const mod of diffResult.configEnums.modified) {
+      map.set(mod.head.slug, mod.changes);
+    }
+    return map;
+  }, [diffResult]);
+
+  const addedEnums = useMemo(() => {
+    if (!isDiffMode || !diffResult) return [];
+    return diffResult.configEnums.added;
+  }, [isDiffMode, diffResult]);
+
+  const filteredEnums = useMemo(() => {
+    if (!isDiffMode || !configStatusMap) return enums;
+    if (diffFilter === 'all') {
+      return enums.filter((e) => {
+        const s = configStatusMap.get(e.slug);
+        return s === 'added' || s === 'modified' || s === 'removed';
+      });
+    }
+    return enums.filter((e) => configStatusMap.get(e.slug) === diffFilter);
+  }, [enums, isDiffMode, configStatusMap, diffFilter]);
 
   const totalValues = enums.reduce((sum, e) => sum + e.values.length, 0);
 
@@ -85,8 +101,25 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
       return next;
     });
     if (willOpen && slug !== ROLES_SLUG) {
-      const enumDef = enums.find((e) => e.slug === slug);
-      if (enumDef) setSelectedItem({ type: 'config-enum', configEnum: enumDef });
+      const enumDef = enums.find((e) => e.slug === slug) ?? addedEnums.find((e) => e.slug === slug);
+      if (!enumDef) return;
+      const status = configStatusMap?.get(slug);
+      if (isDiffMode && status && status !== 'unchanged') {
+        setSelectedItem({
+          type: 'diff-item',
+          item: {
+            key: slug,
+            label: enumDef.name,
+            status,
+            domain: 'Config',
+            href: branchHref(`/config#${slug}`),
+            changedFields: changedFieldsMap.get(slug),
+            data: enumDef,
+          },
+        });
+      } else {
+        setSelectedItem({ type: 'config-enum', configEnum: enumDef });
+      }
     }
   };
 
@@ -105,33 +138,41 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
       {/* Header */}
       <PageHeader title="Config Reference" metrics={metrics} />
 
-      {/* Table of Contents */}
-      <nav className={styles.toc}>
-        {roles && roles.length > 0 && (
-          <button
-            className={`${styles.tocItem} ${rolesOpen ? styles.tocItemActive : ''}`}
-            onClick={() => toggleSlug(ROLES_SLUG)}
-          >
-            <span className={styles.tocName}>Roles &amp; Permissions</span>
-            <span className={styles.tocCount}>{roles.length}</span>
-          </button>
-        )}
-        {sortedEnums.map((e) => (
-          <button
-            key={e.slug}
-            className={`${styles.tocItem} ${openSlugs.has(e.slug) ? styles.tocItemActive : ''}`}
-            onClick={() => toggleSlug(e.slug)}
-          >
-            <span className={styles.tocName}>{e.name}</span>
-            <span className={styles.tocCount}>{e.values.length}</span>
-          </button>
-        ))}
-      </nav>
+      {/* Table of Contents — hidden in diff mode */}
+      {!isDiffMode && (
+        <nav className={styles.toc}>
+          {roles && roles.length > 0 && (
+            <button
+              className={`${styles.tocItem} ${rolesOpen ? styles.tocItemActive : ''}`}
+              onClick={() => toggleSlug(ROLES_SLUG)}
+            >
+              <span className={styles.tocName}>Roles &amp; Permissions</span>
+              <span className={styles.tocCount}>{roles.length}</span>
+            </button>
+          )}
+          {filteredEnums.map((e) => (
+            <button
+              key={e.slug}
+              className={`${styles.tocItem} ${openSlugs.has(e.slug) ? styles.tocItemActive : ''}`}
+              onClick={() => toggleSlug(e.slug)}
+            >
+              <span className={styles.tocName}>{e.name}</span>
+              <span className={styles.tocCount}>{e.values.length}</span>
+            </button>
+          ))}
+        </nav>
+      )}
+
+      {isDiffMode && (
+        <div className={styles.diffFilterRow}>
+          <DiffFilterBar active={diffFilter} onChange={setDiffFilter} counts={diffCounts} />
+        </div>
+      )}
 
       {/* Enum Blocks */}
       <div className={styles.enums}>
-        {/* Roles & Permissions Section */}
-        {roles && roles.length > 0 && (
+        {/* Roles & Permissions Section — hidden in diff mode since roles don't change */}
+        {roles && roles.length > 0 && !isDiffMode && (
           <div
             id={ROLES_SLUG}
             ref={(el) => {
@@ -207,8 +248,31 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
         )}
 
         {/* Config Enum Blocks */}
-        {sortedEnums.map((e) => {
+        {filteredEnums.map((e) => {
           const isOpen = openSlugs.has(e.slug);
+          const status = configStatusMap?.get(e.slug);
+          const changes = changedFieldsMap.get(e.slug);
+          const { addedValueNames, addedValueObjects } = (() => {
+            if (!changes)
+              return {
+                addedValueNames: new Set<string>(),
+                addedValueObjects: [] as ConfigEnum['values'],
+              };
+            const vc = changes.find((c) => c.field === 'values');
+            if (!vc)
+              return {
+                addedValueNames: new Set<string>(),
+                addedValueObjects: [] as ConfigEnum['values'],
+              };
+            const base = Array.isArray(vc.baseValue) ? vc.baseValue : [];
+            const head = Array.isArray(vc.headValue) ? vc.headValue : [];
+            const baseVals = new Set(base.map((v: { value: string }) => v.value));
+            const added = (head as ConfigEnum['values']).filter((v) => !baseVals.has(v.value));
+            return {
+              addedValueNames: new Set(added.map((v) => v.value)),
+              addedValueObjects: added,
+            };
+          })();
           return (
             <div
               key={e.slug}
@@ -216,16 +280,12 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
               ref={(el) => {
                 if (el) blockRefs.current.set(e.slug, el);
               }}
-              className={`${styles.enumBlock} ${isOpen ? styles.enumOpen : ''} ${configStatusMap ? styles[`diff_${configStatusMap.get(e.slug) ?? 'unchanged'}`] : ''}`}
+              className={`${styles.enumBlock} ${isOpen ? styles.enumOpen : ''} ${status ? styles[`diff_${status}`] : ''}`}
             >
               <BorderTrace active={highlightSlug === e.slug} />
               <button className={styles.enumHeader} onClick={() => toggleSlug(e.slug)}>
                 <span className={styles.enumName}>{e.name}</span>
-                {configStatusMap && configStatusMap.get(e.slug) !== 'unchanged' && (
-                  <DiffBadge
-                    status={configStatusMap.get(e.slug) as Exclude<DiffStatus, 'unchanged'>}
-                  />
-                )}
+                {status && status !== 'unchanged' && <DiffBadge status={status} />}
                 <span className={styles.enumCount}>{e.values.length} values</span>
                 <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
               </button>
@@ -246,7 +306,20 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
                       <span>Description</span>
                     </div>
                     {e.values.map((v) => (
-                      <div key={v.value} className={styles.valueRow}>
+                      <div
+                        key={v.value}
+                        className={`${styles.valueRow} ${addedValueNames.has(v.value) ? styles.valueRowAdded : ''}`}
+                      >
+                        <span className={styles.valueCode}>{v.value}</span>
+                        <span className={styles.valueLabel}>{v.label}</span>
+                        <span className={styles.valueDesc}>{v.description ?? '—'}</span>
+                      </div>
+                    ))}
+                    {addedValueObjects.map((v) => (
+                      <div
+                        key={`added-${v.value}`}
+                        className={`${styles.valueRow} ${styles.valueRowAdded}`}
+                      >
                         <span className={styles.valueCode}>{v.value}</span>
                         <span className={styles.valueLabel}>{v.label}</span>
                         <span className={styles.valueDesc}>{v.description ?? '—'}</span>
@@ -259,18 +332,49 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
           );
         })}
 
-        {/* Removed Config Enums (diff mode only) */}
+        {/* Added Config Enums (diff mode only) */}
         {isDiffMode &&
-          diffResult &&
-          diffResult.configEnums.removed.map((e) => (
-            <div key={`removed-${e.slug}`} className={`${styles.enumBlock} ${styles.diff_removed}`}>
-              <div className={styles.enumHeader}>
-                <span className={styles.enumName}>{e.name}</span>
-                <DiffBadge status="removed" />
-                <span className={styles.enumCount}>{e.values.length} values</span>
+          (diffFilter === 'all' || diffFilter === 'added') &&
+          addedEnums.map((e) => {
+            const isOpen = openSlugs.has(e.slug);
+            return (
+              <div
+                key={`added-${e.slug}`}
+                className={`${styles.enumBlock} ${isOpen ? styles.enumOpen : ''} ${styles.diff_added}`}
+              >
+                <button className={styles.enumHeader} onClick={() => toggleSlug(e.slug)}>
+                  <span className={styles.enumName}>{e.name}</span>
+                  <DiffBadge status="added" />
+                  <span className={styles.enumCount}>{e.values.length} values</span>
+                  <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
+                </button>
+
+                {isOpen && (
+                  <div className={styles.enumBody}>
+                    <p className={styles.enumDescription}>{e.description}</p>
+                    <div className={styles.sourceRow}>
+                      <span className={styles.sourceLabel}>Source</span>
+                      <code className={styles.sourceValue}>{e.source}</code>
+                    </div>
+                    <div className={styles.valueTable}>
+                      <div className={styles.valueHeader}>
+                        <span>Value</span>
+                        <span>Label</span>
+                        <span>Description</span>
+                      </div>
+                      {e.values.map((v) => (
+                        <div key={v.value} className={styles.valueRow}>
+                          <span className={styles.valueCode}>{v.value}</span>
+                          <span className={styles.valueLabel}>{v.label}</span>
+                          <span className={styles.valueDesc}>{v.description ?? '—'}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     </div>
   );

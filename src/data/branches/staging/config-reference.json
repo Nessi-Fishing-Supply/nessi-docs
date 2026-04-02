@@ -52,59 +52,59 @@
         {
           "value": "rods",
           "label": "Rods",
-          "description": "Buy and sell fishing rods — spinning, casting, fly, and ice rods from top brands at great prices."
+          "description": "Buy and sell fishing rods \u2014 spinning, casting, fly, and ice rods from top brands at great prices."
         },
         {
           "value": "reels",
           "label": "Reels",
-          "description": "Shop used and new fishing reels — spinning, baitcasting, fly, and conventional reels from trusted sellers."
+          "description": "Shop used and new fishing reels \u2014 spinning, baitcasting, fly, and conventional reels from trusted sellers."
         },
         {
           "value": "lures",
           "label": "Lures",
-          "description": "Find fishing lures for every technique — crankbaits, soft plastics, jigs, swimbaits, and more."
+          "description": "Find fishing lures for every technique \u2014 crankbaits, soft plastics, jigs, swimbaits, and more."
         },
         {
           "value": "flies",
           "label": "Flies",
-          "description": "Discover hand-tied and commercial flies for fly fishing — dry flies, nymphs, streamers, and saltwater patterns."
+          "description": "Discover hand-tied and commercial flies for fly fishing \u2014 dry flies, nymphs, streamers, and saltwater patterns."
         },
         {
           "value": "tackle",
           "label": "Tackle",
-          "description": "Browse fishing tackle — hooks, weights, swivels, terminal tackle, and tackle boxes from fellow anglers."
+          "description": "Browse fishing tackle \u2014 hooks, weights, swivels, terminal tackle, and tackle boxes from fellow anglers."
         },
         {
           "value": "line",
           "label": "Line",
-          "description": "Shop fishing line — monofilament, fluorocarbon, braid, and fly line for fresh and saltwater fishing."
+          "description": "Shop fishing line \u2014 monofilament, fluorocarbon, braid, and fly line for fresh and saltwater fishing."
         },
         {
           "value": "apparel",
           "label": "Apparel",
-          "description": "Find fishing apparel — sun shirts, waders, wading boots, hats, and performance gear for every angler."
+          "description": "Find fishing apparel \u2014 sun shirts, waders, wading boots, hats, and performance gear for every angler."
         },
         {
           "value": "electronics",
           "label": "Electronics",
-          "description": "Buy and sell fishing electronics — fish finders, depth finders, GPS units, and trolling motors."
+          "description": "Buy and sell fishing electronics \u2014 fish finders, depth finders, GPS units, and trolling motors."
         },
         {
           "value": "watercraft",
           "label": "Watercraft",
-          "description": "Shop fishing watercraft — kayaks, canoes, float tubes, jon boats, and inflatable fishing vessels."
+          "description": "Shop fishing watercraft \u2014 kayaks, canoes, float tubes, jon boats, and inflatable fishing vessels."
         },
         {
           "value": "other",
           "label": "Other",
-          "description": "Browse miscellaneous fishing gear — accessories, tools, nets, coolers, and anything that does not fit another category."
+          "description": "Browse miscellaneous fishing gear \u2014 accessories, tools, nets, coolers, and anything that does not fit another category."
         }
       ]
     },
     {
       "slug": "listings-condition",
       "name": "Listings Condition",
-      "description": "Listings Condition configuration with 6 defined values",
+      "description": "Listings Condition configuration with 7 defined values",
       "source": "src/features/listings/constants/condition.ts",
       "values": [
         {
@@ -121,6 +121,11 @@
           "value": "like_new",
           "label": "Like New",
           "description": "Used once or twice with no visible wear. Looks and performs like it just came out of the box."
+        },
+        {
+          "value": "refurbished",
+          "label": "Refurbished",
+          "description": "Professionally restored to working condition. May include replacement parts. Tested and verified functional."
         },
         {
           "value": "good",
@@ -572,6 +577,29 @@
         {
           "value": "custom_request",
           "label": "Custom Request"
+        }
+      ]
+    },
+    {
+      "slug": "wishlist-visibility",
+      "name": "Wishlist Visibility",
+      "description": "Wishlist Visibility configuration with 3 defined values",
+      "source": "src/features/wishlists/constants/visibility.ts",
+      "values": [
+        {
+          "value": "private",
+          "label": "Private",
+          "description": "Only the wishlist owner can see this wishlist."
+        },
+        {
+          "value": "shared",
+          "label": "Shared",
+          "description": "Anyone with the direct link can view this wishlist."
+        },
+        {
+          "value": "public",
+          "label": "Public",
+          "description": "Visible on the owner's profile page for anyone to browse."
         }
       ]
     }

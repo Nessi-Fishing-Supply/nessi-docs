@@ -1,7 +1,7 @@
 import { hexToRgba } from '../utils/geometry';
 
 const DIFF_ENTRIES = [
-  { label: 'Added', color: '#3d8c75' },
+  { label: 'New', color: '#3d8c75' },
   { label: 'Modified', color: '#7b8fcd' },
   { label: 'Removed', color: '#b84040' },
   { label: 'Unchanged', color: '#6a6860' },

@@ -406,6 +406,50 @@
   }
 }
 
+// ─── Diff Mode ───
+
+.diffFilterRow {
+  margin-bottom: 12px;
+}
+
+.featureRowTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.diff_added {
+  border-left: 2px solid var(--diff-added);
+  background: var(--diff-added-bg);
+}
+
+.diff_modified {
+  border-left: 2px solid var(--diff-modified);
+  background: var(--diff-modified-bg);
+}
+
+.diff_removed {
+  border-left: 2px solid var(--diff-removed);
+  background: var(--diff-removed-bg);
+  opacity: 0.7;
+}
+
+.linkDiff_added {
+  background: var(--diff-added-bg);
+  border-left: 2px solid var(--diff-added);
+}
+
+.linkDiff_modified {
+  background: var(--diff-modified-bg);
+  border-left: 2px solid var(--diff-modified);
+}
+
+.linkDiff_removed {
+  background: var(--diff-removed-bg);
+  border-left: 2px solid var(--diff-removed);
+  opacity: 0.7;
+}
+
 // ─── Empty State ───
 
 .emptyState {

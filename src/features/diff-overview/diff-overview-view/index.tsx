@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
   HiOutlineMap,
@@ -13,6 +13,7 @@ import {
   HiOutlineCog,
 } from 'react-icons/hi';
 import { useBranchData, useBranchHref } from '@/providers/branch-provider';
+import { useDocsContext } from '@/providers/docs-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { PageHeader } from '@/components/ui/page-header';
 import { DiffEmptyState } from '@/features/diff-overview/diff-empty-state';
@@ -32,7 +33,7 @@ type StatusFilter = 'all' | 'added' | 'modified' | 'removed';
 
 const FILTERS: { value: StatusFilter; label: string }[] = [
   { value: 'all', label: 'All' },
-  { value: 'added', label: 'Added' },
+  { value: 'added', label: 'New' },
   { value: 'modified', label: 'Modified' },
   { value: 'removed', label: 'Removed' },
 ];
@@ -45,7 +46,13 @@ function itemsFromDiffSet<T>(
 ): ChangeItem[] {
   const items: ChangeItem[] = [];
   for (const item of diffSet.added) {
-    items.push({ key: getKey(item), label: getLabel(item), status: 'added', href: getHref(item) });
+    items.push({
+      key: getKey(item),
+      label: getLabel(item),
+      status: 'added',
+      href: getHref(item),
+      data: item,
+    });
   }
   for (const mod of diffSet.modified) {
     items.push({
@@ -54,10 +61,17 @@ function itemsFromDiffSet<T>(
       status: 'modified',
       href: getHref(mod.head),
       changedFields: mod.changes,
+      data: mod.head,
     });
   }
   for (const item of diffSet.removed) {
-    items.push({ key: getKey(item), label: getLabel(item), status: 'removed', href: null });
+    items.push({
+      key: getKey(item),
+      label: getLabel(item),
+      status: 'removed',
+      href: null,
+      data: item,
+    });
   }
   return items;
 }
@@ -79,6 +93,7 @@ function apiItems(
           label: `${ep.method} ${ep.path}`,
           status: 'added',
           href: branchHref(`/api-map#${epSlug(ep)}`),
+          data: ep,
         });
       }
     } else if (gd.status === 'removed') {
@@ -88,6 +103,7 @@ function apiItems(
           label: `${ep.method} ${ep.path}`,
           status: 'removed',
           href: null,
+          data: ep,
         });
       }
     } else {
@@ -97,6 +113,7 @@ function apiItems(
           label: `${ep.method} ${ep.path}`,
           status: 'added',
           href: branchHref(`/api-map#${epSlug(ep)}`),
+          data: ep,
         });
       }
       for (const mod of gd.endpointDiffs.modified) {
@@ -106,6 +123,7 @@ function apiItems(
           status: 'modified',
           href: branchHref(`/api-map#${epSlug(mod.head)}`),
           changedFields: mod.changes,
+          data: mod.head,
         });
       }
       for (const ep of gd.endpointDiffs.removed) {
@@ -114,6 +132,7 @@ function apiItems(
           label: `${ep.method} ${ep.path}`,
           status: 'removed',
           href: null,
+          data: ep,
         });
       }
     }
@@ -224,6 +243,7 @@ const DOMAINS: DomainConfig[] = [
 export function DiffOverviewView() {
   const { activeBranch, branches } = useBranchData();
   const branchHref = useBranchHref();
+  const { selectedItem, setSelectedItem } = useDocsContext();
   const { isActive, compareBranch, diffResult } = useDiffMode();
   const searchParams = useSearchParams();
   const initialStatus = searchParams.get('status') as StatusFilter | null;
@@ -246,6 +266,30 @@ export function DiffOverviewView() {
     }).filter((g) => g.items.length > 0);
   }, [diffResult, branchHref, statusFilter]);
 
+  const selectedKey = selectedItem?.type === 'diff-item' ? selectedItem.item.key : null;
+
+  const handleSelect = useCallback(
+    (item: ChangeItem, domain: string) => {
+      if (selectedItem?.type === 'diff-item' && selectedItem.item.key === item.key) {
+        setSelectedItem(null);
+      } else {
+        setSelectedItem({
+          type: 'diff-item',
+          item: {
+            key: item.key,
+            label: item.label,
+            status: item.status,
+            domain,
+            href: item.href,
+            changedFields: item.changedFields,
+            data: item.data,
+          },
+        });
+      }
+    },
+    [selectedItem, setSelectedItem],
+  );
+
   if (!isActive || !diffResult) {
     return <DiffEmptyState />;
   }
@@ -258,7 +302,7 @@ export function DiffOverviewView() {
         title="Compare Overview"
         subtitle={`${activeLabel} vs ${comparisonLabel}`}
         metrics={[
-          { value: added, label: 'added' },
+          { value: added, label: 'new' },
           { value: modified, label: 'modified' },
           { value: removed, label: 'removed' },
         ]}
@@ -283,6 +327,8 @@ export function DiffOverviewView() {
             domain={group.label}
             icon={group.icon}
             items={group.items}
+            selectedKey={selectedKey}
+            onSelect={(item) => handleSelect(item, group.label)}
           />
         ))}
 

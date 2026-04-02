@@ -29,44 +29,8 @@
   letter-spacing: 0.1em;
 }
 
-.productLink {
+.controls {
   display: flex;
   align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  padding: 4px 10px;
-  border-radius: 5px;
-  transition:
-    background 150ms var(--ease-out),
-    color 150ms var(--ease-out);
-
-  &:hover {
-    background: var(--bg-raised);
-
-    .productDomain {
-      color: var(--text-primary);
-    }
-
-    .linkIcon {
-      opacity: 0.7;
-    }
-  }
-}
-
-.productContext {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.productDomain {
-  font-family: var(--font-family-mono);
-  font-size: 12px;
-  color: var(--text-secondary);
-  transition: color 150ms var(--ease-out);
-}
-
-.linkIcon {
-  color: var(--text-muted);
-  opacity: 0.6;
-  transition: opacity 150ms var(--ease-out);
+  gap: 8px;
 }

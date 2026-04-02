@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useBranchData, useBranchHref } from '@/providers/branch-provider';
+import { useBranchData } from '@/providers/branch-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import styles from './diff-toolbar.module.scss';
 
@@ -25,7 +25,6 @@ function getPageDomain(pathname: string): string | null {
 
 export function DiffToolbar() {
   const { activeBranch, branches } = useBranchData();
-  const branchHref = useBranchHref();
   const pathname = usePathname();
   const { isActive, compareBranch, diffResult } = useDiffMode();
 
@@ -42,7 +41,7 @@ export function DiffToolbar() {
   const modified = domainCounts?.modified ?? diffResult.summary.modified;
   const removed = domainCounts?.removed ?? diffResult.summary.removed;
 
-  const diffPageHref = branchHref('/diff');
+  const diffPageHref = `/${activeBranch}/diff?compare=${compareBranch}`;
 
   const branchLabel = (
     <span className={styles.branchComparison}>
@@ -73,30 +72,20 @@ export function DiffToolbar() {
       <div className={styles.counts}>
         {isOnDiffPage ? (
           <>
-            <span className={styles.countAdded}>
-              <span className={styles.dot} /> {added} added
-            </span>
-            <span className={styles.separator}>&middot;</span>
-            <span className={styles.countModified}>
-              <span className={styles.dot} /> {modified} modified
-            </span>
-            <span className={styles.separator}>&middot;</span>
-            <span className={styles.countRemoved}>
-              <span className={styles.dot} /> {removed} removed
-            </span>
+            <span className={styles.countAdded}>New ({added})</span>
+            <span className={styles.countModified}>Modified ({modified})</span>
+            <span className={styles.countRemoved}>Removed ({removed})</span>
           </>
         ) : (
           <>
             <Link href={`${diffPageHref}&status=added`} className={styles.countAdded}>
-              <span className={styles.dot} /> {added} added
+              New ({added})
             </Link>
-            <span className={styles.separator}>&middot;</span>
             <Link href={`${diffPageHref}&status=modified`} className={styles.countModified}>
-              <span className={styles.dot} /> {modified} modified
+              Modified ({modified})
             </Link>
-            <span className={styles.separator}>&middot;</span>
             <Link href={`${diffPageHref}&status=removed`} className={styles.countRemoved}>
-              <span className={styles.dot} /> {removed} removed
+              Removed ({removed})
             </Link>
           </>
         )}

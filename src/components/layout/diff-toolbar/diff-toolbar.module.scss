@@ -77,60 +77,47 @@
 .counts {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-left: auto;
+}
+
+%count-pill {
   font-family: var(--font-family-mono);
-  font-size: 11px;
-}
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  line-height: 1.4;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: opacity var(--transition-fast);
 
-.separator {
-  color: var(--text-dim);
-}
-
-.dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 4px;
-  vertical-align: middle;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .countAdded {
+  @extend %count-pill;
+
   color: var(--diff-added);
-  text-decoration: none;
-
-  .dot {
-    background: var(--diff-added);
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
+  background: var(--diff-added-bg);
+  border: 1px solid var(--diff-added-border);
 }
 
 .countModified {
+  @extend %count-pill;
+
   color: var(--diff-modified);
-  text-decoration: none;
-
-  .dot {
-    background: var(--diff-modified);
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
+  background: var(--diff-modified-bg);
+  border: 1px solid var(--diff-modified-border);
 }
 
 .countRemoved {
+  @extend %count-pill;
+
   color: var(--diff-removed);
-  text-decoration: none;
-
-  .dot {
-    background: var(--diff-removed);
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
+  background: var(--diff-removed-bg);
+  border: 1px solid var(--diff-removed-border);
 }

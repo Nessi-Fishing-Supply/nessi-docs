@@ -2,6 +2,7 @@
 
 import { type ReactNode, useCallback, useRef } from 'react';
 import { useBranchData } from '@/providers/branch-provider';
+import { useDocsContext } from '@/providers/docs-provider';
 import styles from './app-shell.module.scss';
 
 interface AppShellProps {
@@ -14,8 +15,11 @@ interface AppShellProps {
 
 export function AppShell({ topbar, sidebar, detail, diffToolbar, children }: AppShellProps) {
   const { activeBranch } = useBranchData();
+  const { selectedItem, clearSelection } = useDocsContext();
   const mainRef = useRef<HTMLElement>(null);
   const prevBranch = useRef(activeBranch);
+
+  const isCollapsed = !selectedItem;
 
   // Trigger crossfade via DOM class toggle — avoids setState-in-effect lint issue
   const refCallback = useCallback(
@@ -32,13 +36,22 @@ export function AppShell({ topbar, sidebar, detail, diffToolbar, children }: App
   );
 
   return (
-    <div className={`${styles.shell} ${styles.collapsed}`}>
+    <div className={`${styles.shell} ${isCollapsed ? styles.collapsed : ''}`}>
       <header className={styles.topbar}>{topbar}</header>
       <nav className={styles.sidebar}>{sidebar}</nav>
       <main ref={refCallback} className={styles.main}>
         {diffToolbar}
         <div className={styles.mainContent}>{children}</div>
       </main>
+      {selectedItem && (
+        <button
+          className={styles.detailToggle}
+          onClick={clearSelection}
+          aria-label="Collapse detail panel"
+        >
+          <span className={styles.toggleArrow}>›</span>
+        </button>
+      )}
       <aside className={styles.detail}>{detail}</aside>
     </div>
   );

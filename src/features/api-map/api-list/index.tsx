@@ -10,8 +10,10 @@ import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
 import { GitHubLink } from '@/components/ui/github-link';
 import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDocsContext } from '@/providers/docs-provider';
 import { DiffBadge } from '@/components/ui/diff-badge';
-import type { DiffStatus, ApiGroupDiff } from '@/types/diff';
+import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
+import type { DiffStatus, ApiGroupDiff, FieldChange } from '@/types/diff';
 import styles from './api-list.module.scss';
 
 const ALL_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const;
@@ -137,24 +139,71 @@ function GroupDivider({ name, count }: { name: string; count: number }) {
   );
 }
 
-function EndpointDetail({ endpoint }: { endpoint: ApiEndpoint }) {
+function EndpointDetail({
+  endpoint,
+  changedFields,
+}: {
+  endpoint: ApiEndpoint;
+  changedFields?: FieldChange[];
+}) {
   const branchHref = useBranchHref();
   const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
   const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
   const hasRequestFields = endpoint.requestFields && endpoint.requestFields.length > 0;
   const responseCodes = buildResponseCodes(endpoint.errorCodes);
 
+  // Track which top-level fields changed for section highlighting
+  const changedFieldSet = useMemo(() => {
+    if (!changedFields) return new Set<string>();
+    return new Set(changedFields.map((c) => c.field));
+  }, [changedFields]);
+
+  // Compute added request fields from changedFields
+  const addedRequestFields = useMemo(() => {
+    if (!changedFields) return [];
+    const rf = changedFields.find((c) => c.field === 'requestFields');
+    if (!rf) return [];
+    const base = Array.isArray(rf.baseValue) ? rf.baseValue : [];
+    const head = Array.isArray(rf.headValue) ? rf.headValue : [];
+    const baseNames = new Set(base.map((f: { name: string }) => f.name));
+    return (
+      (head as ApiEndpoint['requestFields'])?.filter(
+        (f: { name: string }) => !baseNames.has(f.name),
+      ) ?? []
+    );
+  }, [changedFields]);
+
   return (
     <div className={styles.epDetail}>
-      {endpoint.description && <p className={styles.epDescription}>{endpoint.description}</p>}
-      <div className={hasRequestFields ? styles.detailCols : undefined}>
-        {hasRequestFields && (
+      {endpoint.description && (
+        <p
+          className={`${styles.epDescription} ${changedFieldSet.has('description') ? styles.fieldHighlight : ''}`}
+        >
+          {endpoint.description}
+        </p>
+      )}
+      <div
+        className={
+          hasRequestFields || addedRequestFields.length > 0 ? styles.detailCols : undefined
+        }
+      >
+        {(hasRequestFields || addedRequestFields.length > 0) && (
           <div>
             <div className={styles.detailSection}>
               <div className={styles.detailLabel}>Request Body</div>
               <div className={styles.fieldTable}>
-                {endpoint.requestFields!.map((f) => (
+                {endpoint.requestFields?.map((f) => (
                   <div key={f.name} className={styles.fieldRow}>
+                    <span className={styles.fieldName}>{f.name}</span>
+                    <span className={styles.fieldType}>{f.type}</span>
+                    {f.required && <span className={styles.fieldReq}>required</span>}
+                  </div>
+                ))}
+                {addedRequestFields.map((f) => (
+                  <div
+                    key={`added-${f.name}`}
+                    className={`${styles.fieldRow} ${styles.fieldRowAdded}`}
+                  >
                     <span className={styles.fieldName}>{f.name}</span>
                     <span className={styles.fieldType}>{f.type}</span>
                     {f.required && <span className={styles.fieldReq}>required</span>}
@@ -259,12 +308,15 @@ function EndpointRow({
   endpoint,
   staggerIndex,
   diffStatus,
+  changedFields,
 }: {
   endpoint: ApiEndpoint;
   staggerIndex: number;
   diffStatus: DiffStatus | null;
+  changedFields?: FieldChange[];
 }) {
   const branchHref = useBranchHref();
+  const { setSelectedItem } = useDocsContext();
   const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
   const [isDeepLinkTarget] = useState(
     () =>
@@ -319,13 +371,27 @@ function EndpointRow({
       <button
         className={styles.epRowHeader}
         onClick={
-          diffStatus === 'removed' || diffStatus === 'unchanged'
+          diffStatus === 'unchanged'
             ? undefined
-            : () => setIsOpen((p) => !p)
+            : () => {
+                setIsOpen((p) => !p);
+                if (diffStatus) {
+                  setSelectedItem({
+                    type: 'diff-item',
+                    item: {
+                      key: `${endpoint.method}:${endpoint.path}`,
+                      label: `${endpoint.method} ${endpoint.path}`,
+                      status: diffStatus,
+                      domain: 'API Map',
+                      href: branchHref(`/api-map#${slug}`),
+                      changedFields,
+                      data: endpoint,
+                    },
+                  });
+                }
+              }
         }
-        style={
-          diffStatus === 'removed' || diffStatus === 'unchanged' ? { cursor: 'default' } : undefined
-        }
+        style={diffStatus === 'unchanged' ? { cursor: 'default' } : undefined}
       >
         <span className={styles.methodBadge}>{endpoint.method}</span>
         {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
@@ -355,7 +421,7 @@ function EndpointRow({
         </span>
       </button>
 
-      {isOpen && <EndpointDetail endpoint={endpoint} />}
+      {isOpen && <EndpointDetail endpoint={endpoint} changedFields={changedFields} />}
     </div>
   );
 }
@@ -396,23 +462,6 @@ function buildResponseCodes(errorCodes?: number[]): ResponseCode[] {
 
 /* ── Helpers ── */
 
-function diffSort<T>(
-  items: T[],
-  getKey: (item: T) => string,
-  statusMap: Map<string, DiffStatus> | undefined,
-): T[] {
-  if (!statusMap) return items;
-  return [...items].sort((a, b) => {
-    const aStatus = statusMap.get(getKey(a));
-    const bStatus = statusMap.get(getKey(b));
-    const aChanged = aStatus === 'added' || aStatus === 'modified';
-    const bChanged = bStatus === 'added' || bStatus === 'modified';
-    if (aChanged && !bChanged) return -1;
-    if (!aChanged && bChanged) return 1;
-    return 0;
-  });
-}
-
 /* ── Main Component ── */
 
 interface ApiListProps {
@@ -423,6 +472,38 @@ interface ApiListProps {
 export function ApiList({ groups, totalEndpoints }: ApiListProps) {
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const apiGroupDiffs = isDiffMode ? diffResult?.apiGroupDiffs : undefined;
+  const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
+
+  const epChangedFieldsMap = useMemo(() => {
+    const map = new Map<string, FieldChange[]>();
+    if (!apiGroupDiffs) return map;
+    for (const gd of apiGroupDiffs) {
+      if (gd.status === 'unchanged' || gd.status === 'added' || gd.status === 'removed') continue;
+      for (const mod of gd.endpointDiffs.modified) {
+        map.set(`${mod.head.method}:${mod.head.path}`, mod.changes);
+      }
+    }
+    return map;
+  }, [apiGroupDiffs]);
+
+  const diffCounts = useMemo(() => {
+    if (!apiGroupDiffs) return { added: 0, modified: 0, removed: 0 };
+    let added = 0;
+    let modified = 0;
+    let removed = 0;
+    for (const gd of apiGroupDiffs) {
+      if (gd.status === 'added') {
+        added += gd.group.endpoints.length;
+      } else if (gd.status === 'removed') {
+        removed += gd.group.endpoints.length;
+      } else {
+        added += gd.endpointDiffs.added.length;
+        modified += gd.endpointDiffs.modified.length;
+        removed += gd.endpointDiffs.removed.length;
+      }
+    }
+    return { added, modified, removed };
+  }, [apiGroupDiffs]);
 
   const [activeGroups, setActiveGroups] = useState<Set<string>>(
     () => new Set(groups.map((g) => g.name)),
@@ -473,30 +554,36 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
     return groups
       .filter((g) => activeGroups.has(g.name))
       .map((g) => {
-        const filtered = g.endpoints.filter((ep) => activeMethods.has(ep.method));
-        const sorted = isDiffMode
-          ? diffSort(
-              filtered,
-              (ep) => `${ep.method}:${ep.path}`,
-              (() => {
-                if (!apiGroupDiffs) return undefined;
-                const gd = apiGroupDiffs.find((d) => d.group.name === g.name);
-                if (!gd) return undefined;
-                const map = new Map<string, DiffStatus>();
-                for (const ep of gd.endpointDiffs.added)
-                  map.set(`${ep.method}:${ep.path}`, 'added');
-                for (const ep of gd.endpointDiffs.unchanged)
-                  map.set(`${ep.method}:${ep.path}`, 'unchanged');
-                for (const m of gd.endpointDiffs.modified)
-                  map.set(`${m.head.method}:${m.head.path}`, 'modified');
-                return map;
-              })(),
-            )
-          : filtered;
-        return { ...g, endpoints: sorted };
+        let filtered = g.endpoints.filter((ep) => activeMethods.has(ep.method));
+        // Apply diff status filter — 'all' in compare mode means "all changes" (not unchanged)
+        if (isDiffMode && apiGroupDiffs) {
+          const gd = apiGroupDiffs.find((d) => d.group.name === g.name);
+          if (gd) {
+            const statusMap = new Map<string, DiffStatus>();
+            for (const ep of gd.endpointDiffs.added)
+              statusMap.set(`${ep.method}:${ep.path}`, 'added');
+            for (const ep of gd.endpointDiffs.unchanged)
+              statusMap.set(`${ep.method}:${ep.path}`, 'unchanged');
+            for (const m of gd.endpointDiffs.modified)
+              statusMap.set(`${m.head.method}:${m.head.path}`, 'modified');
+            if (diffFilter === 'all') {
+              filtered = filtered.filter((ep) => {
+                const s = statusMap.get(`${ep.method}:${ep.path}`);
+                return s === 'added' || s === 'modified' || s === 'removed';
+              });
+            } else {
+              filtered = filtered.filter(
+                (ep) => statusMap.get(`${ep.method}:${ep.path}`) === diffFilter,
+              );
+            }
+          } else {
+            filtered = [];
+          }
+        }
+        return { ...g, endpoints: filtered };
       })
       .filter((g) => g.endpoints.length > 0);
-  }, [groups, activeGroups, activeMethods, isDiffMode, apiGroupDiffs]);
+  }, [groups, activeGroups, activeMethods, isDiffMode, apiGroupDiffs, diffFilter]);
 
   let staggerIndex = 0;
 
@@ -510,14 +597,22 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
         ]}
       />
 
-      <FilterBar
-        groups={groups}
-        activeGroups={activeGroups}
-        activeMethods={activeMethods}
-        onToggleGroup={toggleGroup}
-        onToggleMethod={toggleMethod}
-        onToggleAllGroups={toggleAllGroups}
-      />
+      {!isDiffMode && (
+        <FilterBar
+          groups={groups}
+          activeGroups={activeGroups}
+          activeMethods={activeMethods}
+          onToggleGroup={toggleGroup}
+          onToggleMethod={toggleMethod}
+          onToggleAllGroups={toggleAllGroups}
+        />
+      )}
+
+      {isDiffMode && (
+        <div className={styles.diffFilterRow}>
+          <DiffFilterBar active={diffFilter} onChange={setDiffFilter} counts={diffCounts} />
+        </div>
+      )}
 
       <div className={styles.epContainer}>
         {filteredGroups.map((group) => (
@@ -532,21 +627,23 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
                   endpoint={ep}
                   staggerIndex={idx}
                   diffStatus={getEndpointDiffStatus(ep.method, ep.path, apiGroupDiffs, group.name)}
+                  changedFields={epChangedFieldsMap.get(`${ep.method}:${ep.path}`)}
                 />
               );
             })}
 
             {isDiffMode &&
               apiGroupDiffs &&
+              (diffFilter === 'all' || diffFilter === 'added') &&
               (() => {
                 const gd = apiGroupDiffs.find((g) => g.group.name === group.name);
                 if (!gd) return null;
-                return gd.endpointDiffs.removed.map((ep) => (
+                return gd.endpointDiffs.added.map((ep) => (
                   <EndpointRow
-                    key={`removed-${ep.method}-${ep.path}`}
+                    key={`added-${ep.method}-${ep.path}`}
                     endpoint={ep}
                     staggerIndex={0}
-                    diffStatus="removed"
+                    diffStatus="added"
                   />
                 ));
               })()}
@@ -555,17 +652,18 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
 
         {isDiffMode &&
           apiGroupDiffs &&
+          (diffFilter === 'all' || diffFilter === 'added') &&
           apiGroupDiffs
-            .filter((gd) => gd.status === 'removed')
+            .filter((gd) => gd.status === 'added')
             .map((gd) => (
-              <div key={`removed-group-${gd.group.name}`}>
+              <div key={`added-group-${gd.group.name}`}>
                 <GroupDivider name={gd.group.name} count={gd.group.endpoints.length} />
                 {gd.group.endpoints.map((ep) => (
                   <EndpointRow
-                    key={`removed-${ep.method}-${ep.path}`}
+                    key={`added-${ep.method}-${ep.path}`}
                     endpoint={ep}
                     staggerIndex={0}
-                    diffStatus="removed"
+                    diffStatus="added"
                   />
                 ))}
               </div>

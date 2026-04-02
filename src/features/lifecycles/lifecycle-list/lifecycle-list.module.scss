@@ -39,6 +39,9 @@
 }
 
 .rowTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
@@ -95,6 +98,10 @@
   flex-shrink: 0;
 }
 
+.diffFilterRow {
+  margin-bottom: 12px;
+}
+
 // ─── Diff Mode ───
 
 .diff_added {
@@ -110,8 +117,7 @@
 .diff_removed {
   border-left: 2px solid var(--diff-removed) !important;
   background: var(--diff-removed-bg) !important;
-  opacity: 0.6 !important;
-  pointer-events: none;
+  opacity: 0.7 !important;
 }
 
 .diff_unchanged {

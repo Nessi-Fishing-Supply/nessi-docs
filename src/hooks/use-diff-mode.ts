@@ -33,7 +33,7 @@ export function useDiffMode(): {
 
   const diffResult = useMemo<DiffResult | null>(() => {
     if (!comparisonData) return null;
-    return computeDiff(comparisonData, activeData);
+    return computeDiff(activeData, comparisonData);
   }, [comparisonData, activeData]);
 
   const activate = (branchName: string) => {

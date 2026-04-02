@@ -11,8 +11,12 @@
   align-items: center;
   gap: 6px;
   padding: 10px 0;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   flex-wrap: wrap;
+}
+
+.diffFilterRow {
+  margin-bottom: 12px;
 }
 
 .filterLabel {
@@ -344,6 +348,24 @@
   background: rgb(255 255 255 / 2%);
 }
 
+.fieldRowChanged {
+  position: relative;
+  background: var(--diff-modified-bg);
+
+  td:first-child {
+    border-left: 2px solid var(--diff-modified);
+  }
+}
+
+.fieldRowAdded {
+  position: relative;
+  background: var(--diff-added-bg);
+
+  td:first-child {
+    border-left: 2px solid var(--diff-added);
+  }
+}
+
 .fieldName {
   font-family: var(--font-family-mono);
   font-size: 12px;
@@ -538,8 +560,7 @@
 .diff_removed {
   border-left: 2px solid var(--diff-removed);
   background: var(--diff-removed-bg);
-  opacity: 0.6;
-  pointer-events: none;
+  opacity: 0.7;
 }
 
 .diff_unchanged {

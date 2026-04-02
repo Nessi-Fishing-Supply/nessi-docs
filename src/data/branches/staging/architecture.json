@@ -4,7 +4,7 @@
       "slug": "conductor-pipeline",
       "category": "pipeline",
       "title": "Conductor Pipeline",
-      "description": "Autonomous ticket-to-PR workflow — from GitHub issue through planning, implementation, review, and pull request creation.",
+      "description": "Autonomous ticket-to-PR workflow \u2014 from GitHub issue through planning, implementation, review, and pull request creation.",
       "layers": [
         {
           "id": "input",
@@ -159,7 +159,7 @@
       "slug": "data-flow",
       "category": "flow",
       "title": "Data Flow",
-      "description": "How data moves between the browser, Next.js server, and Supabase — client state, server state, auth, and storage.",
+      "description": "How data moves between the browser, Next.js server, and Supabase \u2014 client state, server state, auth, and storage.",
       "layers": [
         {
           "id": "browser",
@@ -225,6 +225,12 @@
               "label": "Storage",
               "sublabel": "listing-images, profile-assets",
               "tooltip": "Two storage buckets: listing-images for product photos and thumbnails, profile-assets for member avatars and shop banners/hero images."
+            },
+            {
+              "id": "realtime",
+              "label": "Realtime",
+              "sublabel": "WebSocket channels",
+              "tooltip": "Supabase Realtime provides WebSocket-based subscriptions for live message delivery, typing indicators, and presence tracking in messaging threads."
             }
           ]
         }
@@ -274,6 +280,16 @@
           "from": "postgres",
           "to": "auth",
           "label": "RLS policy check"
+        },
+        {
+          "from": "ui",
+          "to": "realtime",
+          "label": "Subscribe"
+        },
+        {
+          "from": "realtime",
+          "to": "postgres",
+          "label": "Change events"
         }
       ]
     },
@@ -281,7 +297,7 @@
       "slug": "skill-agent-pipeline",
       "category": "pipeline",
       "title": "Skill & Agent Pipeline",
-      "description": "Developer command routing through skills and agents — from slash commands through expert skills, design intelligence, conductor pipeline, and testing to outputs.",
+      "description": "Developer command routing through skills and agents \u2014 from slash commands through expert skills, design intelligence, conductor pipeline, and testing to outputs.",
       "layers": [
         {
           "id": "commands",
@@ -291,7 +307,7 @@
             {
               "id": "feature-pipeline",
               "label": "/feature-pipeline",
-              "tooltip": "End-to-end feature development: design spec → ticket generation → conductor build. Orchestrates the full lifecycle."
+              "tooltip": "End-to-end feature development: design spec \u2192 ticket generation \u2192 conductor build. Orchestrates the full lifecycle."
             },
             {
               "id": "design-spec",
@@ -331,7 +347,7 @@
             {
               "id": "ui-test",
               "label": "/ui-test",
-              "tooltip": "Visual UI testing via browser automation — verifies component rendering and interaction behavior."
+              "tooltip": "Visual UI testing via browser automation \u2014 verifies component rendering and interaction behavior."
             },
             {
               "id": "feature-scaffold",
@@ -517,7 +533,7 @@
             {
               "id": "pull-request",
               "label": "Pull Request",
-              "tooltip": "Final output of the conductor pipeline — a ready-to-review PR linked to the source issue."
+              "tooltip": "Final output of the conductor pipeline \u2014 a ready-to-review PR linked to the source issue."
             }
           ]
         }
@@ -641,7 +657,7 @@
       "slug": "tech-stack",
       "category": "stack",
       "title": "Tech Stack",
-      "description": "Technology layers powering the Nessi marketplace — frontend, state management, backend, infrastructure, and code quality.",
+      "description": "Technology layers powering the Nessi marketplace \u2014 frontend, state management, backend, infrastructure, and code quality.",
       "layers": [
         {
           "id": "frontend",
@@ -864,6 +880,114 @@
           "from": "github-actions",
           "to": "vitest",
           "label": "runs"
+        }
+      ]
+    },
+    {
+      "slug": "search-pipeline",
+      "category": "pipeline",
+      "title": "Search Pipeline",
+      "description": "Full-text search flow from user query through Supabase text search, filtering, ranking, and result rendering.",
+      "layers": [
+        {
+          "id": "input",
+          "label": "Input",
+          "color": "#78756f",
+          "nodes": [
+            {
+              "id": "search-input",
+              "label": "Search Bar",
+              "tooltip": "User types a search query in the global search bar. Debounced input triggers the search pipeline."
+            }
+          ]
+        },
+        {
+          "id": "processing",
+          "label": "Processing",
+          "color": "#58a6ff",
+          "nodes": [
+            {
+              "id": "query-parser",
+              "label": "Query Parser",
+              "sublabel": "Tokenize + normalize",
+              "tooltip": "Parses the raw search string into tokens, normalizes casing, and strips special characters."
+            },
+            {
+              "id": "filter-builder",
+              "label": "Filter Builder",
+              "sublabel": "Category, price, condition",
+              "tooltip": "Builds Supabase filter predicates from active search facets (category, price range, condition, species, state)."
+            }
+          ]
+        },
+        {
+          "id": "search",
+          "label": "Search Engine",
+          "color": "#3dbe87",
+          "nodes": [
+            {
+              "id": "fts-query",
+              "label": "Full-Text Search",
+              "sublabel": "PostgreSQL tsvector",
+              "tooltip": "Executes a PostgreSQL full-text search query against the listings search index using ts_rank for relevance scoring."
+            },
+            {
+              "id": "suggestion-engine",
+              "label": "Suggestion Engine",
+              "sublabel": "search_suggestions table",
+              "tooltip": "Returns typeahead suggestions from the search_suggestions table based on prefix matching."
+            }
+          ]
+        },
+        {
+          "id": "output",
+          "label": "Output",
+          "color": "#d2a8ff",
+          "nodes": [
+            {
+              "id": "result-ranker",
+              "label": "Result Ranker",
+              "sublabel": "Relevance + recency",
+              "tooltip": "Combines text relevance score with recency boost and seller reputation signals to produce final ranking."
+            },
+            {
+              "id": "result-renderer",
+              "label": "Results Grid",
+              "tooltip": "Renders paginated search results as listing cards with infinite scroll."
+            }
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "from": "search-input",
+          "to": "query-parser",
+          "label": "Raw query"
+        },
+        {
+          "from": "search-input",
+          "to": "suggestion-engine",
+          "label": "Typeahead"
+        },
+        {
+          "from": "query-parser",
+          "to": "filter-builder",
+          "label": "Tokens"
+        },
+        {
+          "from": "filter-builder",
+          "to": "fts-query",
+          "label": "Query + filters"
+        },
+        {
+          "from": "fts-query",
+          "to": "result-ranker",
+          "label": "Raw results"
+        },
+        {
+          "from": "result-ranker",
+          "to": "result-renderer",
+          "label": "Ranked results"
         }
       ]
     }

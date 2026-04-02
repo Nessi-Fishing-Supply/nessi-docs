@@ -1,0 +1,124 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.domain {
+  font-size: var(--font-size-100);
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.changeList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+
+.changeRow {
+  padding: 6px 8px;
+  background: var(--bg-raised);
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
+}
+
+.fieldName {
+  display: block;
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.values {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  flex-wrap: wrap;
+}
+
+.oldValue {
+  color: var(--diff-removed, #f87171);
+  text-decoration: line-through;
+  opacity: 0.8;
+  word-break: break-all;
+}
+
+.arrow {
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.newValue {
+  color: var(--diff-added, #4ade80);
+  word-break: break-all;
+}
+
+.fieldMeta {
+  font-weight: 400;
+  color: var(--text-dim);
+}
+
+.arrayDelta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin-top: 2px;
+}
+
+.deltaAdded {
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  color: var(--diff-added, #4ade80);
+  padding: 1px 0;
+}
+
+.deltaModified {
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  color: var(--diff-modified, #60a5fa);
+  padding: 1px 0;
+}
+
+.deltaRemoved {
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  color: var(--diff-removed, #f87171);
+  text-decoration: line-through;
+  opacity: 0.8;
+  padding: 1px 0;
+}
+
+.deltaMore {
+  font-size: var(--font-size-100);
+  color: var(--text-dim);
+  font-style: italic;
+  padding: 1px 0;
+}
+
+.viewLink {
+  display: block;
+  padding: 8px 12px;
+  font-size: var(--font-size-200);
+  font-weight: 500;
+  color: var(--color-accent-500);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-hover);
+    border-color: var(--color-accent-500);
+  }
+}

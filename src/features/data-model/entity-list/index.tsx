@@ -10,8 +10,10 @@ import { PageHeader } from '@/components/ui/page-header';
 import { BorderTrace } from '@/components/ui/border-trace';
 import { Tooltip } from '@/components/ui';
 import { useDiffMode } from '@/hooks/use-diff-mode';
+import { useDocsContext } from '@/providers/docs-provider';
 import { DiffBadge } from '@/components/ui/diff-badge';
-import type { DiffStatus } from '@/types/diff';
+import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
+import type { DiffStatus, FieldChange } from '@/types/diff';
 import styles from './entity-list.module.scss';
 
 /* ── Constants ── */
@@ -58,23 +60,6 @@ function getEntityDiffStatus(
 ): DiffStatus | null {
   if (!statusMap) return null;
   return statusMap.get(entityName) ?? null;
-}
-
-function diffSort<T>(
-  items: T[],
-  getKey: (item: T) => string,
-  statusMap: Map<string, DiffStatus> | undefined,
-): T[] {
-  if (!statusMap) return items;
-  return [...items].sort((a, b) => {
-    const aStatus = statusMap.get(getKey(a));
-    const bStatus = statusMap.get(getKey(b));
-    const aChanged = aStatus === 'added' || aStatus === 'modified';
-    const bChanged = bStatus === 'added' || bStatus === 'modified';
-    if (aChanged && !bChanged) return -1;
-    if (!aChanged && bChanged) return 1;
-    return 0;
-  });
 }
 
 /* ── Filter Bar ── */
@@ -124,6 +109,7 @@ function EntityRow({
   isOpen,
   isHighlighted,
   diffStatus,
+  changedFields,
   onToggle,
   onOpen,
   onScrollToEntity,
@@ -133,11 +119,13 @@ function EntityRow({
   isOpen: boolean;
   isHighlighted: boolean;
   diffStatus: DiffStatus | null;
+  changedFields?: FieldChange[];
   onToggle: () => void;
   onOpen: () => void;
   onScrollToEntity: (name: string) => void;
 }) {
   const branchHref = useBranchHref();
+  const { setSelectedItem } = useDocsContext();
   const fkCount = countForeignKeys(entity);
   const [isDeepLinkTarget] = useState(
     () =>
@@ -180,10 +168,28 @@ function EntityRow({
       <BorderTrace active={highlight || isHighlighted} />
       <button
         className={styles.entityRowHeader}
-        onClick={diffStatus === 'removed' || diffStatus === 'unchanged' ? undefined : onToggle}
-        style={
-          diffStatus === 'removed' || diffStatus === 'unchanged' ? { cursor: 'default' } : undefined
+        onClick={
+          diffStatus === 'unchanged'
+            ? undefined
+            : () => {
+                onToggle();
+                if (diffStatus) {
+                  setSelectedItem({
+                    type: 'diff-item',
+                    item: {
+                      key: entity.name,
+                      label: entity.name,
+                      status: diffStatus,
+                      domain: 'Data Model',
+                      href: branchHref(`/data-model#${entity.name}`),
+                      changedFields,
+                      data: entity,
+                    },
+                  });
+                }
+              }
         }
+        style={diffStatus === 'unchanged' ? { cursor: 'default' } : undefined}
       >
         <span className={styles.entityName}>{entity.name}</span>
         {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
@@ -212,7 +218,13 @@ function EntityRow({
         </span>
       </button>
 
-      {isOpen && <EntityExpansion entity={entity} onScrollToEntity={onScrollToEntity} />}
+      {isOpen && (
+        <EntityExpansion
+          entity={entity}
+          onScrollToEntity={onScrollToEntity}
+          changedFields={changedFields}
+        />
+      )}
     </div>
   );
 }
@@ -222,9 +234,13 @@ function EntityRow({
 function FieldTable({
   entity,
   onScrollToEntity,
+  changedFieldNames,
+  addedFields,
 }: {
   entity: Entity;
   onScrollToEntity: (name: string) => void;
+  changedFieldNames?: Set<string>;
+  addedFields?: Entity['fields'];
 }) {
   return (
     <table className={styles.fieldTable}>
@@ -238,7 +254,10 @@ function FieldTable({
       </thead>
       <tbody>
         {entity.fields.map((f) => (
-          <tr key={f.name} className={styles.fieldRow}>
+          <tr
+            key={f.name}
+            className={`${styles.fieldRow} ${changedFieldNames?.has(f.name) ? styles.fieldRowChanged : ''}`}
+          >
             <td className={styles.fieldName}>
               {f.name}
               {f.isPrimaryKey && <span className={styles.tagPk}>PK</span>}
@@ -274,6 +293,18 @@ function FieldTable({
             </td>
           </tr>
         ))}
+        {addedFields &&
+          addedFields.map((f) => (
+            <tr key={`added-${f.name}`} className={`${styles.fieldRow} ${styles.fieldRowAdded}`}>
+              <td className={styles.fieldName}>
+                {f.name}
+                {f.nullable && <span className={styles.tagNull}>null</span>}
+              </td>
+              <td className={styles.fieldType}>{f.type}</td>
+              <td className={styles.fieldDefault}>{f.default ?? ''}</td>
+              <td className={styles.fieldRef} />
+            </tr>
+          ))}
       </tbody>
     </table>
   );
@@ -355,17 +386,47 @@ function MetaSections({ entity }: { entity: Entity }) {
 function EntityExpansion({
   entity,
   onScrollToEntity,
+  changedFields,
 }: {
   entity: Entity;
   onScrollToEntity: (name: string) => void;
+  changedFields?: FieldChange[];
 }) {
   const hasMeta = hasMetaSections(entity);
+
+  // Compute which individual fields were added/changed if 'fields' is in changedFields
+  const { changedFieldNames, addedFields } = useMemo(() => {
+    const empty = { changedFieldNames: new Set<string>(), addedFields: [] as Entity['fields'] };
+    if (!changedFields) return empty;
+    const fieldsChange = changedFields.find((c) => c.field === 'fields');
+    if (!fieldsChange) return empty;
+    const baseFields = Array.isArray(fieldsChange.baseValue) ? fieldsChange.baseValue : [];
+    const headFields = Array.isArray(fieldsChange.headValue) ? fieldsChange.headValue : [];
+    const baseNames = new Map(baseFields.map((f: { name: string }) => [f.name, JSON.stringify(f)]));
+    const changed = new Set<string>();
+    const added: Entity['fields'] = [];
+    for (const f of headFields as Entity['fields']) {
+      const baseJson = baseNames.get(f.name);
+      if (!baseJson) {
+        changed.add(f.name);
+        added.push(f);
+      } else if (baseJson !== JSON.stringify(f)) {
+        changed.add(f.name);
+      }
+    }
+    return { changedFieldNames: changed, addedFields: added };
+  }, [changedFields]);
 
   return (
     <div className={styles.expansion}>
       <div className={hasMeta ? styles.splitLayout : undefined}>
         <div className={hasMeta ? styles.splitLeft : styles.fullWidth}>
-          <FieldTable entity={entity} onScrollToEntity={onScrollToEntity} />
+          <FieldTable
+            entity={entity}
+            onScrollToEntity={onScrollToEntity}
+            addedFields={addedFields}
+            changedFieldNames={changedFieldNames}
+          />
         </div>
         {hasMeta && (
           <div className={styles.splitRight}>
@@ -386,6 +447,25 @@ interface EntityListProps {
 export function EntityList({ entities }: EntityListProps) {
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const entityStatusMap = isDiffMode ? diffResult?.entities.statusMap : undefined;
+  const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
+
+  const diffCounts = useMemo(() => {
+    if (!diffResult) return { added: 0, modified: 0, removed: 0 };
+    return {
+      added: diffResult.entities.added.length,
+      modified: diffResult.entities.modified.length,
+      removed: diffResult.entities.removed.length,
+    };
+  }, [diffResult]);
+
+  const changedFieldsMap = useMemo(() => {
+    const map = new Map<string, FieldChange[]>();
+    if (!diffResult) return map;
+    for (const mod of diffResult.entities.modified) {
+      map.set(mod.head.name, mod.changes);
+    }
+    return map;
+  }, [diffResult]);
 
   const [openEntities, setOpenEntities] = useState<Set<string>>(new Set());
   const [highlightedEntity, setHighlightedEntity] = useState<string | null>(null);
@@ -403,6 +483,9 @@ export function EntityList({ entities }: EntityListProps) {
       if (e.badge) cats.add(e.badge);
     }
     if (isDiffMode && diffResult) {
+      for (const e of diffResult.entities.added) {
+        if (e.badge) cats.add(e.badge);
+      }
       for (const e of diffResult.entities.removed) {
         if (e.badge) cats.add(e.badge);
       }
@@ -418,6 +501,11 @@ export function EntityList({ entities }: EntityListProps) {
     }));
   }, [entities, allCategoryNames]);
 
+  const addedEntities = useMemo(() => {
+    if (!isDiffMode || !diffResult) return [];
+    return diffResult.entities.added;
+  }, [isDiffMode, diffResult]);
+
   const removedEntities = useMemo(() => {
     if (!isDiffMode || !diffResult) return [];
     return diffResult.entities.removed;
@@ -426,17 +514,44 @@ export function EntityList({ entities }: EntityListProps) {
   const grouped = useMemo(() => {
     return CATEGORY_ORDER.filter((cat) => activeCategories.has(cat) && allCategoryNames.has(cat))
       .map((cat) => {
-        const catEntities = entities.filter((e) => e.badge === cat);
+        let catEntities = entities.filter((e) => e.badge === cat);
+        // Apply diff status filter — 'all' in compare mode means "all changes" (not unchanged)
+        if (isDiffMode && entityStatusMap) {
+          if (diffFilter === 'all') {
+            catEntities = catEntities.filter((e) => {
+              const s = entityStatusMap.get(e.name);
+              return s === 'added' || s === 'modified' || s === 'removed';
+            });
+          } else {
+            catEntities = catEntities.filter((e) => entityStatusMap.get(e.name) === diffFilter);
+          }
+        }
         return {
           category: cat,
           label: CATEGORY_LABELS[cat] ?? cat,
-          entities: isDiffMode
-            ? diffSort(catEntities, (e) => e.name, entityStatusMap)
-            : catEntities,
+          entities: catEntities,
         };
       })
-      .filter((g) => g.entities.length > 0 || removedEntities.some((e) => e.badge === g.category));
-  }, [entities, activeCategories, allCategoryNames, removedEntities, isDiffMode, entityStatusMap]);
+      .filter((g) => {
+        if (g.entities.length > 0) return true;
+        if (diffFilter === 'all' || diffFilter === 'added') {
+          if (addedEntities.some((e) => e.badge === g.category)) return true;
+        }
+        if (diffFilter === 'all' || diffFilter === 'removed') {
+          if (removedEntities.some((e) => e.badge === g.category)) return true;
+        }
+        return false;
+      });
+  }, [
+    entities,
+    activeCategories,
+    allCategoryNames,
+    addedEntities,
+    removedEntities,
+    isDiffMode,
+    entityStatusMap,
+    diffFilter,
+  ]);
 
   const toggleCategory = (name: string) => {
     setActiveCategories((prev) => {
@@ -498,13 +613,21 @@ export function EntityList({ entities }: EntityListProps) {
     <div className={styles.container}>
       <PageHeader title="Data Model" metrics={[{ value: entities.length, label: 'tables' }]} />
 
-      <FilterBar
-        categories={categories}
-        activeCategories={activeCategories}
-        onToggleCategory={toggleCategory}
-        onToggleAll={toggleAll}
-        totalCount={entities.length}
-      />
+      {!isDiffMode && (
+        <FilterBar
+          categories={categories}
+          activeCategories={activeCategories}
+          onToggleCategory={toggleCategory}
+          onToggleAll={toggleAll}
+          totalCount={entities.length}
+        />
+      )}
+
+      {isDiffMode && (
+        <div className={styles.diffFilterRow}>
+          <DiffFilterBar active={diffFilter} onChange={setDiffFilter} counts={diffCounts} />
+        </div>
+      )}
 
       <div className={styles.entityContainer}>
         {grouped.map((group) => (
@@ -546,6 +669,7 @@ export function EntityList({ entities }: EntityListProps) {
                   isOpen={openEntities.has(entity.name)}
                   isHighlighted={highlightedEntity === entity.name}
                   diffStatus={getEntityDiffStatus(entity.name, entityStatusMap)}
+                  changedFields={changedFieldsMap.get(entity.name)}
                   onToggle={() => toggleEntity(entity.name)}
                   onOpen={() => openEntity(entity.name)}
                   onScrollToEntity={scrollToAndExpand}
@@ -554,19 +678,20 @@ export function EntityList({ entities }: EntityListProps) {
             })}
 
             {isDiffMode &&
-              removedEntities
+              (diffFilter === 'all' || diffFilter === 'added') &&
+              addedEntities
                 .filter((e) => e.badge === group.category)
                 .map((entity) => (
                   <EntityRow
-                    key={`removed-${entity.name}`}
+                    key={`added-${entity.name}`}
                     entity={entity}
                     staggerIndex={0}
-                    isOpen={false}
+                    isOpen={openEntities.has(entity.name)}
                     isHighlighted={false}
-                    diffStatus="removed"
-                    onToggle={() => {}}
-                    onOpen={() => {}}
-                    onScrollToEntity={() => {}}
+                    diffStatus="added"
+                    onToggle={() => toggleEntity(entity.name)}
+                    onOpen={() => openEntity(entity.name)}
+                    onScrollToEntity={scrollToAndExpand}
                   />
                 ))}
           </div>

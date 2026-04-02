@@ -1,6 +1,6 @@
 .shell {
   display: grid;
-  grid-template-columns: 220px 1fr 280px;
+  grid-template-columns: 220px 1fr 320px;
   grid-template-rows: 48px 1fr;
   height: 100vh;
   overflow: hidden;
@@ -85,7 +85,7 @@
   position: absolute;
 
   // Anchor to the left edge of the detail column
-  right: 280px;
+  right: 320px;
   top: 50%;
   transform: translateX(50%) translateY(-50%);
   width: 24px;

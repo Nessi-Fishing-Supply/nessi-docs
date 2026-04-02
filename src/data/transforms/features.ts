@@ -11,7 +11,7 @@ import { transformChangelog } from './changelog';
 /*  Map feature slugs → domain slugs for dashboard grouping            */
 /* ------------------------------------------------------------------ */
 
-const FEATURE_TO_DOMAIN: Record<string, string> = {
+export const FEATURE_TO_DOMAIN: Record<string, string> = {
   addresses: 'account',
   auth: 'auth',
   blocks: 'shopping',

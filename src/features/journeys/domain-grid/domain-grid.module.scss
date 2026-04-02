@@ -73,17 +73,35 @@
 
 .diffBadges {
   display: flex;
-  gap: 6px;
-  margin-top: 4px;
+  gap: 4px;
+  flex-wrap: wrap;
   margin-bottom: 10px;
+}
+
+.diffPill {
   font-family: var(--font-family-mono);
   font-size: 10px;
-}
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
 
-.diffBadgeAdded {
-  color: var(--diff-added);
-}
+  &[data-status='added'] {
+    color: var(--diff-added);
+    background: var(--diff-added-bg);
+    border: 1px solid var(--diff-added-border);
+  }
 
-.diffBadgeModified {
-  color: var(--diff-modified);
+  &[data-status='modified'] {
+    color: var(--diff-modified);
+    background: var(--diff-modified-bg);
+    border: 1px solid var(--diff-modified-border);
+  }
+
+  &[data-status='removed'] {
+    color: var(--diff-removed);
+    background: var(--diff-removed-bg);
+    border: 1px solid var(--diff-removed-border);
+  }
 }

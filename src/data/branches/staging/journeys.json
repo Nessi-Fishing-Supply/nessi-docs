@@ -38,7 +38,7 @@
           "errorCases": [
             {
               "condition": "Owns active shops",
-              "result": "409: Must transfer or delete shops first — show shop names as links",
+              "result": "409: Must transfer or delete shops first \u2014 show shop names as links",
               "httpStatus": 409
             }
           ]
@@ -112,7 +112,7 @@
           "label": "Delete Auth User",
           "layer": "server",
           "status": "built",
-          "why": "auth.admin.deleteUser() — triggers CASCADE"
+          "why": "auth.admin.deleteUser() \u2014 triggers CASCADE"
         },
         {
           "id": "delete-account--cascade-members",
@@ -128,7 +128,7 @@
           "label": "Run Deletion Trigger",
           "layer": "database",
           "status": "built",
-          "why": "BEFORE DELETE trigger: handle_member_deletion() — release member slug + owned shop slugs"
+          "why": "BEFORE DELETE trigger: handle_member_deletion() \u2014 release member slug + owned shop slugs"
         },
         {
           "id": "delete-account--cascade-fk",
@@ -266,7 +266,7 @@
           "label": "Edit Personal Info",
           "layer": "client",
           "status": "built",
-          "why": "Display name, bio (280 chars), avatar upload (200x200 WebP). Email change triggers OTP — see email-change.json."
+          "why": "Display name, bio (280 chars), avatar upload (200x200 WebP). Email change triggers OTP \u2014 see email-change.json."
         },
         {
           "id": "settings-sections--fishing-identity",
@@ -290,7 +290,7 @@
           "label": "Seller Settings",
           "layer": "client",
           "status": "built",
-          "why": "Toggle seller on/off — see seller-toggle.json"
+          "why": "Toggle seller on/off \u2014 see seller-toggle.json"
         },
         {
           "id": "settings-sections--shipping-addresses",
@@ -298,7 +298,7 @@
           "label": "Shipping Addresses",
           "layer": "client",
           "status": "built",
-          "why": "View/add/edit/delete (max 5) — see buyer-addresses.json"
+          "why": "View/add/edit/delete (max 5) \u2014 see buyer-addresses.json"
         },
         {
           "id": "settings-sections--linked-accounts",
@@ -323,7 +323,7 @@
           "label": "Danger Zone",
           "layer": "client",
           "status": "built",
-          "why": "Delete Account — see account-deletion.json"
+          "why": "Delete Account \u2014 see account-deletion.json"
         },
         {
           "id": "profile-completeness--entry",
@@ -602,7 +602,7 @@
           "label": "Track Suggestion",
           "layer": "background",
           "status": "built",
-          "why": "trackSearchSuggestion() — fire and forget"
+          "why": "trackSearchSuggestion() \u2014 fire and forget"
         },
         {
           "id": "filter-and-browse--entry",
@@ -672,7 +672,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/listings/components/listing-card/index.tsx",
-          "why": "WatchButton overlaid on listing card image. Auth-gated — unauthenticated users are redirected to ?login=true. See member-watchlist.json for the full watch/unwatch flow."
+          "why": "WatchButton overlaid on listing card image. Auth-gated \u2014 unauthenticated users are redirected to ?login=true. See member-watchlist.json for the full watch/unwatch flow."
         },
         {
           "id": "filter-and-browse-results--listing-card-click",
@@ -913,7 +913,7 @@
           "label": "Open Addresses Page",
           "layer": "client",
           "status": "built",
-          "why": "User navigates to Account Settings → Shipping Addresses section"
+          "why": "User navigates to Account Settings \u2192 Shipping Addresses section"
         },
         {
           "id": "address-hub--decision-open-addresses",
@@ -1179,7 +1179,7 @@
       "domain": "cart",
       "title": "Checkout (Escrow via Stripe Connect)",
       "persona": "buyer",
-      "description": "Buyer checkout with Stripe Connect escrow payments. Funds held until buyer confirms receipt. NOT BUILT — planned for post-MVP.",
+      "description": "Buyer checkout with Stripe Connect escrow payments. Funds held until buyer confirms receipt. NOT BUILT \u2014 planned for post-MVP.",
       "relatedIssues": [],
       "nodes": [
         {
@@ -1324,7 +1324,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/app/(frontend)/messages/page.tsx",
-          "notes": "Entry point for all messaging flows. Accessible from the nav inbox badge or from a listing detail page CTA. Route is /messages — auth-guarded by proxy.ts."
+          "notes": "Entry point for all messaging flows. Accessible from the nav inbox badge or from a listing detail page CTA. Route is /messages \u2014 auth-guarded by proxy.ts."
         },
         {
           "id": "messaging-hub--decision-open-messaging",
@@ -1462,7 +1462,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/app/(frontend)/messages/inbox-page.tsx",
-          "why": "Tabs component with five tabs: All, Inquiries, Offers, Custom Requests, Direct. Each tab shows its unread count badge (summed from my_unread_count across filtered threads). Switching tabs filters allThreads client-side by thread.type — no additional API call."
+          "why": "Tabs component with five tabs: All, Inquiries, Offers, Custom Requests, Direct. Each tab shows its unread count badge (summed from my_unread_count across filtered threads). Switching tabs filters allThreads client-side by thread.type \u2014 no additional API call."
         },
         {
           "id": "view-inbox--decision-inbox-tabs",
@@ -1474,7 +1474,7 @@
               "to": "view-inbox--inbox-page"
             },
             {
-              "label": "No — filtered empty",
+              "label": "No \u2014 filtered empty",
               "to": "view-inbox--inbox-empty"
             }
           ]
@@ -1549,7 +1549,7 @@
             },
             {
               "condition": "Thread already exists",
-              "result": "Returns 409 — client redirects to existing thread",
+              "result": "Returns 409 \u2014 client redirects to existing thread",
               "httpStatus": 409
             },
             {
@@ -1565,7 +1565,7 @@
           "label": "Open New Thread",
           "layer": "client",
           "status": "planned",
-          "notes": "On 201: navigate to the new thread view. On 409: redirect to the existing thread (the response body contains the existing ThreadWithParticipants). The client service createThread() returns the thread in both cases — callers should differentiate via HTTP status if needed."
+          "notes": "On 201: navigate to the new thread view. On 409: redirect to the existing thread (the response body contains the existing ThreadWithParticipants). The client service createThread() returns the thread in both cases \u2014 callers should differentiate via HTTP status if needed."
         },
         {
           "id": "view-thread--entry",
@@ -1668,7 +1668,7 @@
           "status": "built",
           "route": "/api/messaging/threads/[thread_id]/read",
           "codeRef": "src/app/api/messaging/threads/[thread_id]/read/route.ts",
-          "why": "Resets unread_count to 0 on the user's message_thread_participants row. Called automatically on thread open. Drives the unread badge update in the nav — client should invalidate ['messaging', 'unread'] after success.",
+          "why": "Resets unread_count to 0 on the user's message_thread_participants row. Called automatically on thread open. Drives the unread badge update in the nav \u2014 client should invalidate ['messaging', 'unread'] after success.",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -1777,7 +1777,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/compose-bar/index.tsx",
-          "why": "Auto-expanding textarea at the bottom of the thread view. Grows up to 5 rows then scrolls. Enter submits the message; Shift+Enter inserts a newline. Send button is disabled when input is empty or a send is in-flight (aria-busy). The +/attachment button is present but non-functional (disabled, tabIndex=-1) — attachment upload is out of scope."
+          "why": "Auto-expanding textarea at the bottom of the thread view. Grows up to 5 rows then scrolls. Enter submits the message; Shift+Enter inserts a newline. Send button is disabled when input is empty or a send is in-flight (aria-busy). The +/attachment button is present but non-functional (disabled, tabIndex=-1) \u2014 attachment upload is out of scope."
         },
         {
           "id": "send-message--send-message-api",
@@ -1787,7 +1787,7 @@
           "status": "built",
           "route": "/api/messaging/threads/[thread_id]/messages",
           "codeRef": "src/app/api/messaging/threads/[thread_id]/messages/route.ts",
-          "why": "Body: { content, type? }. type defaults to 'text'. Runs participant check, block check, and safety filter (block → 422, redact → stored filtered, nudge → nudge system message appended, pass → as-is). Returns 201 MessageWithSender.",
+          "why": "Body: { content, type? }. type defaults to 'text'. Runs participant check, block check, and safety filter (block \u2192 422, redact \u2192 stored filtered, nudge \u2192 nudge system message appended, pass \u2192 as-is). Returns 201 MessageWithSender.",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -1806,12 +1806,12 @@
             },
             {
               "condition": "Recipient has blocked the sender",
-              "result": "Returns 403 — cannot send to this user",
+              "result": "Returns 403 \u2014 cannot send to this user",
               "httpStatus": 403
             },
             {
               "condition": "Safety filter: block action (explicit content)",
-              "result": "Returns 422 — message violates community guidelines",
+              "result": "Returns 422 \u2014 message violates community guidelines",
               "httpStatus": 422
             },
             {
@@ -1828,7 +1828,7 @@
           "layer": "server",
           "status": "built",
           "codeRef": "src/features/messaging/utils/safety-filter.ts",
-          "why": "Processing order: block → redact → nudge → pass. Block: explicit/profane content → 422 rejected. Redact: PII (phone, email, credit card via Luhn) → replaced with [removed], original stored in original_content with is_filtered=true. Nudge: off-platform dealing or price negotiation → message passes but a nudge system message is inserted after it. Pass: no match → stored as-is."
+          "why": "Processing order: block \u2192 redact \u2192 nudge \u2192 pass. Block: explicit/profane content \u2192 422 rejected. Redact: PII (phone, email, credit card via Luhn) \u2192 replaced with [removed], original stored in original_content with is_filtered=true. Nudge: off-platform dealing or price negotiation \u2192 message passes but a nudge system message is inserted after it. Pass: no match \u2192 stored as-is."
         },
         {
           "id": "send-message--decision-safety-filter",
@@ -1887,7 +1887,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/message-node/index.tsx",
-          "why": "When the safety filter returns nudge_off_platform or nudge_negotiation, the API inserts a second message with type='nudge' immediately after the user's message. MessageNode renders nudge-type messages as an InlineBanner (info variant) centered in the thread — not attributed to a sender. This guides the user toward platform-native flows (e.g. the offer system) without blocking their original message."
+          "why": "When the safety filter returns nudge_off_platform or nudge_negotiation, the API inserts a second message with type='nudge' immediately after the user's message. MessageNode renders nudge-type messages as an InlineBanner (info variant) centered in the thread \u2014 not attributed to a sender. This guides the user toward platform-native flows (e.g. the offer system) without blocking their original message."
         },
         {
           "id": "manage-thread--entry",
@@ -1940,7 +1940,7 @@
           "label": "Open Offer Form",
           "layer": "client",
           "status": "planned",
-          "notes": "Offer entry UI is Phase 3. OfferBubble component is production-ready and handles all 5 statuses (pending, accepted, declined, countered, expired) — see src/features/messaging/components/offer-bubble/index.tsx. The form/modal to create an offer is not yet built. Should show listing price, min offer floor (70% of price), default prefill (80%), and offer amount input. Uses calculateMinOffer() and calculateDefaultOffer() from offer-validation.ts."
+          "notes": "Offer entry UI is Phase 3. OfferBubble component is production-ready and handles all 5 statuses (pending, accepted, declined, countered, expired) \u2014 see src/features/messaging/components/offer-bubble/index.tsx. The form/modal to create an offer is not yet built. Should show listing price, min offer floor (70% of price), default prefill (80%), and offer amount input. Uses calculateMinOffer() and calculateDefaultOffer() from offer-validation.ts."
         },
         {
           "id": "offer-flow--validate-offer-amount",
@@ -1984,7 +1984,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/messaging/components/collapsible-header/index.tsx",
-          "why": "CollapsibleHeader shows an OfferBubble for offer-type threads when offer data is loaded. Accept and Decline action buttons are rendered to the seller when offer.status is 'pending' (isSeller check via participant role). Counter-offer is explicitly out of scope for earlier PRs — onCounterOffer is passed as undefined in those builds. Accept/decline/counter trigger useOfferActions mutations with optimistic status updates. OfferBubble handles all 5 statuses: pending, accepted, declined, countered, expired."
+          "why": "CollapsibleHeader shows an OfferBubble for offer-type threads when offer data is loaded. Accept and Decline action buttons are rendered to the seller when offer.status is 'pending' (isSeller check via participant role). Counter-offer is explicitly out of scope for earlier PRs \u2014 onCounterOffer is passed as undefined in those builds. Accept/decline/counter trigger useOfferActions mutations with optimistic status updates. OfferBubble handles all 5 statuses: pending, accepted, declined, countered, expired."
         },
         {
           "id": "offer-flow--decision-seller-reviews-offer",
@@ -2158,7 +2158,7 @@
           "layer": "client",
           "status": "planned",
           "codeRef": "src/features/messaging/services/blocks.ts",
-          "notes": "Block entry point from a messaging thread — e.g., kebab menu in the thread header with a 'Block this user' option. Client calls blockMember(memberId) from src/features/messaging/services/blocks.ts. Thread UI is Phase 3; this step is planned alongside it."
+          "notes": "Block entry point from a messaging thread \u2014 e.g., kebab menu in the thread header with a 'Block this user' option. Client calls blockMember(memberId) from src/features/messaging/services/blocks.ts. Thread UI is Phase 3; this step is planned alongside it."
         },
         {
           "id": "block-from-messaging--post-block-from-thread",
@@ -2182,12 +2182,12 @@
             },
             {
               "condition": "Attempting to block yourself",
-              "result": "Returns 400 — Cannot block yourself",
+              "result": "Returns 400 \u2014 Cannot block yourself",
               "httpStatus": 400
             },
             {
               "condition": "Already blocked this member",
-              "result": "Returns 409 — Already blocked",
+              "result": "Returns 409 \u2014 Already blocked",
               "httpStatus": 409
             },
             {
@@ -2222,7 +2222,7 @@
           "label": "Show Block Feedback",
           "layer": "client",
           "status": "planned",
-          "notes": "On 201 or 409: show success toast (e.g., 'Blocked — You can no longer receive messages from this user.'). Thread should archive or close. The blocked user will receive 403 on any further message sends to this thread. Invalidate ['blocks', userId] so the account settings blocked-members list stays in sync. See member-block-management.json for the full block management flow."
+          "notes": "On 201 or 409: show success toast (e.g., 'Blocked \u2014 You can no longer receive messages from this user.'). Thread should archive or close. The blocked user will receive 403 on any further message sends to this thread. Invalidate ['blocks', userId] so the account settings blocked-members list stays in sync. See member-block-management.json for the full block management flow."
         },
         {
           "id": "block-from-messaging--thread-block-error",
@@ -2317,7 +2317,7 @@
         {
           "from": "view-inbox--decision-inbox-tabs",
           "to": "view-inbox--inbox-empty",
-          "opt": "No — filtered empty"
+          "opt": "No \u2014 filtered empty"
         },
         {
           "from": "view-inbox--inbox-page",
@@ -2645,7 +2645,7 @@
           "status": "built",
           "route": "/api/cart",
           "codeRef": "src/app/api/cart/route.ts",
-          "why": "Send listingId + priceCents. Server checks: listing exists + active, block check (isBlockedByServer), not own listing, no duplicate, cart cap.",
+          "why": "Send listingId + priceCents. Server checks: listing exists + active, block check (isBlockedByServer), not own listing, no duplicate, cart cap. Also validates listing quantity is available.",
           "errorCases": [
             {
               "condition": "Seller has blocked the buyer",
@@ -2935,7 +2935,7 @@
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/cart/hooks/use-cart-merge.ts",
-          "why": "useCartMerge() detects auth state change. Background hook — user sees nothing."
+          "why": "useCartMerge() detects auth state change. Background hook \u2014 user sees nothing."
         },
         {
           "id": "merge-on-login--read-guest-cart",
@@ -2992,6 +2992,14 @@
           "route": "/api/cart/validate",
           "codeRef": "src/features/cart/services/cart-server.ts",
           "why": "Validates all cart items. Batch block check: single IN query on member_blocks for all unique seller IDs. Blocked items moved to removed[] with reason: 'blocked'."
+        },
+        {
+          "id": "pre-checkout-validation--check-availability",
+          "type": "step",
+          "label": "Check Item Availability",
+          "layer": "server",
+          "status": "built",
+          "why": "Batch availability check \u2014 verifies all cart items are still in stock and the listing is active. Removes stale items."
         },
         {
           "id": "pre-checkout-validation--decision-validate-cart",
@@ -3227,6 +3235,10 @@
         },
         {
           "from": "pre-checkout-validation--validate-cart",
+          "to": "pre-checkout-validation--check-availability"
+        },
+        {
+          "from": "pre-checkout-validation--check-availability",
           "to": "pre-checkout-validation--decision-validate-cart"
         },
         {
@@ -3277,7 +3289,7 @@
           "label": "Set Default Context",
           "layer": "background",
           "status": "built",
-          "why": "User logs in — default: { type: 'member' }"
+          "why": "User logs in \u2014 default: { type: 'member' }"
         },
         {
           "id": "identity-system--check-shops",
@@ -3316,7 +3328,7 @@
           "label": "Switch to Member",
           "layer": "background",
           "status": "built",
-          "why": "switchToMember() — Zustand: { type: 'member' }, X-Nessi-Context: member"
+          "why": "switchToMember() \u2014 Zustand: { type: 'member' }, X-Nessi-Context: member"
         },
         {
           "id": "identity-system--switch-to-shop",
@@ -3324,7 +3336,7 @@
           "label": "Switch to Shop",
           "layer": "background",
           "status": "built",
-          "why": "switchToShop(shopId, shopName) — Zustand: { type: 'shop', shopId }, X-Nessi-Context: shop:{shopId}"
+          "why": "switchToShop(shopId, shopName) \u2014 Zustand: { type: 'shop', shopId }, X-Nessi-Context: shop:{shopId}"
         },
         {
           "id": "identity-system--persist-localstorage",
@@ -3332,7 +3344,7 @@
           "label": "Persist Context",
           "layer": "background",
           "status": "built",
-          "why": "Persisted to localStorage — survives refresh, tab close, re-open"
+          "why": "Persisted to localStorage \u2014 survives refresh, tab close, re-open"
         },
         {
           "id": "identity-system--member-only",
@@ -3376,7 +3388,7 @@
           "label": "Assign to Member",
           "layer": "server",
           "status": "built",
-          "why": "seller_id = user.id, member_id = user.id, shop_id = null — appears on /member/[slug]"
+          "why": "seller_id = user.id, member_id = user.id, shop_id = null \u2014 appears on /member/[slug]"
         },
         {
           "id": "context-effects--create-listing-shop",
@@ -3384,7 +3396,7 @@
           "label": "Assign to Shop",
           "layer": "server",
           "status": "built",
-          "why": "seller_id = user.id, member_id = null, shop_id = activeShopId — appears on /shop/[slug]"
+          "why": "seller_id = user.id, member_id = null, shop_id = activeShopId \u2014 appears on /shop/[slug]"
         },
         {
           "id": "context-effects--dashboard-member",
@@ -3472,7 +3484,7 @@
           "label": "Set Default Context",
           "layer": "background",
           "status": "built",
-          "why": "No stored context — default to { type: 'member' }"
+          "why": "No stored context \u2014 default to { type: 'member' }"
         },
         {
           "id": "page-load--set-member",
@@ -3480,7 +3492,7 @@
           "label": "Restore Member",
           "layer": "background",
           "status": "built",
-          "why": "Stored member context — set context: member"
+          "why": "Stored member context \u2014 set context: member"
         },
         {
           "id": "page-load--set-shop",
@@ -3488,7 +3500,7 @@
           "label": "Restore Shop",
           "layer": "background",
           "status": "built",
-          "why": "Stored shop context — set context: shop:{id}"
+          "why": "Stored shop context \u2014 set context: shop:{id}"
         },
         {
           "id": "page-load--validate-membership",
@@ -3571,7 +3583,7 @@
           "label": "Shop Deleted",
           "layer": "background",
           "status": "built",
-          "why": "Shop deleted while user in shop context — next API call → 403 → revocation"
+          "why": "Shop deleted while user in shop context \u2014 next API call \u2192 403 \u2192 revocation"
         },
         {
           "id": "edge-cases--role-changed",
@@ -3587,7 +3599,7 @@
           "label": "Multi-Tab Sync",
           "layer": "background",
           "status": "built",
-          "why": "Multiple tabs in different contexts — localStorage sync via StorageEvent, both tabs update"
+          "why": "Multiple tabs in different contexts \u2014 localStorage sync via StorageEvent, both tabs update"
         },
         {
           "id": "edge-cases--localstorage-cleared",
@@ -3595,7 +3607,7 @@
           "label": "Storage Cleared",
           "layer": "background",
           "status": "built",
-          "why": "localStorage cleared or incognito — defaults to member context"
+          "why": "localStorage cleared or incognito \u2014 defaults to member context"
         },
         {
           "id": "context-header--entry",
@@ -3631,7 +3643,7 @@
           "label": "Validate as Member",
           "layer": "server",
           "status": "built",
-          "why": "member — API validates: user owns listing"
+          "why": "member \u2014 API validates: user owns listing"
         },
         {
           "id": "context-header--validate-shop",
@@ -3639,7 +3651,7 @@
           "label": "Validate as Shop",
           "layer": "server",
           "status": "built",
-          "why": "shop:{id} — API validates: user is member of shop"
+          "why": "shop:{id} \u2014 API validates: user is member of shop"
         }
       ],
       "edges": [
@@ -3939,7 +3951,7 @@
           "label": "Send Change OTP",
           "layer": "server",
           "status": "built",
-          "why": "changeEmail(newEmail) — OTP sent to NEW email"
+          "why": "changeEmail(newEmail) \u2014 OTP sent to NEW email"
         },
         {
           "id": "change-email--enter-otp",
@@ -4161,7 +4173,7 @@
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts",
-          "why": "useRecentlyViewedMerge() — POST /api/recently-viewed/merge. Deduplicates on server. Silent."
+          "why": "useRecentlyViewedMerge() \u2014 POST /api/recently-viewed/merge. Deduplicates on server. Silent."
         },
         {
           "id": "resend-verification--entry",
@@ -4334,7 +4346,7 @@
       "domain": "account",
       "title": "Blocked Members",
       "persona": "account",
-      "description": "View and manage blocked members — authenticated users can see who they have blocked and unblock them from the account settings page. Block enforcement prevents blocked users from viewing the blocker's profiles, shops, listings, and purchasing their items.",
+      "description": "View and manage blocked members \u2014 authenticated users can see who they have blocked and unblock them from the account settings page. Block enforcement prevents blocked users from viewing the blocker's profiles, shops, listings, and purchasing their items.",
       "relatedIssues": [322, 324],
       "nodes": [
         {
@@ -4373,12 +4385,12 @@
             },
             {
               "condition": "memberId equals the authenticated user's own ID",
-              "result": "Returns 400 — Cannot block yourself",
+              "result": "Returns 400 \u2014 Cannot block yourself",
               "httpStatus": 400
             },
             {
               "condition": "Block already exists (unique constraint violation 23505)",
-              "result": "Returns 409 — Already blocked",
+              "result": "Returns 409 \u2014 Already blocked",
               "httpStatus": 409
             },
             {
@@ -4422,7 +4434,7 @@
           "label": "Show Block Confirmation",
           "layer": "client",
           "status": "planned",
-          "notes": "On 201: show success toast confirming the block (e.g., 'Blocked — You blocked {name}.'). On 409: silently succeed or show 'Already blocked'. UI should update immediately — e.g., disable the Message button in a thread header, or replace the block button with an unblock option. Cache for ['blocks', userId] should be invalidated so the blocked members list reflects the new entry."
+          "notes": "On 201: show success toast confirming the block (e.g., 'Blocked \u2014 You blocked {name}.'). On 409: silently succeed or show 'Already blocked'. UI should update immediately \u2014 e.g., disable the Message button in a thread header, or replace the block button with an unblock option. Cache for ['blocks', userId] should be invalidated so the blocked members list reflects the new entry."
         },
         {
           "id": "block-a-member--block-error",
@@ -4430,7 +4442,7 @@
           "label": "Show Block Error",
           "layer": "client",
           "status": "planned",
-          "notes": "On 400 or 500: show error toast (e.g., 'Could not block this member. Please try again.'). No cache changes — optimistic update should not be applied for the block action given its low frequency."
+          "notes": "On 400 or 500: show error toast (e.g., 'Could not block this member. Please try again.'). No cache changes \u2014 optimistic update should not be applied for the block action given its low frequency."
         },
         {
           "id": "view-blocked-members--entry",
@@ -4490,7 +4502,7 @@
           "layer": "database",
           "status": "built",
           "codeRef": "src/features/blocks/services/block-server.ts",
-          "why": "Server service joins member_blocks with members table in two queries: first fetches block rows, then fetches member rows by blocked_id array. Builds a map of id → {name, avatar_url, slug} to avoid N+1 queries."
+          "why": "Server service joins member_blocks with members table in two queries: first fetches block rows, then fetches member rows by blocked_id array. Builds a map of id \u2192 {name, avatar_url, slug} to avoid N+1 queries."
         },
         {
           "id": "view-blocked-members--show-skeleton",
@@ -4532,7 +4544,7 @@
           "status": "built",
           "route": "/api/blocks",
           "codeRef": "src/app/api/blocks/route.ts",
-          "why": "Used by the account-settings unblock UI. blocked_id passed as query param (?blocked_id={uuid}). Auth check via session. Deletes from member_blocks where blocker_id = current user AND blocked_id = param. Returns 404 if no matching row found. Note: a second unblock route exists at DELETE /api/members/block/[member_id] — used from messaging surfaces via blockMember/unblockMember in src/features/messaging/services/blocks.ts.",
+          "why": "Used by the account-settings unblock UI. blocked_id passed as query param (?blocked_id={uuid}). Auth check via session. Deletes from member_blocks where blocker_id = current user AND blocked_id = param. Returns 404 if no matching row found. Note: a second unblock route exists at DELETE /api/members/block/[member_id] \u2014 used from messaging surfaces via blockMember/unblockMember in src/features/messaging/services/blocks.ts.",
           "errorCases": [
             {
               "condition": "User is not authenticated",
@@ -4628,7 +4640,7 @@
           "layer": "client",
           "status": "built",
           "route": "/member/[slug]",
-          "why": "Standard member profile page. Block relationship is not surfaced here yet — a 'Blocked' indicator on the profile page is a planned improvement."
+          "why": "Standard member profile page. Block relationship is not surfaced here yet \u2014 a 'Blocked' indicator on the profile page is a planned improvement."
         },
         {
           "id": "view-blocked-profile--blocked-indicator-on-profile",
@@ -4642,7 +4654,7 @@
         {
           "id": "block-enforcement-profile--entry",
           "type": "entry",
-          "label": "Block Enforcement — Profile Page"
+          "label": "Block Enforcement \u2014 Profile Page"
         },
         {
           "id": "block-enforcement-profile--navigate-member-profile",
@@ -4692,12 +4704,12 @@
           "label": "Show Not Found Page",
           "layer": "client",
           "status": "built",
-          "why": "If blocked, notFound() is called — identical to a non-existent member. No information leakage about the block."
+          "why": "If blocked, notFound() is called \u2014 identical to a non-existent member. No information leakage about the block."
         },
         {
           "id": "block-enforcement-shop--entry",
           "type": "entry",
-          "label": "Block Enforcement — Shop Page"
+          "label": "Block Enforcement \u2014 Shop Page"
         },
         {
           "id": "block-enforcement-shop--navigate-shop-page",
@@ -4747,12 +4759,12 @@
           "label": "Show Not Found Page",
           "layer": "client",
           "status": "built",
-          "why": "If blocked, notFound() is called — identical to a non-existent shop."
+          "why": "If blocked, notFound() is called \u2014 identical to a non-existent shop."
         },
         {
           "id": "block-enforcement-listing--entry",
           "type": "entry",
-          "label": "Block Enforcement — Listing Page"
+          "label": "Block Enforcement \u2014 Listing Page"
         },
         {
           "id": "block-enforcement-listing--navigate-listing-page",
@@ -4802,12 +4814,12 @@
           "label": "Show Not Found Page",
           "layer": "client",
           "status": "built",
-          "why": "If blocked, notFound() is called — identical to a non-existent listing."
+          "why": "If blocked, notFound() is called \u2014 identical to a non-existent listing."
         },
         {
           "id": "block-enforcement-cart--entry",
           "type": "entry",
-          "label": "Block Enforcement — Cart"
+          "label": "Block Enforcement \u2014 Cart"
         },
         {
           "id": "block-enforcement-cart--attempt-add-to-cart",
@@ -5113,7 +5125,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/follows/components/follow-button/index.tsx",
-          "why": "Button updates to 'Following' state (filled primary), follower count increments. Toast: 'Following — You are now following {name}.' onSettled invalidates status, count, and following queries."
+          "why": "Button updates to 'Following' state (filled primary), follower count increments. Toast: 'Following \u2014 You are now following {name}.' onSettled invalidates status, count, and following queries."
         },
         {
           "id": "unfollow--entry",
@@ -5136,7 +5148,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/follows/hooks/use-follow-toggle.ts",
-          "why": "useFollowToggle fires mutation with isCurrentlyFollowing=true, optimistically sets status to not-following and decrements count cache. Toast: 'Unfollowed — You unfollowed {name}.'"
+          "why": "useFollowToggle fires mutation with isCurrentlyFollowing=true, optimistically sets status to not-following and decrements count cache. Toast: 'Unfollowed \u2014 You unfollowed {name}.'"
         },
         {
           "id": "unfollow--unfollow-3",
@@ -5326,7 +5338,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/follows/components/following-card/index.tsx",
-          "why": "Renders FollowingCard for each item — avatar, linked name, type pill, relative date, Unfollow button. Each card manages its own useFollowToggle mutation with toast feedback. Empty state shows heart icon + 'You are not following anyone yet' + Browse CTA."
+          "why": "Renders FollowingCard for each item \u2014 avatar, linked name, type pill, relative date, Unfollow button. Each card manages its own useFollowToggle mutation with toast feedback. Empty state shows heart icon + 'You are not following anyone yet' + Browse CTA."
         },
         {
           "id": "view-following--empty-following",
@@ -5348,7 +5360,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/listings/components/followed-sellers-strip/index.tsx",
-          "why": "FollowedSellersStrip mounts on the homepage (src/app/(frontend)/page.tsx). useFollowedSellerListings fires query when isAuthenticated && !authLoading. Strip is completely absent for guests — no empty state, no skeleton."
+          "why": "FollowedSellersStrip mounts on the homepage (src/app/(frontend)/page.tsx). useFollowedSellerListings fires query when isAuthenticated && !authLoading. Strip is completely absent for guests \u2014 no empty state, no skeleton."
         },
         {
           "id": "homepage-strip--homepage-strip-2",
@@ -5394,7 +5406,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/listings/components/followed-sellers-strip/index.tsx",
-          "why": "ListingScrollStrip renders horizontally scrollable listing cards under the title 'From Sellers You Follow'. Component returns null when listings.length === 0 and isLoading is false — strip is invisible when the user follows no one or all followed sellers have no active listings."
+          "why": "ListingScrollStrip renders horizontally scrollable listing cards under the title 'From Sellers You Follow'. Component returns null when listings.length === 0 and isLoading is false \u2014 strip is invisible when the user follows no one or all followed sellers have no active listings."
         },
         {
           "id": "homepage-strip--hide-strip",
@@ -5551,7 +5563,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/watchlist/components/watch-button/index.tsx",
-          "why": "useAuth() — if !isAuthenticated, push to {pathname}?login=true to open the login modal. No toast shown — the modal open is the signal."
+          "why": "useAuth() \u2014 if !isAuthenticated, push to {pathname}?login=true to open the login modal. No toast shown \u2014 the modal open is the signal."
         },
         {
           "id": "watch-toggle--decision-check-auth",
@@ -5614,7 +5626,7 @@
             },
             {
               "condition": "Already watching this listing",
-              "result": "Returns 409 — client treats as success, no rollback",
+              "result": "Returns 409 \u2014 client treats as success, no rollback",
               "httpStatus": 409
             },
             {
@@ -5632,7 +5644,7 @@
           "status": "built",
           "route": "/api/watchlist",
           "codeRef": "src/app/api/watchlist/route.ts",
-          "why": "Query param: ?listing_id=... Calls removeWatcherServer(userId, listingId). Returns 404 if watcher row not found — client treats as success.",
+          "why": "Query param: ?listing_id=... Calls removeWatcherServer(userId, listingId). Returns 404 if watcher row not found \u2014 client treats as success.",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -5646,7 +5658,7 @@
             },
             {
               "condition": "Not watching this listing",
-              "result": "Returns 404 — client treats as success, no rollback",
+              "result": "Returns 404 \u2014 client treats as success, no rollback",
               "httpStatus": 404
             },
             {
@@ -5672,7 +5684,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/watchlist/components/watch-button/index.tsx",
-          "why": "Watch success: 'Added to Watchlist — We\\'ll tell you if the price drops.' Unwatch success: 'Removed from Watchlist — You will no longer receive alerts.' Error: 'Something went wrong — Please try again.'"
+          "why": "Watch success: 'Added to Watchlist \u2014 We\\'ll tell you if the price drops.' Unwatch success: 'Removed from Watchlist \u2014 You will no longer receive alerts.' Error: 'Something went wrong \u2014 Please try again.'"
         },
         {
           "id": "watch-toggle--invalidate-cache",
@@ -5696,16 +5708,16 @@
           "status": "built",
           "route": "/api/watchlist/[listing_id]",
           "codeRef": "src/app/api/watchlist/[listing_id]/route.ts",
-          "why": "getWatchStatusServer(userId, listingId) — maybeSingle() lookup returns { is_watching: boolean }. Query key: ['watchlist', 'status', listingId]. Disabled when listingId is falsy.",
+          "why": "getWatchStatusServer(userId, listingId) \u2014 maybeSingle() lookup returns { is_watching: boolean }. Query key: ['watchlist', 'status', listingId]. Disabled when listingId is falsy.",
           "errorCases": [
             {
               "condition": "No authenticated session",
-              "result": "Returns 401 — WatchButton renders in unauthenticated state",
+              "result": "Returns 401 \u2014 WatchButton renders in unauthenticated state",
               "httpStatus": 401
             },
             {
               "condition": "Database error",
-              "result": "Returns 500 — button defaults to unwatched state",
+              "result": "Returns 500 \u2014 button defaults to unwatched state",
               "httpStatus": 500
             }
           ]
@@ -5731,7 +5743,7 @@
           "layer": "server",
           "status": "built",
           "codeRef": "src/proxy.ts",
-          "why": "proxy.ts guards /watchlist — unauthenticated users are redirected to /. See route-protection.json."
+          "why": "proxy.ts guards /watchlist \u2014 unauthenticated users are redirected to /. See route-protection.json."
         },
         {
           "id": "watchlist-page--navigate-watchlist",
@@ -5751,7 +5763,7 @@
           "status": "built",
           "route": "/api/watchlist",
           "codeRef": "src/app/api/watchlist/route.ts",
-          "why": "getWatchedListingsServer(userId) — joins watchers → listings → listing_photos. Filters soft-deleted listings. Ordered by watched_at DESC. Query key: ['watchlist'].",
+          "why": "getWatchedListingsServer(userId) \u2014 joins watchers \u2192 listings \u2192 listing_photos. Filters soft-deleted listings. Ordered by watched_at DESC. Query key: ['watchlist'].",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -5760,7 +5772,7 @@
             },
             {
               "condition": "Database error",
-              "result": "Returns 500 — page shows error state with retry prompt",
+              "result": "Returns 500 \u2014 page shows error state with retry prompt",
               "httpStatus": 500
             }
           ]
@@ -5795,7 +5807,7 @@
           "label": "Show Empty State",
           "layer": "client",
           "status": "built",
-          "why": "Heart icon. \"Your watchlist is empty\". \"Watch listings to get notified when prices drop.\" CTA: \"Browse listings\" → /listings"
+          "why": "Heart icon. \"Your watchlist is empty\". \"Watch listings to get notified when prices drop.\" CTA: \"Browse listings\" \u2192 /listings"
         },
         {
           "id": "price-drop-notification--entry",
@@ -5809,7 +5821,7 @@
           "layer": "database",
           "status": "built",
           "codeRef": "supabase/migrations/20260327155304_watchers_and_price_drop_notifications.sql",
-          "why": "AFTER UPDATE OF price_cents trigger on listings. detect_price_drop() fires when NEW.price_cents < OLD.price_cents — inserts a price_drop_notifications row with listing_id, old_price_cents, new_price_cents."
+          "why": "AFTER UPDATE OF price_cents trigger on listings. detect_price_drop() fires when NEW.price_cents < OLD.price_cents \u2014 inserts a price_drop_notifications row with listing_id, old_price_cents, new_price_cents."
         },
         {
           "id": "price-drop-notification--cron-trigger",
@@ -5832,12 +5844,12 @@
           "errorCases": [
             {
               "condition": "Authorization header missing or incorrect CRON_SECRET",
-              "result": "Returns 401 Unauthorized — no notifications processed",
+              "result": "Returns 401 Unauthorized \u2014 no notifications processed",
               "httpStatus": 401
             },
             {
               "condition": "Database error fetching notifications",
-              "result": "Returns 500 — no notifications processed",
+              "result": "Returns 500 \u2014 no notifications processed",
               "httpStatus": 500
             }
           ]
@@ -5924,7 +5936,7 @@
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/listings/components/quick-edit-price/index.tsx",
-          "why": "listings.watcher_count is denormalized and available on the listing object — no extra API call needed. Displayed as demand signal (e.g., 'X people are watching this listing')."
+          "why": "listings.watcher_count is denormalized and available on the listing object \u2014 no extra API call needed. Displayed as demand signal (e.g., 'X people are watching this listing')."
         },
         {
           "id": "seller-watcher-count--planned-watcher-count-on-row",
@@ -6086,7 +6098,7 @@
         {
           "id": "buyer-path--entry",
           "type": "entry",
-          "label": "Onboarding — Buyer Path (4 Steps)"
+          "label": "Onboarding \u2014 Buyer Path (4 Steps)"
         },
         {
           "id": "buyer-path--banner-appears",
@@ -6170,7 +6182,7 @@
         {
           "id": "seller-path--entry",
           "type": "entry",
-          "label": "Onboarding — Seller Path (5 Steps)"
+          "label": "Onboarding \u2014 Seller Path (5 Steps)"
         },
         {
           "id": "seller-path--step3-fishing-identity-seller",
@@ -6369,7 +6381,7 @@
         {
           "id": "reset-password--entry",
           "type": "entry",
-          "label": "Forgot Password → OTP → New Password"
+          "label": "Forgot Password \u2192 OTP \u2192 New Password"
         },
         {
           "id": "reset-password--visit-page",
@@ -6393,7 +6405,7 @@
           "label": "Send Reset OTP",
           "layer": "server",
           "status": "built",
-          "why": "forgotPassword(email) — OTP sent to email"
+          "why": "forgotPassword(email) \u2014 OTP sent to email"
         },
         {
           "id": "reset-password--enter-otp",
@@ -6615,7 +6627,7 @@
           "label": "Dedup and Insert",
           "layer": "database",
           "status": "built",
-          "why": "Guest views merged to DB, deduped on server — existing DB entries for the same listings are not duplicated"
+          "why": "Guest views merged to DB, deduped on server \u2014 existing DB entries for the same listings are not duplicated"
         },
         {
           "id": "merge-on-login--silent-complete",
@@ -6623,7 +6635,7 @@
           "label": "Silent Complete",
           "layer": "background",
           "status": "built",
-          "why": "No toast — silent merge. localStorage recently viewed cleared after successful merge."
+          "why": "No toast \u2014 silent merge. localStorage recently viewed cleared after successful merge."
         },
         {
           "id": "display-strip--entry",
@@ -6637,7 +6649,7 @@
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-listings.ts",
-          "why": "useRecentlyViewedListings() reads IDs from useRecentlyViewed() — for guests this reads directly from localStorage; for authenticated users it reads from the DB-backed API response"
+          "why": "useRecentlyViewedListings() reads IDs from useRecentlyViewed() \u2014 for guests this reads directly from localStorage; for authenticated users it reads from the DB-backed API response"
         },
         {
           "id": "display-strip--batch-fetch",
@@ -6690,7 +6702,7 @@
           "label": "Render Nothing",
           "layer": "client",
           "status": "built",
-          "why": "Strip returns null — no recently viewed items or all stale/deleted"
+          "why": "Strip returns null \u2014 no recently viewed items or all stale/deleted"
         },
         {
           "id": "clear-history--entry",
@@ -6711,7 +6723,7 @@
           "label": "Clear localStorage",
           "layer": "background",
           "status": "built",
-          "why": "clearRecentlyViewed() — clear localStorage"
+          "why": "clearRecentlyViewed() \u2014 clear localStorage"
         }
       ],
       "edges": [
@@ -7035,7 +7047,7 @@
           "label": "Draft State",
           "layer": "database",
           "status": "built",
-          "why": "Listing in draft state — requires 2+ photos to publish. localStorage persistence for create wizard."
+          "why": "Listing in draft state \u2014 requires 2+ photos to publish. localStorage persistence for create wizard."
         },
         {
           "id": "lifecycle--publish",
@@ -7067,7 +7079,7 @@
           "label": "Reactivate Listing",
           "layer": "server",
           "status": "built",
-          "why": "status=active — reactivate archived listing"
+          "why": "status=active \u2014 reactivate archived listing"
         },
         {
           "id": "lifecycle--delete-draft",
@@ -7114,7 +7126,7 @@
           "layer": "client",
           "status": "built",
           "route": "/api/listings/upload",
-          "why": "Step 1: Photos — Sharp resize 1200x1200 max + 400x400 thumb. Stored as WebP in listing-images bucket."
+          "why": "Step 1: Photos \u2014 Sharp resize 1200x1200 max + 400x400 thumb. Stored as WebP in listing-images bucket. Now supports drag-and-drop reordering."
         },
         {
           "id": "create-wizard--decision-step1-photos",
@@ -7204,7 +7216,7 @@
           "label": "Prefill Wizard Data",
           "layer": "server",
           "status": "built",
-          "why": "GET /api/listings/[id] — pre-populate wizard"
+          "why": "GET /api/listings/[id] \u2014 pre-populate wizard"
         },
         {
           "id": "edit-wizard--edit-steps",
@@ -7263,13 +7275,21 @@
           "why": "Edit, Mark Sold, Archive, Quick Edit Price, Duplicate"
         },
         {
+          "id": "dashboard-management--bulk-actions",
+          "type": "step",
+          "label": "Bulk Actions",
+          "layer": "client",
+          "status": "built",
+          "why": "Multi-select listings for batch operations: publish, archive, or delete. Selection persists across status tabs."
+        },
+        {
           "id": "dashboard-management--quick-edit-watcher-count",
           "type": "step",
           "label": "View Watcher Count",
           "layer": "client",
           "status": "built",
           "codeRef": "src/features/listings/components/quick-edit-price/index.tsx",
-          "why": "QuickEditPrice modal displays listings.watcher_count as a demand signal. Denormalized by a DB trigger on the watchers table — no extra fetch needed. See member-watchlist.json for the watcher count trigger."
+          "why": "QuickEditPrice modal displays listings.watcher_count as a demand signal. Denormalized by a DB trigger on the watchers table \u2014 no extra fetch needed. See member-watchlist.json for the watcher count trigger."
         },
         {
           "id": "dashboard-management--duplicate-listing",
@@ -7278,7 +7298,7 @@
           "layer": "server",
           "status": "built",
           "route": "/api/listings/[id]/duplicate",
-          "why": "New draft with copied fields. Opens at Step 1 — needs photos."
+          "why": "New draft with copied fields. Opens at Step 1 \u2014 needs photos."
         },
         {
           "id": "dashboard-management--draft-actions",
@@ -7294,7 +7314,7 @@
           "label": "Archived Actions",
           "layer": "client",
           "status": "built",
-          "why": "Reactivate → PATCH status=active"
+          "why": "Reactivate \u2192 PATCH status=active"
         }
       ],
       "edges": [
@@ -7405,6 +7425,10 @@
         },
         {
           "from": "dashboard-management--active-actions",
+          "to": "dashboard-management--bulk-actions"
+        },
+        {
+          "from": "dashboard-management--bulk-actions",
           "to": "dashboard-management--quick-edit-watcher-count"
         },
         {
@@ -7471,7 +7495,7 @@
           "label": "Open Native Share",
           "layer": "client",
           "status": "built",
-          "why": "navigator.share({ title, url }) — native share sheet opens (mobile). AbortError from cancellation silently ignored."
+          "why": "navigator.share({ title, url }) \u2014 native share sheet opens (mobile). AbortError from cancellation silently ignored."
         },
         {
           "id": "share-listing--clipboard-copy",
@@ -7479,7 +7503,7 @@
           "label": "Copy Link",
           "layer": "client",
           "status": "built",
-          "why": "navigator.clipboard.writeText(url) — copy link to clipboard (desktop)"
+          "why": "navigator.clipboard.writeText(url) \u2014 copy link to clipboard (desktop)"
         },
         {
           "id": "share-listing--decision-clipboard-copy",
@@ -7510,7 +7534,7 @@
           "label": "Show Copy Error",
           "layer": "client",
           "status": "built",
-          "why": "Error toast: \"Unable to copy link\" — \"Please copy the URL from your browser address bar.\" No retry, user copies manually."
+          "why": "Error toast: \"Unable to copy link\" \u2014 \"Please copy the URL from your browser address bar.\" No retry, user copies manually."
         }
       ],
       "edges": [
@@ -8054,7 +8078,7 @@
           "status": "built",
           "route": "/invite/[token]",
           "codeRef": "src/app/(frontend)/invite/[token]/page.tsx",
-          "why": "Server component fetches invite data via admin client. Invalid token → 404."
+          "why": "Server component fetches invite data via admin client. Invalid token \u2192 404."
         },
         {
           "id": "accept-authenticated--decision-land-on-page",
@@ -8241,7 +8265,7 @@
           "label": "Verify OTP Code",
           "layer": "client",
           "status": "built",
-          "why": "6-digit OTP code → verifyOtp(type='signup'). inviteToken threaded: Navbar → RegisterForm → OtpInput."
+          "why": "6-digit OTP code \u2192 verifyOtp(type='signup'). inviteToken threaded: Navbar \u2192 RegisterForm \u2192 OtpInput."
         },
         {
           "id": "accept-new-user--session-established",
@@ -8258,7 +8282,7 @@
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/shops/services/shop-invites.ts",
-          "why": "acceptShopInvite(token) called in OtpInput after verify. Failure NEVER blocks — account always completes."
+          "why": "acceptShopInvite(token) called in OtpInput after verify. Failure NEVER blocks \u2014 account always completes."
         },
         {
           "id": "accept-new-user--decision-auto-accept",
@@ -8302,7 +8326,7 @@
           "label": "Open Members Page",
           "layer": "client",
           "status": "built",
-          "why": "Owner navigates to Shop Settings → Members tab. Shows member list and pending invites."
+          "why": "Owner navigates to Shop Settings \u2192 Members tab. Shows member list and pending invites."
         },
         {
           "id": "manage-members--choose-action",
@@ -8535,7 +8559,7 @@
           "label": "Switch to Personal",
           "layer": "client",
           "status": "built",
-          "why": "switchToMember() — X-Nessi-Context: member"
+          "why": "switchToMember() \u2014 X-Nessi-Context: member"
         },
         {
           "id": "leave-shop--entry",
@@ -8548,7 +8572,7 @@
           "label": "Click Leave Shop",
           "layer": "client",
           "status": "built",
-          "why": "Leave button NOT shown for owners — must transfer ownership first"
+          "why": "Leave button NOT shown for owners \u2014 must transfer ownership first"
         },
         {
           "id": "leave-shop--confirm-modal",
@@ -8602,7 +8626,7 @@
           "label": "Revert to Personal",
           "layer": "background",
           "status": "built",
-          "why": "switchToMember() — revert to personal context"
+          "why": "switchToMember() \u2014 revert to personal context"
         },
         {
           "id": "leave-shop--invalidate-queries",
@@ -8671,7 +8695,7 @@
           "label": "Revert to Personal",
           "layer": "background",
           "status": "built",
-          "why": "switchToMember() — revert to personal context"
+          "why": "switchToMember() \u2014 revert to personal context"
         },
         {
           "id": "context-revocation--cancel-queries",
@@ -8695,7 +8719,7 @@
           "label": "Show Removed Toast",
           "layer": "client",
           "status": "built",
-          "why": "ContextRevocationListener — Toast: 'You have been removed from shop'"
+          "why": "ContextRevocationListener \u2014 Toast: 'You have been removed from shop'"
         },
         {
           "id": "context-revocation--navigate-dashboard",
@@ -8716,7 +8740,7 @@
           "label": "Fetch User Shops",
           "layer": "server",
           "status": "built",
-          "why": "getShopsByMember(memberId) — fetch all shops"
+          "why": "getShopsByMember(memberId) \u2014 fetch all shops"
         },
         {
           "id": "multi-shop--navbar-dropdown",
@@ -8748,7 +8772,7 @@
           "label": "Persist to Storage",
           "layer": "background",
           "status": "built",
-          "why": "Persisted to localStorage — survives page refresh"
+          "why": "Persisted to localStorage \u2014 survives page refresh"
         }
       ],
       "edges": [
@@ -9103,7 +9127,7 @@
     {
       "slug": "shop-ownership-transfer",
       "domain": "shops",
-      "title": "Shop Ownership Transfer (Request → Accept → Cancel)",
+      "title": "Shop Ownership Transfer (Request \u2192 Accept \u2192 Cancel)",
       "persona": "shop-owner",
       "description": "Owner initiates ownership transfer to another member. Transferee receives email link, accepts on a dedicated page. Includes atomic role swap and cancellation flow.",
       "relatedIssues": [],
@@ -9139,7 +9163,7 @@
           "errorCases": [
             {
               "condition": "Pending transfer already exists",
-              "result": "409 — cancel existing first",
+              "result": "409 \u2014 cancel existing first",
               "httpStatus": 409
             }
           ]
@@ -9210,7 +9234,7 @@
           "label": "Validate Transfer",
           "layer": "server",
           "status": "built",
-          "why": "Server component fetches transfer via admin client — validate status, user, expiry",
+          "why": "Server component fetches transfer via admin client \u2014 validate status, user, expiry",
           "errorCases": [
             {
               "condition": "Not found or non-pending",
@@ -9255,7 +9279,7 @@
           "label": "Swap Ownership",
           "layer": "database",
           "status": "built",
-          "why": "Atomic swap: owner_id → new owner, new role → OWNER, old role → MANAGER, status → accepted"
+          "why": "Atomic swap: owner_id \u2192 new owner, new role \u2192 OWNER, old role \u2192 MANAGER, status \u2192 accepted"
         },
         {
           "id": "accept-transfer--transfer-complete",
@@ -9299,7 +9323,7 @@
           "label": "Mark as Cancelled",
           "layer": "database",
           "status": "built",
-          "why": "Set transfer status → cancelled"
+          "why": "Set transfer status \u2192 cancelled"
         }
       ],
       "edges": [
@@ -9484,7 +9508,7 @@
           "label": "Show Upsell Modal",
           "layer": "client",
           "status": "planned",
-          "why": "CustomRoleUpsellModal — premium plan gate (not yet available)"
+          "why": "CustomRoleUpsellModal \u2014 premium plan gate (not yet available)"
         }
       ],
       "edges": [
@@ -9857,7 +9881,7 @@
           "label": "Verify OTP",
           "layer": "server",
           "status": "built",
-          "why": "verifyOtp(type='signup') — on success, Supabase sets session cookies",
+          "why": "verifyOtp(type='signup') \u2014 on success, Supabase sets session cookies",
           "errorCases": [
             {
               "condition": "Invalid/expired code",
@@ -9885,7 +9909,7 @@
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/shops/services/shop-invites.ts",
-          "why": "acceptShopInvite(token) — only fires if invite token present. Failure never blocks. See shop-invite-acceptance.json."
+          "why": "acceptShopInvite(token) \u2014 only fires if invite token present. Failure never blocks. See shop-invite-acceptance.json."
         },
         {
           "id": "post-auth-side-effects--cart-merge",
@@ -9903,7 +9927,7 @@
           "layer": "background",
           "status": "built",
           "codeRef": "src/features/recently-viewed/hooks/use-recently-viewed-merge.ts",
-          "why": "useRecentlyViewedMerge() — POST /api/recently-viewed/merge. Deduplicates on server. Silent."
+          "why": "useRecentlyViewedMerge() \u2014 POST /api/recently-viewed/merge. Deduplicates on server. Silent."
         },
         {
           "id": "post-auth-side-effects--onboarding-check",
@@ -9911,7 +9935,7 @@
           "label": "Check Onboarding",
           "layer": "client",
           "status": "built",
-          "why": "Check onboarding_completed_at on member record. If null → banner appears. If set → user stays on current page."
+          "why": "Check onboarding_completed_at on member record. If null \u2192 banner appears. If set \u2192 user stays on current page."
         }
       ],
       "edges": [
@@ -9963,6 +9987,133 @@
         {
           "from": "post-auth-side-effects--recently-viewed-merge",
           "to": "post-auth-side-effects--onboarding-check"
+        }
+      ]
+    },
+    {
+      "slug": "wishlist-management",
+      "domain": "shopping",
+      "title": "Wishlist Management",
+      "persona": "buyer",
+      "description": "Create and manage wishlists with private/shared/public visibility. Add listings, track price drops, and share collections with other members.",
+      "relatedIssues": [],
+      "nodes": [
+        {
+          "id": "wishlist--entry",
+          "type": "entry",
+          "label": "Wishlist Management"
+        },
+        {
+          "id": "wishlist--create",
+          "type": "step",
+          "label": "Create Wishlist",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/wishlists",
+          "why": "Create a new named wishlist with visibility setting (private, shared, public)."
+        },
+        {
+          "id": "wishlist--add-item",
+          "type": "step",
+          "label": "Add Item to Wishlist",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/wishlists/:id/items",
+          "why": "Add a listing to a wishlist. Validates listing exists and is active. Prevents duplicates within the same wishlist."
+        },
+        {
+          "id": "wishlist--decision-add-item",
+          "type": "decision",
+          "label": "Item added?",
+          "options": [
+            {
+              "label": "Yes",
+              "to": "wishlist--show-confirmation"
+            },
+            {
+              "label": "Duplicate",
+              "to": "wishlist--show-duplicate-notice"
+            }
+          ]
+        },
+        {
+          "id": "wishlist--show-confirmation",
+          "type": "step",
+          "label": "Show Added Toast",
+          "layer": "client",
+          "status": "built",
+          "why": "Toast: 'Added to {wishlist name}'"
+        },
+        {
+          "id": "wishlist--show-duplicate-notice",
+          "type": "step",
+          "label": "Show Duplicate Notice",
+          "layer": "client",
+          "status": "built",
+          "why": "Toast: 'Already in this wishlist'"
+        },
+        {
+          "id": "wishlist--view-list",
+          "type": "step",
+          "label": "View Wishlist",
+          "layer": "client",
+          "status": "built",
+          "codeRef": "src/features/wishlists/components/wishlist-detail/index.tsx",
+          "why": "Display wishlist items as listing cards with price and availability indicators."
+        },
+        {
+          "id": "wishlist--remove-item",
+          "type": "step",
+          "label": "Remove Item",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/wishlists/:id/items/:itemId",
+          "why": "Remove a listing from the wishlist."
+        },
+        {
+          "id": "wishlist--update-visibility",
+          "type": "step",
+          "label": "Update Visibility",
+          "layer": "server",
+          "status": "built",
+          "route": "/api/wishlists/:id",
+          "why": "Change wishlist visibility: private, shared (link-only), or public (shown on profile)."
+        }
+      ],
+      "edges": [
+        {
+          "from": "wishlist--entry",
+          "to": "wishlist--create"
+        },
+        {
+          "from": "wishlist--create",
+          "to": "wishlist--add-item"
+        },
+        {
+          "from": "wishlist--add-item",
+          "to": "wishlist--decision-add-item"
+        },
+        {
+          "from": "wishlist--decision-add-item",
+          "to": "wishlist--show-confirmation",
+          "opt": "Yes"
+        },
+        {
+          "from": "wishlist--decision-add-item",
+          "to": "wishlist--show-duplicate-notice",
+          "opt": "Duplicate"
+        },
+        {
+          "from": "wishlist--show-confirmation",
+          "to": "wishlist--view-list"
+        },
+        {
+          "from": "wishlist--view-list",
+          "to": "wishlist--remove-item"
+        },
+        {
+          "from": "wishlist--view-list",
+          "to": "wishlist--update-visibility"
         }
       ]
     }

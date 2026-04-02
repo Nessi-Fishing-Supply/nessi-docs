@@ -46,13 +46,13 @@
 
 .dropdown {
   position: absolute;
-  bottom: calc(100% + 4px);
+  top: calc(100% + 4px);
   left: 0;
-  right: 0;
+  min-width: 200px;
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   border-radius: 8px;
-  box-shadow: 0 -4px 16px rgb(0 0 0 / 30%);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 30%);
   overflow: hidden;
   z-index: 100;
 }

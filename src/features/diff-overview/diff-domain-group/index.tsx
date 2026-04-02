@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { DiffBadge } from '@/components/ui/diff-badge';
 import type { DiffStatus, FieldChange } from '@/types/diff';
 import styles from './diff-domain-group.module.scss';
@@ -12,6 +11,7 @@ export interface ChangeItem {
   status: DiffStatus;
   href: string | null;
   changedFields?: FieldChange[];
+  data?: unknown;
 }
 
 interface DiffDomainGroupProps {
@@ -19,11 +19,25 @@ interface DiffDomainGroupProps {
   icon: React.ReactNode;
   items: ChangeItem[];
   defaultExpanded?: boolean;
+  selectedKey?: string | null;
+  onSelect?: (item: ChangeItem) => void;
 }
 
-function ChangeRow({ item }: { item: ChangeItem }) {
-  const content = (
-    <div className={`${styles.row} ${styles[`row_${item.status}`]}`}>
+function ChangeRow({
+  item,
+  isSelected,
+  onSelect,
+}: {
+  item: ChangeItem;
+  isSelected: boolean;
+  onSelect?: (item: ChangeItem) => void;
+}) {
+  return (
+    <button
+      className={`${styles.row} ${styles[`row_${item.status}`]} ${isSelected ? styles.rowSelected : ''}`}
+      onClick={() => onSelect?.(item)}
+      type="button"
+    >
       <DiffBadge status={item.status as Exclude<DiffStatus, 'unchanged'>} />
       <span className={styles.rowLabel}>{item.label}</span>
       {item.changedFields && item.changedFields.length > 0 && (
@@ -31,21 +45,18 @@ function ChangeRow({ item }: { item: ChangeItem }) {
           {item.changedFields.length} {item.changedFields.length === 1 ? 'field' : 'fields'} changed
         </span>
       )}
-    </div>
-  );
-
-  if (!item.href || item.status === 'removed') {
-    return content;
-  }
-
-  return (
-    <Link href={item.href} className={styles.rowLink}>
-      {content}
-    </Link>
+    </button>
   );
 }
 
-export function DiffDomainGroup({ domain, icon, items, defaultExpanded }: DiffDomainGroupProps) {
+export function DiffDomainGroup({
+  domain,
+  icon,
+  items,
+  defaultExpanded,
+  selectedKey,
+  onSelect,
+}: DiffDomainGroupProps) {
   const [expanded, setExpanded] = useState(defaultExpanded ?? items.length <= 10);
 
   const addedCount = items.filter((i) => i.status === 'added').length;
@@ -58,11 +69,13 @@ export function DiffDomainGroup({ domain, icon, items, defaultExpanded }: DiffDo
         <span className={styles.headerIcon}>{icon}</span>
         <span className={styles.headerDomain}>{domain}</span>
         <span className={styles.headerCounts}>
-          {addedCount > 0 && <span className={styles.countAdded}>{addedCount} added</span>}
+          {addedCount > 0 && <span className={styles.countAdded}>New ({addedCount})</span>}
           {modifiedCount > 0 && (
-            <span className={styles.countModified}>{modifiedCount} modified</span>
+            <span className={styles.countModified}>Modified ({modifiedCount})</span>
           )}
-          {removedCount > 0 && <span className={styles.countRemoved}>{removedCount} removed</span>}
+          {removedCount > 0 && (
+            <span className={styles.countRemoved}>Removed ({removedCount})</span>
+          )}
         </span>
         <span className={styles.chevron}>{expanded ? '▾' : '▸'}</span>
       </button>
@@ -70,7 +83,12 @@ export function DiffDomainGroup({ domain, icon, items, defaultExpanded }: DiffDo
       {expanded && (
         <div className={styles.items}>
           {items.map((item) => (
-            <ChangeRow key={item.key} item={item} />
+            <ChangeRow
+              key={item.key}
+              item={item}
+              isSelected={selectedKey === item.key}
+              onSelect={onSelect}
+            />
           ))}
         </div>
       )}

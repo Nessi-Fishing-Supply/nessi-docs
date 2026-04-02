@@ -3,7 +3,7 @@ import type { NodeChange } from '../hooks/use-diff-nodes';
 import { sectionLabel } from '../constants/tooltip-styles';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  added: { label: 'Added', color: '#3d8c75', bg: 'rgba(61,140,117,0.12)' },
+  added: { label: 'New', color: '#3d8c75', bg: 'rgba(61,140,117,0.12)' },
   modified: { label: 'Modified', color: '#7b8fcd', bg: 'rgba(123,143,205,0.12)' },
   removed: { label: 'Removed', color: '#b84040', bg: 'rgba(184,64,64,0.12)' },
 };

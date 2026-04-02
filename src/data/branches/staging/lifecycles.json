@@ -291,14 +291,30 @@
           "label": "Closed"
         }
       ],
-      "transitions": [],
+      "transitions": [
+        {
+          "from": "active",
+          "to": "archived",
+          "label": "Archive thread"
+        },
+        {
+          "from": "active",
+          "to": "closed",
+          "label": "Close thread"
+        },
+        {
+          "from": "archived",
+          "to": "active",
+          "label": "Unarchive"
+        }
+      ],
       "source": "enum",
       "sourceFile": "supabase/migrations/20260330000000_create_messaging.sql"
     },
     {
       "slug": "offer",
       "name": "Offer Lifecycle",
-      "description": "Status lifecycle for offer entities",
+      "description": "Status lifecycle for offer entities \u2014 tracks negotiation flow between buyer and seller",
       "states": [
         {
           "id": "pending",
@@ -321,7 +337,43 @@
           "label": "Expired"
         }
       ],
-      "transitions": [],
+      "transitions": [
+        {
+          "from": "pending",
+          "to": "accepted",
+          "label": "Accept offer"
+        },
+        {
+          "from": "pending",
+          "to": "declined",
+          "label": "Decline offer"
+        },
+        {
+          "from": "pending",
+          "to": "countered",
+          "label": "Counter offer"
+        },
+        {
+          "from": "pending",
+          "to": "expired",
+          "label": "Auto-expire after 48h"
+        },
+        {
+          "from": "countered",
+          "to": "accepted",
+          "label": "Accept counter"
+        },
+        {
+          "from": "countered",
+          "to": "declined",
+          "label": "Decline counter"
+        },
+        {
+          "from": "countered",
+          "to": "expired",
+          "label": "Auto-expire counter"
+        }
+      ],
       "source": "enum",
       "sourceFile": "supabase/migrations/20260330000001_create_offers_and_blocks.sql"
     },
@@ -383,6 +435,53 @@
       ],
       "source": "check_constraint",
       "sourceFile": "supabase/migrations/20260325200000_create_shop_ownership_transfers.sql"
+    },
+    {
+      "slug": "wishlist-item",
+      "name": "Wishlist Item Lifecycle",
+      "description": "Status lifecycle for wishlist item entities \u2014 tracks items from active interest through purchase or removal",
+      "states": [
+        {
+          "id": "active",
+          "label": "Active"
+        },
+        {
+          "id": "purchased",
+          "label": "Purchased"
+        },
+        {
+          "id": "unavailable",
+          "label": "Unavailable"
+        },
+        {
+          "id": "removed",
+          "label": "Removed"
+        }
+      ],
+      "transitions": [
+        {
+          "from": "active",
+          "to": "purchased",
+          "label": "Mark purchased"
+        },
+        {
+          "from": "active",
+          "to": "unavailable",
+          "label": "Listing sold or deleted"
+        },
+        {
+          "from": "active",
+          "to": "removed",
+          "label": "Remove from wishlist"
+        },
+        {
+          "from": "unavailable",
+          "to": "removed",
+          "label": "Dismiss"
+        }
+      ],
+      "source": "enum",
+      "sourceFile": "supabase/migrations/20260402000000_create_wishlists.sql"
     }
   ]
 }

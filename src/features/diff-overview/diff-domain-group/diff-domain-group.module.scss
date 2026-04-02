@@ -66,28 +66,33 @@
   border-top: 1px solid var(--border-subtle);
 }
 
-.rowLink {
-  text-decoration: none;
-  display: block;
-}
-
 .row {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   padding: 8px 16px 8px 20px;
+  border: none;
   border-left: 2px solid transparent;
-  transition: background var(--transition-fast);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast);
 
-  .rowLink:hover & {
+  &:hover {
     background: var(--bg-hover);
   }
 }
 
-.row + .row,
-.rowLink + .rowLink .row,
-.rowLink + .row,
-.row + .rowLink .row {
+.rowSelected {
+  background: var(--bg-raised);
+  border-left-color: var(--color-accent-500) !important;
+}
+
+.row + .row {
   border-top: 1px solid var(--border-subtle);
 }
 

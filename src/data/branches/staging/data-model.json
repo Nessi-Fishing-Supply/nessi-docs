@@ -551,14 +551,15 @@
           "nullable": false
         },
         {
+          "name": "quantity",
+          "type": "number",
+          "nullable": false,
+          "default": "1"
+        },
+        {
           "name": "published_at",
           "type": "string",
           "nullable": true
-        },
-        {
-          "name": "quantity",
-          "type": "number",
-          "nullable": false
         },
         {
           "name": "search_vector",
@@ -623,6 +624,12 @@
           "name": "weight_oz",
           "type": "number",
           "nullable": true
+        },
+        {
+          "name": "condition_notes",
+          "type": "string",
+          "nullable": true,
+          "description": "Seller notes about item condition"
         }
       ],
       "badges": ["RLS", "Triggers"],
@@ -970,7 +977,7 @@
         {
           "name": "slug",
           "type": "string",
-          "nullable": false,
+          "nullable": true,
           "isUnique": true
         },
         {
@@ -1004,6 +1011,11 @@
         {
           "name": "years_fishing",
           "type": "number",
+          "nullable": true
+        },
+        {
+          "name": "last_active_at",
+          "type": "string",
           "nullable": true
         }
       ],
@@ -2301,6 +2313,11 @@
           "type": "string",
           "nullable": false,
           "default": "NOW()"
+        },
+        {
+          "name": "featured_at",
+          "type": "string",
+          "nullable": true
         }
       ],
       "badges": ["RLS", "Triggers"],
@@ -2502,11 +2519,29 @@
           "name": "profile_id",
           "type": "uuid",
           "nullable": false,
-          "references": { "table": "profiles", "column": "id", "onDelete": "CASCADE" }
+          "references": {
+            "table": "profiles",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
         },
-        { "name": "name", "type": "text", "nullable": false },
-        { "name": "is_public", "type": "boolean", "nullable": false, "default": "false" },
-        { "name": "created_at", "type": "timestamptz", "nullable": false, "default": "now()" }
+        {
+          "name": "name",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "is_public",
+          "type": "boolean",
+          "nullable": false,
+          "default": "false"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz",
+          "nullable": false,
+          "default": "now()"
+        }
       ],
       "rlsPolicies": [
         {
@@ -2526,7 +2561,11 @@
         }
       ],
       "indexes": [
-        { "name": "wishlists_profile_id_idx", "columns": ["profile_id"], "unique": false }
+        {
+          "name": "wishlists_profile_id_idx",
+          "columns": ["profile_id"],
+          "unique": false
+        }
       ],
       "triggers": []
     }
