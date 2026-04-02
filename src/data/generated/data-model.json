@@ -1113,6 +1113,16 @@
       "label": "Message Thread Participants",
       "fields": [
         {
+          "name": "context_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "context_type",
+          "type": "enum:participant_context_type",
+          "nullable": false
+        },
+        {
           "name": "id",
           "type": "string",
           "nullable": false,
@@ -1191,6 +1201,11 @@
         {
           "name": "idx_message_thread_participants_member_id",
           "columns": ["member_id"],
+          "unique": false
+        },
+        {
+          "name": "idx_participants_context",
+          "columns": ["context_type", "context_id"],
           "unique": false
         }
       ],

@@ -379,7 +379,8 @@
         "message_thread_participants",
         "message_threads",
         "messages",
-        "offers"
+        "offers",
+        "shops"
       ],
       "journeySlugs": ["buyer-seller-messaging", "member-block-management"],
       "links": [
@@ -416,6 +417,11 @@
         {
           "type": "entity",
           "label": "offers",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shops",
           "href": "/data-model"
         },
         {

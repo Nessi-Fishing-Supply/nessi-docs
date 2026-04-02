@@ -78,6 +78,10 @@
     {
       "name": "offer_status",
       "values": ["pending", "accepted", "declined", "countered", "expired"]
+    },
+    {
+      "name": "participant_context_type",
+      "values": ["member", "shop"]
     }
   ]
 }

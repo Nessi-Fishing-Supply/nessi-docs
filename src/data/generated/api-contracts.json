@@ -302,6 +302,18 @@
       "endpoints": [
         {
           "method": "GET",
+          "path": "/api/cron/offers-expiry",
+          "label": "List Offers Expiry",
+          "auth": "none",
+          "access": [],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Expire stale pending and accepted offers past their time windows",
+          "tags": [],
+          "sourceFile": "src/app/api/cron/offers-expiry/route.ts"
+        },
+        {
+          "method": "GET",
           "path": "/api/cron/price-drops",
           "label": "List Price Drop",
           "auth": "admin",
@@ -457,7 +469,7 @@
           "label": "List :Id",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [400, 401, 403, 404, 422, 500],
           "requestFields": [],
           "description": "Returns the full details of a single listing, including photos.",
           "tags": [],
@@ -469,7 +481,7 @@
           "label": ":Id Listing",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [400, 401, 403, 404, 422, 500],
           "requestFields": [],
           "description": "Updates the details of an existing listing owned by the seller.",
           "tags": [],
@@ -481,7 +493,7 @@
           "label": ":Id Listing",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [400, 401, 403, 404, 422, 500],
           "requestFields": [],
           "description": "Permanently removes a listing and its photos from the seller's account.",
           "tags": [],
@@ -612,7 +624,7 @@
           "label": "List Listing",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [400, 401, 403, 422, 500],
           "requestFields": [],
           "description": "Returns a paginated list of active listings, with optional filters and sorting.",
           "tags": [],
@@ -624,7 +636,7 @@
           "label": "Create Listing",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [400, 401, 403, 422, 500],
           "requestFields": [],
           "description": "Creates a new listing draft for the seller, in either member or shop context.",
           "tags": [],
@@ -743,6 +755,30 @@
           "sourceFile": "src/app/api/members/block/route.ts"
         },
         {
+          "method": "PATCH",
+          "path": "/api/members/heartbeat",
+          "label": "Heartbeat Member",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Update the current user's last seen timestamp for online status",
+          "tags": [],
+          "sourceFile": "src/app/api/members/heartbeat/route.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/members/profile",
+          "label": "Profile Member",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 422, 500],
+          "requestFields": [],
+          "description": "Update the authenticated member's profile text fields with content moderation",
+          "tags": [],
+          "sourceFile": "src/app/api/members/profile/route.ts"
+        },
+        {
           "method": "GET",
           "path": "/api/members/seller-preconditions",
           "label": "List Seller Precondition",
@@ -793,25 +829,33 @@
           "method": "GET",
           "path": "/api/messaging/threads/:thread_id/messages",
           "label": "List Message",
-          "auth": "user",
-          "access": ["Member"],
+          "auth": "admin",
+          "access": ["Shop"],
           "errorCodes": [400, 401, 403, 422, 500],
           "requestFields": [],
           "description": "List messages in a thread with cursor-based pagination",
-          "tags": [],
-          "sourceFile": "src/app/api/messaging/threads/[thread_id]/messages/route.ts"
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/messages/route.ts",
+          "permissions": {
+            "feature": "messaging",
+            "level": "full"
+          }
         },
         {
           "method": "POST",
           "path": "/api/messaging/threads/:thread_id/messages",
           "label": "Messages :Thread Id",
-          "auth": "user",
-          "access": ["Member"],
+          "auth": "admin",
+          "access": ["Shop"],
           "errorCodes": [400, 401, 403, 422, 500],
           "requestFields": [],
           "description": "Send a message in a thread (applies safety filter before storage)",
-          "tags": [],
-          "sourceFile": "src/app/api/messaging/threads/[thread_id]/messages/route.ts"
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/messages/route.ts",
+          "permissions": {
+            "feature": "messaging",
+            "level": "full"
+          }
         },
         {
           "method": "PATCH",
@@ -838,28 +882,52 @@
           "sourceFile": "src/app/api/messaging/threads/[thread_id]/route.ts"
         },
         {
+          "method": "POST",
+          "path": "/api/messaging/threads/:thread_id/upload",
+          "label": "Upload :Thread Id",
+          "auth": "admin",
+          "access": ["Shop"],
+          "errorCodes": [400, 401, 403, 422, 500],
+          "requestFields": [],
+          "description": "Upload images in a message thread",
+          "tags": ["file-upload", "admin-only"],
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/upload/route.ts",
+          "permissions": {
+            "feature": "messaging",
+            "level": "full"
+          }
+        },
+        {
           "method": "GET",
           "path": "/api/messaging/threads",
           "label": "List Thread",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
+          "access": ["Shop"],
+          "errorCodes": [400, 401, 403, 409, 500],
           "requestFields": [],
           "description": "List the authenticated user's message threads with optional type filter",
           "tags": [],
-          "sourceFile": "src/app/api/messaging/threads/route.ts"
+          "sourceFile": "src/app/api/messaging/threads/route.ts",
+          "permissions": {
+            "feature": "messaging",
+            "level": "view"
+          }
         },
         {
           "method": "POST",
           "path": "/api/messaging/threads",
           "label": "Threads Messaging",
           "auth": "user",
-          "access": ["Member"],
-          "errorCodes": [400, 401, 409, 500],
+          "access": ["Shop"],
+          "errorCodes": [400, 401, 403, 409, 500],
           "requestFields": [],
           "description": "Create a new message thread between two members",
           "tags": [],
-          "sourceFile": "src/app/api/messaging/threads/route.ts"
+          "sourceFile": "src/app/api/messaging/threads/route.ts",
+          "permissions": {
+            "feature": "messaging",
+            "level": "view"
+          }
         },
         {
           "method": "GET",
@@ -872,6 +940,59 @@
           "description": "Get the total unread message count for the authenticated user",
           "tags": [],
           "sourceFile": "src/app/api/messaging/unread-count/route.ts"
+        }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "endpoints": [
+        {
+          "method": "PATCH",
+          "path": "/api/notifications/:id/read",
+          "label": "Read :Id",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 404, 500],
+          "requestFields": [],
+          "description": "Mark a single notification as read",
+          "tags": [],
+          "sourceFile": "src/app/api/notifications/[id]/read/route.ts"
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/notifications/read-all",
+          "label": "Read All Notification",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Mark all notifications as read for the authenticated user",
+          "tags": [],
+          "sourceFile": "src/app/api/notifications/read-all/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/notifications",
+          "label": "List Notification",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "List notifications for the authenticated user with pagination",
+          "tags": [],
+          "sourceFile": "src/app/api/notifications/route.ts"
+        },
+        {
+          "method": "GET",
+          "path": "/api/notifications/unread-count",
+          "label": "List Unread Count",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [401, 500],
+          "requestFields": [],
+          "description": "Get the unread notification count for the authenticated user",
+          "tags": [],
+          "sourceFile": "src/app/api/notifications/unread-count/route.ts"
         }
       ]
     },
@@ -1147,6 +1268,22 @@
           "sourceFile": "src/app/api/shops/[id]/ownership/route.ts",
           "permissions": {
             "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/shops/:id/profile",
+          "label": "Profile :Id",
+          "auth": "admin",
+          "access": ["Shop"],
+          "errorCodes": [400, 422, 500],
+          "requestFields": [],
+          "description": "Update a shop's text fields (name, description) with content moderation",
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/profile/route.ts",
+          "permissions": {
+            "feature": "shop_settings",
             "level": "full"
           }
         },

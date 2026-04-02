@@ -484,6 +484,22 @@
       ]
     },
     {
+      "slug": "participant-context-type",
+      "name": "Participant Context Type",
+      "description": "Database enum Participant Context Type with 2 values",
+      "source": "supabase/migrations/20260402100000_add_participant_context.sql",
+      "values": [
+        {
+          "value": "member",
+          "label": "Member"
+        },
+        {
+          "value": "shop",
+          "label": "Shop"
+        }
+      ]
+    },
+    {
       "slug": "participant-role",
       "name": "Participant Role",
       "description": "Database enum Participant Role with 4 values",
