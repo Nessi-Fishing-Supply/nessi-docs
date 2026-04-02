@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { DiffBadge } from '@/components/ui/diff-badge';
 import { Badge } from '@/components/indicators';
 import { SectionLabel } from '@/components/layout';
 import { KeyValueRow } from '@/components/data-display';
@@ -417,7 +416,7 @@ export function DiffPanel({ item }: DiffPanelProps) {
   return (
     <div>
       <div className={diffStyles.header}>
-        <DiffBadge status={item.status as Exclude<DiffStatus, 'unchanged'>} />
+        <Badge variant="diff" status={item.status as Exclude<DiffStatus, 'unchanged'>} />
         <span className={diffStyles.domain}>{item.domain}</span>
       </div>
       <h3 className={styles.panelTitleMono}>{item.label}</h3>

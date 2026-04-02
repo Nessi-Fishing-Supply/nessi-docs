@@ -10,7 +10,7 @@ import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/layout/page-header';
 import { BorderTrace } from '@/components/data-display/border-trace';
 import { useDiffMode } from '@/hooks/use-diff-mode';
-import { DiffBadge } from '@/components/ui/diff-badge';
+import { Badge } from '@/components/indicators/badge';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import styles from './config-list.module.scss';
 
@@ -285,7 +285,7 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
               <BorderTrace active={highlightSlug === e.slug} />
               <button className={styles.enumHeader} onClick={() => toggleSlug(e.slug)}>
                 <span className={styles.enumName}>{e.name}</span>
-                {status && status !== 'unchanged' && <DiffBadge status={status} />}
+                {status && status !== 'unchanged' && <Badge variant="diff" status={status} />}
                 <span className={styles.enumCount}>{e.values.length} values</span>
                 <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
               </button>
@@ -344,7 +344,7 @@ export function ConfigList({ enums, roles }: ConfigListProps) {
               >
                 <button className={styles.enumHeader} onClick={() => toggleSlug(e.slug)}>
                   <span className={styles.enumName}>{e.name}</span>
-                  <DiffBadge status="added" />
+                  <Badge variant="diff" status="added" />
                   <span className={styles.enumCount}>{e.values.length} values</span>
                   <span className={styles.chevron}>{isOpen ? '▾' : '▸'}</span>
                 </button>

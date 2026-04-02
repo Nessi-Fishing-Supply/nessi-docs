@@ -11,7 +11,7 @@ import { BorderTrace } from '@/components/data-display/border-trace';
 import { Tooltip } from '@/components/data-display';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { useDocsContext } from '@/providers/docs-provider';
-import { DiffBadge } from '@/components/ui/diff-badge';
+import { Badge } from '@/components/indicators/badge';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import type { DiffStatus, FieldChange } from '@/types/diff';
 import styles from './entity-list.module.scss';
@@ -192,7 +192,7 @@ function EntityRow({
         style={diffStatus === 'unchanged' ? { cursor: 'default' } : undefined}
       >
         <span className={styles.entityName}>{entity.name}</span>
-        {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
+        {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
         <span className={styles.categoryBadge}>{entity.badge}</span>
         {(() => {
           const lc = getLifecycleForEntity(entity.name);

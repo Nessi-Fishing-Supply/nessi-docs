@@ -8,7 +8,7 @@ import { useBranchHref } from '@/providers/branch-provider';
 import { useDocsContext } from '@/providers/docs-provider';
 import { PageHeader } from '@/components/layout/page-header';
 import { useDiffMode } from '@/hooks/use-diff-mode';
-import { DiffBadge } from '@/components/ui/diff-badge';
+import { Badge } from '@/components/indicators/badge';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import styles from './lifecycle-list.module.scss';
 
@@ -139,7 +139,7 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
               <div className={styles.rowContent}>
                 <div className={styles.rowTitle}>
                   {lc.name}
-                  {lcStatus !== 'unchanged' && <DiffBadge status={lcStatus} />}
+                  {lcStatus !== 'unchanged' && <Badge variant="diff" status={lcStatus} />}
                 </div>
                 <div className={styles.rowDesc}>{lc.description}</div>
                 <div className={styles.rowMeta}>
@@ -218,7 +218,7 @@ export function LifecycleList({ lifecycles }: LifecycleListProps) {
             <div className={styles.rowContent}>
               <div className={styles.rowTitle}>
                 {lc.name}
-                <DiffBadge status="removed" />
+                <Badge variant="diff" status="removed" />
               </div>
               <div className={styles.rowDesc}>{lc.description}</div>
             </div>

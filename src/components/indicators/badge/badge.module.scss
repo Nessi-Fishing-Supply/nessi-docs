@@ -17,3 +17,35 @@
   background: var(--bg-raised);
   color: var(--text-dim);
 }
+
+.count {
+  background: var(--bg-raised);
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+// Diff variant
+.diff {
+  font-family: var(--font-family-mono);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.added {
+  color: var(--diff-added);
+  background: var(--diff-added-bg);
+  border: 1px solid var(--diff-added-border);
+}
+
+.modified {
+  color: var(--diff-modified);
+  background: var(--diff-modified-bg);
+  border: 1px solid var(--diff-modified-border);
+}
+
+.removed {
+  color: var(--diff-removed);
+  background: var(--diff-removed-bg);
+  border: 1px solid var(--diff-removed-border);
+}

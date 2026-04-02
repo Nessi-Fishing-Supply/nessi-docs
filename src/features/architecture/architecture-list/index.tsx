@@ -6,7 +6,7 @@ import type { ArchDiagram } from '@/types/architecture';
 import { useBranchHref } from '@/providers/branch-provider';
 import { useDocsContext } from '@/providers/docs-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
-import { DiffBadge } from '@/components/ui/diff-badge';
+import { Badge } from '@/components/indicators/badge';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import { PageHeader } from '@/components/layout/page-header';
 import styles from './architecture-list.module.scss';
@@ -128,7 +128,7 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
               <div className={styles.rowContent}>
                 <div className={styles.rowTitle}>
                   {d.title}
-                  {dStatus !== 'unchanged' && <DiffBadge status={dStatus} />}
+                  {dStatus !== 'unchanged' && <Badge variant="diff" status={dStatus} />}
                 </div>
                 <div className={styles.rowDesc}>{d.description}</div>
               </div>
@@ -185,7 +185,7 @@ export function ArchitectureList({ diagrams }: ArchitectureListProps) {
               <div className={styles.rowContent}>
                 <div className={styles.rowTitle}>
                   {d.title}
-                  <DiffBadge status="removed" />
+                  <Badge variant="diff" status="removed" />
                 </div>
                 <div className={styles.rowDesc}>{d.description}</div>
               </div>

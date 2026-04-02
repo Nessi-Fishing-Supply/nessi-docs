@@ -10,7 +10,7 @@ import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
 import { useDocsContext } from '@/providers/docs-provider';
 import { useBranchHref } from '@/providers/branch-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
-import { DiffBadge } from '@/components/ui/diff-badge';
+import { Badge } from '@/components/indicators/badge';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import { BorderTrace } from '@/components/data-display/border-trace';
 import styles from './feature-domain-view.module.scss';
@@ -118,7 +118,7 @@ function FeatureRow({
       <button className={styles.featureRowHeader} onClick={onToggle}>
         <span className={styles.featureRowTitle}>
           <span className={styles.featureName}>{feature.name}</span>
-          {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
+          {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
         </span>
         <span className={styles.featureBadges}>
           {feature.componentCount > 0 && (
@@ -161,7 +161,7 @@ function FeatureRow({
                       className={`${styles.linkItem} ${styles.linkApi} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
                     >
                       <span>{link.label}</span>
-                      {ls && ls !== 'unchanged' && <DiffBadge status={ls} />}
+                      {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
                       <span className={styles.linkArrowSmall}>&rsaquo;</span>
                     </Link>
                   );
@@ -184,7 +184,7 @@ function FeatureRow({
                       className={`${styles.linkItem} ${styles.linkEntity} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
                     >
                       <span>{link.label}</span>
-                      {ls && ls !== 'unchanged' && <DiffBadge status={ls} />}
+                      {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
                       <span className={styles.linkArrowSmall}>&rsaquo;</span>
                     </Link>
                   );
@@ -207,7 +207,7 @@ function FeatureRow({
                       className={`${styles.linkItem} ${styles.linkJourney} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
                     >
                       <span>{link.label}</span>
-                      {ls && ls !== 'unchanged' && <DiffBadge status={ls} />}
+                      {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
                       <span className={styles.linkArrowSmall}>&rsaquo;</span>
                     </Link>
                   );
@@ -230,7 +230,7 @@ function FeatureRow({
                       className={`${styles.linkItem} ${styles.linkLifecycle} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
                     >
                       <span>{link.label}</span>
-                      {ls && ls !== 'unchanged' && <DiffBadge status={ls} />}
+                      {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
                       <span className={styles.linkArrowSmall}>&rsaquo;</span>
                     </Link>
                   );

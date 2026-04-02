@@ -11,7 +11,7 @@ import { BorderTrace } from '@/components/data-display/border-trace';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { useDocsContext } from '@/providers/docs-provider';
-import { DiffBadge } from '@/components/ui/diff-badge';
+import { Badge } from '@/components/indicators/badge';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
 import type { DiffStatus, ApiGroupDiff, FieldChange } from '@/types/diff';
 import styles from './api-list.module.scss';
@@ -394,7 +394,7 @@ function EndpointRow({
         style={diffStatus === 'unchanged' ? { cursor: 'default' } : undefined}
       >
         <span className={styles.methodBadge}>{endpoint.method}</span>
-        {diffStatus && diffStatus !== 'unchanged' && <DiffBadge status={diffStatus} />}
+        {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
         <span className={styles.epPath}>
           {pathParts.map((part, i) =>
             part.startsWith(':') ? (

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { DiffBadge } from '@/components/ui/diff-badge';
+import { Badge } from '@/components/indicators/badge';
 import type { DiffStatus, FieldChange } from '@/types/diff';
 import styles from './diff-domain-group.module.scss';
 
@@ -38,7 +38,7 @@ function ChangeRow({
       onClick={() => onSelect?.(item)}
       type="button"
     >
-      <DiffBadge status={item.status as Exclude<DiffStatus, 'unchanged'>} />
+      <Badge variant="diff" status={item.status as Exclude<DiffStatus, 'unchanged'>} />
       <span className={styles.rowLabel}>{item.label}</span>
       {item.changedFields && item.changedFields.length > 0 && (
         <span className={styles.fieldCount}>
