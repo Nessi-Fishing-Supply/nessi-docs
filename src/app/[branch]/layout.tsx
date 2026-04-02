@@ -8,6 +8,7 @@ import { Sidebar } from '@/components/navigation/sidebar';
 import { DetailPanel } from '@/components/layout/detail-panel';
 import { DiffToolbar } from '@/components/layout/diff-toolbar';
 import { SearchTrigger } from '@/features/search/search-trigger';
+import { BranchInit } from '@/providers/branch-init';
 import { loadBranch, getAllBranchData } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
 import { getFeatureDomains } from '@/data/transforms/features';
@@ -36,22 +37,24 @@ export default async function BranchLayout({
   ).map((d) => ({ slug: d.slug, label: d.label }));
 
   return (
-    <BranchProvider branchName={branch} branchData={branchData} allBranchData={allBranchData}>
-      <DocsProvider>
-        <AppShell
-          topbar={<Topbar />}
-          sidebar={<Sidebar lifecycles={branchData.lifecycles} featureDomains={featureDomains} />}
-          detail={<DetailPanel />}
-          diffToolbar={
-            <Suspense>
-              <DiffToolbar />
-            </Suspense>
-          }
-        >
-          {children}
-        </AppShell>
-        <SearchTrigger />
-      </DocsProvider>
-    </BranchProvider>
+    <BranchInit branchName={branch} branchData={branchData} allBranchData={allBranchData}>
+      <BranchProvider branchName={branch} branchData={branchData} allBranchData={allBranchData}>
+        <DocsProvider>
+          <AppShell
+            topbar={<Topbar />}
+            sidebar={<Sidebar lifecycles={branchData.lifecycles} featureDomains={featureDomains} />}
+            detail={<DetailPanel />}
+            diffToolbar={
+              <Suspense>
+                <DiffToolbar />
+              </Suspense>
+            }
+          >
+            {children}
+          </AppShell>
+          <SearchTrigger />
+        </DocsProvider>
+      </BranchProvider>
+    </BranchInit>
   );
 }

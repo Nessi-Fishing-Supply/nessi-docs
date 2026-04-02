@@ -3,6 +3,7 @@ import { DM_Sans } from 'next/font/google';
 import { StalenessBanner } from '@/components/layout/staleness-banner';
 import { DeviceGate } from '@/components/layout/device-gate';
 import { ToastProvider } from '@/components/indicators/toast';
+import { QueryProvider } from '@/providers/query-provider';
 import '@/styles/globals.scss';
 
 const dmSans = DM_Sans({
@@ -23,7 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={dmSans.className}>
         <StalenessBanner />
         <DeviceGate />
-        <ToastProvider>{children}</ToastProvider>
+        <QueryProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </QueryProvider>
       </body>
     </html>
   );
