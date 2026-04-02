@@ -14,7 +14,7 @@
   border: 1px solid var(--border-medium);
   border-radius: 6px;
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: var(--font-size-300);
   padding: 5px 12px;
   cursor: pointer;
   z-index: 6;
@@ -40,7 +40,7 @@
 }
 
 .groupLabel {
-  font-size: 9px;
+  font-size: var(--font-size-100);
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -50,7 +50,7 @@
 .chip {
   padding: 3px 10px;
   border-radius: 12px;
-  font-size: 10px;
+  font-size: var(--font-size-200);
   border: 1px solid transparent;
   background: var(--chip-bg);
   color: var(--text-muted);

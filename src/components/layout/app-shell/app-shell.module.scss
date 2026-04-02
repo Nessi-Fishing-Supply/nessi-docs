@@ -109,7 +109,7 @@
 }
 
 .toggleArrow {
-  font-size: 14px;
+  font-size: var(--font-size-600);
   color: var(--text-muted);
   line-height: 1;
 

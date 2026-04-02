@@ -10,7 +10,7 @@
 
 .filterChip {
   padding: 5px 12px;
-  font-size: 12px;
+  font-size: var(--font-size-400);
   font-weight: 500;
   border-radius: 6px;
   border: 1px solid var(--border-medium);
@@ -56,5 +56,5 @@
   text-align: center;
   padding: 40px 20px;
   color: var(--text-dim);
-  font-size: 13px;
+  font-size: var(--font-size-500);
 }

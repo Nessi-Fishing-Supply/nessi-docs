@@ -20,7 +20,7 @@
 }
 
 .filterLabel {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
@@ -30,7 +30,7 @@
 }
 
 .filterChip {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   padding: 4px 12px;
   border-radius: 6px;
   background: rgb(255 255 255 / 3%);
@@ -57,7 +57,7 @@
 }
 
 .chipCount {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-muted);
 
   .filterChipActive & {
@@ -75,7 +75,7 @@
 
 .methodChip {
   font-family: var(--font-family-mono);
-  font-size: 11px;
+  font-size: var(--font-size-300);
   font-weight: 700;
   text-transform: uppercase;
   padding: 4px 10px;
@@ -119,7 +119,7 @@
 }
 
 .groupName {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -132,7 +132,7 @@
 }
 
 .groupCount {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-muted);
   background: rgb(255 255 255 / 5%);
   padding: 2px 8px;
@@ -199,7 +199,7 @@
 
 .methodBadge {
   font-family: var(--font-family-mono);
-  font-size: 11px;
+  font-size: var(--font-size-300);
   font-weight: 700;
   text-transform: uppercase;
   color: var(--method-color);
@@ -213,7 +213,7 @@
 
 .epPath {
   font-family: var(--font-family-mono);
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
@@ -231,7 +231,7 @@
 }
 
 .epAccess {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: #4aa88e;
   background: rgb(61 140 117 / 10%);
   padding: 3px 10px;
@@ -254,7 +254,7 @@
 }
 
 .epErrors {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: #d05050;
   background: rgb(184 64 64 / 12%);
   padding: 3px 10px;
@@ -273,7 +273,7 @@
 }
 
 .epChevron {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-muted);
   transition: transform 200ms ease-out;
 
@@ -292,7 +292,7 @@
 }
 
 .epDescription {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-secondary);
   line-height: 1.5;
   margin: 0 0 14px;
@@ -313,7 +313,7 @@
 }
 
 .detailLabel {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-muted);
@@ -359,20 +359,20 @@
 
 .fieldName {
   font-family: var(--font-family-mono);
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-primary);
   min-width: 90px;
 }
 
 .fieldType {
   font-family: var(--font-family-mono);
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-secondary);
   min-width: 60px;
 }
 
 .fieldReq {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: #e27739;
   font-weight: 600;
 }
@@ -392,7 +392,7 @@
   padding: 4px 10px;
   border-radius: 5px;
   font-family: var(--font-family-mono);
-  font-size: 12px;
+  font-size: var(--font-size-400);
   font-weight: 600;
 }
 
@@ -409,7 +409,7 @@
 }
 
 .statusDesc {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   font-weight: 400;
   color: var(--text-secondary);
   font-family: var(--font-family-sans);
@@ -426,7 +426,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: #4aa88e;
   padding: 4px 10px;
   border-radius: 5px;
@@ -478,7 +478,7 @@
 
 .errorHttp {
   font-family: var(--font-family-mono);
-  font-size: 9px;
+  font-size: var(--font-size-100);
   font-weight: 700;
   color: #b84040;
   background: rgb(184 64 64 / 12%);
@@ -488,7 +488,7 @@
 }
 
 .errorText {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-secondary);
   line-height: 1.4;
 }
@@ -507,7 +507,7 @@
   gap: 5px;
   padding: 4px 10px;
   border-radius: 6px;
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: #3d8c75;
   background: rgb(61 140 117 / 6%);
   border: 1px solid rgb(61 140 117 / 10%);
@@ -537,7 +537,7 @@
   align-items: center;
   justify-content: center;
   min-height: 200px;
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-dim);
 }
 

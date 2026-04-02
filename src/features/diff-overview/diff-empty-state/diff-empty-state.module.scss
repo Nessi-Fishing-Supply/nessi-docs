@@ -20,7 +20,7 @@
 }
 
 .heading {
-  font-size: 20px;
+  font-size: var(--font-size-900);
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 8px;
@@ -28,7 +28,7 @@
 }
 
 .subtext {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-muted);
   margin: 0 0 24px;
   line-height: 1.5;
@@ -43,7 +43,7 @@
   display: block;
   width: 100%;
   padding: 10px 16px;
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-muted);
   background: var(--bg-raised);
   border: 1px dashed var(--border-medium);
@@ -105,12 +105,12 @@
 }
 
 .optionLabel {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-primary);
   font-weight: 500;
 }
 
 .optionDesc {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-muted);
 }

@@ -25,14 +25,14 @@
 }
 
 .heroTitle {
-  font-size: 20px;
+  font-size: var(--font-size-900);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
 }
 
 .heroDescription {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-secondary);
   margin: 4px 0 0;
   line-height: 1.5;
@@ -45,7 +45,7 @@
 }
 
 .heroBadge {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   padding: 4px 10px;
   border-radius: 5px;
   background: rgb(255 255 255 / 4%);
@@ -57,7 +57,7 @@
 // ─── Feature Rows ───
 
 .featureSectionLabel {
-  font-size: 9px;
+  font-size: var(--font-size-100);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
@@ -129,7 +129,7 @@
 }
 
 .featureName {
-  font-size: 14px;
+  font-size: var(--font-size-600);
   font-weight: 600;
   color: var(--text-primary);
   flex-shrink: 0;
@@ -144,7 +144,7 @@
 }
 
 .featureBadge {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   font-family: var(--font-family-mono);
   padding: 2px 8px;
   border-radius: 4px;
@@ -159,7 +159,7 @@
 }
 
 .chevron {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-dim);
   transition: transform 200ms ease-out;
   flex-shrink: 0;
@@ -179,7 +179,7 @@
 }
 
 .expansionDescription {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-secondary);
   line-height: 1.55;
   margin-bottom: 16px;
@@ -194,7 +194,7 @@
 }
 
 .sectionLabel {
-  font-size: 9px;
+  font-size: var(--font-size-100);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-dim);
@@ -215,7 +215,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-family-mono);
-  font-size: 12px;
+  font-size: var(--font-size-400);
   padding: 7px 12px;
   border-radius: 5px;
   text-decoration: none;
@@ -263,7 +263,7 @@
 }
 
 .linkArrowSmall {
-  font-size: 14px;
+  font-size: var(--font-size-600);
   opacity: 0.4;
   margin-left: auto;
   transition: opacity 150ms ease;
@@ -296,7 +296,7 @@
 }
 
 .footerTitle {
-  font-size: 9px;
+  font-size: var(--font-size-100);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
@@ -309,7 +309,7 @@
 }
 
 .footerViewAll {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-muted);
   text-decoration: none;
   transition: color 150ms ease;
@@ -329,7 +329,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-secondary);
 }
 
@@ -342,7 +342,7 @@
 }
 
 .changeTypeBadge {
-  font-size: 9px;
+  font-size: var(--font-size-100);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 700;
@@ -356,7 +356,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: #3d8c75;
   background: rgb(61 140 117 / 6%);
   padding: 7px 12px;
@@ -375,7 +375,7 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-family-mono);
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: #9b7bd4;
   background: rgb(155 123 212 / 6%);
   padding: 7px 12px;
@@ -390,13 +390,13 @@
 }
 
 .footerLinkMeta {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   margin-left: auto;
 }
 
 .linkArrow {
-  font-size: 14px;
+  font-size: var(--font-size-600);
   opacity: 0.4;
   transition: opacity 150ms ease;
 
@@ -457,6 +457,6 @@
   align-items: center;
   justify-content: center;
   min-height: 200px;
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-dim);
 }

@@ -52,7 +52,7 @@
 }
 
 .searchIcon {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   font-family: var(--font-family-mono);
   padding: 2px 6px;
@@ -70,7 +70,7 @@
   border: none;
   outline: none;
   color: var(--text-primary);
-  font-size: 15px;
+  font-size: var(--font-size-700);
   font-family: inherit;
 
   &::placeholder {
@@ -79,7 +79,7 @@
 }
 
 .closeBtn {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   font-family: var(--font-family-mono);
   padding: 2px 6px;
@@ -119,7 +119,7 @@
 }
 
 .categoryHeader {
-  font-size: 9px;
+  font-size: var(--font-size-100);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -147,7 +147,7 @@
 }
 
 .resultIcon {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   width: 16px;
   text-align: center;
   flex-shrink: 0;
@@ -162,19 +162,19 @@
 }
 
 .resultTitle {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-primary);
 }
 
 .resultSubtitle {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-muted);
 }
 
 .empty {
   padding: 32px 16px;
   text-align: center;
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-muted);
 }
 
@@ -185,7 +185,7 @@
   justify-content: center;
 
   span {
-    font-size: 10px;
+    font-size: var(--font-size-200);
     color: var(--text-dim);
     padding: 3px 10px;
     border-radius: 10px;
@@ -203,14 +203,14 @@
   justify-content: space-between;
   align-items: center;
   padding: 4px 4px 8px;
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 
 .clearRecent {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   background: none;
   border: none;
@@ -241,12 +241,12 @@
 }
 
 .recentQuery {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   color: var(--text-primary);
 }
 
 .recentRemove {
-  font-size: 14px;
+  font-size: var(--font-size-600);
   color: var(--text-dim);
   opacity: 0;
   transition: opacity 100ms ease;

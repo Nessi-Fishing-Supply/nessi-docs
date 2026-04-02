@@ -20,7 +20,7 @@
 }
 
 .filterLabel {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
@@ -30,7 +30,7 @@
 }
 
 .filterChip {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   padding: 4px 12px;
   border-radius: 6px;
   background: rgb(255 255 255 / 3%);
@@ -57,7 +57,7 @@
 }
 
 .chipCount {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-muted);
 
   .filterChipActive & {
@@ -85,7 +85,7 @@
 }
 
 .groupName {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
@@ -98,7 +98,7 @@
 }
 
 .groupCount {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-muted);
   background: rgb(255 255 255 / 5%);
   padding: 2px 8px;
@@ -164,14 +164,14 @@
 }
 
 .entityName {
-  font-size: 13px;
+  font-size: var(--font-size-500);
   font-family: var(--font-family-mono);
   color: #3d8c75;
   font-weight: 600;
 }
 
 .categoryBadge {
-  font-size: 9px;
+  font-size: var(--font-size-100);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
@@ -182,7 +182,7 @@
 }
 
 .lifecycleLink {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   text-decoration: none;
   padding: 1px 8px;
@@ -209,7 +209,7 @@
 }
 
 .rlsBadge {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
@@ -220,7 +220,7 @@
 }
 
 .triggerBadge {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
@@ -231,7 +231,7 @@
 }
 
 .fkBadge {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
@@ -242,13 +242,13 @@
 }
 
 .fieldCount {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   font-family: var(--font-family-mono);
   color: var(--text-secondary);
 }
 
 .chevron {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-muted);
   transition: transform 200ms ease-out;
 
@@ -272,7 +272,7 @@
   align-items: center;
   justify-content: center;
   min-height: 200px;
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-dim);
 }
 
@@ -308,7 +308,7 @@
 .fieldThType,
 .fieldThDefault,
 .fieldThRef {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-muted);
@@ -368,19 +368,19 @@
 
 .fieldName {
   font-family: var(--font-family-mono);
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-primary);
 }
 
 .fieldType {
   font-family: var(--font-family-mono);
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-secondary);
 }
 
 .fieldDefault {
   font-family: var(--font-family-mono);
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-muted);
   max-width: 120px;
 }
@@ -402,7 +402,7 @@
 .tagFk,
 .tagNull {
   display: inline-block;
-  font-size: 9px;
+  font-size: var(--font-size-100);
   padding: 2px 6px;
   border-radius: 3px;
   font-weight: 700;
@@ -429,7 +429,7 @@
 
 .fkRef {
   font-family: var(--font-family-mono);
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: #b8a0f0;
   opacity: 0.8;
   text-decoration: none;
@@ -451,7 +451,7 @@
 }
 
 .sectionLabel {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-secondary);
@@ -471,7 +471,7 @@
 
 .policyOp {
   font-family: var(--font-family-mono);
-  font-size: 10px;
+  font-size: var(--font-size-200);
   font-weight: 700;
 
   // color and background set via inline styles (method-colored)
@@ -497,7 +497,7 @@
 }
 
 .metaArrow {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   margin-left: auto;
   transition: color 150ms ease-out;
@@ -509,7 +509,7 @@
 
 .triggerEvent {
   font-family: var(--font-family-mono);
-  font-size: 10px;
+  font-size: var(--font-size-200);
   font-weight: 700;
   color: #e27739;
   background: rgb(226 119 57 / 10%);
@@ -518,25 +518,25 @@
 }
 
 .metaText {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-primary);
 }
 
 .triggerFn {
   font-family: var(--font-family-mono);
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   margin-left: auto;
 }
 
 .indexCols {
   font-family: var(--font-family-mono);
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-primary);
 }
 
 .indexUnique {
-  font-size: 9px;
+  font-size: var(--font-size-100);
   padding: 2px 6px;
   border-radius: 3px;
   font-weight: 700;
@@ -573,7 +573,7 @@
   display: flex;
   gap: 8px;
   margin-left: 8px;
-  font-size: 10px;
+  font-size: var(--font-size-200);
   font-family: var(--font-family-mono);
 }
 

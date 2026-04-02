@@ -6,7 +6,7 @@
   display: block;
   width: 100%;
   padding: 6px 10px;
-  font-size: 11px;
+  font-size: var(--font-size-300);
   color: var(--text-muted);
   background: transparent;
   border: 1px dashed var(--border-medium);
@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
-  font-size: 11px;
+  font-size: var(--font-size-300);
   border-radius: 6px;
   background: var(--diff-modified-bg);
   border: 1px solid var(--diff-modified-border);
@@ -95,13 +95,13 @@
 }
 
 .optionLabel {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-primary);
   font-weight: 500;
 }
 
 .optionDesc {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-muted);
   margin-left: auto;
 }

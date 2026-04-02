@@ -42,19 +42,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: var(--font-size-600);
   font-weight: 500;
   color: var(--text-primary);
 }
 
 .rowDesc {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-secondary);
   margin-top: 3px;
 }
 
 .categoryBadge {
-  font-size: 11px;
+  font-size: var(--font-size-300);
   padding: 3px 9px;
   border-radius: 10px;
   white-space: nowrap;
@@ -62,7 +62,7 @@
 }
 
 .statCount {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   font-family: var(--font-family-mono);
   color: var(--text-muted);
   white-space: nowrap;
@@ -70,7 +70,7 @@
 }
 
 .chevron {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   color: var(--text-muted);
   opacity: 0.5;
   flex-shrink: 0;

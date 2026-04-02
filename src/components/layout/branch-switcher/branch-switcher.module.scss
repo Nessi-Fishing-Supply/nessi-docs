@@ -12,7 +12,7 @@
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: var(--font-size-400);
   cursor: pointer;
   transition: all var(--transition-fast);
 
@@ -87,11 +87,11 @@
 }
 
 .optionLabel {
-  font-size: 12px;
+  font-size: var(--font-size-400);
   font-weight: 500;
 }
 
 .optionDesc {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-dim);
 }

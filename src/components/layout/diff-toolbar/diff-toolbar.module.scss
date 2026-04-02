@@ -10,13 +10,13 @@
     rgb(123 143 205 / 5%) 100%
   );
   border-bottom: 1px solid rgb(123 143 205 / 20%);
-  font-size: 12px;
+  font-size: var(--font-size-400);
   flex-shrink: 0;
 }
 
 .modeIndicator {
   font-family: var(--font-family-mono);
-  font-size: 9px;
+  font-size: var(--font-size-100);
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--diff-modified);
@@ -37,7 +37,7 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
+  font-size: var(--font-size-400);
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -50,7 +50,7 @@
 }
 
 .vsText {
-  font-size: 10px;
+  font-size: var(--font-size-200);
   color: var(--text-dim);
   font-weight: 400;
 }
@@ -83,7 +83,7 @@
 
 %count-pill {
   font-family: var(--font-family-mono);
-  font-size: 10px;
+  font-size: var(--font-size-200);
   font-weight: 600;
   letter-spacing: 0.04em;
   padding: 2px 8px;
