@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { Feature } from '@/types/feature';
 import type { FeatureDomain } from '@/types/dashboard';
@@ -11,18 +11,11 @@ import { useDocsContext } from '@/providers/docs-provider';
 import { useBranchHref } from '@/providers/branch-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { Badge } from '@/components/indicators/badge';
+import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
-import { BorderTrace } from '@/components/data-display/border-trace';
 import styles from './feature-domain-view.module.scss';
 
 /* ── Deep-link href resolution ── */
-
-/** Clear any stale hash before navigating to prevent hash stacking. */
-function clearHash() {
-  if (window.location.hash) {
-    history.replaceState(null, '', window.location.pathname);
-  }
-}
 
 function resolveHref(
   link: { type: string; label: string; href: string },
@@ -50,55 +43,58 @@ function resolveHref(
   }
 }
 
-/* ── Feature Row ── */
+/* ── Feature Row Header ── */
 
-function FeatureRow({
+function FeatureRowHeader({
   feature,
-  staggerIndex,
-  isOpen,
-  onToggle,
-  onOpen,
-  journeyDomainMap,
   diffStatus,
+  isOpen,
+}: {
+  feature: Feature;
+  diffStatus?: DiffStatus | null;
+  isOpen: boolean;
+}) {
+  return (
+    <>
+      <span className={styles.featureRowTitle}>
+        <span className={styles.featureName}>{feature.name}</span>
+        {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
+      </span>
+      <span className={styles.featureBadges}>
+        {feature.componentCount > 0 && (
+          <span className={styles.featureBadge}>
+            {feature.componentCount} component{feature.componentCount !== 1 ? 's' : ''}
+          </span>
+        )}
+        {feature.endpointCount > 0 && (
+          <span className={`${styles.featureBadge} ${styles.featureBadgeOrange}`}>
+            {feature.endpointCount} endpoint{feature.endpointCount !== 1 ? 's' : ''}
+          </span>
+        )}
+        {(feature.hookCount ?? 0) > 0 && (
+          <span className={styles.featureBadge}>{feature.hookCount} hooks</span>
+        )}
+        {(feature.serviceCount ?? 0) > 0 && (
+          <span className={styles.featureBadge}>{feature.serviceCount} services</span>
+        )}
+      </span>
+      <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}>&#9656;</span>
+    </>
+  );
+}
+
+/* ── Feature Expansion ── */
+
+function FeatureExpansion({
+  feature,
+  journeyDomainMap,
   crossDiffStatuses,
 }: {
   feature: Feature;
-  staggerIndex: number;
-  isOpen: boolean;
-  onToggle: () => void;
-  onOpen: () => void;
   journeyDomainMap: Map<string, string>;
-  diffStatus?: DiffStatus | null;
   crossDiffStatuses?: Map<string, DiffStatus>;
 }) {
   const branchHref = useBranchHref();
-  const [isDeepLinkTarget] = useState(
-    () =>
-      typeof window !== 'undefined' &&
-      window.location.hash.split('#').filter(Boolean).includes(feature.slug),
-  );
-  const rowRef = useRef<HTMLDivElement>(null);
-  const [highlight, setHighlight] = useState(false);
-
-  useEffect(() => {
-    function checkHash() {
-      const hashes = window.location.hash.split('#').filter(Boolean);
-      if (hashes.includes(feature.slug)) {
-        onOpen();
-        setHighlight(true);
-        history.replaceState(null, '', window.location.pathname);
-        setTimeout(
-          () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
-          100,
-        );
-        setTimeout(() => setHighlight(false), 9500);
-      }
-    }
-
-    checkHash();
-    window.addEventListener('hashchange', checkHash);
-    return () => window.removeEventListener('hashchange', checkHash);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const apiLinks = feature.links?.filter((l) => l.type === 'api-group') ?? [];
   const entityLinks = feature.links?.filter((l) => l.type === 'entity') ?? [];
@@ -106,138 +102,96 @@ function FeatureRow({
   const lifecycleLinks = feature.links?.filter((l) => l.type === 'lifecycle') ?? [];
 
   return (
-    <div
-      ref={rowRef}
-      id={feature.slug}
-      className={`${styles.featureRow} ${isOpen ? styles.featureRowOpen : ''} ${diffStatus && diffStatus !== 'unchanged' ? styles[`diff_${diffStatus}`] : ''}`}
-      style={
-        { '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms` } as React.CSSProperties
-      }
-    >
-      <BorderTrace active={highlight} />
-      <button className={styles.featureRowHeader} onClick={onToggle}>
-        <span className={styles.featureRowTitle}>
-          <span className={styles.featureName}>{feature.name}</span>
-          {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
-        </span>
-        <span className={styles.featureBadges}>
-          {feature.componentCount > 0 && (
-            <span className={styles.featureBadge}>
-              {feature.componentCount} component{feature.componentCount !== 1 ? 's' : ''}
-            </span>
-          )}
-          {feature.endpointCount > 0 && (
-            <span className={`${styles.featureBadge} ${styles.featureBadgeOrange}`}>
-              {feature.endpointCount} endpoint{feature.endpointCount !== 1 ? 's' : ''}
-            </span>
-          )}
-          {(feature.hookCount ?? 0) > 0 && (
-            <span className={styles.featureBadge}>{feature.hookCount} hooks</span>
-          )}
-          {(feature.serviceCount ?? 0) > 0 && (
-            <span className={styles.featureBadge}>{feature.serviceCount} services</span>
-          )}
-        </span>
-        <span className={styles.chevron}>&#9656;</span>
-      </button>
+    <div className={styles.expansion}>
+      {feature.description && (
+        <div className={styles.expansionDescription}>{feature.description}</div>
+      )}
 
-      {isOpen && (
-        <div className={styles.expansion}>
-          {feature.description && (
-            <div className={styles.expansionDescription}>{feature.description}</div>
-          )}
+      {apiLinks.length > 0 && (
+        <div className={styles.expansionSection}>
+          <div className={styles.sectionLabel}>API Endpoints</div>
+          <div className={styles.linkList}>
+            {apiLinks.map((link) => {
+              const ls = crossDiffStatuses?.get(link.label);
+              return (
+                <Link
+                  key={link.label}
+                  href={resolveHref(link, journeyDomainMap, branchHref)}
+                  className={`${styles.linkItem} ${styles.linkApi} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
+                >
+                  <span>{link.label}</span>
+                  {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
+                  <span className={styles.linkArrowSmall}>&rsaquo;</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
-          {apiLinks.length > 0 && (
-            <div className={styles.expansionSection}>
-              <div className={styles.sectionLabel}>API Endpoints</div>
-              <div className={styles.linkList}>
-                {apiLinks.map((link) => {
-                  const ls = crossDiffStatuses?.get(link.label);
-                  return (
-                    <Link
-                      key={link.label}
-                      href={resolveHref(link, journeyDomainMap, branchHref)}
-                      onClick={clearHash}
-                      className={`${styles.linkItem} ${styles.linkApi} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
-                    >
-                      <span>{link.label}</span>
-                      {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
-                      <span className={styles.linkArrowSmall}>&rsaquo;</span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+      {entityLinks.length > 0 && (
+        <div className={styles.expansionSection}>
+          <div className={styles.sectionLabel}>Related Entities</div>
+          <div className={styles.linkList}>
+            {entityLinks.map((link) => {
+              const ls = crossDiffStatuses?.get(link.label);
+              return (
+                <Link
+                  key={link.label}
+                  href={resolveHref(link, journeyDomainMap, branchHref)}
+                  className={`${styles.linkItem} ${styles.linkEntity} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
+                >
+                  <span>{link.label}</span>
+                  {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
+                  <span className={styles.linkArrowSmall}>&rsaquo;</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
-          {entityLinks.length > 0 && (
-            <div className={styles.expansionSection}>
-              <div className={styles.sectionLabel}>Related Entities</div>
-              <div className={styles.linkList}>
-                {entityLinks.map((link) => {
-                  const ls = crossDiffStatuses?.get(link.label);
-                  return (
-                    <Link
-                      key={link.label}
-                      href={resolveHref(link, journeyDomainMap, branchHref)}
-                      onClick={clearHash}
-                      className={`${styles.linkItem} ${styles.linkEntity} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
-                    >
-                      <span>{link.label}</span>
-                      {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
-                      <span className={styles.linkArrowSmall}>&rsaquo;</span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+      {journeyLinks.length > 0 && (
+        <div className={styles.expansionSection}>
+          <div className={styles.sectionLabel}>Related Journeys</div>
+          <div className={styles.linkList}>
+            {journeyLinks.map((link) => {
+              const ls = crossDiffStatuses?.get(link.label);
+              return (
+                <Link
+                  key={link.label}
+                  href={resolveHref(link, journeyDomainMap, branchHref)}
+                  className={`${styles.linkItem} ${styles.linkJourney} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
+                >
+                  <span>{link.label}</span>
+                  {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
+                  <span className={styles.linkArrowSmall}>&rsaquo;</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
-          {journeyLinks.length > 0 && (
-            <div className={styles.expansionSection}>
-              <div className={styles.sectionLabel}>Related Journeys</div>
-              <div className={styles.linkList}>
-                {journeyLinks.map((link) => {
-                  const ls = crossDiffStatuses?.get(link.label);
-                  return (
-                    <Link
-                      key={link.label}
-                      href={resolveHref(link, journeyDomainMap, branchHref)}
-                      onClick={clearHash}
-                      className={`${styles.linkItem} ${styles.linkJourney} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
-                    >
-                      <span>{link.label}</span>
-                      {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
-                      <span className={styles.linkArrowSmall}>&rsaquo;</span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {lifecycleLinks.length > 0 && (
-            <div className={styles.expansionSection}>
-              <div className={styles.sectionLabel}>Related Lifecycles</div>
-              <div className={styles.linkList}>
-                {lifecycleLinks.map((link) => {
-                  const ls = crossDiffStatuses?.get(link.label);
-                  return (
-                    <Link
-                      key={link.label}
-                      href={resolveHref(link, journeyDomainMap, branchHref)}
-                      onClick={clearHash}
-                      className={`${styles.linkItem} ${styles.linkLifecycle} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
-                    >
-                      <span>{link.label}</span>
-                      {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
-                      <span className={styles.linkArrowSmall}>&rsaquo;</span>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+      {lifecycleLinks.length > 0 && (
+        <div className={styles.expansionSection}>
+          <div className={styles.sectionLabel}>Related Lifecycles</div>
+          <div className={styles.linkList}>
+            {lifecycleLinks.map((link) => {
+              const ls = crossDiffStatuses?.get(link.label);
+              return (
+                <Link
+                  key={link.label}
+                  href={resolveHref(link, journeyDomainMap, branchHref)}
+                  className={`${styles.linkItem} ${styles.linkLifecycle} ${ls ? styles[`linkDiff_${ls}`] : ''}`}
+                >
+                  <span>{link.label}</span>
+                  {ls && ls !== 'unchanged' && <Badge variant="diff" status={ls} />}
+                  <span className={styles.linkArrowSmall}>&rsaquo;</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
@@ -337,42 +291,37 @@ export function FeatureDomainView({
 
   const toggleFeature = (slug: string) => {
     if (isDiffMode && featureStatusMap?.get(slug) === 'unchanged') return;
-    const willOpen = !openFeatures.has(slug);
     setOpenFeatures((prev) => {
       const next = new Set(prev);
       if (next.has(slug)) next.delete(slug);
       else next.add(slug);
       return next;
     });
-    if (willOpen && isDiffMode) {
-      const feat =
-        features.find((f) => f.slug === slug) ?? addedFeatures.find((f) => f.slug === slug);
-      if (!feat) return;
-      const status = featureStatusMap?.get(slug);
-      if (status && status !== 'unchanged') {
-        setSelectedItem({
-          type: 'diff-item',
-          item: {
-            key: slug,
-            label: feat.name,
-            status,
-            domain: 'Features',
-            href: branchHref(`/features/${domain.slug}#${slug}`),
-            changedFields: changedFieldsMap.get(slug),
-            data: feat,
-          },
-        });
-      }
+  };
+
+  const handleExpand = (slug: string) => {
+    if (!isDiffMode) return;
+    const feat =
+      features.find((f) => f.slug === slug) ?? addedFeatures.find((f) => f.slug === slug);
+    if (!feat) return;
+    const status = featureStatusMap?.get(slug);
+    if (status && status !== 'unchanged') {
+      setSelectedItem({
+        type: 'diff-item',
+        item: {
+          key: slug,
+          label: feat.name,
+          status,
+          domain: 'Features',
+          href: branchHref(`/features/${domain.slug}#${slug}`),
+          changedFields: changedFieldsMap.get(slug),
+          data: feat,
+        },
+      });
     }
   };
 
-  const openFeature = (slug: string) => {
-    setOpenFeatures((prev) => {
-      const next = new Set(prev);
-      next.add(slug);
-      return next;
-    });
-  };
+  let staggerIndex = 0;
 
   return (
     <div className={styles.container}>
@@ -402,36 +351,65 @@ export function FeatureDomainView({
       {/* ── Feature Rows ── */}
       <div className={styles.featureSectionLabel}>Features</div>
       <div className={styles.featureContainer}>
-        {filteredFeatures.map((feature, idx) => (
-          <FeatureRow
-            key={feature.slug}
-            feature={feature}
-            staggerIndex={idx}
-            isOpen={openFeatures.has(feature.slug)}
-            onToggle={() => toggleFeature(feature.slug)}
-            onOpen={() => openFeature(feature.slug)}
-            journeyDomainMap={journeyDomainMap}
-            diffStatus={featureStatusMap?.get(feature.slug)}
-            crossDiffStatuses={isDiffMode ? crossDiffStatuses : undefined}
-          />
-        ))}
+        {filteredFeatures.map((feature) => {
+          const idx = staggerIndex++;
+          const diffStatus = featureStatusMap?.get(feature.slug);
+          return (
+            <CollapsibleRow
+              key={feature.slug}
+              id={feature.slug}
+              staggerIndex={idx}
+              isOpen={openFeatures.has(feature.slug)}
+              onToggle={() => toggleFeature(feature.slug)}
+              diffStatus={diffStatus}
+              onExpand={() => handleExpand(feature.slug)}
+              header={
+                <FeatureRowHeader
+                  feature={feature}
+                  diffStatus={diffStatus}
+                  isOpen={openFeatures.has(feature.slug)}
+                />
+              }
+            >
+              <FeatureExpansion
+                feature={feature}
+                journeyDomainMap={journeyDomainMap}
+                crossDiffStatuses={isDiffMode ? crossDiffStatuses : undefined}
+              />
+            </CollapsibleRow>
+          );
+        })}
 
         {/* Added features (diff mode only) */}
         {isDiffMode &&
           (diffFilter === 'all' || diffFilter === 'added') &&
-          addedFeatures.map((feature, idx) => (
-            <FeatureRow
-              key={`added-${feature.slug}`}
-              feature={feature}
-              staggerIndex={filteredFeatures.length + idx}
-              isOpen={openFeatures.has(feature.slug)}
-              onToggle={() => toggleFeature(feature.slug)}
-              onOpen={() => openFeature(feature.slug)}
-              journeyDomainMap={journeyDomainMap}
-              diffStatus="added"
-              crossDiffStatuses={crossDiffStatuses}
-            />
-          ))}
+          addedFeatures.map((feature) => {
+            const idx = staggerIndex++;
+            return (
+              <CollapsibleRow
+                key={`added-${feature.slug}`}
+                id={feature.slug}
+                staggerIndex={idx}
+                isOpen={openFeatures.has(feature.slug)}
+                onToggle={() => toggleFeature(feature.slug)}
+                diffStatus="added"
+                onExpand={() => handleExpand(feature.slug)}
+                header={
+                  <FeatureRowHeader
+                    feature={feature}
+                    diffStatus="added"
+                    isOpen={openFeatures.has(feature.slug)}
+                  />
+                }
+              >
+                <FeatureExpansion
+                  feature={feature}
+                  journeyDomainMap={journeyDomainMap}
+                  crossDiffStatuses={crossDiffStatuses}
+                />
+              </CollapsibleRow>
+            );
+          })}
 
         {filteredFeatures.length === 0 && addedFeatures.length === 0 && (
           <div className={styles.emptyState}>
