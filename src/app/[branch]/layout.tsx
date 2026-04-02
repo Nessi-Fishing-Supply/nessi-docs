@@ -1,7 +1,5 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import { DocsProvider } from '@/providers/docs-provider';
-import { BranchProvider } from '@/providers/branch-provider';
 import { AppShell } from '@/components/layout/app-shell';
 import { Topbar } from '@/components/navigation/topbar';
 import { Sidebar } from '@/components/navigation/sidebar';
@@ -38,23 +36,19 @@ export default async function BranchLayout({
 
   return (
     <BranchInit branchName={branch} branchData={branchData} allBranchData={allBranchData}>
-      <BranchProvider branchName={branch} branchData={branchData} allBranchData={allBranchData}>
-        <DocsProvider>
-          <AppShell
-            topbar={<Topbar />}
-            sidebar={<Sidebar lifecycles={branchData.lifecycles} featureDomains={featureDomains} />}
-            detail={<DetailPanel />}
-            diffToolbar={
-              <Suspense>
-                <DiffToolbar />
-              </Suspense>
-            }
-          >
-            {children}
-          </AppShell>
-          <SearchTrigger />
-        </DocsProvider>
-      </BranchProvider>
+      <AppShell
+        topbar={<Topbar />}
+        sidebar={<Sidebar lifecycles={branchData.lifecycles} featureDomains={featureDomains} />}
+        detail={<DetailPanel />}
+        diffToolbar={
+          <Suspense>
+            <DiffToolbar />
+          </Suspense>
+        }
+      >
+        {children}
+      </AppShell>
+      <SearchTrigger />
     </BranchInit>
   );
 }
