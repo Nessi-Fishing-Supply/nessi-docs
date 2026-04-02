@@ -8,7 +8,9 @@
   --color-primary-300: #6bad99;
   --color-primary-350: #4ca88d;
   --color-primary-400: #3d8c75;
+  --color-primary-400-rgb: 61 140 117;
   --color-primary-500: #1e4a40;
+  --color-primary-500-rgb: 30 74 64;
   --color-primary-600: #163831;
   --color-primary-700: #0e2822;
   --color-primary-800: #081812;
@@ -20,6 +22,7 @@
   --color-accent-300: #eea86b;
   --color-accent-400: #e89048;
   --color-accent-500: #e27739;
+  --color-accent-500-rgb: 226 119 57;
   --color-accent-600: #cc6830;
   --color-accent-700: #b55a28;
   --color-accent-800: #8a4018;
@@ -41,6 +44,7 @@
   --color-destructive-200: #e8a0a0;
   --color-destructive-300: #d47070;
   --color-destructive-400: #b84040;
+  --color-destructive-400-rgb: 184 64 64;
   --color-destructive-500: #681a19;
   --color-destructive-600: #551414;
   --color-destructive-700: #410f0f;
@@ -58,8 +62,10 @@
   --color-neutral-800: #2e2c28;
   --color-neutral-900: #1c1c1c;
 
-  // White
+  // Black & White
+  --color-black-rgb: 0 0 0;
   --color-white: #fff;
+  --color-white-rgb: 255 255 255;
 
   // Green (bright, for success indicators)
   --color-green-400: #4ade80;
@@ -80,6 +86,7 @@
   --color-error-100: #fde8e8;
   --color-error-200: #f5b5b5;
   --color-error-500: #b91c1c;
+  --color-error-500-rgb: 185 28 28;
   --color-error-700: #7a1010;
 
   // Info
@@ -88,10 +95,16 @@
   --color-info-500: #1e4a40;
   --color-info-700: #0e2822;
 
+  // Violet (bright purple, badges and indicators)
+  --color-violet-400: #8b5cf6;
+  --color-violet-400-rgb: 139 92 246;
+  --color-violet-500: #7c3aed;
+
   // Purple (query params, enum types, secondary accent)
   --color-purple-300: #b8a0f0;
   --color-purple-400: #b094e0;
   --color-purple-500: #9b7bd4;
+  --color-purple-500-rgb: 155 123 212;
   --color-purple-600: #8366be;
   --color-purple-700: #6b50a6;
 
@@ -101,7 +114,9 @@
   --color-blue-300: #93c5fd;
   --color-blue-400: #60a5fa;
   --color-blue-500: #7b8fcd;
-  --color-blue-600: #5b6eae;
+  --color-blue-500-rgb: 123 143 205;
+  --color-blue-600: #5f7fbf;
+  --color-blue-600-rgb: 95 127 191;
   --color-blue-700: #4a5a8f;
 
   // Red (for diff-removed, destructive states)
