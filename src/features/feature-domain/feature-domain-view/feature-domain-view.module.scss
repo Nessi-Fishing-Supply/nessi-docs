@@ -154,7 +154,7 @@
 }
 
 .featureBadgeOrange {
-  color: #e27739;
+  color: var(--color-accent-500);
   background: rgb(226 119 57 / 8%);
 }
 
@@ -223,7 +223,7 @@
 }
 
 .linkApi {
-  color: #e27739;
+  color: var(--color-accent-500);
   background: rgb(226 119 57 / 6%);
 
   &:hover {
@@ -243,7 +243,7 @@
 }
 
 .linkJourney {
-  color: #3d8c75;
+  color: var(--color-primary-400);
   background: rgb(61 140 117 / 6%);
 
   &:hover {
@@ -357,7 +357,7 @@
   align-items: center;
   gap: 6px;
   font-size: var(--font-size-400);
-  color: #3d8c75;
+  color: var(--color-primary-400);
   background: rgb(61 140 117 / 6%);
   padding: 7px 12px;
   border-radius: 5px;

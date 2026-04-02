@@ -53,7 +53,7 @@
 .filterChipActive {
   background: rgb(30 74 64 / 12%);
   border-color: rgb(61 140 117 / 25%);
-  color: #3d8c75;
+  color: var(--color-primary-400);
 }
 
 .chipCount {
