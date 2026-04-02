@@ -3,7 +3,9 @@
 import { useState, memo } from 'react';
 import { NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
-import { DIFF_COLORS } from '@/constants/diff';
+import { useNodeState } from '../hooks/use-node-state';
+import { NodeGlow } from './node-glow';
+import { CANVAS_COLORS } from '../constants/canvas-colors';
 
 const ENTRY_COLOR = '#3ba8d4';
 
@@ -43,21 +45,17 @@ export const EntryNode = memo(function EntryNode({
 }: EntryNodeProps) {
   const [hovered, setHovered] = useState(false);
   const h = NODE_HEIGHT;
-  const isGhost = diffStatus === 'removed';
-  const isDiffChanged = diffStatus === 'added' || diffStatus === 'modified';
 
-  // Diff color only when changed — never overrides natural color
-  const diffColor = isDiffChanged ? DIFF_COLORS[diffStatus!] : undefined;
+  const { containerStyle, isGhost, isDiffChanged, diffColor, isInteractive } = useNodeState({
+    diffStatus,
+    isDimmed,
+  });
 
-  // Interaction: disabled for ghosts and unchanged nodes
-  const isInteractive = !isGhost && (!diffStatus || isDiffChanged);
-
-  // Opacity: ghost → 0.35, unchanged → 0.2, dimmed → 0.15, else 1
-  const diffOpacity = isGhost ? 0.35 : diffStatus === 'unchanged' ? 0.2 : 1;
-  const opacity = isDimmed ? 0.15 : diffStatus != null ? diffOpacity : 1;
-
-  const showGlow = (hovered || isActive) && !isGhost && isInteractive;
   const showDiffGlow = isDiffChanged && !isActive;
+  // Hover-only glow (no active): standard opacity, no animation
+  const showHoverGlow = hovered && !isActive && !isGhost && isInteractive;
+  // Active glow (with or without hover): higher opacity + animation
+  const showActiveGlow = isActive && !isGhost && isInteractive;
 
   return (
     <g
@@ -65,12 +63,7 @@ export const EntryNode = memo(function EntryNode({
       onClick={isInteractive ? onClick : undefined}
       onMouseEnter={isInteractive ? () => setHovered(true) : undefined}
       onMouseLeave={isInteractive ? () => setHovered(false) : undefined}
-      style={{
-        cursor: isInteractive ? 'pointer' : 'default',
-        opacity,
-        transition: 'opacity 400ms ease-out',
-        pointerEvents: isInteractive ? undefined : 'none',
-      }}
+      style={containerStyle}
     >
       {/* Outer diff ring — pill shape, only for added/modified */}
       {diffColor && (
@@ -86,43 +79,41 @@ export const EntryNode = memo(function EntryNode({
           strokeOpacity={0.7}
         />
       )}
-      {/* Diff glow */}
+      {/* Diff glow — ellipse shaped */}
       {showDiffGlow && diffColor && (
-        <>
-          <defs>
-            <radialGradient id={`entry-diff-${x}-${y}`}>
-              <stop offset="0%" stopColor={diffColor} stopOpacity={0.3} />
-              <stop offset="100%" stopColor={diffColor} stopOpacity={0} />
-            </radialGradient>
-          </defs>
-          <ellipse
-            cx={ENTRY_W / 2}
-            cy={h / 2}
-            rx={ENTRY_W * 0.55}
-            ry={h * 1.2}
-            fill={`url(#entry-diff-${x}-${y})`}
-            style={{ animation: 'glow-pulse 3s ease-in-out infinite' }}
-          />
-        </>
+        <NodeGlow
+          id={`${x}-${y}`}
+          type="diff"
+          color={diffColor}
+          cx={ENTRY_W / 2}
+          cy={h / 2}
+          rx={ENTRY_W * 0.55}
+          ry={h * 1.2}
+        />
       )}
-      {/* Hover/active glow */}
-      {showGlow && (
-        <>
-          <defs>
-            <radialGradient id={`entry-glow-${x}-${y}`}>
-              <stop offset="0%" stopColor={ENTRY_COLOR} stopOpacity={isActive ? 0.18 : 0.1} />
-              <stop offset="100%" stopColor={ENTRY_COLOR} stopOpacity={0} />
-            </radialGradient>
-          </defs>
-          <ellipse
-            cx={ENTRY_W / 2}
-            cy={h / 2}
-            rx={ENTRY_W * 0.55}
-            ry={h * 1.2}
-            fill={`url(#entry-glow-${x}-${y})`}
-            style={isActive ? { animation: 'glow-pulse 3s ease-in-out infinite' } : undefined}
-          />
-        </>
+      {/* Hover glow — ellipse shaped, no animation */}
+      {showHoverGlow && (
+        <NodeGlow
+          id={`${x}-${y}`}
+          type="hover"
+          color={ENTRY_COLOR}
+          cx={ENTRY_W / 2}
+          cy={h / 2}
+          rx={ENTRY_W * 0.55}
+          ry={h * 1.2}
+        />
+      )}
+      {/* Active glow — ellipse shaped, with pulse animation */}
+      {showActiveGlow && (
+        <NodeGlow
+          id={`${x}-${y}-active`}
+          type="selection"
+          color={ENTRY_COLOR}
+          cx={ENTRY_W / 2}
+          cy={h / 2}
+          rx={ENTRY_W * 0.55}
+          ry={h * 1.2}
+        />
       )}
       {/* Background pill — always uses natural ENTRY_COLOR */}
       <rect
@@ -146,7 +137,13 @@ export const EntryNode = memo(function EntryNode({
         &#9654;
       </text>
       {/* Label */}
-      <text x={32} y={h / 2} fill="#e8e6e1" fontSize={11} dominantBaseline="central">
+      <text
+        x={32}
+        y={h / 2}
+        fill={CANVAS_COLORS.textPrimary}
+        fontSize={11}
+        dominantBaseline="central"
+      >
         {label.length > 16 ? label.slice(0, 16) + '...' : label}
       </text>
 
