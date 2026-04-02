@@ -3,7 +3,7 @@
   color: var(--text-secondary);
   line-height: 1.5;
   padding: var(--spacing-200) var(--spacing-250);
-  background: rgb(61 140 117 / 5%);
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-4));
   border-left: 2px solid var(--color-primary-400);
   border-radius: 4px;
 }

@@ -8,7 +8,7 @@
   text-decoration: none;
   padding: var(--spacing-75) var(--spacing-200);
   border-radius: 4px;
-  background: rgb(255 255 255 / 3%);
+  background: rgb(var(--color-white-rgb) / var(--opacity-4));
   max-width: 100%;
   overflow: hidden;
   transition:
@@ -16,7 +16,7 @@
     color 150ms var(--ease-out);
 
   &:hover {
-    background: rgb(61 140 117 / 10%);
+    background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
     color: var(--color-primary-350);
   }
 }

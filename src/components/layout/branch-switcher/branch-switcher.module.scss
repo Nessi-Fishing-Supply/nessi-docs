@@ -52,7 +52,7 @@
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 30%);
+  box-shadow: 0 4px 16px rgb(var(--color-black-rgb) / var(--opacity-32));
   overflow: hidden;
   z-index: 100;
 }

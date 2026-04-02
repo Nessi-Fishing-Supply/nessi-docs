@@ -72,8 +72,8 @@
   border: 1px solid var(--border-medium);
   border-radius: 8px;
   box-shadow:
-    0 4px 20px rgb(0 0 0 / 60%),
-    0 8px 40px rgb(0 0 0 / 30%);
+    0 4px 20px rgb(var(--color-black-rgb) / var(--opacity-60)),
+    0 8px 40px rgb(var(--color-black-rgb) / var(--opacity-32));
   z-index: 20;
   padding: var(--spacing-100);
   animation: fade-in 120ms ease-out;

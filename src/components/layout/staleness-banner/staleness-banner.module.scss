@@ -6,7 +6,7 @@
   text-align: center;
 
   code {
-    background: rgb(0 0 0 / 15%);
+    background: rgb(var(--color-black-rgb) / var(--opacity-16));
     padding: 1px var(--spacing-125);
     border-radius: 3px;
   }

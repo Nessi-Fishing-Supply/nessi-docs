@@ -5,11 +5,11 @@
   padding: var(--spacing-200) var(--spacing-500);
   background: linear-gradient(
     90deg,
-    rgb(123 143 205 / 8%) 0%,
-    rgb(15 19 25 / 60%) 50%,
-    rgb(123 143 205 / 5%) 100%
+    rgb(var(--color-blue-500-rgb) / var(--opacity-8)) 0%,
+    rgb(var(--bg-panel-rgb) / var(--opacity-60)) 50%,
+    rgb(var(--color-blue-500-rgb) / var(--opacity-4)) 100%
   );
-  border-bottom: 1px solid rgb(123 143 205 / 20%);
+  border-bottom: 1px solid rgb(var(--color-blue-500-rgb) / var(--opacity-20));
   font-size: var(--font-size-400);
   flex-shrink: 0;
 }

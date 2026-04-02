@@ -60,7 +60,7 @@ body {
 }
 
 ::selection {
-  background: rgb(61 140 117 / 30%);
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-32));
 }
 
 ::-webkit-scrollbar {

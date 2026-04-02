@@ -35,8 +35,8 @@
   font-size: var(--font-size-400);
   padding: var(--spacing-100) var(--spacing-300);
   border-radius: 6px;
-  background: rgb(255 255 255 / 3%);
-  border: 1px solid rgb(255 255 255 / 6%);
+  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  border: 1px solid rgb(var(--color-white-rgb) / var(--opacity-8));
   color: var(--text-muted);
   cursor: pointer;
   transition: all 150ms ease-out;
@@ -46,15 +46,15 @@
   gap: var(--spacing-100);
 
   &:hover {
-    border-color: rgb(255 255 255 / 12%);
+    border-color: rgb(var(--color-white-rgb) / var(--opacity-12));
     color: var(--text-secondary);
-    background: rgb(255 255 255 / 5%);
+    background: rgb(var(--color-white-rgb) / var(--opacity-4));
   }
 }
 
 .filterChipActive {
-  background: rgb(30 74 64 / 12%);
-  border-color: rgb(61 140 117 / 25%);
+  background: rgb(var(--color-primary-500-rgb) / var(--opacity-12));
+  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-24));
   color: var(--color-primary-400);
 }
 
@@ -63,7 +63,7 @@
   color: var(--text-muted);
 
   .filterChipActive & {
-    color: rgb(61 140 117 / 80%);
+    color: rgb(var(--color-primary-400-rgb) / var(--opacity-80));
   }
 }
 
@@ -102,7 +102,7 @@
 .groupCount {
   font-size: var(--font-size-300);
   color: var(--text-muted);
-  background: rgb(255 255 255 / 5%);
+  background: rgb(var(--color-white-rgb) / var(--opacity-4));
   padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   font-family: var(--font-family-mono);
@@ -148,17 +148,17 @@
   font: inherit;
 
   &:hover {
-    background: rgb(255 255 255 / 2%);
+    background: rgb(var(--color-white-rgb) / var(--opacity-4));
   }
 }
 
 .entityRow:hover {
-  border-color: rgb(255 255 255 / 4%);
+  border-color: rgb(var(--color-white-rgb) / var(--opacity-4));
 }
 
 .entityRowOpen {
-  background: rgb(30 74 64 / 5%);
-  border-color: rgb(61 140 117 / 15%);
+  background: rgb(var(--color-primary-500-rgb) / var(--opacity-4));
+  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-16));
 
   .entityRowHeader {
     border-radius: 8px 8px 0 0;
@@ -180,7 +180,7 @@
   padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   color: var(--text-muted);
-  background: rgb(255 255 255 / 4%);
+  background: rgb(var(--color-white-rgb) / var(--opacity-4));
 }
 
 .lifecycleLink {
@@ -189,15 +189,15 @@
   text-decoration: none;
   padding: 1px var(--spacing-200);
   border-radius: 4px;
-  background: rgb(95 127 191 / 10%);
-  border: 1px solid rgb(95 127 191 / 15%);
+  background: rgb(var(--color-blue-600-rgb) / var(--opacity-12));
+  border: 1px solid rgb(var(--color-blue-600-rgb) / var(--opacity-16));
   transition:
     background 150ms ease-out,
     color 150ms ease-out;
   white-space: nowrap;
 
   &:hover {
-    background: rgb(95 127 191 / 20%);
+    background: rgb(var(--color-blue-600-rgb) / var(--opacity-20));
     color: var(--text-primary);
   }
 }
@@ -218,7 +218,7 @@
   padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-primary-400);
-  background: rgb(61 140 117 / 10%);
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
 }
 
 .triggerBadge {
@@ -229,7 +229,7 @@
   padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-accent-500);
-  background: rgb(226 119 57 / 10%);
+  background: rgb(var(--color-accent-500-rgb) / var(--opacity-12));
 }
 
 .fkBadge {
@@ -240,7 +240,7 @@
   padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-purple-300);
-  background: rgb(139 92 246 / 10%);
+  background: rgb(var(--color-violet-400-rgb) / var(--opacity-12));
 }
 
 .fieldCount {
@@ -262,9 +262,9 @@
 // ─── Expansion (placeholder — styles added in Task 6) ───
 
 .expansion {
-  border-top: 1px solid rgb(61 140 117 / 10%);
+  border-top: 1px solid rgb(var(--color-primary-400-rgb) / var(--opacity-12));
   border-radius: 0 0 8px 8px;
-  background: rgb(15 19 25 / 50%);
+  background: rgb(var(--bg-panel-rgb) / var(--opacity-50));
 }
 
 // ─── Empty State ───
@@ -320,7 +320,7 @@
   border-bottom: 1px solid var(--border-medium);
   position: sticky;
   top: 0;
-  background: rgb(15 19 25 / 50%);
+  background: rgb(var(--bg-panel-rgb) / var(--opacity-50));
   z-index: 1;
 }
 
@@ -347,7 +347,7 @@
 }
 
 .fieldRow:hover td {
-  background: rgb(255 255 255 / 2%);
+  background: rgb(var(--color-white-rgb) / var(--opacity-4));
 }
 
 .fieldRowChanged {
@@ -410,17 +410,17 @@
 
 .tagPk {
   color: var(--color-primary-400);
-  background: rgb(61 140 117 / 10%);
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
 }
 
 .tagFk {
   color: var(--color-purple-300);
-  background: rgb(139 92 246 / 10%);
+  background: rgb(var(--color-violet-400-rgb) / var(--opacity-12));
 }
 
 .tagNull {
   color: var(--text-dim);
-  background: rgb(255 255 255 / 4%);
+  background: rgb(var(--color-white-rgb) / var(--opacity-4));
 }
 
 .fkRef {
@@ -462,7 +462,7 @@
   padding: var(--spacing-200) var(--spacing-250);
   border-radius: 5px;
   margin-bottom: var(--spacing-100);
-  background: rgb(255 255 255 / 2%);
+  background: rgb(var(--color-white-rgb) / var(--opacity-4));
 }
 
 .policyOp {
@@ -482,7 +482,7 @@
   transition: background 150ms ease-out;
 
   &:hover {
-    background: rgb(255 255 255 / 4%);
+    background: rgb(var(--color-white-rgb) / var(--opacity-4));
   }
 }
 
@@ -508,7 +508,7 @@
   font-size: var(--font-size-200);
   font-weight: 700;
   color: var(--color-accent-500);
-  background: rgb(226 119 57 / 10%);
+  background: rgb(var(--color-accent-500-rgb) / var(--opacity-12));
   padding: var(--spacing-75) var(--spacing-200);
   border-radius: 4px;
 }
@@ -538,7 +538,7 @@
   font-weight: 700;
   text-transform: uppercase;
   color: var(--color-primary-400);
-  background: rgb(61 140 117 / 10%);
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
 }
 
 // ─── Diff Mode ───

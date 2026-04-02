@@ -35,12 +35,12 @@
   }
 
   &.tocItemActive {
-    border-color: rgb(61 140 117 / 40%);
-    background: rgb(61 140 117 / 8%);
+    border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-40));
+    background: rgb(var(--color-primary-400-rgb) / var(--opacity-8));
     color: var(--color-primary-400);
 
     .tocCount {
-      background: rgb(61 140 117 / 15%);
+      background: rgb(var(--color-primary-400-rgb) / var(--opacity-16));
       color: var(--color-primary-400);
     }
   }
@@ -79,7 +79,7 @@
   }
 
   &.enumOpen {
-    border-color: rgb(61 140 117 / 30%);
+    border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-32));
   }
 }
 
@@ -101,7 +101,7 @@
 
   .enumOpen & {
     border-bottom: 1px solid var(--border-subtle);
-    background: rgb(61 140 117 / 4%);
+    background: rgb(var(--color-primary-400-rgb) / var(--opacity-4));
   }
 }
 
