@@ -68,43 +68,6 @@
   gap: var(--spacing-100);
 }
 
-.enumBlock {
-  position: relative;
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  transition: border-color 150ms ease;
-
-  &:hover {
-    border-color: var(--border-medium);
-  }
-
-  &.enumOpen {
-    border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-700));
-  }
-}
-
-.enumHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-200);
-  width: 100%;
-  padding: var(--spacing-200) var(--spacing-300);
-  background: var(--bg-raised);
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  transition: background 150ms ease;
-
-  &:hover {
-    background: var(--bg-hover);
-  }
-
-  .enumOpen & {
-    border-bottom: 1px solid var(--border-subtle);
-    background: rgb(var(--color-primary-400-rgb) / var(--opacity-100));
-  }
-}
-
 .enumName {
   font-size: var(--font-size-300);
   font-weight: 600;
@@ -349,22 +312,4 @@
 
 .valueRowAdded {
   @include diff-field('added');
-}
-
-// ─── Diff Mode ───
-
-.diff_added {
-  @include diff-row('added');
-}
-
-.diff_modified {
-  @include diff-row('modified');
-}
-
-.diff_removed {
-  @include diff-row('removed');
-}
-
-.diff_unchanged {
-  @include diff-unchanged;
 }
