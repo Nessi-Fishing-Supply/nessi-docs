@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useBranchData } from '@/providers/branch-provider';
-import { useToast } from '@/components/ui/toast';
+import { useToast } from '@/components/indicators/toast';
 import styles from './branch-switcher.module.scss';
 
 export function BranchSwitcher() {

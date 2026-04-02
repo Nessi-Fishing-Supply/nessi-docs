@@ -6,7 +6,7 @@ import type { Entity } from '@/types/data-model';
 import type { ErdNode } from '@/types/entity-relationship';
 import { getEndpointsForTable, getLifecycleForEntity, type EndpointRef } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
-import { GitHubLink } from '@/components/ui/github-link';
+import { GitHubLink } from '@/components/data-display/github-link';
 import { ERD_NODE_WIDTH } from '../utils/geometry';
 import { TT_BG, TT_BORDER, TT_SHADOW, sectionLabel, monoBlock } from '../constants/tooltip-styles';
 

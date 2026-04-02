@@ -3,7 +3,7 @@
 import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
 import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
 import type { DiffStatus } from '@/types/diff';
-import { GitHubLink } from '@/components/ui/github-link';
+import { GitHubLink } from '@/components/data-display/github-link';
 import { DiffTooltipSection } from './diff-tooltip-section';
 import type { NodeChange } from '../hooks/use-diff-nodes';
 import { LIFECYCLE_NODE_WIDTH } from '../utils/geometry';

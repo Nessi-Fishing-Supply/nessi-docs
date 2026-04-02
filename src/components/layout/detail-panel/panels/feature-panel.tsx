@@ -1,5 +1,5 @@
 import type { Feature } from '@/types/feature';
-import { CrossLink } from '@/components/ui';
+import { CrossLink } from '@/components/data-display';
 import styles from './panel-content.module.scss';
 
 export function FeaturePanel({ feature }: { feature: Feature }) {

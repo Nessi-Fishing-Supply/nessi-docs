@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { DiffBadge } from '@/components/ui/diff-badge';
-import { Badge, SectionLabel, KeyValueRow } from '@/components/ui';
+import { Badge } from '@/components/indicators';
+import { SectionLabel } from '@/components/ui';
+import { KeyValueRow } from '@/components/data-display';
 import type { DiffItemSelection } from '@/types/docs-context';
 import type { DiffStatus } from '@/types/diff';
 import type { ApiEndpoint } from '@/types/api-contract';

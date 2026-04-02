@@ -5,8 +5,10 @@ import type { JourneyNode, Journey } from '@/types/journey';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
 import { getLinksForRoute } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
-import { Badge, SectionLabel, InfoBlock, CrossLink } from '@/components/ui';
-import { GitHubLink } from '@/components/ui/github-link';
+import { Badge } from '@/components/indicators';
+import { SectionLabel } from '@/components/ui';
+import { InfoBlock, CrossLink } from '@/components/data-display';
+import { GitHubLink } from '@/components/data-display/github-link';
 import styles from './panel-content.module.scss';
 
 interface StepPanelProps {

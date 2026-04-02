@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { JourneyNode } from '@/types/journey';
 import Link from 'next/link';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
-import { GitHubLink } from '@/components/ui/github-link';
+import { GitHubLink } from '@/components/data-display/github-link';
 import { getLifecyclesForRoute } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
 import { NODE_WIDTH } from '../utils/geometry';

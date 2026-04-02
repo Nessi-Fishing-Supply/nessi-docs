@@ -1,6 +1,6 @@
 import type { Role } from '@/types/permission';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
-import { KeyValueRow } from '@/components/ui';
+import { KeyValueRow } from '@/components/data-display';
 import styles from './panel-content.module.scss';
 
 export function PermissionPanel({ role }: { role: Role }) {

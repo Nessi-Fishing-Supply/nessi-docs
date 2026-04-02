@@ -1,0 +1,21 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-100) 0;
+}
+
+.bordered {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.label {
+  font-size: var(--font-size-100);
+  color: var(--text-secondary);
+}
+
+.value {
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  font-weight: 600;
+}

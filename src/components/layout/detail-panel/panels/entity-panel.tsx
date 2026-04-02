@@ -1,6 +1,7 @@
 import type { Entity } from '@/types/data-model';
-import { Badge, SectionLabel, InfoBlock } from '@/components/ui';
-import { KeyValueRow } from '@/components/ui';
+import { Badge } from '@/components/indicators';
+import { SectionLabel } from '@/components/ui';
+import { InfoBlock, KeyValueRow } from '@/components/data-display';
 import styles from './panel-content.module.scss';
 
 interface EntityPanelProps {

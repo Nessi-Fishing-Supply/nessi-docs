@@ -1,5 +1,6 @@
 import type { ConfigEnum } from '@/types/config-ref';
-import { SectionLabel, KeyValueRow } from '@/components/ui';
+import { SectionLabel } from '@/components/ui';
+import { KeyValueRow } from '@/components/data-display';
 import styles from './panel-content.module.scss';
 
 export function ConfigPanel({ configEnum }: { configEnum: ConfigEnum }) {

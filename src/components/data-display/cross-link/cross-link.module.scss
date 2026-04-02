@@ -1,0 +1,12 @@
+.link {
+  display: block;
+  font-size: var(--font-size-100);
+  color: var(--color-primary-400);
+  text-decoration: none;
+  padding: var(--spacing-100) 0;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-primary-300);
+  }
+}

@@ -1,0 +1,34 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-100);
+  font-size: var(--font-size-100);
+  font-family: var(--font-family-mono);
+  color: var(--color-primary-400);
+  text-decoration: none;
+  padding: var(--spacing-100) var(--spacing-200);
+  border-radius: 4px;
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
+  max-width: 100%;
+  overflow: hidden;
+  transition:
+    background 150ms var(--ease-out),
+    color 150ms var(--ease-out);
+
+  &:hover {
+    background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
+    color: var(--color-primary-350);
+  }
+}
+
+.icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.fileName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
