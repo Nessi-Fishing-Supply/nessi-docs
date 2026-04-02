@@ -9,12 +9,8 @@
 // ─── Filter Bar ───
 
 .filterBar {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-200);
   padding: var(--spacing-200) 0;
   margin-bottom: var(--spacing-100);
-  flex-wrap: wrap;
 }
 
 .diffFilterRow {
@@ -31,42 +27,6 @@
   white-space: nowrap;
 }
 
-.filterChip {
-  font-size: var(--font-size-200);
-  padding: var(--spacing-100) var(--spacing-300);
-  border-radius: 6px;
-  background: rgb(var(--color-white-rgb) / var(--opacity-100));
-  border: 1px solid rgb(var(--color-white-rgb) / var(--opacity-200));
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 150ms ease-out;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-100);
-
-  &:hover {
-    border-color: rgb(var(--color-white-rgb) / var(--opacity-300));
-    color: var(--text-secondary);
-    background: rgb(var(--color-white-rgb) / var(--opacity-100));
-  }
-}
-
-.filterChipActive {
-  background: rgb(var(--color-primary-500-rgb) / var(--opacity-300));
-  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-600));
-  color: var(--color-primary-400);
-}
-
-.chipCount {
-  font-size: var(--font-size-100);
-  color: var(--text-muted);
-
-  .filterChipActive & {
-    color: rgb(var(--color-primary-400-rgb) / var(--opacity-1100));
-  }
-}
-
 .filterDivider {
   width: 1px;
   height: 16px;
@@ -77,28 +37,8 @@
 
 .methodChip {
   font-family: var(--font-family-mono);
-  font-size: var(--font-size-200);
   font-weight: 700;
   text-transform: uppercase;
-  padding: var(--spacing-100) var(--spacing-200);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 150ms ease-out;
-  border: 1px solid transparent;
-  color: var(--text-dim);
-  background: rgb(var(--color-white-rgb) / var(--opacity-100));
-
-  &:hover {
-    color: var(--mc);
-    background: var(--mbg);
-    border-color: var(--mborder);
-  }
-}
-
-.methodChipActive {
-  color: var(--mc);
-  background: var(--mbg);
-  border-color: var(--mborder);
 }
 
 // ─── Endpoint Container ───
@@ -142,62 +82,7 @@
   font-family: var(--font-family-mono);
 }
 
-// ─── Endpoint Row ───
-
-.epRow {
-  margin-bottom: var(--spacing-50);
-  border-radius: 8px;
-  border: 1px solid transparent;
-  transition: all 150ms ease-out;
-  animation: row-enter 200ms ease-out both;
-  animation-delay: var(--stagger);
-  position: relative;
-}
-
-@keyframes row-enter {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.epRowHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-200);
-  width: 100%;
-  padding: var(--spacing-200) var(--spacing-300);
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  border-radius: 8px;
-  transition: background 150ms ease-out;
-  color: inherit;
-  font: inherit;
-
-  &:hover {
-    background: rgb(var(--color-white-rgb) / var(--opacity-100));
-  }
-}
-
-.epRow:hover {
-  border-color: rgb(var(--color-white-rgb) / var(--opacity-100));
-}
-
-.epRowOpen {
-  background: rgb(var(--color-primary-500-rgb) / var(--opacity-100));
-  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-400));
-
-  .epRowHeader {
-    border-radius: 8px 8px 0 0;
-  }
-}
+// ─── Endpoint Row Header Elements ───
 
 .methodBadge {
   font-family: var(--font-family-mono);
@@ -274,23 +159,10 @@
   }
 }
 
-.epChevron {
-  font-size: var(--font-size-200);
-  color: var(--text-muted);
-  transition: transform 200ms ease-out;
-
-  .epRowOpen & {
-    transform: rotate(90deg);
-  }
-}
-
 // ─── Expanded Detail ───
 
 .epDetail {
-  padding: var(--spacing-400) var(--spacing-500);
-  background: rgb(var(--bg-panel-rgb) / var(--opacity-900));
-  border-top: 1px solid rgb(var(--color-primary-400-rgb) / var(--opacity-300));
-  border-radius: 0 0 8px 8px;
+  padding: var(--spacing-400) var(--spacing-200);
 }
 
 .epDescription {
@@ -323,33 +195,7 @@
   font-weight: 600;
 }
 
-// ─── Request Fields Table ───
-
-.fieldTable {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: rgb(var(--color-white-rgb) / var(--opacity-100));
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid rgb(var(--color-white-rgb) / var(--opacity-100));
-}
-
-.fieldRow {
-  display: flex;
-  align-items: center;
-  padding: var(--spacing-200) var(--spacing-200);
-  background: var(--bg-panel);
-  gap: var(--spacing-200);
-
-  &:hover {
-    background: rgb(var(--color-white-rgb) / var(--opacity-100));
-  }
-}
-
-.fieldRowAdded {
-  @include diff-field('added');
-}
+// ─── Request Fields ───
 
 .fieldHighlight {
   @include diff-field('modified');
@@ -362,14 +208,12 @@
   font-family: var(--font-family-mono);
   font-size: var(--font-size-200);
   color: var(--text-primary);
-  min-width: 90px;
 }
 
 .fieldType {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-200);
   color: var(--text-secondary);
-  min-width: 60px;
 }
 
 .fieldReq {
@@ -540,22 +384,4 @@
   min-height: 200px;
   font-size: var(--font-size-200);
   color: var(--text-dim);
-}
-
-// ─── Diff Mode ───
-
-.diff_added {
-  @include diff-row('added');
-}
-
-.diff_modified {
-  @include diff-row('modified');
-}
-
-.diff_removed {
-  @include diff-row('removed');
-}
-
-.diff_unchanged {
-  @include diff-unchanged;
 }

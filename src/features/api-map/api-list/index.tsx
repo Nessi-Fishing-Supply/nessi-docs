@@ -1,13 +1,15 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
+import type { ApiGroup, ApiEndpoint, RequestField } from '@/types/api-contract';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
 import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/layout/page-header';
-import { BorderTrace } from '@/components/data-display/border-trace';
+import { CollapsibleRow } from '@/components/layout/collapsible-row';
+import { FieldTable, type FieldTableColumn } from '@/components/data-display/field-table';
+import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { useDocsContext } from '@/providers/docs-provider';
@@ -35,109 +37,109 @@ function getEndpointDiffStatus(
   return 'unchanged';
 }
 
-/* ── Filter Bar ── */
-
-function FilterBar({
-  groups,
-  activeGroups,
-  activeMethods,
-  onToggleGroup,
-  onToggleMethod,
-  onToggleAllGroups,
-}: {
-  groups: ApiGroup[];
-  activeGroups: Set<string>;
-  activeMethods: Set<string>;
-  onToggleGroup: (name: string) => void;
-  onToggleMethod: (method: string) => void;
-  onToggleAllGroups: () => void;
-}) {
-  const allGroupsActive = activeGroups.size === groups.length;
-
-  return (
-    <div className={styles.filterBar}>
-      <span className={styles.filterLabel}>Group</span>
-      <button
-        className={`${styles.filterChip} ${allGroupsActive ? styles.filterChipActive : ''}`}
-        onClick={onToggleAllGroups}
-      >
-        All{' '}
-        <span className={styles.chipCount}>
-          {groups.reduce((s, g) => s + g.endpoints.length, 0)}
-        </span>
-      </button>
-      {groups.map((g) => (
-        <button
-          key={g.name}
-          className={`${styles.filterChip} ${activeGroups.has(g.name) ? styles.filterChipActive : ''}`}
-          onClick={() => onToggleGroup(g.name)}
-        >
-          {g.name} <span className={styles.chipCount}>{g.endpoints.length}</span>
-        </button>
-      ))}
-
-      <span className={styles.filterDivider} />
-      <span className={styles.filterLabel}>Method</span>
-      {ALL_METHODS.map((m) => {
-        const { color, bg, border } = getMethodColors(m);
-        return (
-          <button
-            key={m}
-            className={`${styles.methodChip} ${activeMethods.has(m) ? styles.methodChipActive : ''}`}
-            style={
-              {
-                '--mc': color,
-                '--mbg': bg,
-                '--mborder': border,
-              } as React.CSSProperties
-            }
-            onClick={() => onToggleMethod(m)}
-          >
-            {m}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-/* ── Endpoint Detail (Expanded) ── */
-
 /* ── Group Divider with deep-link support ── */
 
 function GroupDivider({ name, count }: { name: string; count: number }) {
-  const slug = name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-  const ref = useRef<HTMLDivElement>(null);
-  const [highlight, setHighlight] = useState(false);
-
-  useEffect(() => {
-    function checkHash() {
-      const hashes = window.location.hash.split('#').filter(Boolean);
-      if (hashes.includes(slug)) {
-        setHighlight(true);
-        history.replaceState(null, '', window.location.pathname);
-        setTimeout(() => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-        setTimeout(() => setHighlight(false), 9500);
-      }
-    }
-
-    checkHash();
-    window.addEventListener('hashchange', checkHash);
-    return () => window.removeEventListener('hashchange', checkHash);
-  }, [slug]);
-
   return (
-    <div ref={ref} id={slug} className={styles.groupDivider} style={{ position: 'relative' }}>
-      <BorderTrace active={highlight} />
+    <div className={styles.groupDivider}>
       <span className={styles.groupName}>{name}</span>
       <span className={styles.groupLine} />
       <span className={styles.groupCount}>{count}</span>
     </div>
   );
 }
+
+/* ── Request Field Table Columns ── */
+
+function useRequestFieldColumns(): FieldTableColumn<RequestField>[] {
+  return useMemo(
+    () => [
+      {
+        key: 'name',
+        label: 'Field',
+        width: '90px',
+        render: (_value: unknown, field: RequestField) => (
+          <span className={styles.fieldName}>{field.name}</span>
+        ),
+      },
+      {
+        key: 'type',
+        label: 'Type',
+        width: '60px',
+        render: (_value: unknown, field: RequestField) => (
+          <span className={styles.fieldType}>{field.type}</span>
+        ),
+      },
+      {
+        key: 'required',
+        label: '',
+        render: (_value: unknown, field: RequestField) =>
+          field.required ? <span className={styles.fieldReq}>required</span> : null,
+      },
+    ],
+    [],
+  );
+}
+
+/* ── Endpoint Row Header ── */
+
+function EndpointRowHeader({
+  endpoint,
+  diffStatus,
+}: {
+  endpoint: ApiEndpoint;
+  diffStatus: DiffStatus | null;
+}) {
+  const branchHref = useBranchHref();
+  const { color, bg, border } = getMethodColors(endpoint.method);
+  const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
+  const errorCount = errors.length;
+  const pathParts = endpoint.path.split(/(:[\w]+)/g);
+
+  return (
+    <>
+      <span
+        className={styles.methodBadge}
+        style={
+          {
+            '--method-color': color,
+            '--method-bg': bg,
+            '--method-border': border,
+          } as React.CSSProperties
+        }
+      >
+        {endpoint.method}
+      </span>
+      {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
+      <span className={styles.epPath}>
+        {pathParts.map((part, i) =>
+          part.startsWith(':') ? (
+            <span key={i} className={styles.epParam}>
+              {part}
+            </span>
+          ) : (
+            <span key={i}>{part}</span>
+          ),
+        )}
+      </span>
+      <span className={styles.epMeta}>
+        {endpoint.access?.map((ctx) => (
+          <Link
+            key={ctx}
+            href={branchHref('/config#__roles__')}
+            className={`${styles.epAccess} ${ctx === 'Shop' ? styles.epAccessShop : ''}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {ctx}
+          </Link>
+        ))}
+        {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
+      </span>
+    </>
+  );
+}
+
+/* ── Endpoint Detail (Expanded) ── */
 
 function EndpointDetail({
   endpoint,
@@ -151,6 +153,7 @@ function EndpointDetail({
   const journeyLinks = getLinksForEndpoint(endpoint.method, endpoint.path);
   const hasRequestFields = endpoint.requestFields && endpoint.requestFields.length > 0;
   const responseCodes = buildResponseCodes(endpoint.errorCodes);
+  const columns = useRequestFieldColumns();
 
   // Track which top-level fields changed for section highlighting
   const changedFieldSet = useMemo(() => {
@@ -159,18 +162,26 @@ function EndpointDetail({
   }, [changedFields]);
 
   // Compute added request fields from changedFields
-  const addedRequestFields = useMemo(() => {
-    if (!changedFields) return [];
+  const { changedRequestFieldNames, addedRequestFields } = useMemo(() => {
+    const empty = {
+      changedRequestFieldNames: new Set<string>(),
+      addedRequestFields: [] as RequestField[],
+    };
+    if (!changedFields) return empty;
     const rf = changedFields.find((c) => c.field === 'requestFields');
-    if (!rf) return [];
+    if (!rf) return empty;
     const base = Array.isArray(rf.baseValue) ? rf.baseValue : [];
     const head = Array.isArray(rf.headValue) ? rf.headValue : [];
     const baseNames = new Set(base.map((f: { name: string }) => f.name));
-    return (
-      (head as ApiEndpoint['requestFields'])?.filter(
-        (f: { name: string }) => !baseNames.has(f.name),
-      ) ?? []
-    );
+    const changed = new Set<string>();
+    const added: RequestField[] = [];
+    for (const f of head as RequestField[]) {
+      if (!baseNames.has(f.name)) {
+        changed.add(f.name);
+        added.push(f);
+      }
+    }
+    return { changedRequestFieldNames: changed, addedRequestFields: added };
   }, [changedFields]);
 
   return (
@@ -191,25 +202,12 @@ function EndpointDetail({
           <div>
             <div className={styles.detailSection}>
               <div className={styles.detailLabel}>Request Body</div>
-              <div className={styles.fieldTable}>
-                {endpoint.requestFields?.map((f) => (
-                  <div key={f.name} className={styles.fieldRow}>
-                    <span className={styles.fieldName}>{f.name}</span>
-                    <span className={styles.fieldType}>{f.type}</span>
-                    {f.required && <span className={styles.fieldReq}>required</span>}
-                  </div>
-                ))}
-                {addedRequestFields.map((f) => (
-                  <div
-                    key={`added-${f.name}`}
-                    className={`${styles.fieldRow} ${styles.fieldRowAdded}`}
-                  >
-                    <span className={styles.fieldName}>{f.name}</span>
-                    <span className={styles.fieldType}>{f.type}</span>
-                    {f.required && <span className={styles.fieldReq}>required</span>}
-                  </div>
-                ))}
-              </div>
+              <FieldTable
+                fields={endpoint.requestFields ?? []}
+                columns={columns}
+                changedFields={changedRequestFieldNames}
+                addedFields={addedRequestFields}
+              />
             </div>
 
             {errors.length > 0 && (
@@ -302,130 +300,6 @@ function EndpointDetail({
   );
 }
 
-/* ── Endpoint Row ── */
-
-function EndpointRow({
-  endpoint,
-  staggerIndex,
-  diffStatus,
-  changedFields,
-}: {
-  endpoint: ApiEndpoint;
-  staggerIndex: number;
-  diffStatus: DiffStatus | null;
-  changedFields?: FieldChange[];
-}) {
-  const branchHref = useBranchHref();
-  const { setSelectedItem } = useDocsContext();
-  const slug = `${endpoint.method.toLowerCase()}-${endpoint.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
-  const [isDeepLinkTarget] = useState(
-    () =>
-      typeof window !== 'undefined' &&
-      window.location.hash.split('#').filter(Boolean).includes(slug),
-  );
-  const [isOpen, setIsOpen] = useState(false);
-  const [highlight, setHighlight] = useState(false);
-  const rowRef = useRef<HTMLDivElement>(null);
-  const { color, bg, border } = getMethodColors(endpoint.method);
-  const errors = getErrorsForEndpoint(endpoint.method, endpoint.path);
-  const errorCount = errors.length;
-
-  // Deep-link: expand → scroll → glow (matches Data Model timing)
-  useEffect(() => {
-    function checkHash() {
-      const hashes = window.location.hash.split('#').filter(Boolean);
-      if (hashes.includes(slug)) {
-        setIsOpen(true);
-        setHighlight(true);
-        history.replaceState(null, '', window.location.pathname);
-        setTimeout(
-          () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
-          100,
-        );
-        setTimeout(() => setHighlight(false), 9500);
-      }
-    }
-
-    checkHash();
-    window.addEventListener('hashchange', checkHash);
-    return () => window.removeEventListener('hashchange', checkHash);
-  }, [slug]);
-
-  const pathParts = endpoint.path.split(/(:[\w]+)/g);
-
-  return (
-    <div
-      ref={rowRef}
-      id={slug}
-      className={`${styles.epRow} ${isOpen ? styles.epRowOpen : ''} ${diffStatus ? styles[`diff_${diffStatus}`] : ''}`}
-      style={
-        {
-          '--method-color': color,
-          '--method-bg': bg,
-          '--method-border': border,
-          '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms`,
-        } as React.CSSProperties
-      }
-    >
-      <BorderTrace active={highlight} />
-      <button
-        className={styles.epRowHeader}
-        onClick={
-          diffStatus === 'unchanged'
-            ? undefined
-            : () => {
-                setIsOpen((p) => !p);
-                if (diffStatus) {
-                  setSelectedItem({
-                    type: 'diff-item',
-                    item: {
-                      key: `${endpoint.method}:${endpoint.path}`,
-                      label: `${endpoint.method} ${endpoint.path}`,
-                      status: diffStatus,
-                      domain: 'API Map',
-                      href: branchHref(`/api-map#${slug}`),
-                      changedFields,
-                      data: endpoint,
-                    },
-                  });
-                }
-              }
-        }
-        style={diffStatus === 'unchanged' ? { cursor: 'default' } : undefined}
-      >
-        <span className={styles.methodBadge}>{endpoint.method}</span>
-        {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
-        <span className={styles.epPath}>
-          {pathParts.map((part, i) =>
-            part.startsWith(':') ? (
-              <span key={i} className={styles.epParam}>
-                {part}
-              </span>
-            ) : (
-              <span key={i}>{part}</span>
-            ),
-          )}
-        </span>
-        <span className={styles.epMeta}>
-          {endpoint.access?.map((ctx) => (
-            <Link
-              key={ctx}
-              href={branchHref('/config#__roles__')}
-              className={`${styles.epAccess} ${ctx === 'Shop' ? styles.epAccessShop : ''}`}
-            >
-              {ctx}
-            </Link>
-          ))}
-          {errorCount > 0 && <span className={styles.epErrors}>{errorCount}</span>}
-          <span className={styles.epChevron}>&#9656;</span>
-        </span>
-      </button>
-
-      {isOpen && <EndpointDetail endpoint={endpoint} changedFields={changedFields} />}
-    </div>
-  );
-}
-
 /* ── Helpers ── */
 
 interface ResponseCode {
@@ -460,8 +334,6 @@ function buildResponseCodes(errorCodes?: number[]): ResponseCode[] {
   return codes;
 }
 
-/* ── Helpers ── */
-
 /* ── Main Component ── */
 
 interface ApiListProps {
@@ -470,6 +342,8 @@ interface ApiListProps {
 }
 
 export function ApiList({ groups, totalEndpoints }: ApiListProps) {
+  const branchHref = useBranchHref();
+  const { setSelectedItem } = useDocsContext();
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const apiGroupDiffs = isDiffMode ? diffResult?.apiGroupDiffs : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
@@ -505,6 +379,7 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
     return { added, modified, removed };
   }, [apiGroupDiffs]);
 
+  const [openEndpoints, setOpenEndpoints] = useState<Set<string>>(new Set());
   const [activeGroups, setActiveGroups] = useState<Set<string>>(
     () => new Set(groups.map((g) => g.name)),
   );
@@ -516,13 +391,11 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
     setActiveGroups((prev) => {
       const allSelected = prev.size === allGroupNames.size;
       if (allSelected) {
-        // From "all" state, clicking one shows only that one
         return new Set([name]);
       }
       const next = new Set(prev);
       if (next.has(name)) {
         next.delete(name);
-        // If nothing left, go back to all
         return next.size === 0 ? new Set(allGroupNames) : next;
       }
       next.add(name);
@@ -546,6 +419,15 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
         return next.size === 0 ? new Set(ALL_METHODS) : next;
       }
       next.add(method);
+      return next;
+    });
+  };
+
+  const toggleEndpoint = (id: string) => {
+    setOpenEndpoints((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
@@ -585,6 +467,27 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
       .filter((g) => g.endpoints.length > 0);
   }, [groups, activeGroups, activeMethods, isDiffMode, apiGroupDiffs, diffFilter]);
 
+  const getEndpointSlug = (ep: ApiEndpoint) =>
+    `${ep.method.toLowerCase()}-${ep.path.replace(/[^a-z0-9]+/gi, '-').replace(/(^-|-$)/g, '')}`;
+
+  const handleExpand = (endpoint: ApiEndpoint, diffStatus: DiffStatus | null) => {
+    if (diffStatus && diffStatus !== 'unchanged') {
+      const slug = getEndpointSlug(endpoint);
+      setSelectedItem({
+        type: 'diff-item',
+        item: {
+          key: `${endpoint.method}:${endpoint.path}`,
+          label: `${endpoint.method} ${endpoint.path}`,
+          status: diffStatus,
+          domain: 'API Map',
+          href: branchHref(`/api-map#${slug}`),
+          changedFields: epChangedFieldsMap.get(`${endpoint.method}:${endpoint.path}`),
+          data: endpoint,
+        },
+      });
+    }
+  };
+
   let staggerIndex = 0;
 
   return (
@@ -598,14 +501,42 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
       />
 
       {!isDiffMode && (
-        <FilterBar
-          groups={groups}
-          activeGroups={activeGroups}
-          activeMethods={activeMethods}
-          onToggleGroup={toggleGroup}
-          onToggleMethod={toggleMethod}
-          onToggleAllGroups={toggleAllGroups}
-        />
+        <FilterBar className={styles.filterBar}>
+          <span className={styles.filterLabel}>Group</span>
+          <FilterChip
+            label="All"
+            active={activeGroups.size === groups.length}
+            onToggle={toggleAllGroups}
+            count={groups.reduce((s, g) => s + g.endpoints.length, 0)}
+          />
+          {groups.map((g) => (
+            <FilterChip
+              key={g.name}
+              label={g.name}
+              active={activeGroups.has(g.name)}
+              onToggle={() => toggleGroup(g.name)}
+              count={g.endpoints.length}
+            />
+          ))}
+
+          <span className={styles.filterDivider} />
+          <span className={styles.filterLabel}>Method</span>
+          {ALL_METHODS.map((m) => {
+            const { color, bg, border } = getMethodColors(m);
+            return (
+              <FilterChip
+                key={m}
+                label={m}
+                active={activeMethods.has(m)}
+                onToggle={() => toggleMethod(m)}
+                color={color}
+                colorBg={bg}
+                colorBorder={border}
+                className={styles.methodChip}
+              />
+            );
+          })}
+        </FilterBar>
       )}
 
       {isDiffMode && (
@@ -621,14 +552,29 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
 
             {group.endpoints.map((ep) => {
               const idx = staggerIndex++;
+              const slug = getEndpointSlug(ep);
+              const diffStatus = getEndpointDiffStatus(
+                ep.method,
+                ep.path,
+                apiGroupDiffs,
+                group.name,
+              );
               return (
-                <EndpointRow
+                <CollapsibleRow
                   key={`${ep.method}-${ep.path}`}
-                  endpoint={ep}
+                  id={slug}
                   staggerIndex={idx}
-                  diffStatus={getEndpointDiffStatus(ep.method, ep.path, apiGroupDiffs, group.name)}
-                  changedFields={epChangedFieldsMap.get(`${ep.method}:${ep.path}`)}
-                />
+                  isOpen={openEndpoints.has(slug)}
+                  onToggle={() => toggleEndpoint(slug)}
+                  diffStatus={diffStatus ?? undefined}
+                  onExpand={() => handleExpand(ep, diffStatus)}
+                  header={<EndpointRowHeader endpoint={ep} diffStatus={diffStatus} />}
+                >
+                  <EndpointDetail
+                    endpoint={ep}
+                    changedFields={epChangedFieldsMap.get(`${ep.method}:${ep.path}`)}
+                  />
+                </CollapsibleRow>
               );
             })}
 
@@ -638,14 +584,23 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
               (() => {
                 const gd = apiGroupDiffs.find((g) => g.group.name === group.name);
                 if (!gd) return null;
-                return gd.endpointDiffs.added.map((ep) => (
-                  <EndpointRow
-                    key={`added-${ep.method}-${ep.path}`}
-                    endpoint={ep}
-                    staggerIndex={0}
-                    diffStatus="added"
-                  />
-                ));
+                return gd.endpointDiffs.added.map((ep) => {
+                  const slug = getEndpointSlug(ep);
+                  return (
+                    <CollapsibleRow
+                      key={`added-${ep.method}-${ep.path}`}
+                      id={slug}
+                      staggerIndex={0}
+                      isOpen={openEndpoints.has(slug)}
+                      onToggle={() => toggleEndpoint(slug)}
+                      diffStatus="added"
+                      onExpand={() => handleExpand(ep, 'added')}
+                      header={<EndpointRowHeader endpoint={ep} diffStatus="added" />}
+                    >
+                      <EndpointDetail endpoint={ep} />
+                    </CollapsibleRow>
+                  );
+                });
               })()}
           </div>
         ))}
@@ -658,14 +613,23 @@ export function ApiList({ groups, totalEndpoints }: ApiListProps) {
             .map((gd) => (
               <div key={`added-group-${gd.group.name}`}>
                 <GroupDivider name={gd.group.name} count={gd.group.endpoints.length} />
-                {gd.group.endpoints.map((ep) => (
-                  <EndpointRow
-                    key={`added-${ep.method}-${ep.path}`}
-                    endpoint={ep}
-                    staggerIndex={0}
-                    diffStatus="added"
-                  />
-                ))}
+                {gd.group.endpoints.map((ep) => {
+                  const slug = getEndpointSlug(ep);
+                  return (
+                    <CollapsibleRow
+                      key={`added-${ep.method}-${ep.path}`}
+                      id={slug}
+                      staggerIndex={0}
+                      isOpen={openEndpoints.has(slug)}
+                      onToggle={() => toggleEndpoint(slug)}
+                      diffStatus="added"
+                      onExpand={() => handleExpand(ep, 'added')}
+                      header={<EndpointRowHeader endpoint={ep} diffStatus="added" />}
+                    >
+                      <EndpointDetail endpoint={ep} />
+                    </CollapsibleRow>
+                  );
+                })}
               </div>
             ))}
 

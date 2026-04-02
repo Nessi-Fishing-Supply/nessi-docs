@@ -14,20 +14,32 @@ interface FilterChipProps {
   active: boolean;
   onToggle: () => void;
   color?: string;
+  colorBg?: string;
+  colorBorder?: string;
   count?: number;
+  className?: string;
 }
 
-export function FilterChip({ label, active, onToggle, color, count }: FilterChipProps) {
+export function FilterChip({
+  label,
+  active,
+  onToggle,
+  color,
+  colorBg,
+  colorBorder,
+  count,
+  className,
+}: FilterChipProps) {
   return (
     <button
-      className={`${styles.chip} ${active ? styles.chipActive : ''}`}
+      className={`${styles.chip} ${active ? styles.chipActive : ''} ${className ?? ''}`}
       onClick={onToggle}
       style={
         active && color
           ? ({
               '--chip-color': color,
-              '--chip-bg': `${color}1a`,
-              '--chip-border': `${color}33`,
+              '--chip-bg': colorBg ?? `${color}1a`,
+              '--chip-border': colorBorder ?? `${color}33`,
             } as React.CSSProperties)
           : undefined
       }
