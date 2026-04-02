@@ -4,8 +4,8 @@ import { useState, useCallback } from 'react';
 import type { Journey, StepLayer, StepStatus } from '@/types/journey';
 import { getDomainConfig } from '@/constants/domains';
 import { useBranchHref } from '@/providers/branch-provider';
-import { Breadcrumb } from '@/components/ui';
-import type { SwitcherItem } from '@/components/ui/breadcrumb';
+import { Breadcrumb } from '@/components/navigation/breadcrumb';
+import type { SwitcherItem } from '@/components/navigation/breadcrumb';
 import { JourneyCanvas } from '@/features/journeys/journey-canvas';
 
 const ALL_LAYERS: StepLayer[] = ['client', 'server', 'database', 'background', 'email', 'external'];

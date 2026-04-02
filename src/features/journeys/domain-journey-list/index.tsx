@@ -6,7 +6,7 @@ import type { Journey } from '@/types/journey';
 import { PERSONA_CONFIG } from '@/types/journey';
 import type { DomainConfig } from '@/constants/domains';
 import { useBranchHref } from '@/providers/branch-provider';
-import { Breadcrumb } from '@/components/ui';
+import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import styles from './domain-journey-list.module.scss';
 
 interface DomainJourneyListProps {

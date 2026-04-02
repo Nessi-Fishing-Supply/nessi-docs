@@ -2,8 +2,8 @@
 
 import type { ArchDiagram } from '@/types/architecture';
 import { useBranchHref } from '@/providers/branch-provider';
-import { Breadcrumb } from '@/components/ui';
-import type { SwitcherItem } from '@/components/ui/breadcrumb';
+import { Breadcrumb } from '@/components/navigation/breadcrumb';
+import type { SwitcherItem } from '@/components/navigation/breadcrumb';
 import { ArchitectureCanvas } from '@/features/architecture/architecture-canvas';
 
 interface ArchitecturePageClientProps {

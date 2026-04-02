@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import type { Lifecycle } from '@/types/lifecycle';
 import { useBranchHref } from '@/providers/branch-provider';
-import { Breadcrumb } from '@/components/ui';
-import type { SwitcherItem } from '@/components/ui/breadcrumb';
+import { Breadcrumb } from '@/components/navigation/breadcrumb';
+import type { SwitcherItem } from '@/components/navigation/breadcrumb';
 import { LifecycleCanvas } from '@/features/lifecycles/lifecycle-canvas';
 
 interface LifecyclePageClientProps {

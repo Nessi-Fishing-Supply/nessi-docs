@@ -4,8 +4,8 @@ import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useBranchData } from '@/providers/branch-provider';
-import { BranchSwitcher } from '@/components/layout/branch-switcher';
-import { ComparisonSelector } from '@/components/layout/comparison-selector';
+import { BranchSwitcher } from '@/components/navigation/branch-switcher';
+import { ComparisonSelector } from '@/components/navigation/comparison-selector';
 import styles from './topbar.module.scss';
 
 export function Topbar() {
