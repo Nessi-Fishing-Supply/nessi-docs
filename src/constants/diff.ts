@@ -1,7 +1,7 @@
 import type { DiffStatus } from '@/types/diff';
 
 /** Diff colors for canvas/SVG components that can't use CSS variables directly. */
-export const DIFF_COLORS: Record<string, string> = {
+export const DIFF_COLORS: Record<DiffStatus, string> = {
   added: '#3d8c75',
   modified: '#7b8fcd',
   removed: '#b84040',
@@ -15,19 +15,19 @@ export const DIFF_STATUS_CONFIG: Record<
 > = {
   added: {
     label: 'New',
-    color: '#3d8c75',
+    color: DIFF_COLORS.added,
     bg: 'rgba(61,140,117,0.12)',
     border: 'rgba(61,140,117,0.22)',
   },
   modified: {
     label: 'Modified',
-    color: '#7b8fcd',
+    color: DIFF_COLORS.modified,
     bg: 'rgba(123,143,205,0.12)',
     border: 'rgba(123,143,205,0.22)',
   },
   removed: {
     label: 'Removed',
-    color: '#b84040',
+    color: DIFF_COLORS.removed,
     bg: 'rgba(184,64,64,0.12)',
     border: 'rgba(184,64,64,0.22)',
   },
