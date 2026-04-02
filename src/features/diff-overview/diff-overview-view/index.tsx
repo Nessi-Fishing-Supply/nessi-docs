@@ -12,7 +12,7 @@ import {
   HiOutlineLightningBolt,
   HiOutlineCog,
 } from 'react-icons/hi';
-import { useBranchData, useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/providers/branch-provider';
 import { useAppStore } from '@/stores/app-store';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { PageHeader } from '@/components/layout/page-header';
@@ -241,7 +241,8 @@ const DOMAINS: DomainConfig[] = [
 ];
 
 export function DiffOverviewView() {
-  const { activeBranch, branches } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
+  const branches = useAppStore.use.branches();
   const branchHref = useBranchHref();
   const selectedItem = useAppStore.use.selectedItem();
   const setSelectedItem = useAppStore.getState().selectItem;

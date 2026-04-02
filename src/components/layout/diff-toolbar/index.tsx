@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useBranchData } from '@/providers/branch-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import styles from './diff-toolbar.module.scss';
 
@@ -24,7 +24,8 @@ function getPageDomain(pathname: string): string | null {
 }
 
 export function DiffToolbar() {
-  const { activeBranch, branches } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
+  const branches = useAppStore.use.branches();
   const pathname = usePathname();
   const { isActive, compareBranch, diffResult } = useDiffMode();
 

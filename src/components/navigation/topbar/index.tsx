@@ -3,13 +3,13 @@
 import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useBranchData } from '@/providers/branch-provider';
+import { useAppStore } from '@/stores/app-store';
 import { BranchSwitcher } from '@/components/navigation/branch-switcher';
 import { ComparisonSelector } from '@/components/navigation/comparison-selector';
 import styles from './topbar.module.scss';
 
 export function Topbar() {
-  const { activeBranch } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
 
   return (
     <div className={styles.topbar}>

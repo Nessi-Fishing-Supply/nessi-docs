@@ -1,7 +1,6 @@
 'use client';
 
 import { type ReactNode, useCallback, useRef } from 'react';
-import { useBranchData } from '@/providers/branch-provider';
 import { useAppStore } from '@/stores/app-store';
 import styles from './app-shell.module.scss';
 
@@ -14,7 +13,7 @@ interface AppShellProps {
 }
 
 export function AppShell({ topbar, sidebar, detail, diffToolbar, children }: AppShellProps) {
-  const { activeBranch } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
   const selectedItem = useAppStore.use.selectedItem();
   const clearSelection = useAppStore.getState().clearSelection;
   const mainRef = useRef<HTMLElement>(null);

@@ -19,7 +19,8 @@ import {
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { FEATURE_TO_DOMAIN } from '@/data/transforms/features';
 import type { Lifecycle } from '@/types/lifecycle';
-import { useBranchData, useBranchHref } from '@/providers/branch-provider';
+import { useBranchHref } from '@/providers/branch-provider';
+import { useAppStore } from '@/stores/app-store';
 import styles from './sidebar.module.scss';
 
 const SYSTEM_ITEMS = [
@@ -261,7 +262,7 @@ interface SidebarProps {
 
 export function Sidebar({ featureDomains }: SidebarProps) {
   const pathname = usePathname();
-  const { activeBranch } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
   const branchHref = useBranchHref();
   const branchPrefix = `/${activeBranch}`;
 

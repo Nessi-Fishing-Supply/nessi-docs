@@ -2,12 +2,13 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useBranchData } from '@/providers/branch-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useToast } from '@/components/indicators/toast';
 import styles from './branch-switcher.module.scss';
 
 export function BranchSwitcher() {
-  const { activeBranch, branches } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
+  const branches = useAppStore.use.branches();
   const { showToast } = useToast();
   const router = useRouter();
   const pathname = usePathname();

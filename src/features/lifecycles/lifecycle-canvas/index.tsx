@@ -16,7 +16,7 @@ import {
   type PortSide,
 } from '@/features/canvas/utils/geometry';
 import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
-import { useBranchData } from '@/providers/branch-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 
@@ -184,7 +184,8 @@ export function LifecycleCanvas({ lifecycle }: LifecycleCanvasProps) {
 
   // Diff mode integration
   const { isActive: isDiffMode, compareBranch, diffResult } = useDiffMode();
-  const { activeBranch, branches } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
+  const branches = useAppStore.use.branches();
   const activeBranchLabel = branches.find((b) => b.name === activeBranch)?.label ?? activeBranch;
   const compareBranchLabel =
     branches.find((b) => b.name === compareBranch)?.label ?? compareBranch ?? '';

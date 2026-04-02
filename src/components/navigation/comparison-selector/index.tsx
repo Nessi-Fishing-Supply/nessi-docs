@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useBranchData } from '@/providers/branch-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import styles from './comparison-selector.module.scss';
 
 export function ComparisonSelector() {
-  const { activeBranch, branches } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
+  const branches = useAppStore.use.branches();
   const { isActive, compareBranch, activate, deactivate } = useDiffMode();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useBranchData } from '@/providers/branch-provider';
+import { useAppStore } from '@/stores/app-store';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import styles from './diff-empty-state.module.scss';
 
 export function DiffEmptyState() {
-  const { activeBranch, branches } = useBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
+  const branches = useAppStore.use.branches();
   const { activate } = useDiffMode();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);

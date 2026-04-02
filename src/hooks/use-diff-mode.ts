@@ -2,7 +2,7 @@
 
 import { useMemo, useEffect } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { useBranchData } from '@/providers/branch-provider';
+import { useAppStore } from '@/stores/app-store';
 import { computeDiff } from '@/data/diff-engine';
 import type { DiffResult } from '@/types/diff';
 
@@ -16,7 +16,10 @@ export function useDiffMode(): {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const { activeData, setComparisonBranch, allBranchData, activeBranch } = useBranchData();
+  const activeData = useAppStore.use.activeData();
+  const allBranchData = useAppStore.use.allBranchData();
+  const activeBranch = useAppStore.use.activeBranch();
+  const setComparisonBranch = useAppStore.getState().setComparisonBranch;
 
   const compareBranch = searchParams.get('compare');
 
@@ -32,7 +35,7 @@ export function useDiffMode(): {
   const comparisonData = compareBranch ? (allBranchData[compareBranch] ?? null) : null;
 
   const diffResult = useMemo<DiffResult | null>(() => {
-    if (!comparisonData) return null;
+    if (!comparisonData || !activeData) return null;
     return computeDiff(activeData, comparisonData);
   }, [comparisonData, activeData]);
 
