@@ -12,7 +12,10 @@ import { useBranchHref } from '@/providers/branch-provider';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { Badge } from '@/components/indicators/badge';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
-import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
+import {
+  DiffFilterBar,
+  type DiffStatusFilter,
+} from '@/components/layout/filter-bar/diff-filter-bar';
 import styles from './feature-domain-view.module.scss';
 
 /* ── Deep-link href resolution ── */

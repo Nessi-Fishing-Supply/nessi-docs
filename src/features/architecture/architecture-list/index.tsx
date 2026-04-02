@@ -9,7 +9,7 @@ import { Badge } from '@/components/indicators/badge';
 import { PageHeader } from '@/components/layout/page-header';
 import { ListRow } from '@/components/layout/list-row';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
-import type { DiffStatusFilter } from '@/components/ui/diff-filter-bar';
+import type { DiffStatusFilter } from '@/components/layout/filter-bar/diff-filter-bar';
 import styles from './architecture-list.module.scss';
 
 interface ArchitectureListProps {

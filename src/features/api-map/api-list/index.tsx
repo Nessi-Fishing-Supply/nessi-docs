@@ -14,7 +14,10 @@ import { GitHubLink } from '@/components/data-display/github-link';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { useDocsContext } from '@/providers/docs-provider';
 import { Badge } from '@/components/indicators/badge';
-import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
+import {
+  DiffFilterBar,
+  type DiffStatusFilter,
+} from '@/components/layout/filter-bar/diff-filter-bar';
 import type { DiffStatus, ApiGroupDiff, FieldChange } from '@/types/diff';
 import styles from './api-list.module.scss';
 

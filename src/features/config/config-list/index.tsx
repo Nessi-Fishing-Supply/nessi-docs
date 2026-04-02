@@ -11,7 +11,10 @@ import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { Badge } from '@/components/indicators/badge';
-import { DiffFilterBar, type DiffStatusFilter } from '@/components/ui/diff-filter-bar';
+import {
+  DiffFilterBar,
+  type DiffStatusFilter,
+} from '@/components/layout/filter-bar/diff-filter-bar';
 import styles from './config-list.module.scss';
 
 const ROLES_SLUG = '__roles__';
