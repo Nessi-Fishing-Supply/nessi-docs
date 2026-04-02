@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgb(var(--color-black-rgb) / var(--opacity-60));
+  background: rgb(var(--color-black-rgb) / var(--opacity-64));
   backdrop-filter: blur(4px);
   display: flex;
   align-items: flex-start;
@@ -27,7 +27,7 @@
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   border-radius: 12px;
-  box-shadow: 0 24px 64px rgb(var(--color-black-rgb) / var(--opacity-50));
+  box-shadow: 0 24px 64px rgb(var(--color-black-rgb) / var(--opacity-48));
   overflow: hidden;
   animation: dialog-in 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
