@@ -1,6 +1,42 @@
 {
   "items": [
     {
+      "title": "fix(messaging): allow direct messages between any members without prior transaction history",
+      "number": 352,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/352",
+      "state": "OPEN",
+      "labels": ["bug", "P1-high", "full-stack", "conductor"],
+      "status": "Todo",
+      "priority": "P1 - high",
+      "area": "Full-stack",
+      "executor": "Conductor",
+      "feature": ""
+    },
+    {
+      "title": "fix(messaging): verify and fix offer creation redirect to message thread",
+      "number": 351,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/351",
+      "state": "OPEN",
+      "labels": ["bug", "P1-high", "full-stack", "conductor"],
+      "status": "Todo",
+      "priority": "P1 - high",
+      "area": "Full-stack",
+      "executor": "Conductor",
+      "feature": ""
+    },
+    {
+      "title": "feat(messaging): wire offer accept/decline/counter actions to inline OfferBubble in chat",
+      "number": 350,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/350",
+      "state": "OPEN",
+      "labels": ["feature", "P1-high", "frontend", "conductor"],
+      "status": "Todo",
+      "priority": "P1 - high",
+      "area": "Frontend",
+      "executor": "Conductor",
+      "feature": ""
+    },
+    {
       "title": "Centralize text moderation and wire into all user-generated content routes",
       "number": 343,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/343",
@@ -2675,6 +2711,42 @@
       "area": "Full-stack",
       "executor": "Conductor",
       "feature": "transactions"
+    },
+    {
+      "title": "feat(messaging): cross-context shop unread badges in context switcher dropdown",
+      "number": 353,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/353",
+      "state": "OPEN",
+      "labels": ["feature", "P2-medium", "frontend", "conductor"],
+      "status": "Todo",
+      "priority": "P2 - medium",
+      "area": "Frontend",
+      "executor": "Conductor",
+      "feature": ""
+    },
+    {
+      "title": "feat(shops): per-member shop notification preferences for messaging",
+      "number": 355,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/355",
+      "state": "OPEN",
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
+      "status": "Todo",
+      "priority": "P2 - medium",
+      "area": "Full-stack",
+      "executor": "Conductor",
+      "feature": ""
+    },
+    {
+      "title": "feat(members): notification preferences API route and verification",
+      "number": 354,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/issues/354",
+      "state": "OPEN",
+      "labels": ["feature", "P2-medium", "full-stack", "conductor"],
+      "status": "Todo",
+      "priority": "P2 - medium",
+      "area": "Full-stack",
+      "executor": "Conductor",
+      "feature": ""
     }
   ]
 }

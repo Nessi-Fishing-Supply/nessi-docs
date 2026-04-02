@@ -865,7 +865,7 @@
           "access": ["Member"],
           "errorCodes": [401, 403, 500],
           "requestFields": [],
-          "description": "Mark a thread as read for the authenticated user",
+          "description": "Mark a thread as read for the authenticated user or shop context",
           "tags": [],
           "sourceFile": "src/app/api/messaging/threads/[thread_id]/read/route.ts"
         },
@@ -874,12 +874,16 @@
           "path": "/api/messaging/threads/:thread_id",
           "label": "List :Thread Id",
           "auth": "user",
-          "access": ["Member"],
+          "access": ["Shop"],
           "errorCodes": [401, 404, 500],
           "requestFields": [],
           "description": "Get thread details including participants and context",
           "tags": [],
-          "sourceFile": "src/app/api/messaging/threads/[thread_id]/route.ts"
+          "sourceFile": "src/app/api/messaging/threads/[thread_id]/route.ts",
+          "permissions": {
+            "feature": "messaging",
+            "level": "view"
+          }
         },
         {
           "method": "POST",
@@ -934,12 +938,16 @@
           "path": "/api/messaging/unread-count",
           "label": "List Unread Count",
           "auth": "user",
-          "access": ["Member"],
+          "access": ["Shop"],
           "errorCodes": [401, 500],
           "requestFields": [],
-          "description": "Get the total unread message count for the authenticated user",
+          "description": "Get the total unread message count for the authenticated user or shop context",
           "tags": [],
-          "sourceFile": "src/app/api/messaging/unread-count/route.ts"
+          "sourceFile": "src/app/api/messaging/unread-count/route.ts",
+          "permissions": {
+            "feature": "messaging",
+            "level": "view"
+          }
         }
       ]
     },

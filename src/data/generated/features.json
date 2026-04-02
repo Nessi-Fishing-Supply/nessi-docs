@@ -380,6 +380,7 @@
         "message_threads",
         "messages",
         "offers",
+        "shop_members",
         "shops"
       ],
       "journeySlugs": ["buyer-seller-messaging", "member-block-management"],
@@ -417,6 +418,11 @@
         {
           "type": "entity",
           "label": "offers",
+          "href": "/data-model"
+        },
+        {
+          "type": "entity",
+          "label": "shop_members",
           "href": "/data-model"
         },
         {
