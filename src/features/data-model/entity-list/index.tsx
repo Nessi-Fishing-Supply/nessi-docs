@@ -1,13 +1,15 @@
 'use client';
 
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import type { Entity } from '@/types/data-model';
+import type { Entity, EntityField } from '@/types/data-model';
 import { getMethodColors } from '@/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation, getLifecycleForEntity } from '@/data';
 import { useBranchHref } from '@/providers/branch-provider';
 import { PageHeader } from '@/components/layout/page-header';
-import { BorderTrace } from '@/components/data-display/border-trace';
+import { CollapsibleRow } from '@/components/layout/collapsible-row';
+import { FieldTable, type FieldTableColumn } from '@/components/data-display/field-table';
+import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { Tooltip } from '@/components/data-display';
 import { useDiffMode } from '@/hooks/use-diff-mode';
 import { useDocsContext } from '@/providers/docs-provider';
@@ -62,251 +64,117 @@ function getEntityDiffStatus(
   return statusMap.get(entityName) ?? null;
 }
 
-/* ── Filter Bar ── */
+/* ── Entity Row Header ── */
 
-function FilterBar({
-  categories,
-  activeCategories,
-  onToggleCategory,
-  onToggleAll,
-  totalCount,
-}: {
-  categories: { name: string; label: string; count: number }[];
-  activeCategories: Set<string>;
-  onToggleCategory: (name: string) => void;
-  onToggleAll: () => void;
-  totalCount: number;
-}) {
-  const allActive = activeCategories.size === categories.length;
-
-  return (
-    <div className={styles.filterBar}>
-      <span className={styles.filterLabel}>Category</span>
-      <button
-        className={`${styles.filterChip} ${allActive ? styles.filterChipActive : ''}`}
-        onClick={onToggleAll}
-      >
-        All <span className={styles.chipCount}>{totalCount}</span>
-      </button>
-      {categories.map((cat) => (
-        <button
-          key={cat.name}
-          className={`${styles.filterChip} ${activeCategories.has(cat.name) ? styles.filterChipActive : ''}`}
-          onClick={() => onToggleCategory(cat.name)}
-        >
-          {cat.label} <span className={styles.chipCount}>{cat.count}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
-
-/* ── Entity Row ── */
-
-function EntityRow({
+function EntityRowHeader({
   entity,
-  staggerIndex,
-  isOpen,
-  isHighlighted,
   diffStatus,
-  changedFields,
-  onToggle,
-  onOpen,
-  onScrollToEntity,
+  isOpen,
 }: {
   entity: Entity;
-  staggerIndex: number;
-  isOpen: boolean;
-  isHighlighted: boolean;
   diffStatus: DiffStatus | null;
-  changedFields?: FieldChange[];
-  onToggle: () => void;
-  onOpen: () => void;
-  onScrollToEntity: (name: string) => void;
+  isOpen: boolean;
 }) {
   const branchHref = useBranchHref();
-  const { setSelectedItem } = useDocsContext();
   const fkCount = countForeignKeys(entity);
-  const [isDeepLinkTarget] = useState(
-    () =>
-      typeof window !== 'undefined' &&
-      window.location.hash.split('#').filter(Boolean).includes(entity.name),
-  );
-  const rowRef = useRef<HTMLDivElement>(null);
-  const [highlight, setHighlight] = useState(false);
-
-  useEffect(() => {
-    function checkHash() {
-      // Handle stacked hashes (e.g. #members#members) by splitting on #
-      const hashes = window.location.hash.split('#').filter(Boolean);
-      if (hashes.includes(entity.name)) {
-        onOpen();
-        setHighlight(true);
-        history.replaceState(null, '', window.location.pathname);
-        setTimeout(
-          () => rowRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
-          100,
-        );
-        setTimeout(() => setHighlight(false), 9500);
-      }
-    }
-
-    checkHash();
-    window.addEventListener('hashchange', checkHash);
-    return () => window.removeEventListener('hashchange', checkHash);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div
-      ref={rowRef}
-      id={entity.name}
-      className={`${styles.entityRow} ${isOpen ? styles.entityRowOpen : ''} ${diffStatus ? styles[`diff_${diffStatus}`] : ''}`}
-      style={
-        { '--stagger': isDeepLinkTarget ? '0ms' : `${staggerIndex * 20}ms` } as React.CSSProperties
-      }
-    >
-      <BorderTrace active={highlight || isHighlighted} />
-      <button
-        className={styles.entityRowHeader}
-        onClick={
-          diffStatus === 'unchanged'
-            ? undefined
-            : () => {
-                onToggle();
-                if (diffStatus) {
-                  setSelectedItem({
-                    type: 'diff-item',
-                    item: {
-                      key: entity.name,
-                      label: entity.name,
-                      status: diffStatus,
-                      domain: 'Data Model',
-                      href: branchHref(`/data-model#${entity.name}`),
-                      changedFields,
-                      data: entity,
-                    },
-                  });
-                }
-              }
-        }
-        style={diffStatus === 'unchanged' ? { cursor: 'default' } : undefined}
-      >
-        <span className={styles.entityName}>{entity.name}</span>
-        {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
-        <span className={styles.categoryBadge}>{entity.badge}</span>
-        {(() => {
-          const lc = getLifecycleForEntity(entity.name);
-          if (!lc) return null;
-          return (
-            <Link
-              href={branchHref(`/lifecycles/${lc.slug}`)}
-              className={styles.lifecycleLink}
-              onClick={(e) => e.stopPropagation()}
-            >
-              ↻ {lc.name}
-            </Link>
-          );
-        })()}
-        <span className={styles.entityMeta}>
-          {(entity.rlsPolicies?.length ?? 0) > 0 && <span className={styles.rlsBadge}>RLS</span>}
-          {(entity.triggers?.length ?? 0) > 0 && (
-            <span className={styles.triggerBadge}>Triggers</span>
-          )}
-          {fkCount > 0 && <span className={styles.fkBadge}>FK</span>}
-          <span className={styles.fieldCount}>{entity.fields.length} fields</span>
-          <span className={styles.chevron}>&#9656;</span>
-        </span>
-      </button>
-
-      {isOpen && (
-        <EntityExpansion
-          entity={entity}
-          onScrollToEntity={onScrollToEntity}
-          changedFields={changedFields}
-        />
-      )}
-    </div>
+    <>
+      <span className={styles.entityName}>{entity.name}</span>
+      {diffStatus && diffStatus !== 'unchanged' && <Badge variant="diff" status={diffStatus} />}
+      <span className={styles.categoryBadge}>{entity.badge}</span>
+      {(() => {
+        const lc = getLifecycleForEntity(entity.name);
+        if (!lc) return null;
+        return (
+          <Link
+            href={branchHref(`/lifecycles/${lc.slug}`)}
+            className={styles.lifecycleLink}
+            onClick={(e) => e.stopPropagation()}
+          >
+            ↻ {lc.name}
+          </Link>
+        );
+      })()}
+      <span className={styles.entityMeta}>
+        {(entity.rlsPolicies?.length ?? 0) > 0 && <span className={styles.rlsBadge}>RLS</span>}
+        {(entity.triggers?.length ?? 0) > 0 && (
+          <span className={styles.triggerBadge}>Triggers</span>
+        )}
+        {fkCount > 0 && <span className={styles.fkBadge}>FK</span>}
+        <span className={styles.fieldCount}>{entity.fields.length} fields</span>
+        <span className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`}>&#9656;</span>
+      </span>
+    </>
   );
 }
 
-/* ── Field Table ── */
+/* ── Field Table Columns ── */
 
-function FieldTable({
-  entity,
-  onScrollToEntity,
-  changedFieldNames,
-  addedFields,
-}: {
-  entity: Entity;
-  onScrollToEntity: (name: string) => void;
-  changedFieldNames?: Set<string>;
-  addedFields?: Entity['fields'];
-}) {
-  return (
-    <table className={styles.fieldTable}>
-      <thead>
-        <tr>
-          <th className={styles.fieldThName}>Column</th>
-          <th className={styles.fieldThType}>Type</th>
-          <th className={styles.fieldThDefault}>Default</th>
-          <th className={styles.fieldThRef}></th>
-        </tr>
-      </thead>
-      <tbody>
-        {entity.fields.map((f) => (
-          <tr
-            key={f.name}
-            className={`${styles.fieldRow} ${changedFieldNames?.has(f.name) ? styles.fieldRowChanged : ''}`}
-          >
-            <td className={styles.fieldName}>
-              {f.name}
-              {f.isPrimaryKey && <span className={styles.tagPk}>PK</span>}
-              {f.references && <span className={styles.tagFk}>FK</span>}
-              {f.nullable && !f.isPrimaryKey && !f.references && (
-                <span className={styles.tagNull}>null</span>
-              )}
-            </td>
-            <td className={styles.fieldType}>{f.type}</td>
-            <td className={styles.fieldDefault}>
-              {f.default && f.default.length > 15 ? (
-                <Tooltip text={f.default}>
-                  <span className={styles.fieldDefaultTruncated}>{f.default}</span>
-                </Tooltip>
-              ) : (
-                (f.default ?? '')
-              )}
-            </td>
-            <td className={styles.fieldRef}>
-              {f.references && (
-                <a
-                  href={`#${f.references.table}`}
-                  className={styles.fkRef}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onScrollToEntity(f.references!.table);
-                  }}
-                >
-                  → {f.references.table}.{f.references.column}
-                  {f.references.onDelete ? ` ${f.references.onDelete}` : ''}
-                </a>
-              )}
-            </td>
-          </tr>
-        ))}
-        {addedFields &&
-          addedFields.map((f) => (
-            <tr key={`added-${f.name}`} className={`${styles.fieldRow} ${styles.fieldRowAdded}`}>
-              <td className={styles.fieldName}>
-                {f.name}
-                {f.nullable && <span className={styles.tagNull}>null</span>}
-              </td>
-              <td className={styles.fieldType}>{f.type}</td>
-              <td className={styles.fieldDefault}>{f.default ?? ''}</td>
-              <td className={styles.fieldRef} />
-            </tr>
-          ))}
-      </tbody>
-    </table>
+function useFieldTableColumns(
+  onScrollToEntity: (name: string) => void,
+): FieldTableColumn<EntityField>[] {
+  return useMemo(
+    () => [
+      {
+        key: 'name',
+        label: 'Column',
+        width: '150px',
+        render: (_value: unknown, field: EntityField) => (
+          <span className={styles.fieldName}>
+            {field.name}
+            {field.isPrimaryKey && <span className={styles.tagPk}>PK</span>}
+            {field.references && <span className={styles.tagFk}>FK</span>}
+            {field.nullable && !field.isPrimaryKey && !field.references && (
+              <span className={styles.tagNull}>null</span>
+            )}
+          </span>
+        ),
+      },
+      {
+        key: 'type',
+        label: 'Type',
+        width: '80px',
+        render: (_value: unknown, field: EntityField) => (
+          <span className={styles.fieldType}>{field.type}</span>
+        ),
+      },
+      {
+        key: 'default',
+        label: 'Default',
+        width: '120px',
+        render: (_value: unknown, field: EntityField) => (
+          <span className={styles.fieldDefault}>
+            {field.default && field.default.length > 15 ? (
+              <Tooltip text={field.default}>
+                <span className={styles.fieldDefaultTruncated}>{field.default}</span>
+              </Tooltip>
+            ) : (
+              (field.default ?? '')
+            )}
+          </span>
+        ),
+      },
+      {
+        key: 'references',
+        label: '',
+        render: (_value: unknown, field: EntityField) =>
+          field.references ? (
+            <a
+              href={`#${field.references.table}`}
+              className={styles.fkRef}
+              onClick={(e) => {
+                e.preventDefault();
+                onScrollToEntity(field.references!.table);
+              }}
+            >
+              → {field.references.table}.{field.references.column}
+              {field.references.onDelete ? ` ${field.references.onDelete}` : ''}
+            </a>
+          ) : null,
+      },
+    ],
+    [onScrollToEntity],
   );
 }
 
@@ -393,10 +261,11 @@ function EntityExpansion({
   changedFields?: FieldChange[];
 }) {
   const hasMeta = hasMetaSections(entity);
+  const columns = useFieldTableColumns(onScrollToEntity);
 
   // Compute which individual fields were added/changed if 'fields' is in changedFields
   const { changedFieldNames, addedFields } = useMemo(() => {
-    const empty = { changedFieldNames: new Set<string>(), addedFields: [] as Entity['fields'] };
+    const empty = { changedFieldNames: new Set<string>(), addedFields: [] as EntityField[] };
     if (!changedFields) return empty;
     const fieldsChange = changedFields.find((c) => c.field === 'fields');
     if (!fieldsChange) return empty;
@@ -404,8 +273,8 @@ function EntityExpansion({
     const headFields = Array.isArray(fieldsChange.headValue) ? fieldsChange.headValue : [];
     const baseNames = new Map(baseFields.map((f: { name: string }) => [f.name, JSON.stringify(f)]));
     const changed = new Set<string>();
-    const added: Entity['fields'] = [];
-    for (const f of headFields as Entity['fields']) {
+    const added: EntityField[] = [];
+    for (const f of headFields as EntityField[]) {
       const baseJson = baseNames.get(f.name);
       if (!baseJson) {
         changed.add(f.name);
@@ -422,10 +291,10 @@ function EntityExpansion({
       <div className={hasMeta ? styles.splitLayout : undefined}>
         <div className={hasMeta ? styles.splitLeft : styles.fullWidth}>
           <FieldTable
-            entity={entity}
-            onScrollToEntity={onScrollToEntity}
+            fields={entity.fields}
+            columns={columns}
+            changedFields={changedFieldNames}
             addedFields={addedFields}
-            changedFieldNames={changedFieldNames}
           />
         </div>
         {hasMeta && (
@@ -445,6 +314,8 @@ interface EntityListProps {
 }
 
 export function EntityList({ entities }: EntityListProps) {
+  const branchHref = useBranchHref();
+  const { setSelectedItem } = useDocsContext();
   const { isActive: isDiffMode, diffResult } = useDiffMode();
   const entityStatusMap = isDiffMode ? diffResult?.entities.statusMap : undefined;
   const [diffFilter, setDiffFilter] = useState<DiffStatusFilter>('all');
@@ -468,7 +339,6 @@ export function EntityList({ entities }: EntityListProps) {
   }, [diffResult]);
 
   const [openEntities, setOpenEntities] = useState<Set<string>>(new Set());
-  const [highlightedEntity, setHighlightedEntity] = useState<string | null>(null);
   const [activeCategories, setActiveCategories] = useState<Set<string>>(() => {
     const cats = new Set<string>();
     for (const e of entities) {
@@ -578,33 +448,27 @@ export function EntityList({ entities }: EntityListProps) {
     });
   };
 
-  const openEntity = (name: string) => {
-    setOpenEntities((prev) => {
-      const next = new Set(prev);
-      next.add(name);
-      return next;
-    });
+  const scrollToAndExpand = (entityName: string) => {
+    // Trigger hash-based deep-link — CollapsibleRow's useDeepLink handles
+    // expand, scroll, highlight, and hash cleanup automatically
+    window.location.hash = entityName;
   };
 
-  const scrollToAndExpand = (entityName: string) => {
-    // Step 1: Expand the target entity
-    setOpenEntities((prev) => {
-      const next = new Set(prev);
-      next.add(entityName);
-      return next;
-    });
-    // Step 2: After expansion renders, scroll into view
-    setTimeout(() => {
-      const el = document.getElementById(entityName);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Step 3: After scroll settles, start the trace
-        setTimeout(() => {
-          setHighlightedEntity(entityName);
-          setTimeout(() => setHighlightedEntity(null), 9500);
-        }, 400);
-      }
-    }, 50);
+  const handleExpand = (entity: Entity, diffStatus: DiffStatus | null) => {
+    if (diffStatus && diffStatus !== 'unchanged') {
+      setSelectedItem({
+        type: 'diff-item',
+        item: {
+          key: entity.name,
+          label: entity.name,
+          status: diffStatus,
+          domain: 'Data Model',
+          href: branchHref(`/data-model#${entity.name}`),
+          changedFields: changedFieldsMap.get(entity.name),
+          data: entity,
+        },
+      });
+    }
   };
 
   let staggerIndex = 0;
@@ -614,13 +478,24 @@ export function EntityList({ entities }: EntityListProps) {
       <PageHeader title="Data Model" metrics={[{ value: entities.length, label: 'tables' }]} />
 
       {!isDiffMode && (
-        <FilterBar
-          categories={categories}
-          activeCategories={activeCategories}
-          onToggleCategory={toggleCategory}
-          onToggleAll={toggleAll}
-          totalCount={entities.length}
-        />
+        <FilterBar className={styles.filterBar}>
+          <span className={styles.filterLabel}>Category</span>
+          <FilterChip
+            label="All"
+            active={activeCategories.size === categories.length}
+            onToggle={toggleAll}
+            count={entities.length}
+          />
+          {categories.map((cat) => (
+            <FilterChip
+              key={cat.name}
+              label={cat.label}
+              active={activeCategories.has(cat.name)}
+              onToggle={() => toggleCategory(cat.name)}
+              count={cat.count}
+            />
+          ))}
+        </FilterBar>
       )}
 
       {isDiffMode && (
@@ -661,19 +536,30 @@ export function EntityList({ entities }: EntityListProps) {
 
             {group.entities.map((entity) => {
               const idx = staggerIndex++;
+              const diffStatus = getEntityDiffStatus(entity.name, entityStatusMap);
               return (
-                <EntityRow
+                <CollapsibleRow
                   key={entity.name}
-                  entity={entity}
+                  id={entity.name}
                   staggerIndex={idx}
                   isOpen={openEntities.has(entity.name)}
-                  isHighlighted={highlightedEntity === entity.name}
-                  diffStatus={getEntityDiffStatus(entity.name, entityStatusMap)}
-                  changedFields={changedFieldsMap.get(entity.name)}
                   onToggle={() => toggleEntity(entity.name)}
-                  onOpen={() => openEntity(entity.name)}
-                  onScrollToEntity={scrollToAndExpand}
-                />
+                  diffStatus={diffStatus ?? undefined}
+                  onExpand={() => handleExpand(entity, diffStatus)}
+                  header={
+                    <EntityRowHeader
+                      entity={entity}
+                      diffStatus={diffStatus}
+                      isOpen={openEntities.has(entity.name)}
+                    />
+                  }
+                >
+                  <EntityExpansion
+                    entity={entity}
+                    onScrollToEntity={scrollToAndExpand}
+                    changedFields={changedFieldsMap.get(entity.name)}
+                  />
+                </CollapsibleRow>
               );
             })}
 
@@ -682,17 +568,24 @@ export function EntityList({ entities }: EntityListProps) {
               addedEntities
                 .filter((e) => e.badge === group.category)
                 .map((entity) => (
-                  <EntityRow
+                  <CollapsibleRow
                     key={`added-${entity.name}`}
-                    entity={entity}
+                    id={entity.name}
                     staggerIndex={0}
                     isOpen={openEntities.has(entity.name)}
-                    isHighlighted={false}
-                    diffStatus="added"
                     onToggle={() => toggleEntity(entity.name)}
-                    onOpen={() => openEntity(entity.name)}
-                    onScrollToEntity={scrollToAndExpand}
-                  />
+                    diffStatus="added"
+                    onExpand={() => handleExpand(entity, 'added')}
+                    header={
+                      <EntityRowHeader
+                        entity={entity}
+                        diffStatus="added"
+                        isOpen={openEntities.has(entity.name)}
+                      />
+                    }
+                  >
+                    <EntityExpansion entity={entity} onScrollToEntity={scrollToAndExpand} />
+                  </CollapsibleRow>
                 ))}
           </div>
         ))}

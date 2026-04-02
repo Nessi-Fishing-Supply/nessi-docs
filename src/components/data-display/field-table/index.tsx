@@ -7,21 +7,25 @@ interface FieldTableColumn<T> {
   render?: (value: unknown, field: T) => React.ReactNode;
 }
 
-interface FieldTableProps<T extends Record<string, unknown>> {
+interface FieldTableProps<T> {
   fields: T[];
   columns: FieldTableColumn<T>[];
   changedFields?: Set<string>;
   addedFields?: T[];
-  nameKey?: string;
+  nameKey?: keyof T & string;
 }
 
-export function FieldTable<T extends Record<string, unknown>>({
+export function FieldTable<T extends { name: string }>({
   fields,
   columns,
   changedFields,
   addedFields,
-  nameKey = 'name',
+  nameKey = 'name' as keyof T & string,
 }: FieldTableProps<T>) {
+  function getField(field: T, key: string): unknown {
+    return (field as Record<string, unknown>)[key];
+  }
+
   return (
     <table className={styles.table}>
       <thead>
@@ -42,8 +46,8 @@ export function FieldTable<T extends Record<string, unknown>>({
               {columns.map((col) => (
                 <td key={col.key}>
                   {col.render
-                    ? col.render(field[col.key], field)
-                    : ((field[col.key] as React.ReactNode) ?? '—')}
+                    ? col.render(getField(field, col.key), field)
+                    : ((getField(field, col.key) as React.ReactNode) ?? '—')}
                 </td>
               ))}
             </tr>
@@ -56,8 +60,8 @@ export function FieldTable<T extends Record<string, unknown>>({
               {columns.map((col) => (
                 <td key={col.key}>
                   {col.render
-                    ? col.render(field[col.key], field)
-                    : ((field[col.key] as React.ReactNode) ?? '—')}
+                    ? col.render(getField(field, col.key), field)
+                    : ((getField(field, col.key) as React.ReactNode) ?? '—')}
                 </td>
               ))}
             </tr>
