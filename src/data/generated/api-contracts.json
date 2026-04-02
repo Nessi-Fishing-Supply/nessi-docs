@@ -469,7 +469,7 @@
           "label": "List :Id",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [400, 401, 403, 404, 422, 500],
           "requestFields": [],
           "description": "Returns the full details of a single listing, including photos.",
           "tags": [],
@@ -481,7 +481,7 @@
           "label": ":Id Listing",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [400, 401, 403, 404, 422, 500],
           "requestFields": [],
           "description": "Updates the details of an existing listing owned by the seller.",
           "tags": [],
@@ -493,7 +493,7 @@
           "label": ":Id Listing",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 404, 500],
+          "errorCodes": [400, 401, 403, 404, 422, 500],
           "requestFields": [],
           "description": "Permanently removes a listing and its photos from the seller's account.",
           "tags": [],
@@ -624,7 +624,7 @@
           "label": "List Listing",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [400, 401, 403, 422, 500],
           "requestFields": [],
           "description": "Returns a paginated list of active listings, with optional filters and sorting.",
           "tags": [],
@@ -636,7 +636,7 @@
           "label": "Create Listing",
           "auth": "user",
           "access": ["Member", "Shop"],
-          "errorCodes": [400, 401, 403, 500],
+          "errorCodes": [400, 401, 403, 422, 500],
           "requestFields": [],
           "description": "Creates a new listing draft for the seller, in either member or shop context.",
           "tags": [],
@@ -765,6 +765,18 @@
           "description": "Update the current user's last seen timestamp for online status",
           "tags": [],
           "sourceFile": "src/app/api/members/heartbeat/route.ts"
+        },
+        {
+          "method": "POST",
+          "path": "/api/members/profile",
+          "label": "Profile Member",
+          "auth": "user",
+          "access": ["Member"],
+          "errorCodes": [400, 401, 422, 500],
+          "requestFields": [],
+          "description": "Update the authenticated member's profile text fields with content moderation",
+          "tags": [],
+          "sourceFile": "src/app/api/members/profile/route.ts"
         },
         {
           "method": "GET",
@@ -1236,6 +1248,22 @@
           "sourceFile": "src/app/api/shops/[id]/ownership/route.ts",
           "permissions": {
             "feature": "members",
+            "level": "full"
+          }
+        },
+        {
+          "method": "PATCH",
+          "path": "/api/shops/:id/profile",
+          "label": "Profile :Id",
+          "auth": "admin",
+          "access": ["Shop"],
+          "errorCodes": [400, 422, 500],
+          "requestFields": [],
+          "description": "Update a shop's text fields (name, description) with content moderation",
+          "tags": ["admin-only"],
+          "sourceFile": "src/app/api/shops/[id]/profile/route.ts",
+          "permissions": {
+            "feature": "shop_settings",
             "level": "full"
           }
         },

@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "feat(moderation): #343 centralize text moderation and wire into all UGC routes",
+      "number": 349,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/349",
+      "mergedAt": "2026-04-02T14:05:02Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "moderation",
+      "type": "feature"
+    },
+    {
       "title": "feat(messaging): #319 image and media attachment support",
       "number": 342,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/342",
