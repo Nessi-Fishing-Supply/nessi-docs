@@ -1,6 +1,6 @@
 .header {
   position: relative;
-  padding: var(--spacing-450) var(--spacing-500);
+  padding: var(--spacing-400) var(--spacing-500);
   border-radius: 10px;
   background: linear-gradient(
     135deg,
@@ -39,7 +39,7 @@
 .titleLeft {
   display: flex;
   align-items: baseline;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
 }
 
 .title {
@@ -85,7 +85,7 @@
   color: var(--text-primary);
   font-weight: 600;
   font-size: var(--font-size-700);
-  margin-right: var(--spacing-75);
+  margin-right: var(--spacing-100);
 }
 
 .children {

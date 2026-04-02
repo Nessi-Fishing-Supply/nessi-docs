@@ -1,7 +1,7 @@
 @use 'mixins/diff' as *;
 
 .container {
-  padding: var(--spacing-600) var(--spacing-650);
+  padding: var(--spacing-600) var(--spacing-700);
   overflow-y: auto;
   height: 100%;
 }
@@ -11,8 +11,8 @@
 .filterBar {
   display: flex;
   align-items: center;
-  gap: var(--spacing-150);
-  padding: var(--spacing-250) 0;
+  gap: var(--spacing-200);
+  padding: var(--spacing-200) 0;
   margin-bottom: var(--spacing-100);
   flex-wrap: wrap;
 }
@@ -78,7 +78,7 @@
 .groupDivider {
   display: flex;
   align-items: center;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
   margin: var(--spacing-400) 0 var(--spacing-200);
 
   &:first-child {
@@ -135,9 +135,9 @@
 .entityRowHeader {
   display: flex;
   align-items: center;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
   width: 100%;
-  padding: var(--spacing-300) var(--spacing-350);
+  padding: var(--spacing-300) var(--spacing-300);
   background: none;
   border: none;
   cursor: pointer;
@@ -215,7 +215,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: var(--spacing-75) var(--spacing-250);
+  padding: var(--spacing-100) var(--spacing-200);
   border-radius: 5px;
   color: var(--color-primary-400);
   background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
@@ -226,7 +226,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: var(--spacing-75) var(--spacing-250);
+  padding: var(--spacing-100) var(--spacing-200);
   border-radius: 5px;
   color: var(--color-accent-500);
   background: rgb(var(--color-accent-500-rgb) / var(--opacity-300));
@@ -237,7 +237,7 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 600;
-  padding: var(--spacing-75) var(--spacing-250);
+  padding: var(--spacing-100) var(--spacing-200);
   border-radius: 5px;
   color: var(--color-purple-300);
   background: rgb(var(--color-violet-400-rgb) / var(--opacity-300));
@@ -286,16 +286,16 @@
 }
 
 .splitLeft {
-  padding: var(--spacing-400) var(--spacing-450);
+  padding: var(--spacing-400) var(--spacing-400);
   border-right: 1px solid var(--border-subtle);
 }
 
 .splitRight {
-  padding: var(--spacing-400) var(--spacing-450);
+  padding: var(--spacing-400) var(--spacing-400);
 }
 
 .fullWidth {
-  padding: var(--spacing-400) var(--spacing-450);
+  padding: var(--spacing-400) var(--spacing-400);
 }
 
 // ─── Field Table ───
@@ -316,7 +316,7 @@
   color: var(--text-muted);
   font-weight: 600;
   text-align: left;
-  padding: var(--spacing-150) var(--spacing-200) var(--spacing-200);
+  padding: var(--spacing-200) var(--spacing-200) var(--spacing-200);
   border-bottom: 1px solid var(--border-medium);
   position: sticky;
   top: 0;
@@ -399,12 +399,12 @@
 .tagNull {
   display: inline-block;
   font-size: var(--font-size-100);
-  padding: var(--spacing-50) var(--spacing-150);
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 3px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-left: var(--spacing-125);
+  margin-left: var(--spacing-100);
   vertical-align: middle;
 }
 
@@ -443,7 +443,7 @@
 .metaSections {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-350);
+  gap: var(--spacing-300);
 }
 
 .sectionLabel {
@@ -458,8 +458,8 @@
 .metaRow {
   display: flex;
   align-items: center;
-  gap: var(--spacing-250);
-  padding: var(--spacing-200) var(--spacing-250);
+  gap: var(--spacing-200);
+  padding: var(--spacing-200) var(--spacing-200);
   border-radius: 5px;
   margin-bottom: var(--spacing-100);
   background: rgb(var(--color-white-rgb) / var(--opacity-100));
@@ -471,7 +471,7 @@
   font-weight: 700;
 
   // color and background set via inline styles (method-colored)
-  padding: var(--spacing-75) var(--spacing-200);
+  padding: var(--spacing-100) var(--spacing-200);
   border-radius: 4px;
   min-width: 56px;
   text-align: center;
@@ -509,7 +509,7 @@
   font-weight: 700;
   color: var(--color-accent-500);
   background: rgb(var(--color-accent-500-rgb) / var(--opacity-300));
-  padding: var(--spacing-75) var(--spacing-200);
+  padding: var(--spacing-100) var(--spacing-200);
   border-radius: 4px;
 }
 
@@ -533,7 +533,7 @@
 
 .indexUnique {
   font-size: var(--font-size-100);
-  padding: var(--spacing-50) var(--spacing-150);
+  padding: var(--spacing-50) var(--spacing-200);
   border-radius: 3px;
   font-weight: 700;
   text-transform: uppercase;

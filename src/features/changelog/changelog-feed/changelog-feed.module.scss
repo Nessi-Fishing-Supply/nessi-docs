@@ -1,5 +1,5 @@
 .container {
-  padding: var(--spacing-600) var(--spacing-650);
+  padding: var(--spacing-600) var(--spacing-700);
   overflow-y: auto;
   height: 100%;
 }
@@ -44,12 +44,12 @@
   gap: 0;
   border-left: 1px solid var(--border-subtle);
   padding-left: var(--spacing-500);
-  margin-left: var(--spacing-150);
+  margin-left: var(--spacing-200);
 }
 
 .entry {
   position: relative;
-  padding-bottom: var(--spacing-650);
+  padding-bottom: var(--spacing-700);
 
   &:last-child {
     padding-bottom: 0;
@@ -59,7 +59,7 @@
 .dot {
   position: absolute;
   left: -26px;
-  top: var(--spacing-75);
+  top: var(--spacing-100);
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -70,7 +70,7 @@
 .entryHeader {
   display: flex;
   align-items: baseline;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
   margin-bottom: var(--spacing-300);
 }
 
@@ -108,7 +108,7 @@
   font-family: var(--font-family-mono);
   border: 1px solid;
   border-radius: 3px;
-  padding: 1px var(--spacing-125);
+  padding: 1px var(--spacing-100);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -127,7 +127,7 @@
   color: var(--color-primary-400);
   margin-left: auto;
   text-decoration: none;
-  padding: 1px var(--spacing-150);
+  padding: 1px var(--spacing-200);
   border-radius: 3px;
   background: rgb(var(--color-primary-400-rgb) / var(--opacity-200));
   transition:
@@ -147,7 +147,7 @@
   font-family: var(--font-family-mono);
   color: var(--text-dim);
   margin-left: auto;
-  padding: 1px var(--spacing-150);
+  padding: 1px var(--spacing-200);
   border-radius: 3px;
   border: 1px dashed rgb(var(--color-white-rgb) / var(--opacity-200));
   cursor: help;

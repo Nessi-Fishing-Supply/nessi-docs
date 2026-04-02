@@ -1,5 +1,5 @@
 .container {
-  padding: var(--spacing-600) var(--spacing-650);
+  padding: var(--spacing-600) var(--spacing-700);
   overflow-y: auto;
   height: 100%;
 }
@@ -14,7 +14,7 @@
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   border-radius: 8px;
-  padding: var(--spacing-450) var(--spacing-500);
+  padding: var(--spacing-400) var(--spacing-500);
   cursor: pointer;
   backdrop-filter: blur(8px);
   text-decoration: none;
@@ -35,7 +35,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: var(--spacing-250);
+  margin-bottom: var(--spacing-200);
 }
 
 .cardName {
@@ -54,7 +54,7 @@
   font-size: var(--font-size-500);
   color: var(--text-secondary);
   line-height: 1.5;
-  margin-bottom: var(--spacing-350);
+  margin-bottom: var(--spacing-300);
 }
 
 .cardStats {
@@ -65,7 +65,7 @@
 
 .statGroup {
   display: flex;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
   font-size: var(--font-size-400);
   font-family: var(--font-family-mono);
   color: var(--text-muted);
@@ -75,7 +75,7 @@
   display: flex;
   gap: var(--spacing-100);
   flex-wrap: wrap;
-  margin-bottom: var(--spacing-250);
+  margin-bottom: var(--spacing-200);
 }
 
 .diffPill {

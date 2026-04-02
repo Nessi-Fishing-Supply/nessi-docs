@@ -7,7 +7,7 @@
 .header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
   width: 100%;
   padding: var(--spacing-300) var(--spacing-400);
   background: var(--bg-raised);
@@ -37,7 +37,7 @@
 
 .headerCounts {
   display: flex;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
   margin-left: auto;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-200);
@@ -69,7 +69,7 @@
 .row {
   display: flex;
   align-items: center;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
   width: 100%;
   padding: var(--spacing-200) var(--spacing-400) var(--spacing-200) var(--spacing-500);
   border: none;

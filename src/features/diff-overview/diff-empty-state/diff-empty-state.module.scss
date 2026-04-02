@@ -42,7 +42,7 @@
 .selectorBtn {
   display: block;
   width: 100%;
-  padding: var(--spacing-250) var(--spacing-400);
+  padding: var(--spacing-200) var(--spacing-400);
   font-size: var(--font-size-500);
   color: var(--text-muted);
   background: var(--bg-raised);
@@ -76,9 +76,9 @@
 .option {
   display: flex;
   align-items: center;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
   width: 100%;
-  padding: var(--spacing-250) var(--spacing-300);
+  padding: var(--spacing-200) var(--spacing-300);
   border: none;
   background: transparent;
   border-radius: 6px;

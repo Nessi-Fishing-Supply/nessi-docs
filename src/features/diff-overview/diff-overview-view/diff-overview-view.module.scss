@@ -4,12 +4,12 @@
 
 .filterBar {
   display: flex;
-  gap: var(--spacing-150);
+  gap: var(--spacing-200);
   margin-bottom: var(--spacing-500);
 }
 
 .filterChip {
-  padding: var(--spacing-125) var(--spacing-300);
+  padding: var(--spacing-100) var(--spacing-300);
   font-size: var(--font-size-400);
   font-weight: 500;
   border-radius: 6px;

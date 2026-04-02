@@ -1,12 +1,12 @@
 .link {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-125);
+  gap: var(--spacing-100);
   font-size: var(--font-size-200);
   font-family: var(--font-family-mono);
   color: var(--color-primary-400);
   text-decoration: none;
-  padding: var(--spacing-75) var(--spacing-200);
+  padding: var(--spacing-100) var(--spacing-200);
   border-radius: 4px;
   background: rgb(var(--color-white-rgb) / var(--opacity-100));
   max-width: 100%;

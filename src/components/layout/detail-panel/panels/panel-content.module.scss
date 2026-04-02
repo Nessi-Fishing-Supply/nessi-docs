@@ -29,7 +29,7 @@
 
 .badgeRow {
   display: flex;
-  gap: var(--spacing-150);
+  gap: var(--spacing-200);
   margin-bottom: var(--spacing-300);
   flex-wrap: wrap;
 }
@@ -44,7 +44,7 @@
   font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
   background: var(--bg-input);
-  padding: var(--spacing-150) var(--spacing-200);
+  padding: var(--spacing-200) var(--spacing-200);
   border-radius: 4px;
   border: 1px solid var(--border-subtle);
   display: block;
@@ -66,7 +66,7 @@
 
 .errorCard {
   font-size: var(--font-size-200);
-  padding: var(--spacing-150) var(--spacing-200);
+  padding: var(--spacing-200) var(--spacing-200);
   background: rgb(var(--color-destructive-400-rgb) / var(--opacity-200));
   border: 1px solid rgb(var(--color-destructive-400-rgb) / var(--opacity-300));
   border-radius: 4px;
@@ -90,12 +90,12 @@
   padding: var(--spacing-100) var(--spacing-200);
   background: var(--bg-raised);
   border-radius: 4px;
-  margin-bottom: var(--spacing-75);
+  margin-bottom: var(--spacing-100);
 }
 
 .transitionArrow {
   color: var(--text-dim);
-  margin: 0 var(--spacing-150);
+  margin: 0 var(--spacing-200);
 }
 
 .transitionMuted {
@@ -105,7 +105,7 @@
 .terminalState {
   font-size: var(--font-size-200);
   color: var(--color-destructive-400);
-  padding: var(--spacing-200) var(--spacing-250);
+  padding: var(--spacing-200) var(--spacing-200);
   background: rgb(var(--color-destructive-400-rgb) / var(--opacity-200));
   border: 1px solid rgb(var(--color-destructive-400-rgb) / var(--opacity-300));
   border-radius: 4px;
@@ -114,7 +114,7 @@
 
 .statusItem {
   font-size: var(--font-size-100);
-  padding: var(--spacing-75) var(--spacing-200);
+  padding: var(--spacing-100) var(--spacing-200);
   border-radius: 3px;
   margin-bottom: var(--spacing-50);
 }

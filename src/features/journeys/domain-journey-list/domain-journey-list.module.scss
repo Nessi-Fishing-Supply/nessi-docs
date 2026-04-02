@@ -1,5 +1,5 @@
 .container {
-  padding: var(--spacing-600) var(--spacing-650);
+  padding: var(--spacing-600) var(--spacing-700);
   overflow-y: auto;
   height: 100%;
 }
@@ -24,7 +24,7 @@
 
 .domainStats {
   display: flex;
-  gap: var(--spacing-350);
+  gap: var(--spacing-300);
   font-size: var(--font-size-400);
   font-family: var(--font-family-mono);
   color: var(--text-muted);
@@ -34,16 +34,16 @@
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-250);
+  gap: var(--spacing-200);
 }
 
 .row {
   display: flex;
   align-items: center;
-  padding: var(--spacing-350) var(--spacing-450);
+  padding: var(--spacing-300) var(--spacing-400);
   border-radius: 8px;
   cursor: pointer;
-  gap: var(--spacing-350);
+  gap: var(--spacing-300);
   background: var(--bg-panel);
   border: 1px solid var(--border-medium);
   backdrop-filter: blur(8px);
@@ -74,12 +74,12 @@
 .rowDesc {
   font-size: var(--font-size-400);
   color: var(--text-secondary);
-  margin-top: var(--spacing-75);
+  margin-top: var(--spacing-100);
 }
 
 .personaBadge {
   font-size: var(--font-size-300);
-  padding: var(--spacing-75) var(--spacing-200);
+  padding: var(--spacing-100) var(--spacing-200);
   border-radius: 10px;
   white-space: nowrap;
   flex-shrink: 0;

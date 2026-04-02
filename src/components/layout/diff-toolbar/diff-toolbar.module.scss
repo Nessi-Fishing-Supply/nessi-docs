@@ -36,7 +36,7 @@
 .branchBadge {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-125);
+  gap: var(--spacing-100);
   font-size: var(--font-size-400);
   font-weight: 600;
   color: var(--text-primary);
@@ -77,7 +77,7 @@
 .counts {
   display: flex;
   align-items: center;
-  gap: var(--spacing-150);
+  gap: var(--spacing-200);
   margin-left: auto;
 }
 
