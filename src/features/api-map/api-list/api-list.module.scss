@@ -547,12 +547,15 @@
 .diff_added {
   @include diff-row('added');
 }
+
 .diff_modified {
   @include diff-row('modified');
 }
+
 .diff_removed {
   @include diff-row('removed');
 }
+
 .diff_unchanged {
   @include diff-unchanged;
 }

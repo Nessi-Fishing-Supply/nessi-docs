@@ -423,9 +423,11 @@
 .diff_added {
   @include diff-row('added');
 }
+
 .diff_modified {
   @include diff-row('modified');
 }
+
 .diff_removed {
   @include diff-row('removed');
 }
@@ -433,9 +435,11 @@
 .linkDiff_added {
   @include diff-row('added');
 }
+
 .linkDiff_modified {
   @include diff-row('modified');
 }
+
 .linkDiff_removed {
   @include diff-row('removed');
 }
