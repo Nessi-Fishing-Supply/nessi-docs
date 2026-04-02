@@ -6,6 +6,7 @@
   --color-primary-100: #d6e9e4;
   --color-primary-200: #9ecabb;
   --color-primary-300: #6bad99;
+  --color-primary-350: #4ca88d;
   --color-primary-400: #3d8c75;
   --color-primary-500: #1e4a40;
   --color-primary-600: #163831;
@@ -60,6 +61,9 @@
   // White
   --color-white: #fff;
 
+  // Green (bright, for success indicators)
+  --color-green-400: #4ade80;
+
   // Success
   --color-success-100: #d4edda;
   --color-success-200: #a8d9bc;
@@ -84,6 +88,13 @@
   --color-info-500: #1e4a40;
   --color-info-700: #0e2822;
 
+  // Purple (query params, enum types, secondary accent)
+  --color-purple-300: #b8a0f0;
+  --color-purple-400: #b094e0;
+  --color-purple-500: #9b7bd4;
+  --color-purple-600: #8366be;
+  --color-purple-700: #6b50a6;
+
   // Blue (for diff-modified, links)
   --color-blue-100: #dbeafe;
   --color-blue-200: #bfdbfe;
@@ -97,6 +108,7 @@
   --color-red-100: #fee2e2;
   --color-red-200: #fecaca;
   --color-red-300: #fca5a5;
+  --color-red-350: #d05050;
   --color-red-400: #f87171;
   --color-red-500: #b84040;
   --color-red-600: #991b1b;

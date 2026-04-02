@@ -230,17 +230,17 @@
 
   &:hover {
     background: rgb(226 119 57 / 12%);
-    color: #f0944a;
+    color: var(--color-accent-400);
   }
 }
 
 .linkEntity {
-  color: #9b7bd4;
+  color: var(--color-purple-500);
   background: rgb(155 123 212 / 6%);
 
   &:hover {
     background: rgb(155 123 212 / 12%);
-    color: #b094e0;
+    color: var(--color-purple-400);
   }
 }
 
@@ -250,7 +250,7 @@
 
   &:hover {
     background: rgb(61 140 117 / 12%);
-    color: #4ca88d;
+    color: var(--color-primary-350);
   }
 }
 
@@ -368,7 +368,7 @@
 
   &:hover {
     background: rgb(61 140 117 / 12%);
-    color: #4ca88d;
+    color: var(--color-primary-350);
   }
 }
 
@@ -378,7 +378,7 @@
   gap: 6px;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-400);
-  color: #9b7bd4;
+  color: var(--color-purple-500);
   background: rgb(155 123 212 / 6%);
   padding: 7px 12px;
   border-radius: 5px;
@@ -387,7 +387,7 @@
 
   &:hover {
     background: rgb(155 123 212 / 12%);
-    color: #b094e0;
+    color: var(--color-purple-400);
   }
 }
 

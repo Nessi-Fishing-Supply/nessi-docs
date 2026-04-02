@@ -168,7 +168,7 @@
 .entityName {
   font-size: var(--font-size-500);
   font-family: var(--font-family-mono);
-  color: #3d8c75;
+  color: var(--color-primary-400);
   font-weight: 600;
 }
 
@@ -217,7 +217,7 @@
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 5px;
-  color: #3d8c75;
+  color: var(--color-primary-400);
   background: rgb(61 140 117 / 10%);
 }
 
@@ -228,7 +228,7 @@
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 5px;
-  color: #e27739;
+  color: var(--color-accent-500);
   background: rgb(226 119 57 / 10%);
 }
 
@@ -239,7 +239,7 @@
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 5px;
-  color: #b8a0f0;
+  color: var(--color-purple-300);
   background: rgb(139 92 246 / 10%);
 }
 
@@ -409,12 +409,12 @@
 }
 
 .tagPk {
-  color: #3d8c75;
+  color: var(--color-primary-400);
   background: rgb(61 140 117 / 10%);
 }
 
 .tagFk {
-  color: #b8a0f0;
+  color: var(--color-purple-300);
   background: rgb(139 92 246 / 10%);
 }
 
@@ -426,7 +426,7 @@
 .fkRef {
   font-family: var(--font-family-mono);
   font-size: var(--font-size-300);
-  color: #b8a0f0;
+  color: var(--color-purple-300);
   opacity: 0.8;
   text-decoration: none;
   cursor: pointer;
@@ -507,7 +507,7 @@
   font-family: var(--font-family-mono);
   font-size: var(--font-size-200);
   font-weight: 700;
-  color: #e27739;
+  color: var(--color-accent-500);
   background: rgb(226 119 57 / 10%);
   padding: 3px 8px;
   border-radius: 4px;
@@ -537,7 +537,7 @@
   border-radius: 3px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #3d8c75;
+  color: var(--color-primary-400);
   background: rgb(61 140 117 / 10%);
 }
 

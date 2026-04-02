@@ -1,6 +1,6 @@
 .banner {
-  background: var(--color-warning-bg, #b86e0a);
-  color: var(--color-warning-text, #fff);
+  background: var(--color-warning-bg, var(--color-warning-500));
+  color: var(--color-warning-text, var(--color-white));
   padding: 8px 16px;
   font-size: 0.8rem;
   text-align: center;

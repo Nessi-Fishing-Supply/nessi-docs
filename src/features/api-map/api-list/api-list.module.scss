@@ -55,7 +55,7 @@
 .filterChipActive {
   background: rgb(30 74 64 / 12%);
   border-color: rgb(61 140 117 / 25%);
-  color: #3d8c75;
+  color: var(--color-primary-400);
 }
 
 .chipCount {
@@ -221,7 +221,7 @@
 }
 
 .epParam {
-  color: #3d8c75;
+  color: var(--color-primary-400);
 }
 
 .epMeta {
@@ -234,7 +234,7 @@
 
 .epAccess {
   font-size: var(--font-size-300);
-  color: #4aa88e;
+  color: var(--color-primary-350);
   background: rgb(61 140 117 / 10%);
   padding: 3px 10px;
   border-radius: 5px;
@@ -247,7 +247,7 @@
 }
 
 .epAccessShop {
-  color: #b8a0f0;
+  color: var(--color-purple-300);
   background: rgb(139 92 246 / 10%);
 
   &:hover {
@@ -257,7 +257,7 @@
 
 .epErrors {
   font-size: var(--font-size-300);
-  color: #d05050;
+  color: var(--color-red-350);
   background: rgb(184 64 64 / 12%);
   padding: 3px 10px;
   border-radius: 4px;
@@ -270,7 +270,7 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #b84040;
+    background: var(--color-destructive-400);
   }
 }
 
@@ -374,7 +374,7 @@
 
 .fieldReq {
   font-size: var(--font-size-200);
-  color: #e27739;
+  color: var(--color-accent-500);
   font-weight: 600;
 }
 
@@ -399,13 +399,13 @@
 
 .statusSuccess {
   background: rgb(61 140 117 / 12%);
-  color: #4aa88e;
+  color: var(--color-primary-350);
   border: 1px solid rgb(61 140 117 / 20%);
 }
 
 .statusError {
   background: rgb(184 64 64 / 10%);
-  color: #d05050;
+  color: var(--color-red-350);
   border: 1px solid rgb(184 64 64 / 15%);
 }
 
@@ -428,7 +428,7 @@
   align-items: center;
   gap: 5px;
   font-size: var(--font-size-400);
-  color: #4aa88e;
+  color: var(--color-primary-350);
   padding: 4px 10px;
   border-radius: 5px;
   background: rgb(61 140 117 / 8%);
@@ -443,7 +443,7 @@
 }
 
 .accessShop {
-  color: #b8a0f0;
+  color: var(--color-purple-300);
   background: rgb(139 92 246 / 8%);
   border-color: rgb(139 92 246 / 12%);
 
@@ -457,10 +457,10 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #4aa88e;
+  background: var(--color-primary-350);
 
   .accessShop & {
-    background: #b8a0f0;
+    background: var(--color-purple-300);
   }
 }
 
@@ -481,7 +481,7 @@
   font-family: var(--font-family-mono);
   font-size: var(--font-size-100);
   font-weight: 700;
-  color: #b84040;
+  color: var(--color-destructive-400);
   background: rgb(184 64 64 / 12%);
   padding: 2px 6px;
   border-radius: 3px;
@@ -509,7 +509,7 @@
   padding: 4px 10px;
   border-radius: 6px;
   font-size: var(--font-size-200);
-  color: #3d8c75;
+  color: var(--color-primary-400);
   background: rgb(61 140 117 / 6%);
   border: 1px solid rgb(61 140 117 / 10%);
   transition: all 150ms ease-out;
@@ -521,7 +521,7 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #3d8c75;
+    background: var(--color-primary-400);
     opacity: 0.5;
   }
 

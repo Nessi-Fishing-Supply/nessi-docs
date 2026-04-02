@@ -46,7 +46,7 @@
 }
 
 .oldValue {
-  color: var(--diff-removed, #f87171);
+  color: var(--diff-removed);
   text-decoration: line-through;
   opacity: 0.8;
   word-break: break-all;
@@ -58,7 +58,7 @@
 }
 
 .newValue {
-  color: var(--diff-added, #4ade80);
+  color: var(--diff-added);
   word-break: break-all;
 }
 
@@ -77,21 +77,21 @@
 .deltaAdded {
   font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
-  color: var(--diff-added, #4ade80);
+  color: var(--diff-added);
   padding: 1px 0;
 }
 
 .deltaModified {
   font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
-  color: var(--diff-modified, #60a5fa);
+  color: var(--diff-modified);
   padding: 1px 0;
 }
 
 .deltaRemoved {
   font-size: var(--font-size-100);
   font-family: var(--font-family-mono);
-  color: var(--diff-removed, #f87171);
+  color: var(--diff-removed);
   text-decoration: line-through;
   opacity: 0.8;
   padding: 1px 0;
