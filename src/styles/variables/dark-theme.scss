@@ -1,5 +1,6 @@
 // Dark mode surface colors for docs app
-:root {
+:root,
+[data-theme='dark'] {
   --bg-body: #090b0e;
   --bg-panel: #0f1319;
   --bg-raised: #161c26;
@@ -27,4 +28,23 @@
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --transition-fast: 150ms var(--ease-out);
   --transition-base: 250ms var(--ease-out);
+}
+
+// Light theme (designed but not activated until toggle UI is built)
+[data-theme='light'] {
+  --bg-body: #f8f7f5;
+  --bg-panel: #fff;
+  --bg-raised: #f0efed;
+  --bg-hover: #e8e7e5;
+  --bg-active: #e0dfdd;
+  --bg-input: #f4f3f1;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #7a7a7a;
+  --text-dim: #a0a0a0;
+  --border-subtle: rgb(0 0 0 / 6%);
+  --border-medium: rgb(0 0 0 / 12%);
+  --border-strong: rgb(0 0 0 / 20%);
+  --glow-green: rgb(61 140 117 / 20%);
+  --glow-orange: rgb(226 119 57 / 15%);
 }
