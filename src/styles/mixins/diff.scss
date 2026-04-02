@@ -1,0 +1,30 @@
+/// Apply diff status styling to a row/block element.
+/// Adds colored left border and tinted background.
+/// @param {String} $status — 'added', 'modified', or 'removed'
+@mixin diff-row($status) {
+  border-left: 2px solid var(--diff-#{$status});
+  background: var(--diff-#{$status}-bg);
+
+  @if $status == 'removed' {
+    opacity: 0.7;
+  }
+}
+
+/// Apply diff status styling to an inline field/cell.
+/// Lighter treatment — just background tint and left border on first child.
+/// @param {String} $status — 'added' or 'modified'
+@mixin diff-field($status) {
+  background: var(--diff-#{$status}-bg);
+
+  &:first-child,
+  td:first-child {
+    border-left: 2px solid var(--diff-#{$status});
+  }
+}
+
+/// Standard unchanged item styling in diff mode.
+@mixin diff-unchanged {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: default;
+}
