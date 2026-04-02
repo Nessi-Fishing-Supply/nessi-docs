@@ -14,12 +14,12 @@
     background:
       radial-gradient(
         ellipse 60% 50% at 20% 20%,
-        rgb(var(--color-primary-400-rgb) / var(--opacity-4)),
+        rgb(var(--color-primary-400-rgb) / var(--opacity-100)),
         transparent
       ),
       radial-gradient(
         ellipse 40% 40% at 80% 80%,
-        rgb(var(--color-accent-500-rgb) / var(--opacity-4)),
+        rgb(var(--color-accent-500-rgb) / var(--opacity-100)),
         transparent
       );
     pointer-events: none;

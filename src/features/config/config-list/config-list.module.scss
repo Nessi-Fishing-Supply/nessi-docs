@@ -35,12 +35,12 @@
   }
 
   &.tocItemActive {
-    border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-40));
-    background: rgb(var(--color-primary-400-rgb) / var(--opacity-8));
+    border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-800));
+    background: rgb(var(--color-primary-400-rgb) / var(--opacity-200));
     color: var(--color-primary-400);
 
     .tocCount {
-      background: rgb(var(--color-primary-400-rgb) / var(--opacity-16));
+      background: rgb(var(--color-primary-400-rgb) / var(--opacity-400));
       color: var(--color-primary-400);
     }
   }
@@ -79,7 +79,7 @@
   }
 
   &.enumOpen {
-    border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-32));
+    border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-700));
   }
 }
 
@@ -101,7 +101,7 @@
 
   .enumOpen & {
     border-bottom: 1px solid var(--border-subtle);
-    background: rgb(var(--color-primary-400-rgb) / var(--opacity-4));
+    background: rgb(var(--color-primary-400-rgb) / var(--opacity-100));
   }
 }
 

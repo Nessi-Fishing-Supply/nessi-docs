@@ -5,11 +5,11 @@
   padding: var(--spacing-200) var(--spacing-500);
   background: linear-gradient(
     90deg,
-    rgb(var(--color-blue-500-rgb) / var(--opacity-8)) 0%,
-    rgb(var(--bg-panel-rgb) / var(--opacity-64)) 50%,
-    rgb(var(--color-blue-500-rgb) / var(--opacity-4)) 100%
+    rgb(var(--color-blue-500-rgb) / var(--opacity-200)) 0%,
+    rgb(var(--bg-panel-rgb) / var(--opacity-1000)) 50%,
+    rgb(var(--color-blue-500-rgb) / var(--opacity-100)) 100%
   );
-  border-bottom: 1px solid rgb(var(--color-blue-500-rgb) / var(--opacity-20));
+  border-bottom: 1px solid rgb(var(--color-blue-500-rgb) / var(--opacity-500));
   font-size: var(--font-size-400);
   flex-shrink: 0;
 }

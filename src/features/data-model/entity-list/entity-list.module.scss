@@ -35,8 +35,8 @@
   font-size: var(--font-size-400);
   padding: var(--spacing-100) var(--spacing-300);
   border-radius: 6px;
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
-  border: 1px solid rgb(var(--color-white-rgb) / var(--opacity-8));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
+  border: 1px solid rgb(var(--color-white-rgb) / var(--opacity-200));
   color: var(--text-muted);
   cursor: pointer;
   transition: all 150ms ease-out;
@@ -46,15 +46,15 @@
   gap: var(--spacing-100);
 
   &:hover {
-    border-color: rgb(var(--color-white-rgb) / var(--opacity-12));
+    border-color: rgb(var(--color-white-rgb) / var(--opacity-300));
     color: var(--text-secondary);
-    background: rgb(var(--color-white-rgb) / var(--opacity-4));
+    background: rgb(var(--color-white-rgb) / var(--opacity-100));
   }
 }
 
 .filterChipActive {
-  background: rgb(var(--color-primary-500-rgb) / var(--opacity-12));
-  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-24));
+  background: rgb(var(--color-primary-500-rgb) / var(--opacity-300));
+  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-600));
   color: var(--color-primary-400);
 }
 
@@ -63,7 +63,7 @@
   color: var(--text-muted);
 
   .filterChipActive & {
-    color: rgb(var(--color-primary-400-rgb) / var(--opacity-80));
+    color: rgb(var(--color-primary-400-rgb) / var(--opacity-1100));
   }
 }
 
@@ -102,7 +102,7 @@
 .groupCount {
   font-size: var(--font-size-300);
   color: var(--text-muted);
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
   padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   font-family: var(--font-family-mono);
@@ -148,17 +148,17 @@
   font: inherit;
 
   &:hover {
-    background: rgb(var(--color-white-rgb) / var(--opacity-4));
+    background: rgb(var(--color-white-rgb) / var(--opacity-100));
   }
 }
 
 .entityRow:hover {
-  border-color: rgb(var(--color-white-rgb) / var(--opacity-4));
+  border-color: rgb(var(--color-white-rgb) / var(--opacity-100));
 }
 
 .entityRowOpen {
-  background: rgb(var(--color-primary-500-rgb) / var(--opacity-4));
-  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-16));
+  background: rgb(var(--color-primary-500-rgb) / var(--opacity-100));
+  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-400));
 
   .entityRowHeader {
     border-radius: 8px 8px 0 0;
@@ -180,7 +180,7 @@
   padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
   color: var(--text-muted);
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
 }
 
 .lifecycleLink {
@@ -189,15 +189,15 @@
   text-decoration: none;
   padding: 1px var(--spacing-200);
   border-radius: 4px;
-  background: rgb(var(--color-blue-600-rgb) / var(--opacity-12));
-  border: 1px solid rgb(var(--color-blue-600-rgb) / var(--opacity-16));
+  background: rgb(var(--color-blue-600-rgb) / var(--opacity-300));
+  border: 1px solid rgb(var(--color-blue-600-rgb) / var(--opacity-400));
   transition:
     background 150ms ease-out,
     color 150ms ease-out;
   white-space: nowrap;
 
   &:hover {
-    background: rgb(var(--color-blue-600-rgb) / var(--opacity-20));
+    background: rgb(var(--color-blue-600-rgb) / var(--opacity-500));
     color: var(--text-primary);
   }
 }
@@ -218,7 +218,7 @@
   padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-primary-400);
-  background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
 }
 
 .triggerBadge {
@@ -229,7 +229,7 @@
   padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-accent-500);
-  background: rgb(var(--color-accent-500-rgb) / var(--opacity-12));
+  background: rgb(var(--color-accent-500-rgb) / var(--opacity-300));
 }
 
 .fkBadge {
@@ -240,7 +240,7 @@
   padding: var(--spacing-75) var(--spacing-250);
   border-radius: 5px;
   color: var(--color-purple-300);
-  background: rgb(var(--color-violet-400-rgb) / var(--opacity-12));
+  background: rgb(var(--color-violet-400-rgb) / var(--opacity-300));
 }
 
 .fieldCount {
@@ -262,9 +262,9 @@
 // ─── Expansion (placeholder — styles added in Task 6) ───
 
 .expansion {
-  border-top: 1px solid rgb(var(--color-primary-400-rgb) / var(--opacity-12));
+  border-top: 1px solid rgb(var(--color-primary-400-rgb) / var(--opacity-300));
   border-radius: 0 0 8px 8px;
-  background: rgb(var(--bg-panel-rgb) / var(--opacity-48));
+  background: rgb(var(--bg-panel-rgb) / var(--opacity-900));
 }
 
 // ─── Empty State ───
@@ -320,7 +320,7 @@
   border-bottom: 1px solid var(--border-medium);
   position: sticky;
   top: 0;
-  background: rgb(var(--bg-panel-rgb) / var(--opacity-48));
+  background: rgb(var(--bg-panel-rgb) / var(--opacity-900));
   z-index: 1;
 }
 
@@ -347,7 +347,7 @@
 }
 
 .fieldRow:hover td {
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
 }
 
 .fieldRowChanged {
@@ -410,17 +410,17 @@
 
 .tagPk {
   color: var(--color-primary-400);
-  background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
 }
 
 .tagFk {
   color: var(--color-purple-300);
-  background: rgb(var(--color-violet-400-rgb) / var(--opacity-12));
+  background: rgb(var(--color-violet-400-rgb) / var(--opacity-300));
 }
 
 .tagNull {
   color: var(--text-dim);
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
 }
 
 .fkRef {
@@ -462,7 +462,7 @@
   padding: var(--spacing-200) var(--spacing-250);
   border-radius: 5px;
   margin-bottom: var(--spacing-100);
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
 }
 
 .policyOp {
@@ -482,7 +482,7 @@
   transition: background 150ms ease-out;
 
   &:hover {
-    background: rgb(var(--color-white-rgb) / var(--opacity-4));
+    background: rgb(var(--color-white-rgb) / var(--opacity-100));
   }
 }
 
@@ -508,7 +508,7 @@
   font-size: var(--font-size-200);
   font-weight: 700;
   color: var(--color-accent-500);
-  background: rgb(var(--color-accent-500-rgb) / var(--opacity-12));
+  background: rgb(var(--color-accent-500-rgb) / var(--opacity-300));
   padding: var(--spacing-75) var(--spacing-200);
   border-radius: 4px;
 }
@@ -538,7 +538,7 @@
   font-weight: 700;
   text-transform: uppercase;
   color: var(--color-primary-400);
-  background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
 }
 
 // ─── Diff Mode ───

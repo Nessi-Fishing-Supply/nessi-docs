@@ -67,8 +67,8 @@
 .errorCard {
   font-size: var(--font-size-200);
   padding: var(--spacing-150) var(--spacing-200);
-  background: rgb(var(--color-destructive-400-rgb) / var(--opacity-8));
-  border: 1px solid rgb(var(--color-destructive-400-rgb) / var(--opacity-12));
+  background: rgb(var(--color-destructive-400-rgb) / var(--opacity-200));
+  border: 1px solid rgb(var(--color-destructive-400-rgb) / var(--opacity-300));
   border-radius: 4px;
   margin-bottom: var(--spacing-100);
 }
@@ -106,8 +106,8 @@
   font-size: var(--font-size-200);
   color: var(--color-destructive-400);
   padding: var(--spacing-200) var(--spacing-250);
-  background: rgb(var(--color-destructive-400-rgb) / var(--opacity-8));
-  border: 1px solid rgb(var(--color-destructive-400-rgb) / var(--opacity-12));
+  background: rgb(var(--color-destructive-400-rgb) / var(--opacity-200));
+  border: 1px solid rgb(var(--color-destructive-400-rgb) / var(--opacity-300));
   border-radius: 4px;
   margin-top: var(--spacing-300);
 }

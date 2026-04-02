@@ -2,21 +2,21 @@
 /// Shadows — Design System v1
 ////////////////////
 :root {
-  --shadow-100: 0 1px 2px rgb(var(--color-black-rgb) / var(--opacity-8));
+  --shadow-100: 0 1px 2px rgb(var(--color-black-rgb) / var(--opacity-200));
   --shadow-200:
-    0 2px 8px rgb(var(--color-black-rgb) / var(--opacity-8)),
-    0 1px 2px rgb(var(--color-black-rgb) / var(--opacity-4));
+    0 2px 8px rgb(var(--color-black-rgb) / var(--opacity-200)),
+    0 1px 2px rgb(var(--color-black-rgb) / var(--opacity-100));
   --shadow-300:
-    0 4px 16px rgb(var(--color-black-rgb) / var(--opacity-12)),
-    0 2px 4px rgb(var(--color-black-rgb) / var(--opacity-8));
+    0 4px 16px rgb(var(--color-black-rgb) / var(--opacity-300)),
+    0 2px 4px rgb(var(--color-black-rgb) / var(--opacity-200));
   --shadow-400:
-    0 8px 32px rgb(var(--color-black-rgb) / var(--opacity-12)),
-    0 4px 8px rgb(var(--color-black-rgb) / var(--opacity-8));
+    0 8px 32px rgb(var(--color-black-rgb) / var(--opacity-300)),
+    0 4px 8px rgb(var(--color-black-rgb) / var(--opacity-200));
   --shadow-500:
-    0 16px 48px rgb(var(--color-black-rgb) / var(--opacity-16)),
-    0 8px 16px rgb(var(--color-black-rgb) / var(--opacity-8));
-  --shadow-sell: 0 4px 12px rgb(var(--color-accent-500-rgb) / var(--opacity-48));
-  --shadow-focus-primary: 0 0 0 3px rgb(var(--color-primary-500-rgb) / var(--opacity-32));
-  --shadow-focus-accent: 0 0 0 3px rgb(var(--color-accent-500-rgb) / var(--opacity-32));
-  --shadow-focus-error: 0 0 0 3px rgb(var(--color-error-500-rgb) / var(--opacity-24));
+    0 16px 48px rgb(var(--color-black-rgb) / var(--opacity-400)),
+    0 8px 16px rgb(var(--color-black-rgb) / var(--opacity-200));
+  --shadow-sell: 0 4px 12px rgb(var(--color-accent-500-rgb) / var(--opacity-900));
+  --shadow-focus-primary: 0 0 0 3px rgb(var(--color-primary-500-rgb) / var(--opacity-700));
+  --shadow-focus-accent: 0 0 0 3px rgb(var(--color-accent-500-rgb) / var(--opacity-700));
+  --shadow-focus-error: 0 0 0 3px rgb(var(--color-error-500-rgb) / var(--opacity-600));
 }

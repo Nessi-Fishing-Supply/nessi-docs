@@ -11,8 +11,8 @@
 // ─── Coverage Hero ───
 
 .hero {
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
-  border: 1px solid rgb(var(--color-white-rgb) / var(--opacity-8));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
+  border: 1px solid rgb(var(--color-white-rgb) / var(--opacity-200));
   border-radius: 12px;
   padding: var(--spacing-600);
   margin-bottom: var(--spacing-500);
@@ -50,7 +50,7 @@
   font-size: var(--font-size-300);
   padding: var(--spacing-100) var(--spacing-250);
   border-radius: 5px;
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
   color: var(--text-muted);
   white-space: nowrap;
   font-family: var(--font-family-mono);
@@ -103,7 +103,7 @@
 }
 
 .featureRowOpen {
-  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-32));
+  border-color: rgb(var(--color-primary-400-rgb) / var(--opacity-700));
 
   .featureRowHeader {
     border-radius: 8px 8px 0 0;
@@ -126,7 +126,7 @@
   font: inherit;
 
   &:hover {
-    background: rgb(var(--color-white-rgb) / var(--opacity-4));
+    background: rgb(var(--color-white-rgb) / var(--opacity-100));
   }
 }
 
@@ -150,14 +150,14 @@
   font-family: var(--font-family-mono);
   padding: var(--spacing-50) var(--spacing-200);
   border-radius: 4px;
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
   color: var(--text-muted);
   white-space: nowrap;
 }
 
 .featureBadgeOrange {
   color: var(--color-accent-500);
-  background: rgb(var(--color-accent-500-rgb) / var(--opacity-8));
+  background: rgb(var(--color-accent-500-rgb) / var(--opacity-200));
 }
 
 .chevron {
@@ -174,9 +174,9 @@
 // ─── Expansion ───
 
 .expansion {
-  border-top: 1px solid rgb(var(--color-primary-400-rgb) / var(--opacity-12));
+  border-top: 1px solid rgb(var(--color-primary-400-rgb) / var(--opacity-300));
   border-radius: 0 0 8px 8px;
-  background: rgb(var(--bg-panel-rgb) / var(--opacity-48));
+  background: rgb(var(--bg-panel-rgb) / var(--opacity-900));
   padding: var(--spacing-450) var(--spacing-500);
 }
 
@@ -226,40 +226,40 @@
 
 .linkApi {
   color: var(--color-accent-500);
-  background: rgb(var(--color-accent-500-rgb) / var(--opacity-8));
+  background: rgb(var(--color-accent-500-rgb) / var(--opacity-200));
 
   &:hover {
-    background: rgb(var(--color-accent-500-rgb) / var(--opacity-12));
+    background: rgb(var(--color-accent-500-rgb) / var(--opacity-300));
     color: var(--color-accent-400);
   }
 }
 
 .linkEntity {
   color: var(--color-purple-500);
-  background: rgb(var(--color-purple-500-rgb) / var(--opacity-8));
+  background: rgb(var(--color-purple-500-rgb) / var(--opacity-200));
 
   &:hover {
-    background: rgb(var(--color-purple-500-rgb) / var(--opacity-12));
+    background: rgb(var(--color-purple-500-rgb) / var(--opacity-300));
     color: var(--color-purple-400);
   }
 }
 
 .linkJourney {
   color: var(--color-primary-400);
-  background: rgb(var(--color-primary-400-rgb) / var(--opacity-8));
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-200));
 
   &:hover {
-    background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
+    background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
     color: var(--color-primary-350);
   }
 }
 
 .linkLifecycle {
   color: var(--text-muted);
-  background: rgb(var(--color-white-rgb) / var(--opacity-4));
+  background: rgb(var(--color-white-rgb) / var(--opacity-100));
 
   &:hover {
-    background: rgb(var(--color-white-rgb) / var(--opacity-8));
+    background: rgb(var(--color-white-rgb) / var(--opacity-200));
     color: var(--text-secondary);
   }
 }
@@ -360,14 +360,14 @@
   gap: var(--spacing-150);
   font-size: var(--font-size-400);
   color: var(--color-primary-400);
-  background: rgb(var(--color-primary-400-rgb) / var(--opacity-8));
+  background: rgb(var(--color-primary-400-rgb) / var(--opacity-200));
   padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
   transition: all 150ms ease-out;
 
   &:hover {
-    background: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
+    background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
     color: var(--color-primary-350);
   }
 }
@@ -379,14 +379,14 @@
   font-family: var(--font-family-mono);
   font-size: var(--font-size-400);
   color: var(--color-purple-500);
-  background: rgb(var(--color-purple-500-rgb) / var(--opacity-8));
+  background: rgb(var(--color-purple-500-rgb) / var(--opacity-200));
   padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
   transition: all 150ms ease-out;
 
   &:hover {
-    background: rgb(var(--color-purple-500-rgb) / var(--opacity-12));
+    background: rgb(var(--color-purple-500-rgb) / var(--opacity-300));
     color: var(--color-purple-400);
   }
 }

@@ -16,24 +16,24 @@
   --text-dim: var(--color-warm-400);
 
   // Borders
-  --border-subtle: rgb(var(--color-white-rgb) / var(--opacity-4));
-  --border-medium: rgb(var(--color-white-rgb) / var(--opacity-8));
-  --border-strong: rgb(var(--color-white-rgb) / var(--opacity-16));
+  --border-subtle: rgb(var(--color-white-rgb) / var(--opacity-100));
+  --border-medium: rgb(var(--color-white-rgb) / var(--opacity-200));
+  --border-strong: rgb(var(--color-white-rgb) / var(--opacity-400));
 
   // Glow effects
-  --glow-green: rgb(var(--color-primary-400-rgb) / var(--opacity-32));
-  --glow-orange: rgb(var(--color-accent-500-rgb) / var(--opacity-24));
+  --glow-green: rgb(var(--color-primary-400-rgb) / var(--opacity-700));
+  --glow-orange: rgb(var(--color-accent-500-rgb) / var(--opacity-600));
 
   // Diff
   --diff-added: var(--color-primary-400);
   --diff-modified: var(--color-blue-500);
   --diff-removed: var(--color-red-500);
-  --diff-added-bg: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
-  --diff-modified-bg: rgb(var(--color-blue-500-rgb) / var(--opacity-12));
-  --diff-removed-bg: rgb(var(--color-destructive-400-rgb) / var(--opacity-12));
-  --diff-added-border: rgb(var(--color-primary-400-rgb) / var(--opacity-20));
-  --diff-modified-border: rgb(var(--color-blue-500-rgb) / var(--opacity-20));
-  --diff-removed-border: rgb(var(--color-destructive-400-rgb) / var(--opacity-20));
+  --diff-added-bg: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
+  --diff-modified-bg: rgb(var(--color-blue-500-rgb) / var(--opacity-300));
+  --diff-removed-bg: rgb(var(--color-destructive-400-rgb) / var(--opacity-300));
+  --diff-added-border: rgb(var(--color-primary-400-rgb) / var(--opacity-500));
+  --diff-modified-border: rgb(var(--color-blue-500-rgb) / var(--opacity-500));
+  --diff-removed-border: rgb(var(--color-destructive-400-rgb) / var(--opacity-500));
   --diff-dim-opacity: 0.5;
 
   // Transitions (reference animation tokens)
@@ -55,9 +55,9 @@
   --text-secondary: var(--color-cool-200);
   --text-muted: var(--color-cool-300);
   --text-dim: var(--color-cool-400);
-  --border-subtle: rgb(var(--color-black-rgb) / var(--opacity-4));
-  --border-medium: rgb(var(--color-black-rgb) / var(--opacity-12));
-  --border-strong: rgb(var(--color-black-rgb) / var(--opacity-20));
-  --glow-green: rgb(var(--color-primary-400-rgb) / var(--opacity-20));
-  --glow-orange: rgb(var(--color-accent-500-rgb) / var(--opacity-16));
+  --border-subtle: rgb(var(--color-black-rgb) / var(--opacity-100));
+  --border-medium: rgb(var(--color-black-rgb) / var(--opacity-300));
+  --border-strong: rgb(var(--color-black-rgb) / var(--opacity-500));
+  --glow-green: rgb(var(--color-primary-400-rgb) / var(--opacity-500));
+  --glow-orange: rgb(var(--color-accent-500-rgb) / var(--opacity-400));
 }
