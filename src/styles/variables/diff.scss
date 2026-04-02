@@ -1,8 +1,8 @@
 // Diff mode colors — matches CHANGE_TYPE_CONFIG from changelog
 :root {
-  --diff-added: #3d8c75;
-  --diff-modified: #7b8fcd;
-  --diff-removed: #b84040;
+  --diff-added: var(--color-primary-400, #3d8c75);
+  --diff-modified: var(--color-blue-500, #7b8fcd);
+  --diff-removed: var(--color-red-500, #b84040);
   --diff-added-bg: rgb(61 140 117 / 12%);
   --diff-modified-bg: rgb(123 143 205 / 12%);
   --diff-removed-bg: rgb(184 64 64 / 12%);
