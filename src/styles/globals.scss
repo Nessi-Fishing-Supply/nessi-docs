@@ -12,9 +12,8 @@
 @use 'variables/typography' as *;
 @use 'variables/shadows' as *;
 @use 'variables/radius' as *;
-@use 'variables/dark-theme' as *;
-@use 'variables/diff' as *;
 @use 'variables/opacity' as *;
+@use 'variables/dark-theme' as *;
 
 // Mixins
 @use 'mixins/breakpoints' as *;

@@ -24,6 +24,18 @@
   --glow-green: rgb(var(--color-primary-400-rgb) / var(--opacity-32));
   --glow-orange: rgb(var(--color-accent-500-rgb) / var(--opacity-24));
 
+  // Diff
+  --diff-added: var(--color-primary-400);
+  --diff-modified: var(--color-blue-500);
+  --diff-removed: var(--color-red-500);
+  --diff-added-bg: rgb(var(--color-primary-400-rgb) / var(--opacity-12));
+  --diff-modified-bg: rgb(var(--color-blue-500-rgb) / var(--opacity-12));
+  --diff-removed-bg: rgb(var(--color-destructive-400-rgb) / var(--opacity-12));
+  --diff-added-border: rgb(var(--color-primary-400-rgb) / var(--opacity-20));
+  --diff-modified-border: rgb(var(--color-blue-500-rgb) / var(--opacity-20));
+  --diff-removed-border: rgb(var(--color-destructive-400-rgb) / var(--opacity-20));
+  --diff-dim-opacity: 0.5;
+
   // Transitions (reference animation tokens)
   --ease-out: var(--easing-out);
   --ease-spring: var(--easing-spring);
