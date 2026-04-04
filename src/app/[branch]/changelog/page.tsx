@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
-import { ChangelogFeed } from '@/features/changelog/changelog-feed';
+import { getChangelog, ChangelogFeed } from '@/features/changelog';
 
 export const metadata = { title: 'Changelog' };
 
@@ -12,7 +12,7 @@ export default async function ChangelogPage({ params }: { params: Promise<{ bran
 
   return (
     <Suspense>
-      <ChangelogFeed entries={data.changelog} />
+      <ChangelogFeed entries={getChangelog(branch)} />
     </Suspense>
   );
 }
