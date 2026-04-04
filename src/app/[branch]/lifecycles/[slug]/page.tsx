@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
-import { getEntitiesForLifecycle } from '@/data/cross-links-lifecycle';
+import { getLifecycle } from '@/features/lifecycles';
 import { LifecyclePageClient } from './client';
 
 export function generateStaticParams() {
@@ -19,9 +19,8 @@ export async function generateMetadata({
   params: Promise<{ branch: string; slug: string }>;
 }) {
   const { branch, slug } = await params;
-  const data = loadBranch(branch);
-  const lc = data?.lifecycles.find((l) => l.slug === slug);
-  return { title: lc ? lc.name : 'Lifecycle' };
+  const pageData = getLifecycle(branch, slug);
+  return { title: pageData ? pageData.lifecycle.name : 'Lifecycle' };
 }
 
 export default async function LifecyclePage({
@@ -33,20 +32,16 @@ export default async function LifecyclePage({
   const data = loadBranch(branch);
   if (!data) notFound();
 
-  const lifecycle = data.lifecycles.find((l) => l.slug === slug);
-  if (!lifecycle) notFound();
-
-  const siblings = data.lifecycles.map((l) => ({
-    slug: l.slug,
-    name: l.name,
-    description: l.description,
-  }));
-
-  const entityNames = getEntitiesForLifecycle(data.lifecycles, lifecycle.slug);
+  const pageData = getLifecycle(branch, slug);
+  if (!pageData) notFound();
 
   return (
     <Suspense>
-      <LifecyclePageClient lifecycle={lifecycle} siblings={siblings} entityNames={entityNames} />
+      <LifecyclePageClient
+        lifecycle={pageData.lifecycle}
+        siblings={pageData.siblings}
+        entityNames={pageData.entityNames}
+      />
     </Suspense>
   );
 }
