@@ -8,7 +8,7 @@ import { useAppStore } from '@/stores/app-store';
 import { PageHeader } from '@/components/layout/page-header';
 import { ListRow } from '@/components/layout/list-row';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { Badge } from '@/components/indicators/badge';
 import type { DiffStatusFilter } from '@/components/layout/filter-bar/diff-filter-bar';
 import styles from './lifecycle-list.module.scss';

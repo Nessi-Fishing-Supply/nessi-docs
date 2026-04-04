@@ -14,7 +14,7 @@ import {
 } from 'react-icons/hi';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { PageHeader } from '@/components/layout/page-header';
 import { DiffEmptyState } from '@/features/diff-overview/diff-empty-state';
 import { DiffDomainGroup, type ChangeItem } from '@/features/diff-overview/diff-domain-group';

@@ -11,7 +11,7 @@ import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import { FieldTable, type FieldTableColumn } from '@/components/data-display/field-table';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { GitHubLink } from '@/components/data-display/github-link';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { useAppStore } from '@/stores/app-store';
 import { Badge } from '@/components/indicators/badge';
 import {

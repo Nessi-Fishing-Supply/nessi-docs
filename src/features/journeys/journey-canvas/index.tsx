@@ -21,7 +21,7 @@ import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { Legend } from '@/features/canvas/components/legend';
 import { CanvasEmptyState } from '@/features/canvas/components/canvas-empty-state';
 import { detectJourneyBackEdges } from '@/data/index';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 
 interface JourneyCanvasProps {

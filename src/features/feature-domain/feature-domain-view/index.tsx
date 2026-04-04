@@ -9,7 +9,7 @@ import type { DiffStatus, FieldChange } from '@/types/diff';
 import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
 import { useAppStore } from '@/stores/app-store';
 import { useBranchHref } from '@/hooks/use-branch-href';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { Badge } from '@/components/indicators/badge';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import {

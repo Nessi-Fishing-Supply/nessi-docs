@@ -18,7 +18,7 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronLeft,
 } from 'react-icons/hi';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { FEATURE_TO_DOMAIN } from '@/data/transforms/features';
 import type { Lifecycle } from '@/types/lifecycle';
 import { useBranchHref } from '@/hooks/use-branch-href';

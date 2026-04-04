@@ -3,9 +3,13 @@
 import { useMemo } from 'react';
 
 import { useAppStore } from '@/stores/app-store';
-import { computeDiff } from '@/data/diff-engine';
+import { getDiff } from '../services/diff';
 import type { DiffResult } from '@/types/diff';
 
+/**
+ * Returns the current diff state derived from the Zustand store.
+ * Exported as `useDiffResult` for backward-compatible consumption.
+ */
 export function useDiffResult(): {
   isActive: boolean;
   compareBranch: string | null;
@@ -20,7 +24,7 @@ export function useDiffResult(): {
 
   const diffResult = useMemo<DiffResult | null>(() => {
     if (!comparisonData || !activeData) return null;
-    return computeDiff(activeData, comparisonData);
+    return getDiff(activeData, comparisonData);
   }, [comparisonData, activeData]);
 
   return {

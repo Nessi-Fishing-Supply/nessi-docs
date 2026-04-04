@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { useUrlSync } from '@/hooks/use-url-sync';
 import styles from './comparison-selector.module.scss';
 

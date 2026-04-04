@@ -5,7 +5,7 @@ import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
 import type { Entity } from '@/types/data-model';
 import type { DiffStatus } from '@/types/diff';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { EntityNode } from '@/features/canvas/components/entity-node';
 import { EntityTooltip } from '@/features/canvas/components/entity-tooltip';

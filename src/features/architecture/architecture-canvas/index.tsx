@@ -7,7 +7,7 @@ import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';
 import { LabelPill } from '@/features/canvas/components/label-pill';
 import { smoothPath, type PortSide } from '@/features/canvas/utils/geometry';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 import { computeLayout, NODE_WIDTH, NODE_HEIGHT, LAYER_PADDING } from './arch-layout';
 import { useArchTrace } from './use-arch-trace';

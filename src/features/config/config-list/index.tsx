@@ -9,7 +9,7 @@ import { useAppStore } from '@/stores/app-store';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { Badge } from '@/components/indicators/badge';
 import {
   DiffFilterBar,

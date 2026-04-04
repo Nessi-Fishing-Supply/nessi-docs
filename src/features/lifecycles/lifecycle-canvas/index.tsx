@@ -17,7 +17,7 @@ import {
 } from '@/features/canvas/utils/geometry';
 import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
 import { useAppStore } from '@/stores/app-store';
-import { useDiffResult } from '@/hooks/use-diff-result';
+import { useDiffResult } from '@/features/diff-overview';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 
 interface LifecycleCanvasProps {
