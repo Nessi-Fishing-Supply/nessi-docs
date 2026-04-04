@@ -32,4 +32,8 @@
   padding: var(--spacing-600) var(--spacing-700);
   overflow-y: auto;
   height: 100%;
+
+  @media (width <= 1279px) {
+    padding: var(--spacing-600) var(--spacing-500);
+  }
 }
