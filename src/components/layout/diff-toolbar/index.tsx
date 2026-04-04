@@ -29,7 +29,11 @@ export function DiffToolbar() {
   const pathname = usePathname();
   const { isActive, compareBranch, diffResult } = useDiffResult();
 
-  if (!isActive || !diffResult) return null;
+  const isVisible = isActive && !!diffResult;
+
+  if (!isVisible) {
+    return <div className={`${styles.toolbar} ${styles.hidden}`} />;
+  }
 
   const activeBranchInfo = branches.find((b) => b.name === activeBranch);
   const compareBranchInfo = branches.find((b) => b.name === compareBranch);

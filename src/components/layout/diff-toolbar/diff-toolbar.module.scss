@@ -12,6 +12,19 @@
   border-bottom: 1px solid rgb(var(--color-blue-500-rgb) / var(--opacity-500));
   font-size: var(--font-size-200);
   flex-shrink: 0;
+  transition: var(--transition-toolbar), var(--transition-mode), max-height var(--duration-200) var(--easing-out), padding var(--duration-200) var(--easing-out);
+  transform: translateY(0);
+  max-height: 48px;
+  overflow: hidden;
+}
+
+.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  max-height: 0;
+  padding: 0;
+  border-bottom: none;
+  pointer-events: none;
 }
 
 .modeIndicator {
