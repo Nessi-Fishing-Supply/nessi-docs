@@ -5,7 +5,7 @@ import type { Lifecycle } from '@/features/lifecycles';
 import type { ErdNode, ErdEdge, ErdCategoryGroup } from '@/features/data-model';
 import type { ApiGroup } from '@/features/api-map';
 import type { ArchDiagram } from '@/features/architecture';
-import type { Feature } from '@/features/feature-domain';
+import type { Feature } from '@/features/domains';
 import type { Role } from '@/features/config';
 import type { ConfigEnum } from '@/features/config';
 import type { ChangelogEntry } from '@/features/changelog/types/changelog';

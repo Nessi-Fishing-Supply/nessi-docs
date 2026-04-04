@@ -2,7 +2,7 @@ import type { JourneyNode, Journey } from '@/features/journeys';
 import type { ApiEndpoint } from '@/features/api-map';
 import type { Entity } from '@/features/data-model';
 import type { Lifecycle, LifecycleState } from '@/features/lifecycles';
-import type { Feature } from '@/features/feature-domain';
+import type { Feature } from '@/features/domains';
 import type { Role } from '@/features/config';
 import type { ConfigEnum } from '@/features/config';
 import type { DiffStatus, FieldChange } from '@/features/diff-overview/types/diff';

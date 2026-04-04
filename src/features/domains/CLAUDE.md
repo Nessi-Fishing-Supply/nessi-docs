@@ -1,4 +1,4 @@
-# Feature Domain
+# Domains
 
 ## Overview
 
@@ -7,7 +7,7 @@ Renders feature domain pages — grouping product features (auth, cart, listings
 ## Architecture
 
 ```
-feature-domain/
+domains/
 ├── services/
 │   └── features.ts           — Data access (wraps branch-loader today, API tomorrow)
 ├── hooks/

@@ -1,4 +1,4 @@
-import type { Feature } from '@/features/feature-domain';
+import type { Feature } from '@/features/domains';
 import { CrossLink } from '@/components/data-display';
 import styles from './panel-content.module.scss';
 

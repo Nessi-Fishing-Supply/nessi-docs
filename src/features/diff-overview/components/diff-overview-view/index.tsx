@@ -26,7 +26,7 @@ import type { Entity } from '@/features/data-model';
 import type { Journey } from '@/features/journeys';
 import type { Lifecycle } from '@/features/lifecycles';
 import type { ArchDiagram } from '@/features/architecture';
-import type { Feature } from '@/features/feature-domain';
+import type { Feature } from '@/features/domains';
 import type { ErdNode } from '@/features/data-model';
 import type { ConfigEnum } from '@/features/config';
 import type { ApiEndpoint } from '@/features/api-map';

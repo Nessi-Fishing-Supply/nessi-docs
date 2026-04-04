@@ -7,7 +7,7 @@ import type { ApiGroup } from '@/features/api-map';
 import type { ErdEdge } from '@/features/data-model';
 import type { Role } from '@/features/config';
 import type { ConfigEnum } from '@/features/config';
-import type { Feature } from '@/features/feature-domain';
+import type { Feature } from '@/features/domains';
 import type { Lifecycle } from '@/features/lifecycles';
 import type { Journey } from '@/features/journeys';
 import type { CrossLink } from '@/features/shared/types/docs-context';

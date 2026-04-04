@@ -3,7 +3,7 @@ import type { Journey } from '@/features/journeys';
 import type { Lifecycle } from '@/features/lifecycles';
 import type { ApiGroup, ApiEndpoint } from '@/features/api-map';
 import type { ArchDiagram } from '@/features/architecture';
-import type { Feature } from '@/features/feature-domain';
+import type { Feature } from '@/features/domains';
 import type { ErdNode, ErdEdge } from '@/features/data-model';
 import type { ConfigEnum } from '@/features/config';
 

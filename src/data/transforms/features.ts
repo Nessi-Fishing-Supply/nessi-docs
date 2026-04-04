@@ -1,4 +1,4 @@
-import type { Feature } from '@/features/feature-domain';
+import type { Feature } from '@/features/domains';
 import type { ApiGroup } from '@/features/api-map';
 import type { FeatureDomain, DashboardMetrics } from '@/features/dashboard/types/dashboard';
 import type { ChangelogEntry } from '@/features/changelog/types/changelog';

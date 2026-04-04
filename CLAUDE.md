@@ -81,11 +81,11 @@ src/
 │   ├── architecture/       # services/, hooks/, components/{architecture-list,architecture-canvas}
 │   ├── api-map/            # services/, hooks/, components/{api-list}
 │   ├── dashboard/          # services/, hooks/, components/{dashboard-view}
-│   ├── feature-domain/     # services/, hooks/, components/{feature-domain-view}
+│   ├── domains/            # services/, hooks/, components/{feature-domain-view}
 │   ├── config/             # services/, hooks/, components/{config-list}
 │   ├── changelog/          # services/, hooks/, components/{changelog-feed}
 │   ├── diff-overview/      # services/, hooks/, components/{diff-overview-view,diff-domain-group,diff-empty-state}
-│   └── search/             # search-trigger.tsx, search-index.ts, recent-searches.ts, components/{search-dialog}
+│   └── search/             # search-index.ts, recent-searches.ts, components/{search-dialog,search-trigger}
 ├── components/
 │   ├── layout/             # App shell, sidebar, topbar, detail panel
 │   └── ui/                 # Reusable UI primitives (badge, border-trace, breadcrumb, cross-link, github-link, info-block, key-value-row, page-header, section-label, tooltip)

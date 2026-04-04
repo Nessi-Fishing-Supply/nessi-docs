@@ -9,7 +9,7 @@ import type { ApiGroup } from '@/features/api-map';
 import type { ErdEdge } from '@/features/data-model';
 import type { Role } from '@/features/config';
 import type { ConfigEnum } from '@/features/config';
-import type { Feature } from '@/features/feature-domain';
+import type { Feature } from '@/features/domains';
 import type { ArchDiagram } from '@/features/architecture';
 import type { RoadmapItem } from '@/features/shared/types/roadmap';
 import type { ExtractionMeta } from '@/features/shared/types/extraction-meta';
