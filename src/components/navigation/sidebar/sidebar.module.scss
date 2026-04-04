@@ -91,9 +91,20 @@
 // ─── Nav Label (hidden when collapsed) ───
 
 .navLabel {
+  opacity: 1;
+  transition: opacity 100ms var(--easing-out);
+  white-space: nowrap;
+  overflow: hidden;
+
   .collapsed & {
-    display: none;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
   }
+}
+
+.expanded .navLabel {
+  transition-delay: 150ms;
 }
 
 .navIcon {
@@ -117,6 +128,8 @@
   height: 1px;
   background: var(--border-subtle);
   margin: var(--spacing-200) 0;
+  opacity: 1;
+  transition: opacity 100ms var(--easing-out) 100ms;
 }
 
 // ─── Diff Dots ───
