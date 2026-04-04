@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
-import { ArchitectureList } from '@/features/architecture/architecture-list';
+import { getArchDiagrams, ArchitectureList } from '@/features/architecture';
 
 export default async function ArchitectureIndex({
   params,
@@ -12,9 +12,11 @@ export default async function ArchitectureIndex({
   const data = loadBranch(branch);
   if (!data) notFound();
 
+  const diagrams = getArchDiagrams(branch);
+
   return (
     <Suspense>
-      <ArchitectureList diagrams={data.archDiagrams} />
+      <ArchitectureList diagrams={diagrams} />
     </Suspense>
   );
 }
