@@ -10,7 +10,7 @@ import type {
   FieldChange,
   ModifiedItem,
   ApiGroupDiff,
-} from '@/features/shared/types/diff';
+} from '@/features/diff-overview/types/diff';
 
 /**
  * Shallow field comparison: compare top-level properties via JSON.stringify.

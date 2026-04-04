@@ -18,7 +18,7 @@ import {
   DiffFilterBar,
   type DiffStatusFilter,
 } from '@/components/layout/filter-bar/diff-filter-bar';
-import type { DiffStatus, FieldChange } from '@/features/shared/types/diff';
+import type { DiffStatus, FieldChange } from '@/features/diff-overview/types/diff';
 import styles from './entity-list.module.scss';
 
 /* ── Constants ── */

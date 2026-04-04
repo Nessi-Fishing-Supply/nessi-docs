@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 import { DIFF_STATUS_CONFIG } from '@/features/shared/constants/diff';
-import type { DiffStatus } from '@/features/shared/types/diff';
+import type { DiffStatus } from '@/features/diff-overview/types/diff';
 import styles from './badge.module.scss';
 
 const METHOD_COLORS: Record<string, string> = {

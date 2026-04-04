@@ -18,7 +18,7 @@ import {
   DiffFilterBar,
   type DiffStatusFilter,
 } from '@/components/layout/filter-bar/diff-filter-bar';
-import type { DiffStatus, ApiGroupDiff, FieldChange } from '@/features/shared/types/diff';
+import type { DiffStatus, ApiGroupDiff, FieldChange } from '@/features/diff-overview/types/diff';
 import styles from './api-list.module.scss';
 
 const ALL_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const;

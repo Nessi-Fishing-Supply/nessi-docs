@@ -1,3 +1,6 @@
+// Types
+export type { FeatureDomain, DashboardMetrics } from './types/dashboard';
+
 // Services
 export {
   getDashboardData,

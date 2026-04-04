@@ -1,4 +1,4 @@
-import type { DiffStatus } from '@/features/shared/types/diff';
+import type { DiffStatus } from '@/features/diff-overview/types/diff';
 import type { NodeChange } from '../hooks/use-diff-nodes';
 import { sectionLabel } from '../constants/tooltip-styles';
 import { DIFF_STATUS_CONFIG } from '@/features/shared/constants/diff';

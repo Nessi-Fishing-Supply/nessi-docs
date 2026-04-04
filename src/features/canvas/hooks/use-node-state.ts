@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { DiffStatus } from '@/features/shared/types/diff';
+import type { DiffStatus } from '@/features/diff-overview/types/diff';
 import { DIFF_COLORS } from '@/features/shared/constants/diff';
 
 export interface NodeStateInput {

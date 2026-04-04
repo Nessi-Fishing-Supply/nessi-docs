@@ -1,6 +1,6 @@
 import { computeDiff } from '@/data/diff-engine';
 import type { BranchData } from '@/features/shared/types/branch';
-import type { DiffResult } from '@/features/shared/types/diff';
+import type { DiffResult } from '../types/diff';
 
 /**
  * Computes a diff between two branch snapshots.

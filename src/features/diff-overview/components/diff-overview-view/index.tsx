@@ -21,7 +21,7 @@ import {
   DiffDomainGroup,
   type ChangeItem,
 } from '@/features/diff-overview/components/diff-domain-group';
-import type { DiffResult, DiffSet, ApiGroupDiff } from '@/features/shared/types/diff';
+import type { DiffResult, DiffSet, ApiGroupDiff } from '../../types/diff';
 import type { Entity } from '@/features/data-model';
 import type { Journey } from '@/features/journeys';
 import type { Lifecycle } from '@/features/lifecycles';

@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import type { ConfigEnum } from '../../types/config-ref';
 import type { Role } from '../../types/permission';
-import type { FieldChange } from '@/features/shared/types/diff';
+import type { FieldChange } from '@/features/diff-overview/types/diff';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '../../types/permission';
 import { useAppStore } from '@/libs/app-store';
 import { useBranchHref } from '@/features/shared/hooks/use-branch-href';

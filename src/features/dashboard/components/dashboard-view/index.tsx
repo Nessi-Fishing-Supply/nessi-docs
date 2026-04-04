@@ -1,9 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import type { FeatureDomain, DashboardMetrics } from '@/features/shared/types/dashboard';
-import type { ChangelogEntry } from '@/features/shared/types/changelog';
-import { CHANGE_TYPE_CONFIG } from '@/features/shared/types/changelog';
+import type { FeatureDomain, DashboardMetrics } from '../../types/dashboard';
+import type { ChangelogEntry } from '@/features/changelog/types/changelog';
+import { CHANGE_TYPE_CONFIG } from '@/features/changelog/types/changelog';
 import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { formatDate } from '@/features/shared/constants/dates';
 import styles from './dashboard-view.module.scss';

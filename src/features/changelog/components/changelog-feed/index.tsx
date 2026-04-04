@@ -2,8 +2,8 @@
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import type { ChangelogEntry } from '@/features/shared/types/changelog';
-import { CHANGE_TYPE_CONFIG } from '@/features/shared/types/changelog';
+import type { ChangelogEntry } from '../../types/changelog';
+import { CHANGE_TYPE_CONFIG } from '../../types/changelog';
 import { getDomainForScope } from '@/data';
 import { DOMAINS } from '@/features/shared/constants/domains';
 import { useBranchHref } from '@/features/shared/hooks/use-branch-href';

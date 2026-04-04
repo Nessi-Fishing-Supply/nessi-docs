@@ -5,7 +5,7 @@ import type { Lifecycle, LifecycleState } from '@/features/lifecycles';
 import type { Feature } from '@/features/feature-domain';
 import type { Role } from '@/features/config';
 import type { ConfigEnum } from '@/features/config';
-import type { DiffStatus, FieldChange } from './diff';
+import type { DiffStatus, FieldChange } from '@/features/diff-overview/types/diff';
 
 export interface DiffItemSelection {
   key: string;

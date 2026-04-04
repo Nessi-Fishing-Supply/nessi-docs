@@ -8,7 +8,7 @@ import type { ArchDiagram } from '@/features/architecture';
 import type { Feature } from '@/features/feature-domain';
 import type { Role } from '@/features/config';
 import type { ConfigEnum } from '@/features/config';
-import type { ChangelogEntry } from '@/features/shared/types/changelog';
+import type { ChangelogEntry } from '@/features/changelog/types/changelog';
 import type { RoadmapItem } from '@/features/shared/types/roadmap';
 
 export interface BranchInfo {

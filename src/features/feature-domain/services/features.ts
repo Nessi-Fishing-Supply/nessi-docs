@@ -1,7 +1,7 @@
 import { loadBranch } from '@/data/branch-loader';
 import type { Feature } from '../types/feature';
-import type { FeatureDomain } from '@/features/shared/types/dashboard';
-import type { ChangelogEntry } from '@/features/shared/types/changelog';
+import type { FeatureDomain } from '@/features/dashboard/types/dashboard';
+import type { ChangelogEntry } from '@/features/changelog/types/changelog';
 import type { RawJourney } from '@/data/raw-types';
 import {
   getFeatureDomains as _getFeatureDomains,

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Badge } from '@/components/indicators/badge';
-import type { DiffStatus, FieldChange } from '@/features/shared/types/diff';
+import type { DiffStatus, FieldChange } from '../../types/diff';
 import styles from './diff-domain-group.module.scss';
 
 export interface ChangeItem {

@@ -2,7 +2,7 @@ import type {
   ChangelogEntry,
   ChangelogChange,
   ChangeType,
-} from '@/features/shared/types/changelog';
+} from '@/features/changelog/types/changelog';
 
 const TYPE_TO_CHANGE_TYPE: Record<string, ChangeType> = {
   feature: 'added',

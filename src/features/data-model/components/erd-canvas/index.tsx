@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { ErdNode, ErdEdge } from '../../types/entity-relationship';
 import type { Entity } from '../../types/data-model';
-import type { DiffStatus } from '@/features/shared/types/diff';
+import type { DiffStatus } from '@/features/diff-overview/types/diff';
 import { useAppStore } from '@/libs/app-store';
 import { useDiffResult } from '@/features/diff-overview';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';

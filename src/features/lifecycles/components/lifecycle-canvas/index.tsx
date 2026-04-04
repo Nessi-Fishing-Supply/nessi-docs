@@ -2,7 +2,7 @@
 
 import { useState, useRef, useMemo, useCallback } from 'react';
 import type { Lifecycle, LifecycleState, LifecycleTransition } from '../../types/lifecycle';
-import type { DiffStatus } from '@/features/shared/types/diff';
+import type { DiffStatus } from '@/features/diff-overview/types/diff';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { StateNode } from '@/features/canvas/components/state-node';
 import { StateTooltip } from '@/features/canvas/components/state-tooltip';

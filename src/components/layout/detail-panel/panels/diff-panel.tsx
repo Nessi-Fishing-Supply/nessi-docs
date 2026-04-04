@@ -3,7 +3,7 @@ import { Badge } from '@/components/indicators';
 import { SectionLabel } from '@/components/layout';
 import { KeyValueRow } from '@/components/data-display';
 import type { DiffItemSelection } from '@/features/shared/types/docs-context';
-import type { DiffStatus } from '@/features/shared/types/diff';
+import type { DiffStatus } from '@/features/diff-overview/types/diff';
 import type { ApiEndpoint } from '@/features/api-map';
 import type { Entity } from '@/features/data-model';
 import type { Journey } from '@/features/journeys';

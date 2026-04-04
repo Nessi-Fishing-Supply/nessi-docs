@@ -5,7 +5,7 @@ import {
   autoPortSides,
   journeyPortSides,
 } from '../utils/geometry';
-import type { DiffStatus } from '@/features/shared/types/diff';
+import type { DiffStatus } from '@/features/diff-overview/types/diff';
 
 interface AnimatedEdgeProps {
   from: { x: number; y: number; type: string };
