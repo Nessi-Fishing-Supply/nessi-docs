@@ -1,7 +1,9 @@
 /**
  * Centralized color constants for canvas SVG inline styles.
  * SVG foreignObject can't use CSS custom properties — these mirror the theme tokens.
- * When Archway adds theming, only this file needs to change.
+ *
+ * If adding or modifying colors, use src/styles/variables/colors.scss as the
+ * source of truth — values here must stay in sync with the SCSS tokens.
  */
 export const CANVAS_COLORS = {
   textPrimary: '#e8e6e1',

@@ -1,6 +1,9 @@
 /**
  * Centralized color constants for domain concepts.
  * Maps to CSS custom properties defined in src/styles/variables/colors.scss.
+ *
+ * If adding or modifying colors, use src/styles/variables/colors.scss as the
+ * source of truth — values here must stay in sync with the SCSS tokens.
  */
 
 export const METHOD_COLORS: Record<string, { color: string; bg: string; border: string }> = {

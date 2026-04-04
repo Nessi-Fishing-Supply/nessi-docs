@@ -1,6 +1,10 @@
 import type { DiffStatus } from '@/features/diff-overview/types/diff';
 
-/** Diff colors for canvas/SVG components that can't use CSS variables directly. */
+/**
+ * Diff colors for canvas/SVG components that can't use CSS variables directly.
+ * If adding or modifying colors, use src/styles/variables/colors.scss as the
+ * source of truth — values here must stay in sync with the SCSS tokens.
+ */
 export const DIFF_COLORS: Record<DiffStatus, string> = {
   added: '#3d8c75',
   modified: '#7b8fcd',
