@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useMemo } from 'react';
+import { Suspense, useMemo, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -15,6 +15,8 @@ import {
   HiOutlineClock,
   HiOutlineChip,
   HiOutlineSwitchHorizontal,
+  HiOutlineChevronRight,
+  HiOutlineChevronLeft,
 } from 'react-icons/hi';
 import { useDiffResult } from '@/hooks/use-diff-result';
 import { FEATURE_TO_DOMAIN } from '@/data/transforms/features';
@@ -47,6 +49,29 @@ const NAV_TO_DOMAIN: Record<string, string> = {
   config: 'configEnums',
 };
 
+/* ------------------------------------------------------------------ */
+/*  Compact viewport detection (for overlay behavior)                  */
+/* ------------------------------------------------------------------ */
+
+function useIsCompact() {
+  // SSR-safe: default to false, update after mount
+  const ref = useRef(false);
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 1279px)');
+    ref.current = mql.matches;
+    const handler = (e: MediaQueryListEvent) => {
+      ref.current = e.matches;
+    };
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+  }, []);
+  return ref;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Diff sub-components (unchanged from current)                       */
+/* ------------------------------------------------------------------ */
+
 function DiffNavItem() {
   const branchHref = useBranchHref();
   const pathname = usePathname();
@@ -62,7 +87,7 @@ function DiffNavItem() {
       className={`${styles.navItem} ${styles.diffNavItem} ${isOnDiffPage ? styles.active : ''}`}
     >
       <HiOutlineSwitchHorizontal className={styles.navIcon} />
-      <span>Compare Overview</span>
+      <span className={styles.navLabel}>Compare Overview</span>
     </Link>
   );
 }
@@ -131,6 +156,10 @@ function DiffIndicator({ counts }: { counts: DomainDots }) {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  Nav Content                                                        */
+/* ------------------------------------------------------------------ */
+
 interface NavContentProps {
   dots: Map<string, DomainDots>;
   isDiffMode: boolean;
@@ -139,6 +168,8 @@ interface NavContentProps {
   branchPrefix: string;
   branchHref: (path: string) => string;
   featureDomains: { slug: string; label: string }[];
+  collapsed: boolean;
+  onNavClick: () => void;
 }
 
 function NavContent({
@@ -149,18 +180,17 @@ function NavContent({
   branchPrefix,
   branchHref,
   featureDomains,
+  collapsed,
+  onNavClick,
 }: NavContentProps) {
-  // In diff mode, only show system items that have changes
   const visibleSystemItems = isDiffMode
     ? SYSTEM_ITEMS.filter((item) => dots.has(item.id))
     : SYSTEM_ITEMS;
 
-  // In diff mode, only show feature domains with changes
   const visibleFeatureDomains = isDiffMode
     ? featureDomains.filter((d) => featureDomainDots.has(d.slug))
     : featureDomains;
 
-  // In diff mode, only show reference items with changes (hides Changelog)
   const visibleReferenceItems = isDiffMode
     ? REFERENCE_ITEMS.filter((item) => dots.has(item.id))
     : REFERENCE_ITEMS;
@@ -173,9 +203,11 @@ function NavContent({
         <Link
           href={branchHref('/')}
           className={`${styles.navItem} ${isDashboardActive ? styles.active : ''}`}
+          title={collapsed ? 'Dashboard' : undefined}
+          onClick={onNavClick}
         >
           <HiOutlineHome className={styles.navIcon} />
-          <span>Dashboard</span>
+          <span className={styles.navLabel}>Dashboard</span>
         </Link>
       )}
 
@@ -183,7 +215,11 @@ function NavContent({
 
       {visibleSystemItems.length > 0 && (
         <>
-          <div className={styles.sectionLabel}>System Views</div>
+          {collapsed ? (
+            <div className={styles.sectionDivider} />
+          ) : (
+            <div className={styles.sectionLabel}>System Views</div>
+          )}
           <div className={styles.nav}>
             {visibleSystemItems.map((item) => {
               const Icon = item.icon;
@@ -194,9 +230,11 @@ function NavContent({
                   key={item.id}
                   href={branchHref(item.path)}
                   className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                  title={collapsed ? item.label : undefined}
+                  onClick={onNavClick}
                 >
                   <Icon className={styles.navIcon} />
-                  <span>{item.label}</span>
+                  <span className={styles.navLabel}>{item.label}</span>
                   {counts && <DiffIndicator counts={counts} />}
                 </Link>
               );
@@ -207,7 +245,11 @@ function NavContent({
 
       {visibleFeatureDomains.length > 0 && (
         <>
-          <div className={styles.sectionLabel}>Features</div>
+          {collapsed ? (
+            <div className={styles.sectionDivider} />
+          ) : (
+            <div className={styles.sectionLabel}>Features</div>
+          )}
           <div className={styles.nav}>
             {visibleFeatureDomains.map((domain) => {
               const isActive = pathname.startsWith(`${branchPrefix}/features/${domain.slug}`);
@@ -217,9 +259,11 @@ function NavContent({
                   key={domain.slug}
                   href={branchHref(`/features/${domain.slug}`)}
                   className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                  title={collapsed ? domain.label : undefined}
+                  onClick={onNavClick}
                 >
                   <HiOutlineLightningBolt className={styles.navIcon} />
-                  <span>{domain.label}</span>
+                  <span className={styles.navLabel}>{domain.label}</span>
                   {fdCounts && <DiffIndicator counts={fdCounts} />}
                 </Link>
               );
@@ -230,7 +274,11 @@ function NavContent({
 
       {visibleReferenceItems.length > 0 && (
         <>
-          <div className={styles.sectionLabel}>Reference</div>
+          {collapsed ? (
+            <div className={styles.sectionDivider} />
+          ) : (
+            <div className={styles.sectionLabel}>Reference</div>
+          )}
           <div className={styles.nav}>
             {visibleReferenceItems.map((item) => {
               const Icon = item.icon;
@@ -241,9 +289,11 @@ function NavContent({
                   key={item.id}
                   href={branchHref(item.path)}
                   className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                  title={collapsed ? item.label : undefined}
+                  onClick={onNavClick}
                 >
                   <Icon className={styles.navIcon} />
-                  <span>{item.label}</span>
+                  <span className={styles.navLabel}>{item.label}</span>
                   {counts && <DiffIndicator counts={counts} />}
                 </Link>
               );
@@ -255,6 +305,10 @@ function NavContent({
   );
 }
 
+/* ------------------------------------------------------------------ */
+/*  Sidebar                                                            */
+/* ------------------------------------------------------------------ */
+
 interface SidebarProps {
   lifecycles: Lifecycle[];
   featureDomains: { slug: string; label: string }[];
@@ -265,9 +319,36 @@ export function Sidebar({ featureDomains }: SidebarProps) {
   const activeBranch = useAppStore.use.activeBranch();
   const branchHref = useBranchHref();
   const branchPrefix = `/${activeBranch}`;
+  const sidebarCollapsed = useAppStore.use.sidebarCollapsed();
+  const toggleSidebar = useAppStore.getState().toggleSidebar;
+  const isCompactRef = useIsCompact();
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  // At compact viewport, auto-collapse when a nav item is clicked
+  const handleNavClick = useCallback(() => {
+    if (isCompactRef.current && !sidebarCollapsed) {
+      toggleSidebar();
+    }
+  }, [sidebarCollapsed, toggleSidebar, isCompactRef]);
+
+  // Close sidebar overlay when clicking outside (compact + expanded)
+  useEffect(() => {
+    if (sidebarCollapsed || !isCompactRef.current) return;
+
+    const handler = (e: MouseEvent) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target as Node)) {
+        toggleSidebar();
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [sidebarCollapsed, toggleSidebar, isCompactRef]);
 
   return (
-    <div className={styles.sidebar}>
+    <div
+      ref={sidebarRef}
+      className={`${styles.sidebar} ${sidebarCollapsed ? styles.collapsed : styles.expanded}`}
+    >
       <div className={styles.navContent}>
         <Suspense
           fallback={
@@ -279,6 +360,8 @@ export function Sidebar({ featureDomains }: SidebarProps) {
               branchPrefix={branchPrefix}
               branchHref={branchHref}
               featureDomains={featureDomains}
+              collapsed={sidebarCollapsed}
+              onNavClick={handleNavClick}
             />
           }
         >
@@ -292,11 +375,25 @@ export function Sidebar({ featureDomains }: SidebarProps) {
                 branchPrefix={branchPrefix}
                 branchHref={branchHref}
                 featureDomains={featureDomains}
+                collapsed={sidebarCollapsed}
+                onNavClick={handleNavClick}
               />
             )}
           </DiffDots>
         </Suspense>
       </div>
+
+      <button
+        className={styles.collapseToggle}
+        onClick={toggleSidebar}
+        aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+      >
+        {sidebarCollapsed ? (
+          <HiOutlineChevronRight className={styles.collapseIcon} />
+        ) : (
+          <HiOutlineChevronLeft className={styles.collapseIcon} />
+        )}
+      </button>
     </div>
   );
 }

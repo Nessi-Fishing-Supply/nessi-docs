@@ -1,20 +1,54 @@
+// ─── Sidebar Container ───
+
 .sidebar {
   display: flex;
   flex-direction: column;
   height: 100%;
+  transition: width 200ms var(--ease-out);
 }
+
+// ─── Expanded (full viewport) ───
+// At compact viewport, expanded sidebar is an overlay
+.expanded {
+  @media (width <= 1279px) {
+    position: fixed;
+    top: var(--topbar-height);
+    left: 0;
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--topbar-height));
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border-subtle);
+    z-index: 25;
+    box-shadow: 4px 0 24px rgb(0 0 0 / 40%);
+  }
+}
+
+// ─── Nav Content ───
 
 .navContent {
   flex: 1;
   overflow-y: auto;
   padding: var(--spacing-300) var(--spacing-200);
+
+  .collapsed & {
+    padding: var(--spacing-300) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .nav {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-50);
+
+  .collapsed & {
+    align-items: center;
+  }
 }
+
+// ─── Nav Item ───
 
 .navItem {
   display: flex;
@@ -38,10 +72,28 @@
     color: var(--text-primary);
     border-left-color: var(--color-primary-500);
   }
+
+  // Collapsed: icon-only, centered
+  .collapsed & {
+    justify-content: center;
+    width: 40px;
+    height: 36px;
+    padding: 0;
+    border-left: 2px solid transparent;
+    border-radius: 6px;
+  }
 }
 
 .diffNavItem {
   margin-top: var(--spacing-200);
+}
+
+// ─── Nav Label (hidden when collapsed) ───
+
+.navLabel {
+  .collapsed & {
+    display: none;
+  }
 }
 
 .navIcon {
@@ -50,10 +102,103 @@
   flex-shrink: 0;
 }
 
+// ─── Section Labels ───
+
+.sectionLabel {
+  font-size: var(--font-size-100);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--spacing-300) var(--spacing-400) var(--spacing-100);
+}
+
+.sectionDivider {
+  width: 24px;
+  height: 1px;
+  background: var(--border-subtle);
+  margin: var(--spacing-200) 0;
+}
+
+// ─── Diff Dots ───
+
+.diffDots {
+  display: flex;
+  gap: var(--spacing-100);
+  margin-left: auto;
+  flex-shrink: 0;
+
+  .collapsed & {
+    display: none;
+  }
+}
+
+.diffDotAdded {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--diff-added);
+}
+
+.diffDotModified {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--diff-modified);
+}
+
+.diffDotRemoved {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--diff-removed);
+}
+
+// ─── Collapse Toggle ───
+
+.collapseToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin: var(--spacing-200);
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+  }
+
+  .collapsed & {
+    margin: var(--spacing-200) auto;
+    width: 40px;
+  }
+}
+
+.collapseIcon {
+  width: 14px;
+  height: 14px;
+}
+
+// ─── Legacy classes (keep for backward compat during migration) ───
+
 .divider {
   height: 1px;
   background: var(--border-subtle);
   margin: var(--spacing-200) var(--spacing-300);
+}
+
+.badge {
+  font-size: var(--font-size-100);
+  color: var(--text-dim);
+  padding: 1px var(--spacing-100);
+  border-radius: 8px;
+  background: var(--bg-raised);
+  flex-shrink: 0;
 }
 
 .subnavLabel {
@@ -100,49 +245,4 @@
   height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
-}
-
-.diffDots {
-  display: flex;
-  gap: var(--spacing-100);
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.diffDotAdded {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--diff-added);
-}
-
-.diffDotModified {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--diff-modified);
-}
-
-.diffDotRemoved {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--diff-removed);
-}
-
-.badge {
-  font-size: var(--font-size-100);
-  color: var(--text-dim);
-  padding: 1px var(--spacing-100);
-  border-radius: 8px;
-  background: var(--bg-raised);
-  flex-shrink: 0;
-}
-
-.sectionLabel {
-  font-size: var(--font-size-100);
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: var(--spacing-300) var(--spacing-400) var(--spacing-100);
 }
