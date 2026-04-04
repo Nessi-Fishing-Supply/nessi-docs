@@ -9,8 +9,7 @@ import { SearchTrigger } from '@/features/search/search-trigger';
 import { BranchInit } from '@/providers/branch-init';
 import { loadBranch, getAllBranchData } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
-import { getFeatureDomains } from '@/data/transforms/features';
-import type { RawJourney } from '@/data/raw-types';
+import { getFeatureDomains } from '@/features/feature-domain';
 
 export function generateStaticParams() {
   return getBranchNames().map((branch) => ({ branch }));
@@ -29,10 +28,10 @@ export default async function BranchLayout({
 
   const allBranchData = getAllBranchData();
 
-  const featureDomains = getFeatureDomains(
-    branchData.features,
-    branchData.journeys as unknown as RawJourney[],
-  ).map((d) => ({ slug: d.slug, label: d.label }));
+  const featureDomains = getFeatureDomains(branch).map((d) => ({
+    slug: d.slug,
+    label: d.label,
+  }));
 
   return (
     <BranchInit branchName={branch} branchData={branchData} allBranchData={allBranchData}>
