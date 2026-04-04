@@ -3,7 +3,7 @@
 /*  Topological layering with decision-aware vertical positioning      */
 /* ------------------------------------------------------------------ */
 
-import type { Journey, JourneyNode, JourneyEdge } from '@/types/journey';
+import type { Journey, JourneyNode, JourneyEdge } from '@/features/journeys';
 import type { RawJourneyNode, RawJourneyEdge, RawJourney } from '../raw-types';
 
 const NODE_W = 200;

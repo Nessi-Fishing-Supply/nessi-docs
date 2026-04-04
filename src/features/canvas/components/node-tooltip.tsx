@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import type { JourneyNode } from '@/types/journey';
+import type { JourneyNode } from '@/features/journeys';
 import Link from 'next/link';
-import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
+import { LAYER_CONFIG, STATUS_CONFIG } from '@/features/journeys';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { getLifecyclesForRoute } from '@/data';
 import { useBranchHref } from '@/hooks/use-branch-href';

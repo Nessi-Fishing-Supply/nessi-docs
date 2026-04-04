@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useCallback } from 'react';
-import type { ArchDiagram, ArchNode } from '@/types/architecture';
+import type { ArchDiagram, ArchNode } from '../../types/architecture';
 import type { DiffStatus } from '@/types/diff';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { CanvasToolbar } from '@/features/canvas/components/canvas-toolbar';

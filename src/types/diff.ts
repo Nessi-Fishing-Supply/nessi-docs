@@ -1,11 +1,11 @@
-import type { Entity } from '@/types/data-model';
-import type { Journey } from '@/types/journey';
-import type { Lifecycle } from '@/types/lifecycle';
-import type { ApiGroup, ApiEndpoint } from '@/types/api-contract';
-import type { ArchDiagram } from '@/types/architecture';
-import type { Feature } from '@/types/feature';
-import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
-import type { ConfigEnum } from '@/types/config-ref';
+import type { Entity } from '@/features/data-model';
+import type { Journey } from '@/features/journeys';
+import type { Lifecycle } from '@/features/lifecycles';
+import type { ApiGroup, ApiEndpoint } from '@/features/api-map';
+import type { ArchDiagram } from '@/features/architecture';
+import type { Feature } from '@/features/feature-domain';
+import type { ErdNode, ErdEdge } from '@/features/data-model';
+import type { ConfigEnum } from '@/features/config';
 
 export type DiffStatus = 'added' | 'removed' | 'modified' | 'unchanged';
 

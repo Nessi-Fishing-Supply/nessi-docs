@@ -1,7 +1,7 @@
 // src/data/diff-engine.ts
 
 import type { BranchData } from '@/types/branch';
-import type { ApiEndpoint, ApiGroup } from '@/types/api-contract';
+import type { ApiEndpoint, ApiGroup } from '@/features/api-map';
 import type {
   DiffSet,
   DiffResult,

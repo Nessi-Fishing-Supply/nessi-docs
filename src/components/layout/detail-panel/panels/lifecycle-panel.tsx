@@ -1,5 +1,5 @@
-import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
-import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
+import type { Lifecycle, LifecycleState } from '@/features/lifecycles';
+import { DEFAULT_STATE_COLOR } from '@/features/lifecycles';
 import { Badge } from '@/components/indicators';
 import { SectionLabel } from '@/components/layout';
 import styles from './panel-content.module.scss';

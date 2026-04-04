@@ -3,7 +3,7 @@
 /*  Groups entities by category into containers, lays out in 2 cols    */
 /* ------------------------------------------------------------------ */
 
-import type { ErdNode, ErdCategoryGroup } from '@/types/entity-relationship';
+import type { ErdNode, ErdCategoryGroup } from '@/features/data-model';
 import type { RawErdNode, RawEntity } from '../raw-types';
 import { ENTITY_CATEGORY_MAP } from '../transforms/entities';
 

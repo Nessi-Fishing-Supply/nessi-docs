@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, memo } from 'react';
-import { LAYER_CONFIG, type JourneyNode } from '@/types/journey';
+import { LAYER_CONFIG, type JourneyNode } from '@/features/journeys';
 import { NODE_WIDTH, NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
 import { useNodeState } from '../hooks/use-node-state';

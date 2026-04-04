@@ -1,13 +1,13 @@
 import type { ExtractionMeta } from '@/types/extraction-meta';
-import type { Entity } from '@/types/data-model';
-import type { Journey } from '@/types/journey';
-import type { Lifecycle } from '@/types/lifecycle';
-import type { ErdNode, ErdEdge, ErdCategoryGroup } from '@/types/entity-relationship';
-import type { ApiGroup } from '@/types/api-contract';
-import type { ArchDiagram } from '@/types/architecture';
-import type { Feature } from '@/types/feature';
-import type { Role } from '@/types/permission';
-import type { ConfigEnum } from '@/types/config-ref';
+import type { Entity } from '@/features/data-model';
+import type { Journey } from '@/features/journeys';
+import type { Lifecycle } from '@/features/lifecycles';
+import type { ErdNode, ErdEdge, ErdCategoryGroup } from '@/features/data-model';
+import type { ApiGroup } from '@/features/api-map';
+import type { ArchDiagram } from '@/features/architecture';
+import type { Feature } from '@/features/feature-domain';
+import type { Role } from '@/features/config';
+import type { ConfigEnum } from '@/features/config';
 import type { ChangelogEntry } from '@/types/changelog';
 import type { RoadmapItem } from '@/types/roadmap';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import type { StepLayer, StepStatus } from '@/types/journey';
+import type { StepLayer, StepStatus } from '@/features/journeys';
 import { ToolbarBtn } from './toolbar-button';
 import { FiltersDropup } from './filters-dropup';
 import { CategoryDropup } from './category-dropup';

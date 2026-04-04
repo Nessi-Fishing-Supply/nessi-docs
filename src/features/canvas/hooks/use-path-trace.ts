@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import type { JourneyNode, JourneyEdge } from '@/types/journey';
+import type { JourneyNode, JourneyEdge } from '@/features/journeys';
 
 interface PathChoice {
   decId: string;

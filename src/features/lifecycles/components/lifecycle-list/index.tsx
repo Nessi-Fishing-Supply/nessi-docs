@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import type { Lifecycle } from '@/types/lifecycle';
+import type { Lifecycle } from '../../types/lifecycle';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';

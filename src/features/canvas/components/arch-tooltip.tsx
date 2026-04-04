@@ -1,6 +1,6 @@
 'use client';
 
-import type { ArchNode, ArchConnection } from '@/types/architecture';
+import type { ArchNode, ArchConnection } from '@/features/architecture';
 import { NODE_WIDTH } from '@/features/architecture/components/architecture-canvas/arch-layout';
 import { CANVAS_COLORS } from '../constants/canvas-colors';
 import { TooltipWrapper } from './tooltip-wrapper';

@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import type { Journey } from '@/types/journey';
-import { PERSONA_CONFIG } from '@/types/journey';
+import type { Journey } from '../../types/journey';
+import { PERSONA_CONFIG } from '../../types/journey';
 import type { DomainConfig } from '@/constants/domains';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';

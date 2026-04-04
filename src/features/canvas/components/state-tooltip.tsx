@@ -1,7 +1,7 @@
 'use client';
 
-import type { Lifecycle, LifecycleState } from '@/types/lifecycle';
-import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
+import type { Lifecycle, LifecycleState } from '@/features/lifecycles';
+import { DEFAULT_STATE_COLOR } from '@/features/lifecycles';
 import type { DiffStatus } from '@/types/diff';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { DiffTooltipSection } from './diff-tooltip-section';

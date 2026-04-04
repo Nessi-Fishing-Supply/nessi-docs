@@ -1,5 +1,5 @@
 import { loadBranch } from '@/data/branch-loader';
-import type { Feature } from '@/types/feature';
+import type { Feature } from '../types/feature';
 import type { FeatureDomain } from '@/types/dashboard';
 import type { ChangelogEntry } from '@/types/changelog';
 import type { RawJourney } from '@/data/raw-types';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, memo } from 'react';
-import type { DecisionOption } from '@/types/journey';
+import type { DecisionOption } from '@/features/journeys';
 import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
 import type { DiffStatus } from '@/types/diff';
 import { useNodeState } from '../hooks/use-node-state';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import type { Journey, StepLayer, StepStatus } from '@/types/journey';
+import type { Journey, StepLayer, StepStatus } from '@/features/journeys';
 import { getDomainConfig } from '@/constants/domains';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';

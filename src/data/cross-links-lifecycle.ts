@@ -3,8 +3,8 @@
 /*  Functions accept data as params to support multi-branch usage      */
 /* ------------------------------------------------------------------ */
 
-import type { Lifecycle } from '@/types/lifecycle';
-import type { Journey } from '@/types/journey';
+import type { Lifecycle } from '@/features/lifecycles';
+import type { Journey } from '@/features/journeys';
 import type { CrossLinkIndex } from './cross-links';
 
 /* ------------------------------------------------------------------ */

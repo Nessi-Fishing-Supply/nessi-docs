@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import type { ErdNode, ErdEdge } from '@/types/entity-relationship';
-import type { Entity } from '@/types/data-model';
+import type { ErdNode, ErdEdge } from '../../types/entity-relationship';
+import type { Entity } from '../../types/data-model';
 import type { DiffStatus } from '@/types/diff';
 import { useAppStore } from '@/stores/app-store';
 import { useDiffResult } from '@/features/diff-overview';
@@ -23,7 +23,7 @@ import {
   type PortSide,
 } from '@/features/canvas/utils/geometry';
 
-import type { ErdCategoryGroup } from '@/types/entity-relationship';
+import type { ErdCategoryGroup } from '../../types/entity-relationship';
 
 interface ErdCanvasProps {
   nodes: ErdNode[];

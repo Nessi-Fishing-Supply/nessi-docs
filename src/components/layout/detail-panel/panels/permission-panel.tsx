@@ -1,5 +1,5 @@
-import type { Role } from '@/types/permission';
-import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
+import type { Role } from '@/features/config';
+import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/features/config';
 import { KeyValueRow } from '@/components/data-display';
 import styles from './panel-content.module.scss';
 

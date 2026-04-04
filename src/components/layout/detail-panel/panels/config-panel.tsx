@@ -1,4 +1,4 @@
-import type { ConfigEnum } from '@/types/config-ref';
+import type { ConfigEnum } from '@/features/config';
 import { SectionLabel } from '@/components/layout';
 import { KeyValueRow } from '@/components/data-display';
 import styles from './panel-content.module.scss';

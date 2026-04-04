@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import type { Entity } from '@/types/data-model';
-import type { ErdNode } from '@/types/entity-relationship';
+import type { Entity } from '@/features/data-model';
+import type { ErdNode } from '@/features/data-model';
 import { getEndpointsForTable, getLifecycleForEntity, type EndpointRef } from '@/data';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { GitHubLink } from '@/components/data-display/github-link';

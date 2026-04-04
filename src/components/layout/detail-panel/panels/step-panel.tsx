@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import type { JourneyNode, Journey } from '@/types/journey';
-import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
+import type { JourneyNode, Journey } from '@/features/journeys';
+import { LAYER_CONFIG, STATUS_CONFIG } from '@/features/journeys';
 import { getLinksForRoute } from '@/data';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { Badge } from '@/components/indicators';

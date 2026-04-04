@@ -3,7 +3,7 @@
 /*  Topological sort via transitions → left-to-right positions        */
 /* ------------------------------------------------------------------ */
 
-import type { Lifecycle } from '@/types/lifecycle';
+import type { Lifecycle } from '@/features/lifecycles';
 import type { RawLifecycle } from '../raw-types';
 
 const LC_NODE_W = 140;

@@ -22,14 +22,14 @@ import {
   type ChangeItem,
 } from '@/features/diff-overview/components/diff-domain-group';
 import type { DiffResult, DiffSet, ApiGroupDiff } from '@/types/diff';
-import type { Entity } from '@/types/data-model';
-import type { Journey } from '@/types/journey';
-import type { Lifecycle } from '@/types/lifecycle';
-import type { ArchDiagram } from '@/types/architecture';
-import type { Feature } from '@/types/feature';
-import type { ErdNode } from '@/types/entity-relationship';
-import type { ConfigEnum } from '@/types/config-ref';
-import type { ApiEndpoint } from '@/types/api-contract';
+import type { Entity } from '@/features/data-model';
+import type { Journey } from '@/features/journeys';
+import type { Lifecycle } from '@/features/lifecycles';
+import type { ArchDiagram } from '@/features/architecture';
+import type { Feature } from '@/features/feature-domain';
+import type { ErdNode } from '@/features/data-model';
+import type { ConfigEnum } from '@/features/config';
+import type { ApiEndpoint } from '@/features/api-map';
 import styles from './diff-overview-view.module.scss';
 
 type StatusFilter = 'all' | 'added' | 'modified' | 'removed';

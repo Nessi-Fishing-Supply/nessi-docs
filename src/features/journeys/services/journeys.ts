@@ -1,6 +1,6 @@
 import { loadBranch } from '@/data/branch-loader';
 import { DOMAINS, getDomainConfig } from '@/constants/domains';
-import type { Journey } from '@/types/journey';
+import type { Journey } from '../types/journey';
 import type { DomainConfig } from '@/constants/domains';
 import type { DomainWithStats } from '@/data';
 

@@ -1,6 +1,6 @@
 import { loadBranch } from '@/data/branch-loader';
 import { getEntitiesForLifecycle } from '@/data/cross-links-lifecycle';
-import type { Lifecycle } from '@/types/lifecycle';
+import type { Lifecycle } from '../types/lifecycle';
 
 export interface LifecyclePageData {
   lifecycle: Lifecycle;

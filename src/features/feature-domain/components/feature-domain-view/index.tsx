@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import type { Feature } from '@/types/feature';
+import type { Feature } from '../../types/feature';
 import type { FeatureDomain } from '@/types/dashboard';
 import type { ChangelogEntry, ChangeType } from '@/types/changelog';
 import type { DiffStatus, FieldChange } from '@/types/diff';

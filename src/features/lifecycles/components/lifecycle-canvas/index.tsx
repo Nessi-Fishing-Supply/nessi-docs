@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useMemo, useCallback } from 'react';
-import type { Lifecycle, LifecycleState, LifecycleTransition } from '@/types/lifecycle';
+import type { Lifecycle, LifecycleState, LifecycleTransition } from '../../types/lifecycle';
 import type { DiffStatus } from '@/types/diff';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { StateNode } from '@/features/canvas/components/state-node';

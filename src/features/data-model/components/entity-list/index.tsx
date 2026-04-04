@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import type { Entity, EntityField } from '@/types/data-model';
+import type { Entity, EntityField } from '../../types/data-model';
 import { getMethodColors } from '@/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation, getLifecycleForEntity } from '@/data';
 import { useBranchHref } from '@/hooks/use-branch-href';

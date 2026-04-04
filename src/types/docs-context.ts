@@ -1,10 +1,10 @@
-import type { JourneyNode, Journey } from './journey';
-import type { ApiEndpoint } from './api-contract';
-import type { Entity } from './data-model';
-import type { Lifecycle, LifecycleState } from './lifecycle';
-import type { Feature } from './feature';
-import type { Role } from './permission';
-import type { ConfigEnum } from './config-ref';
+import type { JourneyNode, Journey } from '@/features/journeys';
+import type { ApiEndpoint } from '@/features/api-map';
+import type { Entity } from '@/features/data-model';
+import type { Lifecycle, LifecycleState } from '@/features/lifecycles';
+import type { Feature } from '@/features/feature-domain';
+import type { Role } from '@/features/config';
+import type { ConfigEnum } from '@/features/config';
 import type { DiffStatus, FieldChange } from './diff';
 
 export interface DiffItemSelection {

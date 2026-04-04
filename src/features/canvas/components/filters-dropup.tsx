@@ -1,7 +1,7 @@
 'use client';
 
-import type { StepLayer, StepStatus } from '@/types/journey';
-import { LAYER_CONFIG, STATUS_CONFIG } from '@/types/journey';
+import type { StepLayer, StepStatus } from '@/features/journeys';
+import { LAYER_CONFIG, STATUS_CONFIG } from '@/features/journeys';
 import { hexToRgba } from '@/features/canvas/utils/geometry';
 
 /* ------------------------------------------------------------------ */

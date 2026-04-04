@@ -1,4 +1,4 @@
-import type { Entity } from '@/types/data-model';
+import type { Entity } from '@/features/data-model';
 import { Badge } from '@/components/indicators';
 import { SectionLabel } from '@/components/layout';
 import { InfoBlock, KeyValueRow } from '@/components/data-display';

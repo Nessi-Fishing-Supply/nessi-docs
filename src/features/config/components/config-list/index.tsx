@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import type { ConfigEnum } from '@/types/config-ref';
-import type { Role } from '@/types/permission';
+import type { ConfigEnum } from '../../types/config-ref';
+import type { Role } from '../../types/permission';
 import type { FieldChange } from '@/types/diff';
-import { PERMISSION_FEATURES, LEVEL_CONFIG } from '@/types/permission';
+import { PERMISSION_FEATURES, LEVEL_CONFIG } from '../../types/permission';
 import { useAppStore } from '@/stores/app-store';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { PageHeader } from '@/components/layout/page-header';

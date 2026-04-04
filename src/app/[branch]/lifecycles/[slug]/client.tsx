@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import type { Lifecycle } from '@/types/lifecycle';
+import type { Lifecycle } from '@/features/lifecycles';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import type { SwitcherItem } from '@/components/navigation/breadcrumb';

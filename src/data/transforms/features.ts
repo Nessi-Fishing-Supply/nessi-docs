@@ -1,5 +1,5 @@
-import type { Feature } from '@/types/feature';
-import type { ApiGroup } from '@/types/api-contract';
+import type { Feature } from '@/features/feature-domain';
+import type { ApiGroup } from '@/features/api-map';
 import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
 import type { ChangelogEntry } from '@/types/changelog';
 import type { RawJourney, RawLifecycle, RawEntity } from '../raw-types';
@@ -14,7 +14,7 @@ import { transformChangelog } from './changelog';
 export const FEATURE_TO_DOMAIN: Record<string, string> = {
   addresses: 'account',
   auth: 'auth',
-  blocks: 'shopping',
+  blocks: 'messaging',
   cart: 'cart',
   context: 'auth',
   dashboard: 'account',
@@ -24,7 +24,7 @@ export const FEATURE_TO_DOMAIN: Record<string, string> = {
   follows: 'shopping',
   listings: 'listings',
   members: 'account',
-  messaging: 'shopping',
+  messaging: 'messaging',
   orders: 'cart',
   'recently-viewed': 'shopping',
   shared: 'shopping',
@@ -54,8 +54,9 @@ const SCOPE_TO_DOMAIN: Record<string, string> = {
   flags: 'shopping',
   recommendations: 'shopping',
   watchlist: 'shopping',
-  blocks: 'shopping',
-  messaging: 'shopping',
+  blocks: 'messaging',
+  messaging: 'messaging',
+  offers: 'messaging',
   account: 'account',
   addresses: 'account',
   members: 'account',

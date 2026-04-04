@@ -2,8 +2,8 @@
 
 import { useState, memo } from 'react';
 import { LIFECYCLE_NODE_WIDTH, LIFECYCLE_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
-import type { LifecycleState } from '@/types/lifecycle';
-import { DEFAULT_STATE_COLOR } from '@/types/lifecycle';
+import type { LifecycleState } from '@/features/lifecycles';
+import { DEFAULT_STATE_COLOR } from '@/features/lifecycles';
 import type { DiffStatus } from '@/types/diff';
 import { useNodeState } from '../hooks/use-node-state';
 import { NodeGlow } from './node-glow';

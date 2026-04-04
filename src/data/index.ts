@@ -3,19 +3,19 @@
 /*  Transforms raw extraction output into shapes the UI expects       */
 /* ------------------------------------------------------------------ */
 
-import type { ApiGroup } from '@/types/api-contract';
-import type { ErdEdge } from '@/types/entity-relationship';
-import type { Role } from '@/types/permission';
-import type { ConfigEnum } from '@/types/config-ref';
-import type { Feature } from '@/types/feature';
-import type { Lifecycle } from '@/types/lifecycle';
-import type { Journey } from '@/types/journey';
+import type { ApiGroup } from '@/features/api-map';
+import type { ErdEdge } from '@/features/data-model';
+import type { Role } from '@/features/config';
+import type { ConfigEnum } from '@/features/config';
+import type { Feature } from '@/features/feature-domain';
+import type { Lifecycle } from '@/features/lifecycles';
+import type { Journey } from '@/features/journeys';
 import type { CrossLink } from '@/types/docs-context';
-import type { ErrorCase } from '@/types/journey';
+import type { ErrorCase } from '@/features/journeys';
 import type { RawJourney, RawLifecycle, RawErdNode, RawEntity } from './raw-types';
 import type { RoadmapItem } from '@/types/roadmap';
 import type { ExtractionMeta } from '@/types/extraction-meta';
-import type { ArchDiagram } from '@/types/architecture';
+import type { ArchDiagram } from '@/features/architecture';
 import { DOMAINS } from '@/constants/domains';
 import type { DomainConfig } from '@/constants/domains';
 
@@ -60,7 +60,7 @@ export { detectJourneyBackEdges };
 export { getDomainForScope };
 
 import { transformErdNodes, getErdCategoryGroups } from './layout/erd-layout';
-export type { ErdCategoryGroup } from '@/types/entity-relationship';
+export type { ErdCategoryGroup } from '@/features/data-model';
 export { getErdCategoryGroups };
 
 /* ------------------------------------------------------------------ */

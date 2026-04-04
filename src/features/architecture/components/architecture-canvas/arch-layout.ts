@@ -1,4 +1,4 @@
-import type { ArchDiagram, ArchNode } from '@/types/architecture';
+import type { ArchDiagram, ArchNode } from '../../types/architecture';
 
 /* ------------------------------------------------------------------ */
 /*  Layout constants                                                   */

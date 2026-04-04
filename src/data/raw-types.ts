@@ -1,5 +1,5 @@
-import type { JourneyNode } from '@/types/journey';
-import type { ErrorCase } from '@/types/journey';
+import type { JourneyNode } from '@/features/journeys';
+import type { ErrorCase } from '@/features/journeys';
 
 export interface RawJourneyNode {
   id: string;

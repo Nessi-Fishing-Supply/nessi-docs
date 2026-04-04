@@ -7,3 +7,6 @@ export { useFeatureDomains, useFeatureDomainPageData } from './hooks/use-feature
 
 // Components
 export { FeatureDomainView } from './components/feature-domain-view';
+
+// Types
+export type { FeatureLink, Feature } from './types/feature';

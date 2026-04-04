@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import type { ErdEdge } from '@/types/entity-relationship';
+import type { ErdEdge } from '@/features/data-model';
 
 export function useErdTrace(edges: ErdEdge[]) {
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);

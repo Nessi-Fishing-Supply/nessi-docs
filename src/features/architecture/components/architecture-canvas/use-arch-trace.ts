@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import type { ArchConnection } from '@/types/architecture';
+import type { ArchConnection } from '../../types/architecture';
 
 /* ------------------------------------------------------------------ */
 /*  Trace hook (click to isolate connections — same pattern as ERD)    */

@@ -101,6 +101,7 @@ export interface JourneyEdge {
 export type JourneyDomain =
   | 'auth'
   | 'shopping'
+  | 'messaging'
   | 'cart'
   | 'account'
   | 'shops'

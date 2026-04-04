@@ -1,5 +1,5 @@
 import { loadBranch } from '@/data/branch-loader';
-import type { ArchDiagram } from '@/types/architecture';
+import type { ArchDiagram } from '../types/architecture';
 
 export interface ArchDiagramPageData {
   diagram: ArchDiagram;

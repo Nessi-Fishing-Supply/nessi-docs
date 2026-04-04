@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import type { ApiGroup, ApiEndpoint, RequestField } from '@/types/api-contract';
+import type { ApiGroup, ApiEndpoint, RequestField } from '../../types/api-contract';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
 import { getMethodColors } from '@/constants/colors';
 import { useBranchHref } from '@/hooks/use-branch-href';

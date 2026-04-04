@@ -8,3 +8,6 @@ export { useArchDiagrams, useArchDiagram } from './hooks/use-arch-diagrams';
 // Components
 export { ArchitectureList } from './components/architecture-list';
 export { ArchitectureCanvas } from './components/architecture-canvas';
+
+// Types
+export type { ArchNode, ArchLayer, ArchConnection, ArchDiagram } from './types/architecture';

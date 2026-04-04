@@ -1,6 +1,6 @@
 'use client';
 
-import { LAYER_CONFIG, STATUS_CONFIG, type StepLayer, type StepStatus } from '@/types/journey';
+import { LAYER_CONFIG, STATUS_CONFIG, type StepLayer, type StepStatus } from '../../types/journey';
 import { hexToRgba } from '@/features/canvas/utils/geometry';
 import styles from './journey-filters.module.scss';
 

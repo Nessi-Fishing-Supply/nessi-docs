@@ -1,6 +1,6 @@
 'use client';
 
-import type { ArchDiagram } from '@/types/architecture';
+import type { ArchDiagram } from '@/features/architecture';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import type { SwitcherItem } from '@/components/navigation/breadcrumb';

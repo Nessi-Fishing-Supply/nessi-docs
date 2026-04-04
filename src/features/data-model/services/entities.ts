@@ -1,6 +1,6 @@
 import { loadBranch } from '@/data/branch-loader';
-import type { Entity } from '@/types/data-model';
-import type { ErdNode, ErdEdge, ErdCategoryGroup } from '@/types/entity-relationship';
+import type { Entity } from '../types/data-model';
+import type { ErdNode, ErdEdge, ErdCategoryGroup } from '../types/entity-relationship';
 
 export function getEntities(branch: string): Entity[] {
   const data = loadBranch(branch);
@@ -9,7 +9,12 @@ export function getEntities(branch: string): Entity[] {
 
 export function getErdData(branch: string) {
   const data = loadBranch(branch);
-  if (!data) return { nodes: [] as ErdNode[], edges: [] as ErdEdge[], categoryGroups: [] as ErdCategoryGroup[] };
+  if (!data)
+    return {
+      nodes: [] as ErdNode[],
+      edges: [] as ErdEdge[],
+      categoryGroups: [] as ErdCategoryGroup[],
+    };
   return {
     nodes: data.erdNodes,
     edges: data.erdEdges,

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import type { ArchDiagram } from '@/types/architecture';
+import type { ArchDiagram } from '../../types/architecture';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';
 import { useDiffResult } from '@/features/diff-overview';

@@ -1,4 +1,4 @@
-import type { Entity } from '@/types/data-model';
+import type { Entity } from '@/features/data-model';
 import type { RawEntity } from '../raw-types';
 
 export const ENTITY_CATEGORY_MAP: Record<string, string> = {

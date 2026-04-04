@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useCallback } from 'react';
-import type { JourneyNode, JourneyEdge } from '@/types/journey';
+import type { JourneyNode, JourneyEdge } from '@/features/journeys';
 
 interface UseKeyboardNavOptions {
   nodes: JourneyNode[];

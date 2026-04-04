@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import type { Journey, JourneyNode, StepLayer, StepStatus } from '@/types/journey';
-import { PERSONA_CONFIG } from '@/types/journey';
+import type { Journey, JourneyNode, StepLayer, StepStatus } from '../../types/journey';
+import { PERSONA_CONFIG } from '../../types/journey';
 import type { DiffStatus } from '@/types/diff';
 import { useAppStore } from '@/stores/app-store';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';

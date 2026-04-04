@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useCallback } from 'react';
-import { LAYER_CONFIG } from '@/types/journey';
+import { LAYER_CONFIG } from '@/features/journeys';
 import { NODE_WIDTH, NODE_HEIGHT, DECISION_SIZE } from '../utils/geometry';
 
 interface MinimapNode {

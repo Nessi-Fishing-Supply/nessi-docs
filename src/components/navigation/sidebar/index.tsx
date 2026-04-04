@@ -20,7 +20,7 @@ import {
 } from 'react-icons/hi';
 import { useDiffResult } from '@/features/diff-overview';
 import { FEATURE_TO_DOMAIN } from '@/data/transforms/features';
-import type { Lifecycle } from '@/types/lifecycle';
+import type { Lifecycle } from '@/features/lifecycles';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';
 import styles from './sidebar.module.scss';

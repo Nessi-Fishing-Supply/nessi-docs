@@ -5,12 +5,12 @@
 /* ------------------------------------------------------------------ */
 
 import type { BranchData } from '@/types/branch';
-import type { ApiGroup } from '@/types/api-contract';
-import type { ErdEdge } from '@/types/entity-relationship';
-import type { Role } from '@/types/permission';
-import type { ConfigEnum } from '@/types/config-ref';
-import type { Feature } from '@/types/feature';
-import type { ArchDiagram } from '@/types/architecture';
+import type { ApiGroup } from '@/features/api-map';
+import type { ErdEdge } from '@/features/data-model';
+import type { Role } from '@/features/config';
+import type { ConfigEnum } from '@/features/config';
+import type { Feature } from '@/features/feature-domain';
+import type { ArchDiagram } from '@/features/architecture';
 import type { RoadmapItem } from '@/types/roadmap';
 import type { ExtractionMeta } from '@/types/extraction-meta';
 import type { RawJourney, RawLifecycle, RawErdNode, RawEntity } from './raw-types';
