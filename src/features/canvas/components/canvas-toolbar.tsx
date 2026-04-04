@@ -82,6 +82,8 @@ const TOOLBAR_STYLE: React.CSSProperties = {
   border: '1px solid rgba(255,255,255,0.08)',
   borderRadius: 8,
   backdropFilter: 'blur(12px)',
+  maxWidth: 'calc(100% - 32px)',
+  overflowX: 'auto',
 };
 
 const SEP_STYLE: React.CSSProperties = {
