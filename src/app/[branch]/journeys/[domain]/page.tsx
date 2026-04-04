@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
 import { getDomainConfig, DOMAINS } from '@/constants/domains';
-import { DomainJourneyList } from '@/features/journeys/domain-journey-list';
+import { getDomainJourneys, DomainJourneyList } from '@/features/journeys';
 
 export function generateStaticParams() {
   return getBranchNames().flatMap((branch) => {
@@ -32,22 +32,15 @@ export default async function DomainPage({
   const data = loadBranch(branch);
   if (!data) notFound();
 
-  const config = getDomainConfig(domain);
-  if (!config) notFound();
-
-  const journeys = data.journeys.filter((j) => j.domain === domain);
-  const allSteps = journeys.flatMap((j) => j.nodes.filter((n) => n.type === 'step'));
-
-  const allDomains = DOMAINS.filter((d) => data.journeys.some((j) => j.domain === d.slug)).map(
-    (d) => ({ slug: d.slug, label: d.label }),
-  );
+  const result = getDomainJourneys(branch, domain);
+  if (!result) notFound();
 
   return (
     <DomainJourneyList
-      domain={config}
-      journeys={journeys}
-      stats={{ stepCount: allSteps.length }}
-      siblingDomains={allDomains}
+      domain={result.config}
+      journeys={result.journeys}
+      stats={result.stats}
+      siblingDomains={result.siblingDomains}
     />
   );
 }

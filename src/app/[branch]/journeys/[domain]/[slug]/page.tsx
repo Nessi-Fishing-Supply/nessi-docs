@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
 import { DOMAINS } from '@/constants/domains';
+import { getJourney } from '@/features/journeys';
 import { JourneyPageClient } from './client';
 
 export function generateStaticParams() {
@@ -37,20 +38,12 @@ export default async function JourneyPage({
   const data = loadBranch(branch);
   if (!data) notFound();
 
-  const journey = data.journeys.find((j) => j.domain === domain && j.slug === slug);
-  if (!journey) notFound();
-
-  const siblings = data.journeys
-    .filter((j) => j.domain === domain)
-    .map((j) => ({
-      slug: j.slug,
-      title: j.title,
-      description: j.description,
-    }));
+  const result = getJourney(branch, domain, slug);
+  if (!result) notFound();
 
   return (
     <Suspense>
-      <JourneyPageClient journey={journey} domain={domain} siblings={siblings} />
+      <JourneyPageClient journey={result.journey} domain={domain} siblings={result.siblings} />
     </Suspense>
   );
 }
