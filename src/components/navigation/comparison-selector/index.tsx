@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { useDiffResult } from '@/features/diff-overview';
-import { useUrlSync } from '@/hooks/use-url-sync';
+import { useUrlSync } from '@/features/shared/hooks/use-url-sync';
 import styles from './comparison-selector.module.scss';
 
 export function ComparisonSelector() {

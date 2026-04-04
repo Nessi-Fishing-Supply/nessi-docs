@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useAppStore } from '@/stores/app-store';
-import { useUrlSync } from '@/hooks/use-url-sync';
+import { useAppStore } from '@/libs/app-store';
+import { useUrlSync } from '@/features/shared/hooks/use-url-sync';
 import styles from './diff-empty-state.module.scss';
 
 export function DiffEmptyState() {

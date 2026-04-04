@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, type ReactNode, Suspense } from 'react';
-import { useAppStore } from '@/stores/app-store';
-import { useUrlSync } from '@/hooks/use-url-sync';
-import type { BranchData } from '@/types/branch';
+import { useAppStore } from '@/libs/app-store';
+import { useUrlSync } from '@/features/shared/hooks/use-url-sync';
+import type { BranchData } from '@/features/shared/types/branch';
 
 function UrlSyncInner() {
   useUrlSync();

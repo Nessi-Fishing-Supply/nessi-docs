@@ -4,9 +4,7 @@
   margin-bottom: var(--spacing-50);
   border-radius: 8px;
   border: 1px solid transparent;
-  transition:
-    var(--transition-fast),
-    var(--transition-mode);
+  transition: var(--transition-fast), var(--transition-mode);
   animation: row-enter 200ms ease-out both;
   animation-delay: var(--stagger);
   position: relative;

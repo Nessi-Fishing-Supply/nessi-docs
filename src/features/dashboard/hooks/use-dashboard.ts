@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import {
   getDashboardData,
   getDashboardMetricsForBranch,

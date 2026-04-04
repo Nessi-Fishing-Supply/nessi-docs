@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react';
 
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 
 export function useBranchHref() {
   const activeBranch = useAppStore.use.activeBranch();

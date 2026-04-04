@@ -3,8 +3,8 @@
 import { useState, useMemo } from 'react';
 import type { Lifecycle } from '../../types/lifecycle';
 import { getEntitiesForLifecycle, getJourneysForLifecycle } from '@/data';
-import { useBranchHref } from '@/hooks/use-branch-href';
-import { useAppStore } from '@/stores/app-store';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
+import { useAppStore } from '@/libs/app-store';
 import { PageHeader } from '@/components/layout/page-header';
 import { ListRow } from '@/components/layout/list-row';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';

@@ -1,7 +1,7 @@
 import { loadBranch } from '@/data/branch-loader';
-import { DOMAINS, getDomainConfig } from '@/constants/domains';
+import { DOMAINS, getDomainConfig } from '@/features/shared/constants/domains';
 import type { Journey } from '../types/journey';
-import type { DomainConfig } from '@/constants/domains';
+import type { DomainConfig } from '@/features/shared/constants/domains';
 import type { DomainWithStats } from '@/data';
 
 export interface DomainPageData {

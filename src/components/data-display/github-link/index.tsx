@@ -1,5 +1,5 @@
 import { VscGithub } from 'react-icons/vsc';
-import { githubUrl } from '@/constants/github';
+import { githubUrl } from '@/features/shared/constants/github';
 import styles from './github-link.module.scss';
 
 interface GitHubLinkProps {

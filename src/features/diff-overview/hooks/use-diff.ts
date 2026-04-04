@@ -2,9 +2,9 @@
 
 import { useMemo } from 'react';
 
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { getDiff } from '../services/diff';
-import type { DiffResult } from '@/types/diff';
+import type { DiffResult } from '@/features/shared/types/diff';
 
 /**
  * Returns the current diff state derived from the Zustand store.

@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import type { BranchData, BranchInfo } from '@/types/branch';
-import type { SelectedItem } from '@/types/docs-context';
+import type { BranchData, BranchInfo } from '@/features/shared/types/branch';
+import type { SelectedItem } from '@/features/shared/types/docs-context';
 import { BRANCHES } from '@/data/branch-registry';
 import { createSelectors } from './selectors';
 

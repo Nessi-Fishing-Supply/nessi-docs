@@ -3,7 +3,7 @@ import { DM_Sans } from 'next/font/google';
 import { StalenessBanner } from '@/components/layout/staleness-banner';
 import { DeviceGate } from '@/components/layout/device-gate';
 import { ToastProvider } from '@/components/indicators/toast';
-import { QueryProvider } from '@/providers/query-provider';
+import { QueryProvider } from '@/libs/query-provider';
 import '@/styles/globals.scss';
 
 const dmSans = DM_Sans({

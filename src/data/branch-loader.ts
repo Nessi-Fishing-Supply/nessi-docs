@@ -4,15 +4,15 @@
 /*  All branches are pre-computed at module load time.               */
 /* ------------------------------------------------------------------ */
 
-import type { BranchData } from '@/types/branch';
+import type { BranchData } from '@/features/shared/types/branch';
 import type { ApiGroup } from '@/features/api-map';
 import type { ErdEdge } from '@/features/data-model';
 import type { Role } from '@/features/config';
 import type { ConfigEnum } from '@/features/config';
 import type { Feature } from '@/features/feature-domain';
 import type { ArchDiagram } from '@/features/architecture';
-import type { RoadmapItem } from '@/types/roadmap';
-import type { ExtractionMeta } from '@/types/extraction-meta';
+import type { RoadmapItem } from '@/features/shared/types/roadmap';
+import type { ExtractionMeta } from '@/features/shared/types/extraction-meta';
 import type { RawJourney, RawLifecycle, RawErdNode, RawEntity } from './raw-types';
 
 import { transformJourneys } from './layout/journey-layout';

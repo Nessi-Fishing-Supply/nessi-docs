@@ -1,7 +1,7 @@
 'use client';
 
-import type { DiffStatus } from '@/types/diff';
-import { useDeepLink } from '@/hooks/use-deep-link';
+import type { DiffStatus } from '@/features/shared/types/diff';
+import { useDeepLink } from '@/features/shared/hooks/use-deep-link';
 import { BorderTrace } from '@/components/data-display/border-trace';
 import styles from './collapsible-row.module.scss';
 

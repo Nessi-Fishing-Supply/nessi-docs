@@ -12,8 +12,8 @@ import {
   HiOutlineLightningBolt,
   HiOutlineCog,
 } from 'react-icons/hi';
-import { useBranchHref } from '@/hooks/use-branch-href';
-import { useAppStore } from '@/stores/app-store';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
+import { useAppStore } from '@/libs/app-store';
 import { useDiffResult } from '@/features/diff-overview';
 import { PageHeader } from '@/components/layout/page-header';
 import { DiffEmptyState } from '@/features/diff-overview/components/diff-empty-state';
@@ -21,7 +21,7 @@ import {
   DiffDomainGroup,
   type ChangeItem,
 } from '@/features/diff-overview/components/diff-domain-group';
-import type { DiffResult, DiffSet, ApiGroupDiff } from '@/types/diff';
+import type { DiffResult, DiffSet, ApiGroupDiff } from '@/features/shared/types/diff';
 import type { Entity } from '@/features/data-model';
 import type { Journey } from '@/features/journeys';
 import type { Lifecycle } from '@/features/lifecycles';

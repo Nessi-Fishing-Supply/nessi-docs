@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { DiffStatus } from '@/types/diff';
+import type { DiffStatus } from '@/features/shared/types/diff';
 import styles from './list-row.module.scss';
 
 interface ListRowProps {

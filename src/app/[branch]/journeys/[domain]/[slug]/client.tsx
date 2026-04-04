@@ -2,8 +2,8 @@
 
 import { useState, useCallback } from 'react';
 import type { Journey, StepLayer, StepStatus } from '@/features/journeys';
-import { getDomainConfig } from '@/constants/domains';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { getDomainConfig } from '@/features/shared/constants/domains';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import type { SwitcherItem } from '@/components/navigation/breadcrumb';
 import { JourneyCanvas } from '@/features/journeys/components/journey-canvas';

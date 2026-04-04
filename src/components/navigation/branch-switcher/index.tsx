@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { useToast } from '@/components/indicators/toast';
 import styles from './branch-switcher.module.scss';
 

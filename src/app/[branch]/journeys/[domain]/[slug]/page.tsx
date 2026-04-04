@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
-import { DOMAINS } from '@/constants/domains';
+import { DOMAINS } from '@/features/shared/constants/domains';
 import { getJourney } from '@/features/journeys';
 import { JourneyPageClient } from './client';
 

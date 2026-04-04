@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
-import { getDomainConfig, DOMAINS } from '@/constants/domains';
+import { getDomainConfig, DOMAINS } from '@/features/shared/constants/domains';
 import { getDomainJourneys, DomainJourneyList } from '@/features/journeys';
 
 export function generateStaticParams() {

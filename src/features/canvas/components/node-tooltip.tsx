@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { LAYER_CONFIG, STATUS_CONFIG } from '@/features/journeys';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { getLifecyclesForRoute } from '@/data';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { NODE_WIDTH } from '../utils/geometry';
 import { monoBlock } from '../constants/tooltip-styles';
 import { CANVAS_COLORS } from '../constants/canvas-colors';

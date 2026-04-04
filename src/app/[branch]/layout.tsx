@@ -6,7 +6,7 @@ import { Sidebar } from '@/components/navigation/sidebar';
 import { DetailPanel } from '@/components/layout/detail-panel';
 import { DiffToolbar } from '@/components/layout/diff-toolbar';
 import { SearchTrigger } from '@/features/search/search-trigger';
-import { BranchInit } from '@/providers/branch-init';
+import { BranchInit } from '@/libs/branch-init';
 import { loadBranch, getAllBranchData } from '@/data/branch-loader';
 import { getBranchNames } from '@/data/branch-registry';
 import { getFeatureDomains } from '@/features/feature-domain';

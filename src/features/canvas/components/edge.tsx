@@ -5,7 +5,7 @@ import {
   autoPortSides,
   journeyPortSides,
 } from '../utils/geometry';
-import type { DiffStatus } from '@/types/diff';
+import type { DiffStatus } from '@/features/shared/types/diff';
 
 interface EdgeProps {
   from: { x: number; y: number; type: string };

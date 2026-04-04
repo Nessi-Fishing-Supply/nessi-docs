@@ -9,7 +9,7 @@ import {
   removeRecentSearch,
   clearRecentSearches,
 } from '../../recent-searches';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { OverflowText } from './overflow-text';
 import styles from './search-dialog.module.scss';
 

@@ -1,5 +1,5 @@
 import { hexToRgba } from '../utils/geometry';
-import { DIFF_COLORS } from '@/constants/diff';
+import { DIFF_COLORS } from '@/features/shared/constants/diff';
 
 const DIFF_ENTRIES = [
   { label: 'New', color: DIFF_COLORS.added },

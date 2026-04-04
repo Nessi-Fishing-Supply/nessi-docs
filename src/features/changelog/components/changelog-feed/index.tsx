@@ -2,12 +2,12 @@
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import type { ChangelogEntry } from '@/types/changelog';
-import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
+import type { ChangelogEntry } from '@/features/shared/types/changelog';
+import { CHANGE_TYPE_CONFIG } from '@/features/shared/types/changelog';
 import { getDomainForScope } from '@/data';
-import { DOMAINS } from '@/constants/domains';
-import { useBranchHref } from '@/hooks/use-branch-href';
-import { formatDate } from '@/constants/dates';
+import { DOMAINS } from '@/features/shared/constants/domains';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
+import { formatDate } from '@/features/shared/constants/dates';
 import { PageHeader } from '@/components/layout/page-header';
 import { Tooltip } from '@/components/data-display';
 import styles from './changelog-feed.module.scss';

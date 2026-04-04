@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { StepPanel } from './panels/step-panel';
 import { EntityPanel } from './panels/entity-panel';
 import { LifecyclePanel } from './panels/lifecycle-panel';

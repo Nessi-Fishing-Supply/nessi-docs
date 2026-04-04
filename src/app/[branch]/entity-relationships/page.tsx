@@ -17,12 +17,7 @@ export default async function EntityRelationshipsPage({
 
   return (
     <Suspense>
-      <ErdCanvas
-        nodes={nodes}
-        edges={edges}
-        entities={entities}
-        categoryGroups={categoryGroups}
-      />
+      <ErdCanvas nodes={nodes} edges={edges} entities={entities} categoryGroups={categoryGroups} />
     </Suspense>
   );
 }

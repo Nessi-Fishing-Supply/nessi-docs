@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Journey, JourneyNode, StepLayer, StepStatus } from '../../types/journey';
 import { PERSONA_CONFIG } from '../../types/journey';
-import type { DiffStatus } from '@/types/diff';
-import { useAppStore } from '@/stores/app-store';
+import type { DiffStatus } from '@/features/shared/types/diff';
+import { useAppStore } from '@/libs/app-store';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { useViewport } from '@/features/canvas/hooks/use-viewport';
 import { usePathTrace } from '@/features/canvas/hooks/use-path-trace';

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { useDiffResult } from '@/features/diff-overview';
 import styles from './diff-toolbar.module.scss';
 

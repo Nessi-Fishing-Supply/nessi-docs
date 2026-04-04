@@ -1,4 +1,4 @@
-import type { DiffStatus } from '@/types/diff';
+import type { DiffStatus } from '@/features/shared/types/diff';
 
 /** Diff colors for canvas/SVG components that can't use CSS variables directly. */
 export const DIFF_COLORS: Record<DiffStatus, string> = {

@@ -1,9 +1,9 @@
 import type { Feature } from '@/features/feature-domain';
 import type { ApiGroup } from '@/features/api-map';
-import type { FeatureDomain, DashboardMetrics } from '@/types/dashboard';
-import type { ChangelogEntry } from '@/types/changelog';
+import type { FeatureDomain, DashboardMetrics } from '@/features/shared/types/dashboard';
+import type { ChangelogEntry } from '@/features/shared/types/changelog';
 import type { RawJourney, RawLifecycle, RawEntity } from '../raw-types';
-import { DOMAINS } from '@/constants/domains';
+import { DOMAINS } from '@/features/shared/constants/domains';
 import { transformChangelog } from './changelog';
 
 /* ------------------------------------------------------------------ */

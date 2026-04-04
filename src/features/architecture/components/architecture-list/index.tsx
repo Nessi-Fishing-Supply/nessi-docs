@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import type { ArchDiagram } from '../../types/architecture';
-import { useBranchHref } from '@/hooks/use-branch-href';
-import { useAppStore } from '@/stores/app-store';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
+import { useAppStore } from '@/libs/app-store';
 import { useDiffResult } from '@/features/diff-overview';
 import { Badge } from '@/components/indicators/badge';
 import { PageHeader } from '@/components/layout/page-header';

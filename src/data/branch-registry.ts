@@ -1,4 +1,4 @@
-import type { BranchInfo } from '@/types/branch';
+import type { BranchInfo } from '@/features/shared/types/branch';
 
 export const BRANCHES: BranchInfo[] = [
   {

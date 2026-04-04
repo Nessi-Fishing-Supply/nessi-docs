@@ -3,7 +3,7 @@
 import { useState, memo } from 'react';
 import { ERD_NODE_WIDTH, ERD_NODE_HEIGHT, hexToRgba } from '../utils/geometry';
 import type { ErdNode } from '@/features/data-model';
-import type { DiffStatus } from '@/types/diff';
+import type { DiffStatus } from '@/features/shared/types/diff';
 import { useNodeState } from '../hooks/use-node-state';
 import { NodeGlow } from './node-glow';
 import { CANVAS_COLORS } from '../constants/canvas-colors';

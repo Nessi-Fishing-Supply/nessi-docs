@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import type { Lifecycle } from '@/features/lifecycles';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import type { SwitcherItem } from '@/components/navigation/breadcrumb';
 import { LifecycleCanvas } from '@/features/lifecycles/components/lifecycle-canvas';

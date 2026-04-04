@@ -3,10 +3,10 @@
 import { useState, useMemo } from 'react';
 import type { ConfigEnum } from '../../types/config-ref';
 import type { Role } from '../../types/permission';
-import type { FieldChange } from '@/types/diff';
+import type { FieldChange } from '@/features/shared/types/diff';
 import { PERMISSION_FEATURES, LEVEL_CONFIG } from '../../types/permission';
-import { useAppStore } from '@/stores/app-store';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { useAppStore } from '@/libs/app-store';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import { useDiffResult } from '@/features/diff-overview';

@@ -2,7 +2,7 @@
 
 import type { Lifecycle, LifecycleState } from '@/features/lifecycles';
 import { DEFAULT_STATE_COLOR } from '@/features/lifecycles';
-import type { DiffStatus } from '@/types/diff';
+import type { DiffStatus } from '@/features/shared/types/diff';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { DiffTooltipSection } from './diff-tooltip-section';
 import type { NodeChange } from '../hooks/use-diff-nodes';

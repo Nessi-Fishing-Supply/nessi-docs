@@ -1,7 +1,7 @@
 'use client';
 
 import { type ReactNode, useCallback, useEffect, useRef } from 'react';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import styles from './app-shell.module.scss';
 
 interface AppShellProps {

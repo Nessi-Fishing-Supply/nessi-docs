@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import type { DomainWithStats } from '@/data';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { useDiffResult } from '@/features/diff-overview';
 import { PageHeader } from '@/components/layout/page-header';
 import styles from './domain-grid.module.scss';

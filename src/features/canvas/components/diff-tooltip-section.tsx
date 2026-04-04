@@ -1,7 +1,7 @@
-import type { DiffStatus } from '@/types/diff';
+import type { DiffStatus } from '@/features/shared/types/diff';
 import type { NodeChange } from '../hooks/use-diff-nodes';
 import { sectionLabel } from '../constants/tooltip-styles';
-import { DIFF_STATUS_CONFIG } from '@/constants/diff';
+import { DIFF_STATUS_CONFIG } from '@/features/shared/constants/diff';
 
 function formatValue(val: unknown): string {
   if (val === undefined || val === null) return '(none)';

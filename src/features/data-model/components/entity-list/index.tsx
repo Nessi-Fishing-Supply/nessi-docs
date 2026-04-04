@@ -3,22 +3,22 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { Entity, EntityField } from '../../types/data-model';
-import { getMethodColors } from '@/constants/colors';
+import { getMethodColors } from '@/features/shared/constants/colors';
 import { rlsOperationToMethod, getBestEndpointForOperation, getLifecycleForEntity } from '@/data';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import { FieldTable, type FieldTableColumn } from '@/components/data-display/field-table';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { Tooltip } from '@/components/data-display';
 import { useDiffResult } from '@/features/diff-overview';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { Badge } from '@/components/indicators/badge';
 import {
   DiffFilterBar,
   type DiffStatusFilter,
 } from '@/components/layout/filter-bar/diff-filter-bar';
-import type { DiffStatus, FieldChange } from '@/types/diff';
+import type { DiffStatus, FieldChange } from '@/features/shared/types/diff';
 import styles from './entity-list.module.scss';
 
 /* ── Constants ── */

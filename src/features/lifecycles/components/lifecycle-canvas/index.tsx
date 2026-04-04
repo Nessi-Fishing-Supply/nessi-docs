@@ -2,7 +2,7 @@
 
 import { useState, useRef, useMemo, useCallback } from 'react';
 import type { Lifecycle, LifecycleState, LifecycleTransition } from '../../types/lifecycle';
-import type { DiffStatus } from '@/types/diff';
+import type { DiffStatus } from '@/features/shared/types/diff';
 import { CanvasProvider } from '@/features/canvas/canvas-provider';
 import { StateNode } from '@/features/canvas/components/state-node';
 import { StateTooltip } from '@/features/canvas/components/state-tooltip';
@@ -16,7 +16,7 @@ import {
   type PortSide,
 } from '@/features/canvas/utils/geometry';
 import { useCanvasKeyboardNav } from '@/features/canvas/hooks/use-canvas-keyboard-nav';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { useDiffResult } from '@/features/diff-overview';
 import { useDiffNodes } from '@/features/canvas/hooks/use-diff-nodes';
 

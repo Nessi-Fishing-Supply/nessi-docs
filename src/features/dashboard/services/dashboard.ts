@@ -1,8 +1,8 @@
 import { loadBranch } from '@/data/branch-loader';
 import { getDashboardMetrics, getFeatureDomains } from '@/data/transforms/features';
 import type { RawJourney, RawLifecycle, RawEntity } from '@/data/raw-types';
-import type { DashboardMetrics, FeatureDomain } from '@/types/dashboard';
-import type { ChangelogEntry } from '@/types/changelog';
+import type { DashboardMetrics, FeatureDomain } from '@/features/shared/types/dashboard';
+import type { ChangelogEntry } from '@/features/shared/types/changelog';
 
 export interface DashboardData {
   metrics: DashboardMetrics;
@@ -22,10 +22,7 @@ export function getDashboardData(branch: string): DashboardData | null {
     lifecycles: data.lifecycles as unknown as RawLifecycle[],
   });
 
-  const domains = getFeatureDomains(
-    data.features,
-    data.journeys as unknown as RawJourney[],
-  );
+  const domains = getFeatureDomains(data.features, data.journeys as unknown as RawJourney[]);
 
   return {
     metrics,

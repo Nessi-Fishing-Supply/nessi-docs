@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 
 export function useUrlSync() {
   const searchParams = useSearchParams();

@@ -9,6 +9,10 @@ export default async function DashboardPage({ params }: { params: Promise<{ bran
   if (!data) notFound();
 
   return (
-    <DashboardView metrics={data.metrics} domains={data.domains} recentChanges={data.recentChanges} />
+    <DashboardView
+      metrics={data.metrics}
+      domains={data.domains}
+      recentChanges={data.recentChanges}
+    />
   );
 }

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { Entity } from '@/features/data-model';
 import type { ErdNode } from '@/features/data-model';
 import { getEndpointsForTable, getLifecycleForEntity, type EndpointRef } from '@/data';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { ERD_NODE_WIDTH } from '../utils/geometry';
 import { monoBlock } from '../constants/tooltip-styles';

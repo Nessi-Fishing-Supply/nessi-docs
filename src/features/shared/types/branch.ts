@@ -1,4 +1,4 @@
-import type { ExtractionMeta } from '@/types/extraction-meta';
+import type { ExtractionMeta } from '@/features/shared/types/extraction-meta';
 import type { Entity } from '@/features/data-model';
 import type { Journey } from '@/features/journeys';
 import type { Lifecycle } from '@/features/lifecycles';
@@ -8,8 +8,8 @@ import type { ArchDiagram } from '@/features/architecture';
 import type { Feature } from '@/features/feature-domain';
 import type { Role } from '@/features/config';
 import type { ConfigEnum } from '@/features/config';
-import type { ChangelogEntry } from '@/types/changelog';
-import type { RoadmapItem } from '@/types/roadmap';
+import type { ChangelogEntry } from '@/features/shared/types/changelog';
+import type { RoadmapItem } from '@/features/shared/types/roadmap';
 
 export interface BranchInfo {
   name: string; // URL segment: 'main', 'staging'

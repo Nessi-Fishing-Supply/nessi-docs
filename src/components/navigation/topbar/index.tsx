@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { BranchSwitcher } from '@/components/navigation/branch-switcher';
 import { ComparisonSelector } from '@/components/navigation/comparison-selector';
 import styles from './topbar.module.scss';

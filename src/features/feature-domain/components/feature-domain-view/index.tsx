@@ -3,12 +3,12 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { Feature } from '../../types/feature';
-import type { FeatureDomain } from '@/types/dashboard';
-import type { ChangelogEntry, ChangeType } from '@/types/changelog';
-import type { DiffStatus, FieldChange } from '@/types/diff';
-import { CHANGE_TYPE_CONFIG } from '@/types/changelog';
-import { useAppStore } from '@/stores/app-store';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import type { FeatureDomain } from '@/features/shared/types/dashboard';
+import type { ChangelogEntry, ChangeType } from '@/features/shared/types/changelog';
+import type { DiffStatus, FieldChange } from '@/features/shared/types/diff';
+import { CHANGE_TYPE_CONFIG } from '@/features/shared/types/changelog';
+import { useAppStore } from '@/libs/app-store';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { useDiffResult } from '@/features/diff-overview';
 import { Badge } from '@/components/indicators/badge';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';

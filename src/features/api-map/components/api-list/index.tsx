@@ -4,21 +4,21 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import type { ApiGroup, ApiEndpoint, RequestField } from '../../types/api-contract';
 import { getLinksForEndpoint, getErrorsForEndpoint } from '@/data';
-import { getMethodColors } from '@/constants/colors';
-import { useBranchHref } from '@/hooks/use-branch-href';
+import { getMethodColors } from '@/features/shared/constants/colors';
+import { useBranchHref } from '@/features/shared/hooks/use-branch-href';
 import { PageHeader } from '@/components/layout/page-header';
 import { CollapsibleRow } from '@/components/layout/collapsible-row';
 import { FieldTable, type FieldTableColumn } from '@/components/data-display/field-table';
 import { FilterBar, FilterChip } from '@/components/layout/filter-bar';
 import { GitHubLink } from '@/components/data-display/github-link';
 import { useDiffResult } from '@/features/diff-overview';
-import { useAppStore } from '@/stores/app-store';
+import { useAppStore } from '@/libs/app-store';
 import { Badge } from '@/components/indicators/badge';
 import {
   DiffFilterBar,
   type DiffStatusFilter,
 } from '@/components/layout/filter-bar/diff-filter-bar';
-import type { DiffStatus, ApiGroupDiff, FieldChange } from '@/types/diff';
+import type { DiffStatus, ApiGroupDiff, FieldChange } from '@/features/shared/types/diff';
 import styles from './api-list.module.scss';
 
 const ALL_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'] as const;

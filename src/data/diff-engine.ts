@@ -1,6 +1,6 @@
 // src/data/diff-engine.ts
 
-import type { BranchData } from '@/types/branch';
+import type { BranchData } from '@/features/shared/types/branch';
 import type { ApiEndpoint, ApiGroup } from '@/features/api-map';
 import type {
   DiffSet,
@@ -10,7 +10,7 @@ import type {
   FieldChange,
   ModifiedItem,
   ApiGroupDiff,
-} from '@/types/diff';
+} from '@/features/shared/types/diff';
 
 /**
  * Shallow field comparison: compare top-level properties via JSON.stringify.

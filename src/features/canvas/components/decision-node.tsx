@@ -3,7 +3,7 @@
 import { useState, memo } from 'react';
 import type { DecisionOption } from '@/features/journeys';
 import { DECISION_SIZE, hexToRgba } from '../utils/geometry';
-import type { DiffStatus } from '@/types/diff';
+import type { DiffStatus } from '@/features/shared/types/diff';
 import { useNodeState } from '../hooks/use-node-state';
 import { NodeGlow } from './node-glow';
 
