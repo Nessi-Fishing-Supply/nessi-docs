@@ -1514,7 +1514,7 @@
           "status": "built",
           "route": "/api/messaging/threads",
           "codeRef": "src/app/api/messaging/threads/route.ts",
-          "why": "Body: { type, participantIds, roles, listingId?, shopId? }. Returns 201 for new thread, 409 if a thread with the same participants and type already exists (client should redirect to the existing thread). type must be one of: inquiry, direct, offer, custom_request. listingId required for inquiry; shopId required for custom_request. For direct type without a listingId, a transaction history gate applies — returns 403 if neither user has a prior transaction.",
+          "why": "Body: { type, participantIds, roles, listingId?, shopId? }. Returns 201 for new thread, 409 if a thread with the same participants and type already exists (client should redirect to the existing thread). type must be one of: inquiry, direct, offer, custom_request. listingId required for inquiry; shopId required for custom_request. Any authenticated member can create a direct thread with any other member — no prior transaction required. A bidirectional block check returns 403 if either member has blocked the other.",
           "errorCases": [
             {
               "condition": "No authenticated session",
@@ -1552,8 +1552,8 @@
               "httpStatus": 400
             },
             {
-              "condition": "direct type: neither user has a prior transaction",
-              "result": "Returns 403 — Direct messaging requires a prior transaction with this user",
+              "condition": "A block relationship exists between the two members (either direction)",
+              "result": "Returns 403 — You cannot message this user",
               "httpStatus": 403
             },
             {
@@ -1582,7 +1582,7 @@
               "to": "start-thread--thread-created"
             },
             {
-              "label": "403 DM gate",
+              "label": "403 Blocked",
               "to": "start-thread--dm-gate-blocked"
             }
           ]
@@ -1590,10 +1590,10 @@
         {
           "id": "start-thread--dm-gate-blocked",
           "type": "step",
-          "label": "Show DM Gate Error",
+          "label": "Show Block Error",
           "layer": "client",
-          "status": "planned",
-          "notes": "On 403 from POST /api/messaging/threads for a direct thread: the UI should surface a message explaining that direct messages require a completed transaction with this user. The gate is enforced via hasTransactionHistoryServer() which checks total_transactions > 0 on both members — placeholder until a real orders table exists."
+          "status": "built",
+          "notes": "On 403 from POST /api/messaging/threads: the block check prevents thread creation when either member has blocked the other. The generic error toast in MessageButton displays 'Something went wrong — Please try again.' Block enforcement is bidirectional — checked in the POST handler before calling createThreadServer."
         },
         {
           "id": "start-thread--thread-created",
@@ -2771,7 +2771,7 @@
         {
           "from": "start-thread--decision-create-thread",
           "to": "start-thread--dm-gate-blocked",
-          "opt": "403 DM gate"
+          "opt": "403 Blocked"
         },
         {
           "from": "start-thread--dm-gate-blocked",

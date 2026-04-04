@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "fix(messaging): #352 allow direct messages without prior transaction history",
+      "number": 356,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/356",
+      "mergedAt": "2026-04-04T18:54:19Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "messaging",
+      "type": "fix"
+    },
+    {
       "title": "feat(moderation): #343 centralize text moderation and wire into all UGC routes",
       "number": 349,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/349",
