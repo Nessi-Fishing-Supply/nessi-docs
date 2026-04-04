@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { SearchDialog } from './search-dialog';
+import { SearchDialog } from './components/search-dialog';
 
 export function SearchTrigger() {
   const [open, setOpen] = useState(false);

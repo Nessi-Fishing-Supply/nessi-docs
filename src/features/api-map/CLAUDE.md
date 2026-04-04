@@ -12,7 +12,8 @@ api-map/
 │   └── api-groups.ts     — Data access (wraps branch-loader today, API tomorrow)
 ├── hooks/
 │   └── use-api-groups.ts — TanStack Query hooks for client components
-├── api-list/             — API endpoint list view with expandable rows and filters
+├── components/
+│   └── api-list/         — API endpoint list view with expandable rows and filters
 └── index.ts              — Public API (barrel export)
 ```
 

@@ -12,24 +12,25 @@ feature-domain/
 │   └── features.ts           — Data access (wraps branch-loader today, API tomorrow)
 ├── hooks/
 │   └── use-features.ts       — TanStack Query hooks for client components
-├── feature-domain-view/      — Domain page view with feature list, changelog, cross-links
+├── components/
+│   └── feature-domain-view/  — Domain page view with feature list, changelog, cross-links
 └── index.ts                  — Public API (barrel export)
 ```
 
 ## Services
 
-| Function                               | Returns                        | Used By                                    |
-| -------------------------------------- | ------------------------------ | ------------------------------------------ |
-| `getFeatureDomains(branch)`            | `FeatureDomain[]`              | FeatureDomainPage, layout, useFeatureDomains |
-| `getFeatureDomainPageData(branch, slug)` | `FeatureDomainPageData \| null` | FeatureDomainPage, useFeatureDomainPageData |
+| Function                                 | Returns                         | Used By                                      |
+| ---------------------------------------- | ------------------------------- | -------------------------------------------- |
+| `getFeatureDomains(branch)`              | `FeatureDomain[]`               | FeatureDomainPage, layout, useFeatureDomains |
+| `getFeatureDomainPageData(branch, slug)` | `FeatureDomainPageData \| null` | FeatureDomainPage, useFeatureDomainPageData  |
 
 `FeatureDomainPageData` shape: `{ domain, features, changelog, journeys, entities }`
 
 ## Hooks
 
-| Hook                             | Query Key                             | Returns                                                         |
-| -------------------------------- | ------------------------------------- | --------------------------------------------------------------- |
-| `useFeatureDomains()`            | `['feature-domains', branch]`         | `{ data: FeatureDomain[], isLoading, error }`                   |
+| Hook                             | Query Key                               | Returns                                                     |
+| -------------------------------- | --------------------------------------- | ----------------------------------------------------------- |
+| `useFeatureDomains()`            | `['feature-domains', branch]`           | `{ data: FeatureDomain[], isLoading, error }`               |
 | `useFeatureDomainPageData(slug)` | `['feature-domain-page', branch, slug]` | `{ data: FeatureDomainPageData \| null, isLoading, error }` |
 
 ## Data Flow

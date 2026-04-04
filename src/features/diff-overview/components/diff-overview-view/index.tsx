@@ -16,8 +16,11 @@ import { useBranchHref } from '@/hooks/use-branch-href';
 import { useAppStore } from '@/stores/app-store';
 import { useDiffResult } from '@/features/diff-overview';
 import { PageHeader } from '@/components/layout/page-header';
-import { DiffEmptyState } from '@/features/diff-overview/diff-empty-state';
-import { DiffDomainGroup, type ChangeItem } from '@/features/diff-overview/diff-domain-group';
+import { DiffEmptyState } from '@/features/diff-overview/components/diff-empty-state';
+import {
+  DiffDomainGroup,
+  type ChangeItem,
+} from '@/features/diff-overview/components/diff-domain-group';
 import type { DiffResult, DiffSet, ApiGroupDiff } from '@/types/diff';
 import type { Entity } from '@/types/data-model';
 import type { Journey } from '@/types/journey';

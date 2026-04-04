@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { DiffOverviewView } from '@/features/diff-overview/diff-overview-view';
+import { DiffOverviewView } from '@/features/diff-overview/components/diff-overview-view';
 
 export const metadata = { title: 'Compare Overview' };
 

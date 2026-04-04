@@ -6,5 +6,5 @@ export type { LifecyclePageData } from './services/lifecycles';
 export { useLifecycles, useLifecycle } from './hooks/use-lifecycles';
 
 // Components
-export { LifecycleList } from './lifecycle-list';
-export { LifecycleCanvas } from './lifecycle-canvas';
+export { LifecycleList } from './components/lifecycle-list';
+export { LifecycleCanvas } from './components/lifecycle-canvas';

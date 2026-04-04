@@ -5,4 +5,4 @@ export { getApiGroups, getTotalEndpoints } from './services/api-groups';
 export { useApiGroups, useTotalEndpoints } from './hooks/use-api-groups';
 
 // Components
-export { ApiList } from './api-list';
+export { ApiList } from './components/api-list';

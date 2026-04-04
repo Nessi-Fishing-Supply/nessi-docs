@@ -12,7 +12,8 @@ config/
 │   └── config.ts         — Data access (wraps branch-loader today, API tomorrow)
 ├── hooks/
 │   └── use-config.ts     — TanStack Query hooks for client components
-├── config-list/          — Config enum list with collapsible rows + roles matrix
+├── components/
+│   └── config-list/      — Config enum list with collapsible rows + roles matrix
 └── index.ts              — Public API (barrel export)
 ```
 

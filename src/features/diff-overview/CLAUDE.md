@@ -16,9 +16,10 @@ Diff comparison feature: computes and renders the diff between two branch snapsh
 diff-overview/
 ├── services/diff.ts          # getDiff — pure service wrapping diff-engine
 ├── hooks/use-diff.ts         # useDiffResult — store-connected hook
-├── diff-overview-view/       # Page-level component
-├── diff-domain-group/        # Per-domain diff section
-└── diff-empty-state/         # Empty state UI
+├── components/
+│   ├── diff-overview-view/   # Page-level component
+│   ├── diff-domain-group/    # Per-domain diff section
+│   └── diff-empty-state/     # Empty state UI
 ```
 
 ## Design Notes

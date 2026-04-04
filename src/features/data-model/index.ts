@@ -5,5 +5,5 @@ export { getEntities, getErdData } from './services/entities';
 export { useEntities, useErdData } from './hooks/use-entities';
 
 // Components
-export { EntityList } from './entity-list';
-export { ErdCanvas } from './erd-canvas';
+export { EntityList } from './components/entity-list';
+export { ErdCanvas } from './components/erd-canvas';

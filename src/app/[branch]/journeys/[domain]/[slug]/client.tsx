@@ -6,7 +6,7 @@ import { getDomainConfig } from '@/constants/domains';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import type { SwitcherItem } from '@/components/navigation/breadcrumb';
-import { JourneyCanvas } from '@/features/journeys/journey-canvas';
+import { JourneyCanvas } from '@/features/journeys/components/journey-canvas';
 
 const ALL_LAYERS: StepLayer[] = ['client', 'server', 'database', 'background', 'email', 'external'];
 const ALL_STATUSES: StepStatus[] = ['planned', 'built', 'tested'];

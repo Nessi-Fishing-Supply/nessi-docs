@@ -16,6 +16,18 @@ This app is a **rendering and transformation layer** over extracted data from `n
 - **nessi-docs** transforms that data for view-layer needs and renders it
 - Extraction produces clean JSON. This app computes all derived fields (layouts, colors, domain mapping, cross-links)
 
+### Domain assignment boundary
+
+Domain assignment is split across repos:
+
+- **Journey domains** — assigned at the source in `nessi-web-app/docs/journeys/*.json` (each journey has a `domain` field)
+- **Feature domains** — assigned during transformation in this repo via `FEATURE_TO_DOMAIN` map (`src/data/transforms/features.ts`)
+- **Domain definitions** — owned by this repo in `src/constants/domains.ts`
+
+When nessi-web-app adds a new feature, the extraction pipeline produces raw metrics (component count, endpoint count, hooks, entities) with **no domain opinion**. This repo's transform layer assigns the feature to a domain using the hardcoded map. If a new feature slug appears in extracted data but is missing from `FEATURE_TO_DOMAIN`, it will be silently excluded from all domain views.
+
+See "Feature Domain Classification" under Architecture for promotion criteria.
+
 ### Data sync
 
 Raw JSON is synced from `nessi-web-app` to `src/data/generated/` via GitHub Action or manual copy. The `_meta.json` file tracks the source commit hash.
@@ -62,17 +74,18 @@ src/
 │   └── cross-links.ts      # Bidirectional entity ↔ endpoint mapping
 ├── types/                  # TypeScript types per domain
 ├── features/               # Feature-scoped components
-│   ├── journeys/           # Journey canvas, filters, domain grid
+│   ├── journeys/           # services/, hooks/, components/{domain-grid,domain-journey-list,journey-canvas,journey-filters}
 │   ├── canvas/             # Shared canvas infrastructure (provider, nodes, edges, hooks)
-│   ├── data-model/         # Entity list, ERD canvas
-│   ├── lifecycles/         # Lifecycle list + canvas
-│   ├── architecture/       # Architecture list + canvas (tech stack, data flow, pipelines)
-│   ├── api-map/            # API endpoint list
-│   ├── dashboard/          # Dashboard home view
-│   ├── feature-domain/     # Feature domain page view
-│   ├── config/             # Config reference list
-│   ├── changelog/          # Changelog feed
-│   └── search/             # Global search dialog
+│   ├── data-model/         # services/, hooks/, components/{entity-list,erd-canvas}
+│   ├── lifecycles/         # services/, hooks/, components/{lifecycle-list,lifecycle-canvas}
+│   ├── architecture/       # services/, hooks/, components/{architecture-list,architecture-canvas}
+│   ├── api-map/            # services/, hooks/, components/{api-list}
+│   ├── dashboard/          # services/, hooks/, components/{dashboard-view}
+│   ├── feature-domain/     # services/, hooks/, components/{feature-domain-view}
+│   ├── config/             # services/, hooks/, components/{config-list}
+│   ├── changelog/          # services/, hooks/, components/{changelog-feed}
+│   ├── diff-overview/      # services/, hooks/, components/{diff-overview-view,diff-domain-group,diff-empty-state}
+│   └── search/             # search-trigger.tsx, search-index.ts, recent-searches.ts, components/{search-dialog}
 ├── components/
 │   ├── layout/             # App shell, sidebar, topbar, detail panel
 │   └── ui/                 # Reusable UI primitives (badge, border-trace, breadcrumb, cross-link, github-link, info-block, key-value-row, page-header, section-label, tooltip)
@@ -120,6 +133,64 @@ Cross-page navigation uses hash anchors with a consistent animation sequence:
 7. Deep-link target rows skip CSS stagger delay (`--stagger: 0ms`)
 
 Used by: Data Model rows, API Map endpoint rows, Feature domain feature rows, Config reference blocks.
+
+### Feature Domain Classification
+
+Features are grouped into **domains** — top-level product areas rendered as pages under `/features/[domain]`. Domain assignment is a manual classification in `FEATURE_TO_DOMAIN` (`src/data/transforms/features.ts`) and `DOMAINS` (`src/constants/domains.ts`). This section defines when a feature warrants its own domain vs. remaining grouped under an existing one.
+
+#### Promotion signals
+
+A feature should be evaluated for its own domain when it meets **3 or more** of these criteria:
+
+| Signal                    | Threshold                                                          | Example                                                                                 |
+| ------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| **Own dashboard section** | Has dedicated routes in nessi-web-app's dashboard                  | Messaging has `/dashboard/messages`                                                     |
+| **Own permission model**  | Feature-gated by a distinct permission (not just auth)             | Messaging has `shops.permissions.messaging`                                             |
+| **Own infrastructure**    | Requires dedicated infra beyond tables (realtime, storage, queues) | Messaging uses Supabase Realtime + storage bucket                                       |
+| **Cross-domain reach**    | Touches 3+ existing domains as a dependency or integration point   | Messaging integrates with listings, shops, members, blocks                              |
+| **Multiple journeys**     | Could support 2+ distinct user journeys                            | Buyer-seller messaging, offer negotiation, shop inbox                                   |
+| **Scale**                 | >10 components OR >8 endpoints OR >10 hooks                        | Messaging: 13 components, 12+ endpoints, 15 hooks                                       |
+| **Own entity cluster**    | Owns 3+ database tables forming a cohesive data model              | `message_threads`, `message_thread_participants`, `messages`, `offers`, `member_blocks` |
+
+#### Staying grouped
+
+A feature stays under its parent domain when:
+
+- It's a **utility** with no product surface (0 components, 0 endpoints) — e.g., `email`, `notifications`
+- It's a **single-purpose leaf** that serves one parent domain — e.g., `recently-viewed` serves shopping, `addresses` serves account
+- It has **<5 components and <5 endpoints** with no independent infrastructure
+- It has **no dashboard section** of its own
+
+#### Cross-domain features
+
+A feature can be its **own domain** and still appear as nodes/steps in other domains' journeys. This is by design — the cross-link system (`cross-links.ts`) and journey `links` arrays handle it:
+
+- Messaging is its own domain, but "Message Seller" appears as a step in shopping journeys
+- Offers live within messaging, but "Accept Offer" connects to the cart/orders domain
+- The `links` array on each feature explicitly declares these cross-references
+
+This is not a conflict — it's the **primary value** of the cross-link system. A feature's domain is where it _lives_. Cross-links are where it _touches_.
+
+#### When to re-evaluate
+
+Domain assignment should be reviewed when:
+
+- A feature gains a new dashboard section in nessi-web-app
+- A feature adds its own permission model or storage infrastructure
+- A feature's component/endpoint count doubles from its last evaluation
+- A new journey is created that is primarily about a grouped feature (not its parent domain)
+
+#### Current domain inventory
+
+| Domain            | Slug        | Core features                                      | Grouped utilities |
+| ----------------- | ----------- | -------------------------------------------------- | ----------------- |
+| Authentication    | `auth`      | auth, context                                      | —                 |
+| Shopping & Social | `shopping`  | flags, follows, recently-viewed, shared, watchlist | —                 |
+| Messaging         | `messaging` | messaging, blocks                                  | —                 |
+| Cart & Checkout   | `cart`      | cart, orders                                       | —                 |
+| Members           | `account`   | addresses, dashboard, members                      | notifications     |
+| Shops             | `shops`     | shops                                              | email             |
+| Listings          | `listings`  | listings, editorial                                | —                 |
 
 ### Data Layer (`src/data/index.ts`)
 

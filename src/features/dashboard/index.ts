@@ -10,4 +10,4 @@ export type { DashboardData } from './services/dashboard';
 export { useDashboardData, useDashboardMetrics, useFeatureDomains } from './hooks/use-dashboard';
 
 // Components
-export { DashboardView } from './dashboard-view';
+export { DashboardView } from './components/dashboard-view';

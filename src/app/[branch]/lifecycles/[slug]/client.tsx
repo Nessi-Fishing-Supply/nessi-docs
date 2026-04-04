@@ -5,7 +5,7 @@ import type { Lifecycle } from '@/types/lifecycle';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import type { SwitcherItem } from '@/components/navigation/breadcrumb';
-import { LifecycleCanvas } from '@/features/lifecycles/lifecycle-canvas';
+import { LifecycleCanvas } from '@/features/lifecycles/components/lifecycle-canvas';
 
 interface LifecyclePageClientProps {
   lifecycle: Lifecycle;

@@ -2,13 +2,13 @@
 
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { searchGrouped, type SearchResult, type SearchCategory } from '../search-index';
+import { searchGrouped, type SearchResult, type SearchCategory } from '../../search-index';
 import {
   getRecentSearches,
   addRecentSearch,
   removeRecentSearch,
   clearRecentSearches,
-} from '../recent-searches';
+} from '../../recent-searches';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { OverflowText } from './overflow-text';
 import styles from './search-dialog.module.scss';

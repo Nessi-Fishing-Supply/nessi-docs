@@ -12,8 +12,9 @@ lifecycles/
 │   └── lifecycles.ts         — Data access (wraps branch-loader)
 ├── hooks/
 │   └── use-lifecycles.ts     — TanStack Query hooks for client components
-├── lifecycle-list/           — List view of all lifecycles
-├── lifecycle-canvas/         — Interactive state machine canvas
+├── components/
+│   ├── lifecycle-list/       — List view of all lifecycles
+│   └── lifecycle-canvas/     — Interactive state machine canvas
 └── index.ts                  — Public API (barrel export)
 ```
 

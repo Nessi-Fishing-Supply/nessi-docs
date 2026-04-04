@@ -12,24 +12,25 @@ data-model/
 │   └── entities.ts       — Data access (wraps branch-loader today, API tomorrow)
 ├── hooks/
 │   └── use-entities.ts   — TanStack Query hooks for client components
-├── entity-list/          — Entity table list view with expandable rows
-├── erd-canvas/           — Entity relationship diagram canvas
+├── components/
+│   ├── entity-list/      — Entity table list view with expandable rows
+│   └── erd-canvas/       — Entity relationship diagram canvas
 └── index.ts              — Public API (barrel export)
 ```
 
 ## Services
 
-| Function | Returns | Used By |
-|----------|---------|---------|
-| `getEntities(branch)` | `Entity[]` | DataModelPage, useEntities |
-| `getErdData(branch)` | `{ nodes, edges, categoryGroups }` | ErdPage, useErdData |
+| Function              | Returns                            | Used By                    |
+| --------------------- | ---------------------------------- | -------------------------- |
+| `getEntities(branch)` | `Entity[]`                         | DataModelPage, useEntities |
+| `getErdData(branch)`  | `{ nodes, edges, categoryGroups }` | ErdPage, useErdData        |
 
 ## Hooks
 
-| Hook | Query Key | Returns |
-|------|-----------|---------|
-| `useEntities()` | `['entities', branch]` | `{ data: Entity[], isLoading, error }` |
-| `useErdData()` | `['erd-data', branch]` | `{ data: { nodes, edges, categoryGroups }, isLoading, error }` |
+| Hook            | Query Key              | Returns                                                        |
+| --------------- | ---------------------- | -------------------------------------------------------------- |
+| `useEntities()` | `['entities', branch]` | `{ data: Entity[], isLoading, error }`                         |
+| `useErdData()`  | `['erd-data', branch]` | `{ data: { nodes, edges, categoryGroups }, isLoading, error }` |
 
 ## Data Flow
 

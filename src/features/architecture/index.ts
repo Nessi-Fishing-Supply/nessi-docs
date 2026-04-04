@@ -6,5 +6,5 @@ export type { ArchDiagramPageData } from './services/arch-diagrams';
 export { useArchDiagrams, useArchDiagram } from './hooks/use-arch-diagrams';
 
 // Components
-export { ArchitectureList } from './architecture-list';
-export { ArchitectureCanvas } from './architecture-canvas';
+export { ArchitectureList } from './components/architecture-list';
+export { ArchitectureCanvas } from './components/architecture-canvas';

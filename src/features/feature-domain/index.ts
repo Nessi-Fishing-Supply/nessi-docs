@@ -6,4 +6,4 @@ export type { FeatureDomainPageData } from './services/features';
 export { useFeatureDomains, useFeatureDomainPageData } from './hooks/use-features';
 
 // Components
-export { FeatureDomainView } from './feature-domain-view';
+export { FeatureDomainView } from './components/feature-domain-view';

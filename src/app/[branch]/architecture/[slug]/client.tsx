@@ -4,7 +4,7 @@ import type { ArchDiagram } from '@/types/architecture';
 import { useBranchHref } from '@/hooks/use-branch-href';
 import { Breadcrumb } from '@/components/navigation/breadcrumb';
 import type { SwitcherItem } from '@/components/navigation/breadcrumb';
-import { ArchitectureCanvas } from '@/features/architecture/architecture-canvas';
+import { ArchitectureCanvas } from '@/features/architecture/components/architecture-canvas';
 
 interface ArchitecturePageClientProps {
   diagram: ArchDiagram;

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getBranchNames } from '@/data/branch-registry';
 import { getFeatureDomains, getFeatureDomainPageData } from '@/features/feature-domain';
-import { FeatureDomainView } from '@/features/feature-domain/feature-domain-view';
+import { FeatureDomainView } from '@/features/feature-domain/components/feature-domain-view';
 
 export function generateStaticParams() {
   return getBranchNames().flatMap((branch) => {

@@ -12,27 +12,28 @@ dashboard/
 │   └── dashboard.ts      — Data access (wraps branch-loader today, API tomorrow)
 ├── hooks/
 │   └── use-dashboard.ts  — TanStack Query hooks for client components
-├── dashboard-view/       — Dashboard page layout (metrics, changelog, domain grid)
+├── components/
+│   └── dashboard-view/   — Dashboard page layout (metrics, changelog, domain grid)
 └── index.ts              — Public API (barrel export)
 ```
 
 ## Services
 
-| Function                           | Returns                   | Used By                             |
-| ---------------------------------- | ------------------------- | ----------------------------------- |
-| `getDashboardData(branch)`         | `DashboardData \| null`   | DashboardPage, useDashboardData     |
-| `getDashboardMetricsForBranch(branch)` | `DashboardMetrics \| null` | useDashboardMetrics            |
-| `getFeatureDomainsForBranch(branch)`   | `FeatureDomain[]`     | useFeatureDomains                   |
+| Function                               | Returns                    | Used By                         |
+| -------------------------------------- | -------------------------- | ------------------------------- |
+| `getDashboardData(branch)`             | `DashboardData \| null`    | DashboardPage, useDashboardData |
+| `getDashboardMetricsForBranch(branch)` | `DashboardMetrics \| null` | useDashboardMetrics             |
+| `getFeatureDomainsForBranch(branch)`   | `FeatureDomain[]`          | useFeatureDomains               |
 
 `DashboardData` consolidates metrics, feature domains, and the first 5 changelog entries.
 
 ## Hooks
 
-| Hook                   | Query Key                      | Returns                                           |
-| ---------------------- | ------------------------------ | ------------------------------------------------- |
-| `useDashboardData()`   | `['dashboard', branch]`        | `{ data: DashboardData \| null, isLoading, error }` |
-| `useDashboardMetrics()` | `['dashboard-metrics', branch]` | `{ data: DashboardMetrics \| null, ... }`        |
-| `useFeatureDomains()`  | `['feature-domains', branch]`  | `{ data: FeatureDomain[], ... }`                  |
+| Hook                    | Query Key                       | Returns                                             |
+| ----------------------- | ------------------------------- | --------------------------------------------------- |
+| `useDashboardData()`    | `['dashboard', branch]`         | `{ data: DashboardData \| null, isLoading, error }` |
+| `useDashboardMetrics()` | `['dashboard-metrics', branch]` | `{ data: DashboardMetrics \| null, ... }`           |
+| `useFeatureDomains()`   | `['feature-domains', branch]`   | `{ data: FeatureDomain[], ... }`                    |
 
 ## Data Flow
 

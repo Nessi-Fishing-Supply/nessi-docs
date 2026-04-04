@@ -12,10 +12,11 @@ journeys/
 │   └── journeys.ts         — Data access (wraps branch-loader)
 ├── hooks/
 │   └── use-journeys.ts     — TanStack Query hooks for client components
-├── domain-grid/            — Domain index grid with journey/step counts
-├── domain-journey-list/    — Journey list for a single domain
-├── journey-canvas/         — Interactive journey step/decision canvas
-├── journey-filters/        — Layer/status/persona filter controls
+├── components/
+│   ├── domain-grid/        — Domain index grid with journey/step counts
+│   ├── domain-journey-list/ — Journey list for a single domain
+│   ├── journey-canvas/     — Interactive journey step/decision canvas
+│   └── journey-filters/    — Layer/status/persona filter controls
 └── index.ts                — Public API (barrel export)
 ```
 
