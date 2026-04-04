@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { loadBranch } from '@/data/branch-loader';
-import { ErdCanvas } from '@/features/data-model/erd-canvas';
+import { getEntities, getErdData, ErdCanvas } from '@/features/data-model';
 
 export const metadata = { title: 'Entity Relationships' };
 
@@ -11,16 +11,17 @@ export default async function EntityRelationshipsPage({
   params: Promise<{ branch: string }>;
 }) {
   const { branch } = await params;
-  const data = loadBranch(branch);
-  if (!data) notFound();
+  if (!loadBranch(branch)) notFound();
+  const { nodes, edges, categoryGroups } = getErdData(branch);
+  const entities = getEntities(branch);
 
   return (
     <Suspense>
       <ErdCanvas
-        nodes={data.erdNodes}
-        edges={data.erdEdges}
-        entities={data.entities}
-        categoryGroups={data.erdCategoryGroups}
+        nodes={nodes}
+        edges={edges}
+        entities={entities}
+        categoryGroups={categoryGroups}
       />
     </Suspense>
   );
