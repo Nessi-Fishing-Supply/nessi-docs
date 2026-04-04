@@ -14,18 +14,18 @@
 
 **New files per feature (10 features × 4 files = 40 new files):**
 
-| Feature | Service | Hook | Index | CLAUDE.md |
-|---------|---------|------|-------|-----------|
-| `data-model` | `services/entities.ts` | `hooks/use-entities.ts` | `index.ts` | `CLAUDE.md` |
-| `journeys` | `services/journeys.ts` | `hooks/use-journeys.ts` | `index.ts` | `CLAUDE.md` |
-| `lifecycles` | `services/lifecycles.ts` | `hooks/use-lifecycles.ts` | `index.ts` | `CLAUDE.md` |
-| `api-map` | `services/api-groups.ts` | `hooks/use-api-groups.ts` | `index.ts` | `CLAUDE.md` |
-| `architecture` | `services/arch-diagrams.ts` | `hooks/use-arch-diagrams.ts` | `index.ts` | `CLAUDE.md` |
-| `feature-domain` | `services/features.ts` | `hooks/use-features.ts` | `index.ts` | `CLAUDE.md` |
-| `config` | `services/config.ts` | `hooks/use-config.ts` | `index.ts` | `CLAUDE.md` |
-| `changelog` | `services/changelog.ts` | `hooks/use-changelog.ts` | `index.ts` | `CLAUDE.md` |
-| `dashboard` | `services/dashboard.ts` | `hooks/use-dashboard.ts` | `index.ts` | `CLAUDE.md` |
-| `diff-overview` | `services/diff.ts` | `hooks/use-diff.ts` | `index.ts` | `CLAUDE.md` |
+| Feature          | Service                     | Hook                         | Index      | CLAUDE.md   |
+| ---------------- | --------------------------- | ---------------------------- | ---------- | ----------- |
+| `data-model`     | `services/entities.ts`      | `hooks/use-entities.ts`      | `index.ts` | `CLAUDE.md` |
+| `journeys`       | `services/journeys.ts`      | `hooks/use-journeys.ts`      | `index.ts` | `CLAUDE.md` |
+| `lifecycles`     | `services/lifecycles.ts`    | `hooks/use-lifecycles.ts`    | `index.ts` | `CLAUDE.md` |
+| `api-map`        | `services/api-groups.ts`    | `hooks/use-api-groups.ts`    | `index.ts` | `CLAUDE.md` |
+| `architecture`   | `services/arch-diagrams.ts` | `hooks/use-arch-diagrams.ts` | `index.ts` | `CLAUDE.md` |
+| `feature-domain` | `services/features.ts`      | `hooks/use-features.ts`      | `index.ts` | `CLAUDE.md` |
+| `config`         | `services/config.ts`        | `hooks/use-config.ts`        | `index.ts` | `CLAUDE.md` |
+| `changelog`      | `services/changelog.ts`     | `hooks/use-changelog.ts`     | `index.ts` | `CLAUDE.md` |
+| `dashboard`      | `services/dashboard.ts`     | `hooks/use-dashboard.ts`     | `index.ts` | `CLAUDE.md` |
+| `diff-overview`  | `services/diff.ts`          | `hooks/use-diff.ts`          | `index.ts` | `CLAUDE.md` |
 
 **Modified files (page migrations):** 15 pages in `src/app/[branch]/`
 
@@ -42,6 +42,7 @@ The diff-overview task is special: it also migrates 15+ `useDiffResult` consumer
 ### Task 1: Data Model Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/data-model/services/entities.ts`
 - Create: `src/features/data-model/hooks/use-entities.ts`
 - Create: `src/features/data-model/index.ts`
@@ -65,7 +66,12 @@ export function getEntities(branch: string): Entity[] {
 
 export function getErdData(branch: string) {
   const data = loadBranch(branch);
-  if (!data) return { nodes: [] as ErdNode[], edges: [] as ErdEdge[], categoryGroups: [] as ErdCategoryGroup[] };
+  if (!data)
+    return {
+      nodes: [] as ErdNode[],
+      edges: [] as ErdEdge[],
+      categoryGroups: [] as ErdCategoryGroup[],
+    };
   return {
     nodes: data.erdNodes,
     edges: data.erdEdges,
@@ -132,16 +138,17 @@ Create `src/features/data-model/CLAUDE.md`:
 Renders the entity table reference (list view) and entity relationship diagram (ERD canvas). Data source is the extracted `data-model.json` and `entity-relationships.json` from nessi-web-app.
 
 ## Architecture
-
 ```
+
 data-model/
 ├── services/
-│   └── entities.ts       — Data access (wraps branch-loader today, API tomorrow)
+│ └── entities.ts — Data access (wraps branch-loader today, API tomorrow)
 ├── hooks/
-│   └── use-entities.ts   — TanStack Query hooks for client components
-├── entity-list/          — Entity table list view with expandable rows
-├── erd-canvas/           — Entity relationship diagram canvas
-└── index.ts              — Public API (barrel export)
+│ └── use-entities.ts — TanStack Query hooks for client components
+├── entity-list/ — Entity table list view with expandable rows
+├── erd-canvas/ — Entity relationship diagram canvas
+└── index.ts — Public API (barrel export)
+
 ```
 
 ## Services
@@ -169,10 +176,13 @@ data-model/
 In `src/app/[branch]/data-model/page.tsx`, change the import from `@/data/branch-loader` to the feature service:
 
 Replace:
+
 ```typescript
 import { loadBranch } from '@/data/branch-loader';
 ```
+
 With:
+
 ```typescript
 import { getEntities } from '@/features/data-model';
 ```
@@ -184,10 +194,13 @@ And update the page body to use `getEntities(branch)` directly instead of `loadB
 In `src/app/[branch]/entity-relationships/page.tsx`, change the import:
 
 Replace:
+
 ```typescript
 import { loadBranch } from '@/data/branch-loader';
 ```
+
 With:
+
 ```typescript
 import { getEntities, getErdData } from '@/features/data-model';
 ```
@@ -213,6 +226,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 2: Journeys Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/journeys/services/journeys.ts`
 - Create: `src/features/journeys/hooks/use-journeys.ts`
 - Create: `src/features/journeys/index.ts`
@@ -291,6 +305,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 3: Lifecycles Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/lifecycles/services/lifecycles.ts`
 - Create: `src/features/lifecycles/hooks/use-lifecycles.ts`
 - Create: `src/features/lifecycles/index.ts`
@@ -299,6 +314,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 - Modify: `src/app/[branch]/lifecycles/[slug]/page.tsx`
 
 Follow the same pattern as Tasks 1 and 2. The lifecycles service should expose:
+
 - `getLifecycles(branch)` → `Lifecycle[]`
 - `getLifecycle(branch, slug)` → `Lifecycle | undefined`
 
@@ -319,6 +335,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 4: API Map Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/api-map/services/api-groups.ts`
 - Create: `src/features/api-map/hooks/use-api-groups.ts`
 - Create: `src/features/api-map/index.ts`
@@ -326,6 +343,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 - Modify: `src/app/[branch]/api-map/page.tsx`
 
 Service exposes:
+
 - `getApiGroups(branch)` → `ApiGroup[]`
 - `getTotalEndpoints(branch)` → `number`
 
@@ -344,6 +362,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 5: Architecture Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/architecture/services/arch-diagrams.ts`
 - Create: `src/features/architecture/hooks/use-arch-diagrams.ts`
 - Create: `src/features/architecture/index.ts`
@@ -352,6 +371,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 - Modify: `src/app/[branch]/architecture/[slug]/page.tsx`
 
 Service exposes:
+
 - `getArchDiagrams(branch)` → `ArchDiagram[]`
 - `getArchDiagram(branch, slug)` → `ArchDiagram | undefined`
 
@@ -370,6 +390,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 6: Feature Domain Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/feature-domain/services/features.ts`
 - Create: `src/features/feature-domain/hooks/use-features.ts`
 - Create: `src/features/feature-domain/index.ts`
@@ -399,6 +420,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 7: Config Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/config/services/config.ts`
 - Create: `src/features/config/hooks/use-config.ts`
 - Create: `src/features/config/index.ts`
@@ -406,6 +428,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 - Modify: `src/app/[branch]/config/page.tsx`
 
 Service exposes:
+
 - `getConfigEnums(branch)` → `ConfigEnum[]`
 - `getRoles(branch)` → `Role[]`
 
@@ -424,6 +447,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 8: Changelog Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/changelog/services/changelog.ts`
 - Create: `src/features/changelog/hooks/use-changelog.ts`
 - Create: `src/features/changelog/index.ts`
@@ -431,6 +455,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 - Modify: `src/app/[branch]/changelog/page.tsx`
 
 Service exposes:
+
 - `getChangelog(branch)` → `ChangelogEntry[]`
 
 - [ ] **Step 1: Create service, hook, barrel export, CLAUDE.md**
@@ -448,6 +473,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 9: Dashboard Feature — Services, Hooks, CLAUDE.md, Page Migration
 
 **Files:**
+
 - Create: `src/features/dashboard/services/dashboard.ts`
 - Create: `src/features/dashboard/hooks/use-dashboard.ts`
 - Create: `src/features/dashboard/index.ts`
@@ -455,6 +481,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 - Modify: `src/app/[branch]/page.tsx` (dashboard page)
 
 Service exposes:
+
 - `getDashboardData(branch)` → `{ metrics, domains, recentChanges }` — consolidates the 3 function calls the page currently makes
 
 Read the dashboard page to see how it calls `getDashboardMetrics()`, `getFeatureDomains()`, and slices `data.changelog`. Wrap all of that in one service function.
@@ -474,6 +501,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 10: Diff Overview Feature — Services, Hooks, CLAUDE.md, Consumer Migration
 
 **Files:**
+
 - Create: `src/features/diff-overview/services/diff.ts`
 - Create: `src/features/diff-overview/hooks/use-diff.ts`
 - Create: `src/features/diff-overview/index.ts`
@@ -577,6 +605,7 @@ import { useDiffResult } from '@/features/diff-overview';
 ```
 
 Files to update:
+
 1. `src/features/data-model/erd-canvas/index.tsx`
 2. `src/features/data-model/entity-list/index.tsx`
 3. `src/features/journeys/journey-canvas/index.tsx`
@@ -616,6 +645,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 11: Layout Migration — Branch Layout + generateStaticParams
 
 **Files:**
+
 - Modify: `src/app/[branch]/layout.tsx`
 
 The branch layout is the most complex page — it calls `loadBranch()`, `getAllBranchData()`, `getBranchNames()`, and `getFeatureDomains()`. These come from multiple features.

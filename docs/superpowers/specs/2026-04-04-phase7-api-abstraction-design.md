@@ -16,6 +16,7 @@ Today, data access is split across two patterns:
 2. **Client Components** read from the Zustand store (populated by `BranchInit`) or compute diffs via `useDiffResult()` with `useMemo`.
 
 There is no abstraction between the data source and consumers. When Archway replaces static JSON with a database-backed API:
+
 - Every page component that calls `loadBranch()` needs rewriting
 - Every client component that reads `activeData` from the store needs a new data source
 - Transforms that are currently client-side IP need to move behind the API
@@ -70,6 +71,7 @@ features/{domain}/
 ### Service Layer Contract
 
 Every service function:
+
 - Takes `branch: string` as first argument (identifies which branch's data to load)
 - Returns **transformed, typed data** (not raw JSON)
 - Is synchronous today (wraps `loadBranch()`)
@@ -93,6 +95,7 @@ export async function getEntities(branch: string): Promise<Entity[]> {
 ### Query Hook Contract
 
 Every query hook:
+
 - Wraps a service function in `useQuery()`
 - Returns `{ data, isLoading, error }` (standard TanStack Query shape)
 - Uses `staleTime: Infinity` today (static data never goes stale)
@@ -113,6 +116,7 @@ export function useEntities() {
 ### Barrel Export Contract
 
 Each feature's `index.ts` exports:
+
 - Service functions (for Server Component pages)
 - Query hooks (for Client Components)
 - Types (re-exported from `src/types/` if needed)
@@ -132,25 +136,25 @@ export { EntityList } from './entity-list';
 
 ### Features Getting Services + Hooks
 
-| Feature | Service File | Key Functions | Hook File | Key Hooks |
-|---------|-------------|---------------|-----------|-----------|
-| `data-model` | `services/entities.ts` | `getEntities(branch)` | `hooks/use-entities.ts` | `useEntities()` |
-| `journeys` | `services/journeys.ts` | `getJourneys(branch)`, `getJourney(branch, domain, slug)`, `getJourneysByDomain(branch, domain)` | `hooks/use-journeys.ts` | `useJourneys()`, `useJourney(domain, slug)` |
-| `lifecycles` | `services/lifecycles.ts` | `getLifecycles(branch)`, `getLifecycle(branch, slug)` | `hooks/use-lifecycles.ts` | `useLifecycles()`, `useLifecycle(slug)` |
-| `api-map` | `services/api-groups.ts` | `getApiGroups(branch)` | `hooks/use-api-groups.ts` | `useApiGroups()` |
-| `architecture` | `services/arch-diagrams.ts` | `getArchDiagrams(branch)`, `getArchDiagram(branch, slug)` | `hooks/use-arch-diagrams.ts` | `useArchDiagrams()`, `useArchDiagram(slug)` |
-| `feature-domain` | `services/features.ts` | `getFeatureDomains(branch)`, `getFeaturesByDomain(branch, domain)` | `hooks/use-features.ts` | `useFeatureDomains()`, `useFeaturesByDomain(domain)` |
-| `config` | `services/config.ts` | `getConfigEnums(branch)`, `getRoles(branch)` | `hooks/use-config.ts` | `useConfigEnums()`, `useRoles()` |
-| `changelog` | `services/changelog.ts` | `getChangelog(branch)`, `getChangelogByDomain(branch, domain)` | `hooks/use-changelog.ts` | `useChangelog()` |
-| `dashboard` | `services/dashboard.ts` | `getDashboardMetrics(branch)`, `getDomains(branch)` | `hooks/use-dashboard.ts` | `useDashboardMetrics()`, `useDomains()` |
-| `diff-overview` | `services/diff.ts` | `getDiff(base, head)` | `hooks/use-diff.ts` | `useDiff()` — replaces `src/hooks/use-diff-result.ts` |
+| Feature          | Service File                | Key Functions                                                                                    | Hook File                    | Key Hooks                                             |
+| ---------------- | --------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------- | ----------------------------------------------------- |
+| `data-model`     | `services/entities.ts`      | `getEntities(branch)`                                                                            | `hooks/use-entities.ts`      | `useEntities()`                                       |
+| `journeys`       | `services/journeys.ts`      | `getJourneys(branch)`, `getJourney(branch, domain, slug)`, `getJourneysByDomain(branch, domain)` | `hooks/use-journeys.ts`      | `useJourneys()`, `useJourney(domain, slug)`           |
+| `lifecycles`     | `services/lifecycles.ts`    | `getLifecycles(branch)`, `getLifecycle(branch, slug)`                                            | `hooks/use-lifecycles.ts`    | `useLifecycles()`, `useLifecycle(slug)`               |
+| `api-map`        | `services/api-groups.ts`    | `getApiGroups(branch)`                                                                           | `hooks/use-api-groups.ts`    | `useApiGroups()`                                      |
+| `architecture`   | `services/arch-diagrams.ts` | `getArchDiagrams(branch)`, `getArchDiagram(branch, slug)`                                        | `hooks/use-arch-diagrams.ts` | `useArchDiagrams()`, `useArchDiagram(slug)`           |
+| `feature-domain` | `services/features.ts`      | `getFeatureDomains(branch)`, `getFeaturesByDomain(branch, domain)`                               | `hooks/use-features.ts`      | `useFeatureDomains()`, `useFeaturesByDomain(domain)`  |
+| `config`         | `services/config.ts`        | `getConfigEnums(branch)`, `getRoles(branch)`                                                     | `hooks/use-config.ts`        | `useConfigEnums()`, `useRoles()`                      |
+| `changelog`      | `services/changelog.ts`     | `getChangelog(branch)`, `getChangelogByDomain(branch, domain)`                                   | `hooks/use-changelog.ts`     | `useChangelog()`                                      |
+| `dashboard`      | `services/dashboard.ts`     | `getDashboardMetrics(branch)`, `getDomains(branch)`                                              | `hooks/use-dashboard.ts`     | `useDashboardMetrics()`, `useDomains()`               |
+| `diff-overview`  | `services/diff.ts`          | `getDiff(base, head)`                                                                            | `hooks/use-diff.ts`          | `useDiff()` — replaces `src/hooks/use-diff-result.ts` |
 
 ### Features NOT Getting Services (No Data Access)
 
-| Feature | Reason |
-|---------|--------|
+| Feature  | Reason                                                      |
+| -------- | ----------------------------------------------------------- |
 | `search` | Operates on in-memory search index, no branch data fetching |
-| `canvas` | Shared rendering infrastructure, not a data domain |
+| `canvas` | Shared rendering infrastructure, not a data domain          |
 
 ---
 
@@ -162,28 +166,34 @@ Each feature gets a CLAUDE.md following the nessi-web-app pattern:
 # {Feature Name}
 
 ## Overview
+
 Brief description of what this feature renders and its data sources.
 
 ## Architecture
-├── services/       — Data access (wraps branch-loader today, API tomorrow)
-├── hooks/          — TanStack Query hooks for client components
-├── {component}/    — React components
-└── index.ts        — Public API
+
+├── services/ — Data access (wraps branch-loader today, API tomorrow)
+├── hooks/ — TanStack Query hooks for client components
+├── {component}/ — React components
+└── index.ts — Public API
 
 ## Services
-| Function | Returns | Used By |
-|----------|---------|---------|
-| getFoo(branch) | Foo[] | FooPage (server), useFoo (client) |
+
+| Function       | Returns | Used By                           |
+| -------------- | ------- | --------------------------------- |
+| getFoo(branch) | Foo[]   | FooPage (server), useFoo (client) |
 
 ## Hooks
-| Hook | Query Key | Returns |
-|------|-----------|---------|
+
+| Hook     | Query Key       | Returns                           |
+| -------- | --------------- | --------------------------------- |
 | useFoo() | ['foo', branch] | { data: Foo[], isLoading, error } |
 
 ## Components
+
 Brief description of each component directory.
 
 ## Data Flow
+
 Server: Page → service → branch-loader → props → component
 Client: Component → hook → useQuery → service → branch-loader
 ```
@@ -251,15 +261,15 @@ Consumers that currently use `const { isActive, diffResult } = useDiffResult()` 
 
 ## Shared Data Infrastructure (Unchanged)
 
-| File | Status | Reason |
-|------|--------|--------|
-| `src/data/branch-loader.ts` | Stays | Still the data source — services wrap it |
-| `src/data/branch-registry.ts` | Stays | Branch config, used by store and services |
-| `src/data/transforms/` | Stays | Transform logic called by services |
-| `src/data/layout/` | Stays | Layout engines called by transforms |
-| `src/data/cross-links.ts` | Stays | Cross-link index, could become its own service later |
-| `src/data/diff-engine.ts` | Stays | Pure diff computation, called by diff service |
-| `src/data/index.ts` | Deprecated gradually | Consumers migrate to feature services |
+| File                          | Status               | Reason                                               |
+| ----------------------------- | -------------------- | ---------------------------------------------------- |
+| `src/data/branch-loader.ts`   | Stays                | Still the data source — services wrap it             |
+| `src/data/branch-registry.ts` | Stays                | Branch config, used by store and services            |
+| `src/data/transforms/`        | Stays                | Transform logic called by services                   |
+| `src/data/layout/`            | Stays                | Layout engines called by transforms                  |
+| `src/data/cross-links.ts`     | Stays                | Cross-link index, could become its own service later |
+| `src/data/diff-engine.ts`     | Stays                | Pure diff computation, called by diff service        |
+| `src/data/index.ts`           | Deprecated gradually | Consumers migrate to feature services                |
 
 `src/data/index.ts` is the main file that gets hollowed out. Its exports are replaced by feature-specific services. Once all consumers are migrated, it can be deleted or reduced to just re-exports from cross-links and other shared utilities.
 

@@ -47,17 +47,17 @@ Micro-interactions are polish that doesn't move the needle for Archway validatio
 
 ### Mapping Table
 
-| Hardcoded pattern | Token replacement |
-|---|---|
-| `all 150ms ease-out` | `var(--transition-fast)` |
-| `all 150ms ease` | `var(--transition-fast)` |
-| `all 200ms ease-out` | `var(--transition-fast)` |
-| `all var(--transition-fast)` | Already correct — no change |
-| `opacity 200ms ease` | `opacity var(--duration-200) var(--easing-out)` |
-| `opacity 150ms ease-out` | `opacity var(--duration-200) var(--easing-out)` |
-| `transform 200ms ease-out` | `transform var(--duration-200) var(--easing-out)` |
-| `250ms cubic-bezier(0.16, 1, 0.3, 1)` | `var(--duration-panel) var(--easing-out)` |
-| `color 180ms ease-out` | Uses `var(--transition-color)` or `color var(--duration-200) var(--easing-out)` |
+| Hardcoded pattern                     | Token replacement                                                               |
+| ------------------------------------- | ------------------------------------------------------------------------------- |
+| `all 150ms ease-out`                  | `var(--transition-fast)`                                                        |
+| `all 150ms ease`                      | `var(--transition-fast)`                                                        |
+| `all 200ms ease-out`                  | `var(--transition-fast)`                                                        |
+| `all var(--transition-fast)`          | Already correct — no change                                                     |
+| `opacity 200ms ease`                  | `opacity var(--duration-200) var(--easing-out)`                                 |
+| `opacity 150ms ease-out`              | `opacity var(--duration-200) var(--easing-out)`                                 |
+| `transform 200ms ease-out`            | `transform var(--duration-200) var(--easing-out)`                               |
+| `250ms cubic-bezier(0.16, 1, 0.3, 1)` | `var(--duration-panel) var(--easing-out)`                                       |
+| `color 180ms ease-out`                | Uses `var(--transition-color)` or `color var(--duration-200) var(--easing-out)` |
 
 ### Rules
 
@@ -122,6 +122,7 @@ export function useStaggerEntry(nodeIds: { id: string; x: number }[], delay = 30
 ### Coverage
 
 This handles:
+
 - All CSS `@keyframes` animations (flow-pulse, glow-pulse, tooltip-in, row-enter, etc.)
 - All CSS transitions (hover states, panel slides, opacity changes)
 - Canvas stagger entry (via hook)
@@ -162,6 +163,7 @@ Currently the diff toolbar appears/disappears instantly when diff mode is toggle
 The toolbar component already conditionally renders based on diff mode — wrap it so the CSS transition can fire (render always, toggle visibility via class).
 
 **Note:** If the toolbar is conditionally rendered with `{diffMode && <DiffToolbar />}`, the mount/unmount prevents CSS transitions from running. Two options:
+
 1. Always render, toggle a `.visible` class — CSS transition works
 2. Keep conditional render — no entrance animation, just exit
 
@@ -181,7 +183,7 @@ Implementation:
 ```scss
 .navLabel {
   transition: opacity 100ms var(--easing-out);
-  
+
   .collapsed & {
     opacity: 0;
     transition-delay: 0ms; // Fade out immediately on collapse
@@ -196,7 +198,7 @@ Implementation:
 .sectionDivider {
   transition: opacity 100ms var(--easing-out);
   opacity: 0;
-  
+
   .collapsed & {
     opacity: 1;
     transition-delay: 100ms; // Appear after labels fade
@@ -224,15 +226,15 @@ This is a one-line addition to each list view's row styles. The opacity value is
 
 ### Files Modified
 
-| Category | Files | Change |
-|----------|-------|--------|
-| Token sweep | ~35-40 SCSS files | Hardcoded transitions → token references |
-| Reduced motion | `src/styles/globals.scss` | Global `prefers-reduced-motion` rule |
-| Reduced motion | `src/features/canvas/hooks/use-stagger-entry.ts` | Early return when reduced motion preferred |
-| Animation tokens | `src/styles/variables/animations.scss` | Add `--transition-mode`, `--transition-toolbar` |
-| Diff toolbar | `src/components/layout/diff-toolbar/` | Slide-down/up transition |
-| Sidebar labels | `src/components/navigation/sidebar/sidebar.module.scss` | Label fade sequencing |
-| List views | 5-6 list view SCSS files | Add `transition: var(--transition-mode)` to row styles |
+| Category         | Files                                                   | Change                                                 |
+| ---------------- | ------------------------------------------------------- | ------------------------------------------------------ |
+| Token sweep      | ~35-40 SCSS files                                       | Hardcoded transitions → token references               |
+| Reduced motion   | `src/styles/globals.scss`                               | Global `prefers-reduced-motion` rule                   |
+| Reduced motion   | `src/features/canvas/hooks/use-stagger-entry.ts`        | Early return when reduced motion preferred             |
+| Animation tokens | `src/styles/variables/animations.scss`                  | Add `--transition-mode`, `--transition-toolbar`        |
+| Diff toolbar     | `src/components/layout/diff-toolbar/`                   | Slide-down/up transition                               |
+| Sidebar labels   | `src/components/navigation/sidebar/sidebar.module.scss` | Label fade sequencing                                  |
+| List views       | 5-6 list view SCSS files                                | Add `transition: var(--transition-mode)` to row styles |
 
 ### No Breaking Changes
 

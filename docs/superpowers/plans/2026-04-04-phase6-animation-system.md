@@ -12,21 +12,22 @@
 
 ## File Structure
 
-| File | Action | Responsibility |
-|------|--------|----------------|
-| `src/styles/variables/animations.scss` | Modify | Add `--transition-mode` and `--transition-toolbar` tokens |
-| `src/styles/globals.scss` | Modify | Add `prefers-reduced-motion` global rule |
-| `src/features/canvas/hooks/use-stagger-entry.ts` | Modify | Skip stagger when reduced motion preferred |
-| `src/components/layout/diff-toolbar/index.tsx` | Modify | Always render, toggle visibility via class |
-| `src/components/layout/diff-toolbar/diff-toolbar.module.scss` | Modify | Add slide transition styles |
-| `src/components/navigation/sidebar/sidebar.module.scss` | Modify | Add label fade sequencing |
-| ~30 SCSS files | Modify | Replace hardcoded transition values with tokens |
+| File                                                          | Action | Responsibility                                            |
+| ------------------------------------------------------------- | ------ | --------------------------------------------------------- |
+| `src/styles/variables/animations.scss`                        | Modify | Add `--transition-mode` and `--transition-toolbar` tokens |
+| `src/styles/globals.scss`                                     | Modify | Add `prefers-reduced-motion` global rule                  |
+| `src/features/canvas/hooks/use-stagger-entry.ts`              | Modify | Skip stagger when reduced motion preferred                |
+| `src/components/layout/diff-toolbar/index.tsx`                | Modify | Always render, toggle visibility via class                |
+| `src/components/layout/diff-toolbar/diff-toolbar.module.scss` | Modify | Add slide transition styles                               |
+| `src/components/navigation/sidebar/sidebar.module.scss`       | Modify | Add label fade sequencing                                 |
+| ~30 SCSS files                                                | Modify | Replace hardcoded transition values with tokens           |
 
 ---
 
 ### Task 1: New Animation Tokens
 
 **Files:**
+
 - Modify: `src/styles/variables/animations.scss`
 
 - [ ] **Step 1: Add mode transition tokens**
@@ -34,9 +35,9 @@
 In `src/styles/variables/animations.scss`, add two new composite tokens inside the `:root` block, after the existing `--duration-panel` line:
 
 ```scss
-  // Mode transitions (diff enter/exit, list dimming)
-  --transition-mode: opacity var(--duration-200) var(--easing-out);
-  --transition-toolbar: transform var(--duration-200) var(--easing-out);
+// Mode transitions (diff enter/exit, list dimming)
+--transition-mode: opacity var(--duration-200) var(--easing-out);
+--transition-toolbar: transform var(--duration-200) var(--easing-out);
 ```
 
 - [ ] **Step 2: Run CI checks**
@@ -58,6 +59,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 2: `prefers-reduced-motion` Support
 
 **Files:**
+
 - Modify: `src/styles/globals.scss`
 - Modify: `src/features/canvas/hooks/use-stagger-entry.ts`
 
@@ -152,86 +154,86 @@ This is a mechanical find-and-replace task. For each file listed below, replace 
 
 In `src/features/data-model/entity-list/entity-list.module.scss`, make these replacements:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 156 | `transition: transform 200ms ease-out` | `transition: transform var(--duration-200) var(--easing-out)` |
-| 270 | `transition: opacity 150ms ease-out` | `transition: opacity var(--duration-200) var(--easing-out)` |
-| 319 | `transition: background 150ms ease-out` | `transition: background var(--duration-200) var(--easing-out)` |
-| 336 | `transition: color 150ms ease-out` | `transition: color var(--duration-200) var(--easing-out)` |
+| Line | Current                                 | Replace with                                                   |
+| ---- | --------------------------------------- | -------------------------------------------------------------- |
+| 156  | `transition: transform 200ms ease-out`  | `transition: transform var(--duration-200) var(--easing-out)`  |
+| 270  | `transition: opacity 150ms ease-out`    | `transition: opacity var(--duration-200) var(--easing-out)`    |
+| 319  | `transition: background 150ms ease-out` | `transition: background var(--duration-200) var(--easing-out)` |
+| 336  | `transition: color 150ms ease-out`      | `transition: color var(--duration-200) var(--easing-out)`      |
 
 - [ ] **Step 2: Migrate feature-domain-view transitions**
 
 In `src/features/feature-domain/feature-domain-view/feature-domain-view.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 111 | `transition: transform 200ms ease-out` | `transition: transform var(--duration-200) var(--easing-out)` |
-| 169 | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
-| 216 | `transition: opacity 150ms ease` | `transition: opacity var(--duration-200) var(--easing-out)` |
-| 262 | `transition: color 150ms ease` | `transition: color var(--duration-200) var(--easing-out)` |
-| 312 | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
-| 331 | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
-| 348 | `transition: opacity 150ms ease` | `transition: opacity var(--duration-200) var(--easing-out)` |
+| Line | Current                                | Replace with                                                  |
+| ---- | -------------------------------------- | ------------------------------------------------------------- |
+| 111  | `transition: transform 200ms ease-out` | `transition: transform var(--duration-200) var(--easing-out)` |
+| 169  | `transition: all 150ms ease-out`       | `transition: var(--transition-fast)`                          |
+| 216  | `transition: opacity 150ms ease`       | `transition: opacity var(--duration-200) var(--easing-out)`   |
+| 262  | `transition: color 150ms ease`         | `transition: color var(--duration-200) var(--easing-out)`     |
+| 312  | `transition: all 150ms ease-out`       | `transition: var(--transition-fast)`                          |
+| 331  | `transition: all 150ms ease-out`       | `transition: var(--transition-fast)`                          |
+| 348  | `transition: opacity 150ms ease`       | `transition: opacity var(--duration-200) var(--easing-out)`   |
 
 - [ ] **Step 3: Migrate api-list transitions**
 
 In `src/features/api-map/api-list/api-list.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 127 | `transition: background 150ms ease-out` | `transition: background var(--duration-200) var(--easing-out)` |
-| 281 | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
-| 359 | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
+| Line | Current                                 | Replace with                                                   |
+| ---- | --------------------------------------- | -------------------------------------------------------------- |
+| 127  | `transition: background 150ms ease-out` | `transition: background var(--duration-200) var(--easing-out)` |
+| 281  | `transition: all 150ms ease-out`        | `transition: var(--transition-fast)`                           |
+| 359  | `transition: all 150ms ease-out`        | `transition: var(--transition-fast)`                           |
 
 - [ ] **Step 4: Migrate config-list transitions**
 
 In `src/features/config/config-list/config-list.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 29 | `transition: all 150ms ease` | `transition: var(--transition-fast)` |
-| 60 | `transition: all 150ms ease` | `transition: var(--transition-fast)` |
-| 161 | `transition: background 100ms ease` | `transition: background var(--duration-100) var(--easing-out)` |
-| 205 | `transition: border-color 150ms ease` | `transition: border-color var(--duration-200) var(--easing-out)` |
+| Line | Current                               | Replace with                                                     |
+| ---- | ------------------------------------- | ---------------------------------------------------------------- |
+| 29   | `transition: all 150ms ease`          | `transition: var(--transition-fast)`                             |
+| 60   | `transition: all 150ms ease`          | `transition: var(--transition-fast)`                             |
+| 161  | `transition: background 100ms ease`   | `transition: background var(--duration-100) var(--easing-out)`   |
+| 205  | `transition: border-color 150ms ease` | `transition: border-color var(--duration-200) var(--easing-out)` |
 
 - [ ] **Step 5: Migrate changelog-feed transitions**
 
 In `src/features/changelog/changelog-feed/changelog-feed.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 24 | `transition: all 150ms ease` | `transition: var(--transition-fast)` |
-| 169 | `transition: color 150ms ease` | `transition: color var(--duration-200) var(--easing-out)` |
+| Line | Current                        | Replace with                                              |
+| ---- | ------------------------------ | --------------------------------------------------------- |
+| 24   | `transition: all 150ms ease`   | `transition: var(--transition-fast)`                      |
+| 169  | `transition: color 150ms ease` | `transition: color var(--duration-200) var(--easing-out)` |
 
 - [ ] **Step 6: Migrate lifecycle-list transitions**
 
 In `src/features/lifecycles/lifecycle-list/lifecycle-list.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 48 | `transition: color 150ms ease-out` | `transition: color var(--duration-200) var(--easing-out)` |
+| Line | Current                            | Replace with                                              |
+| ---- | ---------------------------------- | --------------------------------------------------------- |
+| 48   | `transition: color 150ms ease-out` | `transition: color var(--duration-200) var(--easing-out)` |
 
 - [ ] **Step 7: Migrate layout component transitions**
 
 In `src/components/layout/filter-bar/filter-bar.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 20 | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
+| Line | Current                          | Replace with                         |
+| ---- | -------------------------------- | ------------------------------------ |
+| 20   | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
 
 In `src/components/layout/collapsible-row/collapsible-row.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 7 | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
+| Line | Current                          | Replace with                         |
+| ---- | -------------------------------- | ------------------------------------ |
+| 7    | `transition: all 150ms ease-out` | `transition: var(--transition-fast)` |
 
 In `src/components/layout/app-shell/app-shell.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 10 | `transition: grid-template-columns 250ms cubic-bezier(0.16, 1, 0.3, 1)` | `transition: grid-template-columns var(--duration-panel) var(--easing-out)` |
-| 113 | `transition: opacity 150ms ease` | `transition: opacity var(--duration-200) var(--easing-out)` |
-| 158 | `transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1)` | `transition: all var(--duration-panel) var(--easing-out)` |
+| Line | Current                                                                 | Replace with                                                                |
+| ---- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 10   | `transition: grid-template-columns 250ms cubic-bezier(0.16, 1, 0.3, 1)` | `transition: grid-template-columns var(--duration-panel) var(--easing-out)` |
+| 113  | `transition: opacity 150ms ease`                                        | `transition: opacity var(--duration-200) var(--easing-out)`                 |
+| 158  | `transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1)`                   | `transition: all var(--duration-panel) var(--easing-out)`                   |
 
 Note: The app-shell also has multi-property transitions in the compact media query section — leave those as-is since they use specific duration/easing for the detail overlay slide effect.
 
@@ -239,9 +241,9 @@ Note: The app-shell also has multi-property transitions in the compact media que
 
 In `src/components/navigation/breadcrumb/breadcrumb.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 88 | `transition: background 100ms var(--ease-out)` | `transition: background var(--duration-100) var(--easing-out)` |
+| Line | Current                                        | Replace with                                                   |
+| ---- | ---------------------------------------------- | -------------------------------------------------------------- |
+| 88   | `transition: background 100ms var(--ease-out)` | `transition: background var(--duration-100) var(--easing-out)` |
 
 Note: This file uses `var(--ease-out)` which is a **different** variable name than the token `var(--easing-out)`. Check which one is actually defined — the token system uses `--easing-out`. If `--ease-out` is an alias or legacy name, standardize to `--easing-out`.
 
@@ -249,19 +251,19 @@ Note: This file uses `var(--ease-out)` which is a **different** variable name th
 
 In `src/features/search/search-dialog/search-dialog.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 141 | `transition: background 60ms ease` | `transition: background var(--duration-100) var(--easing-out)` |
-| 236 | `transition: background 60ms ease` | `transition: background var(--duration-100) var(--easing-out)` |
-| 252 | `transition: opacity 100ms ease` | `transition: opacity var(--duration-100) var(--easing-out)` |
+| Line | Current                            | Replace with                                                   |
+| ---- | ---------------------------------- | -------------------------------------------------------------- |
+| 141  | `transition: background 60ms ease` | `transition: background var(--duration-100) var(--easing-out)` |
+| 236  | `transition: background 60ms ease` | `transition: background var(--duration-100) var(--easing-out)` |
+| 252  | `transition: opacity 100ms ease`   | `transition: opacity var(--duration-100) var(--easing-out)`    |
 
 - [ ] **Step 10: Migrate sidebar width transition**
 
 In `src/components/navigation/sidebar/sidebar.module.scss`:
 
-| Line | Current | Replace with |
-|------|---------|-------------|
-| 7 | `transition: width 200ms var(--ease-out)` | `transition: width var(--duration-200) var(--easing-out)` |
+| Line | Current                                   | Replace with                                              |
+| ---- | ----------------------------------------- | --------------------------------------------------------- |
+| 7    | `transition: width 200ms var(--ease-out)` | `transition: width var(--duration-200) var(--easing-out)` |
 
 Same `--ease-out` → `--easing-out` standardization as breadcrumb.
 
@@ -284,6 +286,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 4: Diff Toolbar Slide Transition
 
 **Files:**
+
 - Modify: `src/components/layout/diff-toolbar/index.tsx`
 - Modify: `src/components/layout/diff-toolbar/diff-toolbar.module.scss`
 
@@ -294,17 +297,15 @@ Currently `DiffToolbar` returns `null` when not active (line 32: `if (!isActive 
 In `src/components/layout/diff-toolbar/index.tsx`, replace the early return and the render:
 
 The current code has:
+
 ```tsx
 if (!isActive || !diffResult) return null;
 // ... lots of content setup ...
-return (
-  <div className={styles.toolbar}>
-    ...
-  </div>
-);
+return <div className={styles.toolbar}>...</div>;
 ```
 
 Change to:
+
 ```tsx
 const isVisible = isActive && !!diffResult;
 
@@ -313,11 +314,7 @@ if (!isVisible) {
 }
 
 // ... existing content setup stays the same ...
-return (
-  <div className={styles.toolbar}>
-    ...
-  </div>
-);
+return <div className={styles.toolbar}>...</div>;
 ```
 
 This renders an empty collapsed toolbar div when inactive (no content, just the wrapper for CSS transitions), and the full toolbar when active.
@@ -368,6 +365,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 5: Sidebar Label Fade Sequencing
 
 **Files:**
+
 - Modify: `src/components/navigation/sidebar/sidebar.module.scss`
 
 - [ ] **Step 1: Add label fade transitions**
@@ -428,6 +426,7 @@ Expected: All pass.
 - [ ] **Step 3: Visually verify**
 
 Run `pnpm dev` and test:
+
 1. Click sidebar collapse toggle — labels should fade out (100ms), then width shrinks
 2. Click expand — width expands, then labels fade in (after 150ms delay)
 3. Section dividers appear after labels fade out when collapsing
@@ -446,6 +445,7 @@ Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>"
 ### Task 6: List Item Diff Dimming Transitions
 
 **Files:**
+
 - Modify: `src/features/data-model/entity-list/entity-list.module.scss`
 - Modify: `src/features/api-map/api-list/api-list.module.scss`
 - Modify: `src/features/config/config-list/config-list.module.scss`
@@ -533,6 +533,7 @@ Expected: Zero results in SCSS files (canvas inline styles in TSX are exempt).
 - [ ] **Step 3: Verify reduced-motion**
 
 In Chrome DevTools, enable "Prefers reduced motion" in Rendering panel. Load the app:
+
 - No CSS animations should play (no flow-pulse, glow-pulse, row-enter)
 - No CSS transitions should be visible (hover states should be instant)
 - Canvas stagger entry should show all nodes immediately
@@ -541,6 +542,7 @@ In Chrome DevTools, enable "Prefers reduced motion" in Rendering panel. Load the
 - [ ] **Step 4: Verify diff toolbar slide**
 
 Toggle diff mode on/off:
+
 - Toolbar should slide down smoothly when diff activates
 - Toolbar should collapse up when diff deactivates
 - Content below should reflow smoothly (no jump)
@@ -548,6 +550,7 @@ Toggle diff mode on/off:
 - [ ] **Step 5: Verify sidebar label sequencing**
 
 Toggle sidebar collapse:
+
 - Collapsing: labels fade out first, then width shrinks
 - Expanding: width expands first, then labels fade in
 - No mid-word truncation during the transition
