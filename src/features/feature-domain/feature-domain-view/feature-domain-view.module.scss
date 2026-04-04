@@ -108,7 +108,7 @@
 .chevron {
   font-size: var(--font-size-200);
   color: var(--text-dim);
-  transition: transform 200ms ease-out;
+  transition: transform var(--duration-200) var(--easing-out);
   flex-shrink: 0;
 }
 
@@ -166,7 +166,7 @@
   padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
-  transition: all 150ms ease-out;
+  transition: var(--transition-fast);
 }
 
 .linkApi {
@@ -213,7 +213,7 @@
   font-size: var(--font-size-300);
   opacity: 0.4;
   margin-left: auto;
-  transition: opacity 150ms ease;
+  transition: opacity var(--duration-200) var(--easing-out);
 
   .linkItem:hover & {
     opacity: 0.8;
@@ -259,7 +259,7 @@
   font-size: var(--font-size-200);
   color: var(--text-muted);
   text-decoration: none;
-  transition: color 150ms ease;
+  transition: color var(--duration-200) var(--easing-out);
 
   &:hover {
     color: var(--text-primary);
@@ -309,7 +309,7 @@
   padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
-  transition: all 150ms ease-out;
+  transition: var(--transition-fast);
 
   &:hover {
     background: rgb(var(--color-primary-400-rgb) / var(--opacity-300));
@@ -328,7 +328,7 @@
   padding: var(--spacing-200) var(--spacing-300);
   border-radius: 5px;
   text-decoration: none;
-  transition: all 150ms ease-out;
+  transition: var(--transition-fast);
 
   &:hover {
     background: rgb(var(--color-purple-500-rgb) / var(--opacity-300));
@@ -345,7 +345,7 @@
 .linkArrow {
   font-size: var(--font-size-300);
   opacity: 0.4;
-  transition: opacity 150ms ease;
+  transition: opacity var(--duration-200) var(--easing-out);
 
   .journeyLink:hover &,
   .entityLink:hover & {

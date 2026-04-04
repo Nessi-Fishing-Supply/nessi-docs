@@ -21,7 +21,7 @@
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   text-decoration: none;
-  transition: all 150ms ease;
+  transition: var(--transition-fast);
   white-space: nowrap;
 
   &:hover {
@@ -131,8 +131,8 @@
   border-radius: 3px;
   background: rgb(var(--color-primary-400-rgb) / var(--opacity-200));
   transition:
-    background 150ms ease,
-    color 150ms ease;
+    background var(--duration-200) var(--easing-out),
+    color var(--duration-200) var(--easing-out);
 
   &:hover {
     background: rgb(var(--color-primary-400-rgb) / var(--opacity-400));
@@ -166,7 +166,7 @@
   font-family: var(--font-family-mono);
   color: var(--text-muted);
   text-decoration: none;
-  transition: color 150ms ease;
+  transition: color var(--duration-200) var(--easing-out);
 
   &:hover {
     color: var(--text-primary);

@@ -17,7 +17,7 @@
   font-size: var(--font-size-100);
   font-family: var(--font-family-sans);
   cursor: pointer;
-  transition: all 150ms ease-out;
+  transition: var(--transition-fast);
   white-space: nowrap;
 
   &:hover {

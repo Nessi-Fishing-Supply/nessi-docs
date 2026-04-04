@@ -138,7 +138,7 @@
   border-radius: 6px;
   cursor: pointer;
   text-align: left;
-  transition: background 60ms ease;
+  transition: background var(--duration-100) var(--easing-out);
 
   &:hover,
   &.active {
@@ -233,7 +233,7 @@
   border-radius: 6px;
   cursor: pointer;
   text-align: left;
-  transition: background 60ms ease;
+  transition: background var(--duration-100) var(--easing-out);
 
   &:hover {
     background: var(--bg-raised);
@@ -249,7 +249,7 @@
   font-size: var(--font-size-300);
   color: var(--text-dim);
   opacity: 0;
-  transition: opacity 100ms ease;
+  transition: opacity var(--duration-100) var(--easing-out);
 
   .recentItem:hover & {
     opacity: 1;

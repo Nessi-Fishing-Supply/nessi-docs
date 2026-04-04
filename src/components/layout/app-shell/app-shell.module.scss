@@ -7,7 +7,7 @@
   height: 100vh;
   overflow: hidden;
   position: relative;
-  transition: grid-template-columns 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: grid-template-columns var(--duration-panel) var(--easing-out);
 
   @media (width <= 1023px) {
     display: none;
@@ -110,7 +110,7 @@
   grid-row: 2;
   position: relative;
   overflow: hidden;
-  transition: opacity 150ms ease;
+  transition: opacity var(--duration-200) var(--easing-out);
   display: flex;
   flex-direction: column;
 }
@@ -134,8 +134,8 @@
   overflow-y: auto;
   padding: var(--spacing-400);
   transition:
-    opacity 200ms ease,
-    padding 250ms ease;
+    opacity var(--duration-200) var(--easing-out),
+    padding var(--duration-panel) var(--easing-out);
 }
 
 // ─── Detail Toggle Button ───
@@ -155,7 +155,7 @@
   border-radius: 8px;
   cursor: pointer;
   z-index: 12;
-  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all var(--duration-panel) var(--easing-out);
   box-shadow: 0 2px 8px rgb(var(--color-black-rgb) / var(--opacity-600));
 
   &:hover {

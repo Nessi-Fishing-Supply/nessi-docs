@@ -50,9 +50,9 @@
   cursor: pointer;
   padding: 0;
   transition:
-    background 150ms var(--ease-out),
-    border-color 150ms var(--ease-out),
-    color 150ms var(--ease-out);
+    background var(--duration-200) var(--easing-out),
+    border-color var(--duration-200) var(--easing-out),
+    color var(--duration-200) var(--easing-out);
 
   &:hover {
     background: var(--bg-raised);
@@ -85,7 +85,7 @@
   padding: var(--spacing-200) var(--spacing-300);
   border-radius: 6px;
   text-decoration: none;
-  transition: background 100ms var(--ease-out);
+  transition: background var(--duration-100) var(--easing-out);
 
   &:hover {
     background: var(--bg-hover);

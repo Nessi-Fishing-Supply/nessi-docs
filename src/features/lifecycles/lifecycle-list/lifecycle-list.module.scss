@@ -45,7 +45,7 @@
   color: var(--text-muted);
   text-decoration: none;
   font-family: var(--font-family-mono);
-  transition: color 150ms ease-out;
+  transition: color var(--duration-200) var(--easing-out);
 
   &:hover {
     color: var(--text-primary);

@@ -93,8 +93,8 @@
   background: rgb(var(--color-blue-600-rgb) / var(--opacity-300));
   border: 1px solid rgb(var(--color-blue-600-rgb) / var(--opacity-400));
   transition:
-    background 150ms ease-out,
-    color 150ms ease-out;
+    background var(--duration-200) var(--easing-out),
+    color var(--duration-200) var(--easing-out);
   white-space: nowrap;
 
   &:hover {
@@ -153,7 +153,7 @@
 .chevron {
   font-size: var(--font-size-200);
   color: var(--text-muted);
-  transition: transform 200ms ease-out;
+  transition: transform var(--duration-200) var(--easing-out);
 }
 
 .chevronOpen {
@@ -267,7 +267,7 @@
   opacity: 0.8;
   text-decoration: none;
   cursor: pointer;
-  transition: opacity 150ms ease-out;
+  transition: opacity var(--duration-200) var(--easing-out);
 
   &:hover {
     opacity: 1;
@@ -316,7 +316,7 @@
 
 .metaRowLink {
   cursor: pointer;
-  transition: background 150ms ease-out;
+  transition: background var(--duration-200) var(--easing-out);
 
   &:hover {
     background: rgb(var(--color-white-rgb) / var(--opacity-100));
@@ -333,7 +333,7 @@
   font-size: var(--font-size-100);
   color: var(--text-dim);
   margin-left: auto;
-  transition: color 150ms ease-out;
+  transition: color var(--duration-200) var(--easing-out);
 
   .metaRowLink:hover & {
     color: var(--text-muted);
