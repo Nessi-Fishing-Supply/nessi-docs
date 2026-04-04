@@ -12,24 +12,25 @@
 
 ## File Structure
 
-| File | Action | Responsibility |
-|------|--------|----------------|
-| `src/styles/variables/layout.scss` | Create | Layout dimension custom properties |
-| `src/stores/app-store.ts` | Modify | Add `sidebarCollapsed` + `toggleSidebar`, persist to localStorage |
-| `src/components/layout/app-shell/index.tsx` | Modify | Wire sidebar collapse class to grid shell |
-| `src/components/layout/app-shell/app-shell.module.scss` | Modify | Adaptive grid, compact detail overlay, backdrop |
-| `src/components/navigation/sidebar/index.tsx` | Modify | Icon rail mode, collapse toggle button, overlay expand |
-| `src/components/navigation/sidebar/sidebar.module.scss` | Modify | Collapsed styles, icon-only layout, overlay positioning |
-| `src/features/canvas/hooks/use-pan-zoom.ts` | Modify | Extract shared pan/zoom helpers, add touch handlers |
-| `src/features/canvas/components/canvas-toolbar.tsx` | Modify | Add max-width + overflow-x safety |
-| `src/features/dashboard/dashboard-view/dashboard-view.module.scss` | Modify | `auto-fill`/`minmax` domain grid |
-| `src/styles/mixins/layout.scss` | Modify | Add compact padding to `page-container` mixin |
+| File                                                               | Action | Responsibility                                                    |
+| ------------------------------------------------------------------ | ------ | ----------------------------------------------------------------- |
+| `src/styles/variables/layout.scss`                                 | Create | Layout dimension custom properties                                |
+| `src/stores/app-store.ts`                                          | Modify | Add `sidebarCollapsed` + `toggleSidebar`, persist to localStorage |
+| `src/components/layout/app-shell/index.tsx`                        | Modify | Wire sidebar collapse class to grid shell                         |
+| `src/components/layout/app-shell/app-shell.module.scss`            | Modify | Adaptive grid, compact detail overlay, backdrop                   |
+| `src/components/navigation/sidebar/index.tsx`                      | Modify | Icon rail mode, collapse toggle button, overlay expand            |
+| `src/components/navigation/sidebar/sidebar.module.scss`            | Modify | Collapsed styles, icon-only layout, overlay positioning           |
+| `src/features/canvas/hooks/use-pan-zoom.ts`                        | Modify | Extract shared pan/zoom helpers, add touch handlers               |
+| `src/features/canvas/components/canvas-toolbar.tsx`                | Modify | Add max-width + overflow-x safety                                 |
+| `src/features/dashboard/dashboard-view/dashboard-view.module.scss` | Modify | `auto-fill`/`minmax` domain grid                                  |
+| `src/styles/mixins/layout.scss`                                    | Modify | Add compact padding to `page-container` mixin                     |
 
 ---
 
 ### Task 1: Layout Dimension Tokens
 
 **Files:**
+
 - Create: `src/styles/variables/layout.scss`
 - Modify: `src/styles/variables/spacing.scss` (verify no conflicts)
 
@@ -76,6 +77,7 @@ git commit -m "feat: add layout dimension CSS custom properties"
 ### Task 2: Zustand Store — Sidebar Collapse State
 
 **Files:**
+
 - Modify: `src/stores/app-store.ts:13-43` (AppState + AppActions interfaces)
 - Modify: `src/stores/app-store.ts:49-83` (store implementation)
 
@@ -128,11 +130,13 @@ interface AppActions {
 In the store's `persist` callback, add the default value and the action:
 
 Add default (after `theme: 'dark'` on line 60):
+
 ```typescript
 sidebarCollapsed: false,
 ```
 
 Add action (after `setTheme` on line 76):
+
 ```typescript
 toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
 ```
@@ -162,6 +166,7 @@ git commit -m "feat: add sidebarCollapsed state with localStorage persistence"
 ### Task 3: AppShell Grid — Adaptive Layout
 
 **Files:**
+
 - Modify: `src/components/layout/app-shell/index.tsx`
 - Modify: `src/components/layout/app-shell/app-shell.module.scss`
 
@@ -252,6 +257,7 @@ export function AppShell({ topbar, sidebar, detail, diffToolbar, children }: App
 ```
 
 Key changes from current:
+
 - Added `sidebarCollapsed` from store
 - Renamed `isCollapsed` → `isDetailCollapsed` for clarity
 - Changed `styles.collapsed` → `styles.detailCollapsed` in class names
@@ -456,6 +462,7 @@ Replace `src/components/layout/app-shell/app-shell.module.scss` with:
 ```
 
 Key changes from current:
+
 - Uses CSS custom properties (`var(--sidebar-width)`, etc.) instead of hardcoded `220px`/`320px`/`48px`
 - `collapsed` → `detailCollapsed` (matches component rename)
 - Added `sidebarCollapsed` class that changes grid to use `--sidebar-width-compact`
@@ -479,12 +486,14 @@ git commit -m "feat: adaptive AppShell grid with sidebar collapse and compact de
 ### Task 4: Collapsible Sidebar — Icon Rail + Toggle
 
 **Files:**
+
 - Modify: `src/components/navigation/sidebar/index.tsx`
 - Modify: `src/components/navigation/sidebar/sidebar.module.scss`
 
 - [ ] **Step 1: Add collapse toggle and icon-rail mode to sidebar component**
 
 Replace `src/components/navigation/sidebar/index.tsx` — key changes:
+
 - Read `sidebarCollapsed` and `toggleSidebar` from the store
 - In collapsed mode, hide `<span>` labels and section label text
 - Add a toggle button at the bottom of the sidebar
@@ -893,6 +902,7 @@ export function Sidebar({ featureDomains }: SidebarProps) {
 ```
 
 Key changes:
+
 - Added `collapsed` and `onNavClick` props to `NavContent`
 - Nav labels wrapped in `.navLabel` span (hidden when collapsed via CSS)
 - Section labels conditionally render as `.sectionDivider` when collapsed
@@ -1166,6 +1176,7 @@ Expected: All pass. Sidebar should toggle between expanded and icon rail.
 - [ ] **Step 4: Visually verify**
 
 Run: `pnpm dev` and test:
+
 1. At ≥1280px: click collapse toggle → sidebar shrinks to icon rail, content reflows. Click again → expands.
 2. At ≥1280px + collapsed: hover over icon → native tooltip shows label.
 3. Resize browser to <1280px: sidebar defaults to icon rail in grid.
@@ -1184,6 +1195,7 @@ git commit -m "feat: collapsible sidebar with icon rail and compact overlay"
 ### Task 5: Compact Page Padding & Dashboard Grid Reflow
 
 **Files:**
+
 - Modify: `src/styles/mixins/layout.scss:31-35`
 - Modify: `src/features/dashboard/dashboard-view/dashboard-view.module.scss:165-169`
 
@@ -1235,6 +1247,7 @@ git commit -m "feat: compact page padding and intrinsic dashboard grid"
 ### Task 6: Canvas Toolbar Overflow Safety
 
 **Files:**
+
 - Modify: `src/features/canvas/components/canvas-toolbar.tsx:70-85`
 
 - [ ] **Step 1: Add max-width and overflow-x to toolbar style**
@@ -1281,6 +1294,7 @@ git commit -m "fix: prevent canvas toolbar overflow at narrow widths"
 ### Task 7: Touch Support for Canvas Pan-Zoom
 
 **Files:**
+
 - Modify: `src/features/canvas/hooks/use-pan-zoom.ts`
 
 This is the most complex task. The hook needs touch handlers that share math with the existing mouse handlers.
@@ -1420,12 +1434,7 @@ function applyPan(dx: number, dy: number, dt: number) {
   target.vy -= dy / z;
 }
 
-function applyZoom(
-  dir: number,
-  clientX: number,
-  clientY: number,
-  rect: DOMRect,
-) {
+function applyZoom(dir: number, clientX: number, clientY: number, rect: DOMRect) {
   const z = target.zoom;
   const fx = (clientX - rect.left) / rect.width;
   const fy = (clientY - rect.top) / rect.height;
@@ -1751,6 +1760,7 @@ export function usePanZoom(
 ```
 
 Key changes:
+
 - Extracted `applyPan(dx, dy, dt)` and `applyZoom(dir, clientX, clientY, rect)` as module-level helpers
 - Added `getTouchDistance` and `getTouchCenter` utility functions
 - Added `touchState` ref for tracking multi-touch state
@@ -1766,6 +1776,7 @@ Expected: All pass.
 - [ ] **Step 3: Visually verify touch support**
 
 Test on a touchscreen device or Chrome DevTools device emulation:
+
 1. Single finger drag → canvas pans
 2. Two finger pinch → canvas zooms centered on pinch point
 3. Two finger drag → canvas pans
@@ -1784,6 +1795,7 @@ git commit -m "feat: add touch pan and pinch-to-zoom for canvas"
 ### Task 8: Globals Import & Verification
 
 **Files:**
+
 - Modify: globals entry point (verify layout.scss is imported)
 
 - [ ] **Step 1: Verify layout variables are loaded**
@@ -1800,6 +1812,7 @@ Expected: All pass. This is the final verification that everything works togethe
 - [ ] **Step 3: Visually verify the complete feature**
 
 Test the full flow:
+
 1. ≥1280px: sidebar toggle works, detail panel inline, domain grid 3-column
 2. ≥1280px + sidebar collapsed + no selection: full-screen canvas
 3. Resize to <1280px: sidebar becomes icon rail, detail panel becomes overlay with backdrop

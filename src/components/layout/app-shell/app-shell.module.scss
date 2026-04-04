@@ -1,7 +1,9 @@
+// ─── Shell Grid ───
+
 .shell {
   display: grid;
-  grid-template-columns: 220px 1fr 320px;
-  grid-template-rows: 48px 1fr;
+  grid-template-columns: var(--sidebar-width) 1fr var(--detail-panel-width);
+  grid-template-rows: var(--topbar-height) 1fr;
   height: 100vh;
   overflow: hidden;
   position: relative;
@@ -11,8 +13,9 @@
     display: none;
   }
 
-  &.collapsed {
-    grid-template-columns: 220px 1fr 0;
+  // ── Detail collapsed ──
+  &.detailCollapsed {
+    grid-template-columns: var(--sidebar-width) 1fr 0;
 
     .detail {
       opacity: 0;
@@ -23,12 +26,64 @@
     }
 
     .detailToggle {
-      // When collapsed, anchor to the right edge of the viewport
       right: 0;
       transform: translateX(-8px) translateY(-50%);
     }
   }
+
+  // ── Sidebar collapsed (any viewport) ──
+  &.sidebarCollapsed {
+    grid-template-columns: var(--sidebar-width-compact) 1fr var(--detail-panel-width);
+
+    &.detailCollapsed {
+      grid-template-columns: var(--sidebar-width-compact) 1fr 0;
+    }
+  }
+
+  // ── Compact viewport (<1280px) ──
+  @media (width <= 1279px) {
+    // At compact, always use compact sidebar in grid
+    grid-template-columns: var(--sidebar-width-compact) 1fr;
+
+    &.sidebarCollapsed {
+      grid-template-columns: var(--sidebar-width-compact) 1fr;
+    }
+
+    // Detail panel becomes overlay (not in grid)
+    .detail {
+      position: fixed;
+      right: 0;
+      top: var(--topbar-height);
+      height: calc(100vh - var(--topbar-height));
+      width: var(--detail-panel-width);
+      z-index: 30;
+      box-shadow: -4px 0 24px rgb(0 0 0 / 40%);
+      transform: translateX(0);
+      transition:
+        transform 250ms cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 200ms ease;
+    }
+
+    &.detailCollapsed .detail {
+      transform: translateX(100%);
+      opacity: 0;
+      pointer-events: none;
+      padding: 0;
+      border-left: none;
+    }
+
+    .detailToggle {
+      display: none;
+    }
+
+    // Show backdrop when detail open
+    .detailBackdrop {
+      display: block;
+    }
+  }
 }
+
+// ─── Topbar ───
 
 .topbar {
   grid-column: 1 / -1;
@@ -38,6 +93,8 @@
   z-index: 10;
 }
 
+// ─── Sidebar ───
+
 .sidebar {
   grid-column: 1;
   grid-row: 2;
@@ -45,6 +102,8 @@
   border-right: 1px solid var(--border-subtle);
   overflow: hidden auto;
 }
+
+// ─── Main ───
 
 .main {
   grid-column: 2;
@@ -65,6 +124,8 @@
   opacity: 0.3;
 }
 
+// ─── Detail Panel ───
+
 .detail {
   grid-column: 3;
   grid-row: 2;
@@ -77,14 +138,10 @@
     padding 250ms ease;
 }
 
-// ─── Detail toggle button ───
-// Positioned on the shell (not inside main) so overflow:hidden can't clip it.
-// Sits right on the border between main and detail panel.
+// ─── Detail Toggle Button ───
 
 .detailToggle {
   position: absolute;
-
-  // Anchor to the left edge of the detail column
   right: 320px;
   top: 50%;
   transform: translateX(50%) translateY(-50%);
@@ -116,4 +173,16 @@
   .detailToggle:hover & {
     color: var(--text-primary);
   }
+}
+
+// ─── Detail Backdrop (compact only) ───
+
+.detailBackdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  top: var(--topbar-height);
+  background: rgb(0 0 0 / 40%);
+  z-index: 29;
+  cursor: pointer;
 }
