@@ -368,7 +368,7 @@
       "slug": "messaging",
       "name": "Messaging",
       "description": "Real-time messaging between buyers and sellers. Supports inquiry threads on listings, direct member-to-member messages, offer negotiations, and custom gear requests. Messages pass through a safety filter before delivery.",
-      "componentCount": 18,
+      "componentCount": 19,
       "endpointCount": 7,
       "hookCount": 15,
       "serviceCount": 6,

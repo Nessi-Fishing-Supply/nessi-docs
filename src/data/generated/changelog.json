@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "fix(messaging): #351 remove redundant type cast in offer creation redirect",
+      "number": 357,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/357",
+      "mergedAt": "2026-04-04T19:07:28Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "messaging",
+      "type": "fix"
+    },
+    {
       "title": "fix(messaging): #352 allow direct messages without prior transaction history",
       "number": 356,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/356",
