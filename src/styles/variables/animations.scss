@@ -28,6 +28,10 @@
   --stagger-delay: 20ms;
   --duration-tooltip: 120ms;
   --duration-panel: 250ms;
+
+  // Mode transitions (diff enter/exit, list dimming)
+  --transition-mode: opacity var(--duration-200) var(--easing-out);
+  --transition-toolbar: transform var(--duration-200) var(--easing-out);
 }
 
 ////////////////////
