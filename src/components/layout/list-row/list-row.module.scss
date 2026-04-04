@@ -12,7 +12,8 @@
   transition:
     opacity 200ms ease-out,
     transform 200ms ease-out,
-    border-color 150ms ease-out;
+    border-color 150ms ease-out,
+    var(--transition-mode);
   animation: row-enter 200ms ease-out both;
   animation-delay: var(--stagger);
 
