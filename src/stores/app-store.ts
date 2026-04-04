@@ -26,6 +26,7 @@ interface AppState {
 
   /* Appearance */
   theme: 'dark' | 'light';
+  sidebarCollapsed: boolean;
 }
 
 /* ------------------------------------------------------------------ */
@@ -40,6 +41,7 @@ interface AppActions {
   selectItem: (item: SelectedItem) => void;
   clearSelection: () => void;
   setTheme: (theme: 'dark' | 'light') => void;
+  toggleSidebar: () => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -58,6 +60,7 @@ const useAppStoreBase = create<AppState & AppActions>()(
       branches: BRANCHES,
       selectedItem: null,
       theme: 'dark',
+      sidebarCollapsed: false,
 
       /* --- Actions --- */
       initBranch: (name, data, allData) =>
@@ -74,10 +77,12 @@ const useAppStoreBase = create<AppState & AppActions>()(
       clearSelection: () => set({ selectedItem: null }),
 
       setTheme: (theme) => set({ theme }),
+
+      toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
     }),
     {
       name: 'nessi-docs-settings',
-      partialize: (state) => ({ theme: state.theme }),
+      partialize: (state) => ({ theme: state.theme, sidebarCollapsed: state.sidebarCollapsed }),
     },
   ),
 );
