@@ -1,6 +1,16 @@
 {
   "entries": [
     {
+      "title": "chore(stripe): #178 install Stripe SDK and add webhook secret environment variables",
+      "number": 359,
+      "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/359",
+      "mergedAt": "2026-04-05T01:11:53Z",
+      "author": "kylepholloway",
+      "labels": [],
+      "area": "stripe",
+      "type": "chore"
+    },
+    {
       "title": "feat(messaging): #350 wire offer accept/decline/counter actions to inline OfferBubble",
       "number": 358,
       "url": "https://github.com/Nessi-Fishing-Supply/nessi-web-app/pull/358",
