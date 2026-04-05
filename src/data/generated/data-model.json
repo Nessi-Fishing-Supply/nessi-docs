@@ -2555,6 +2555,61 @@
           "function": "public.update_watcher_count"
         }
       ]
+    },
+    {
+      "name": "webhook_events",
+      "label": "Webhook Events",
+      "fields": [
+        {
+          "name": "created_at",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "error_message",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "event_id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "event_type",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "payload",
+          "type": "Json",
+          "nullable": false
+        },
+        {
+          "name": "processed_at",
+          "type": "string",
+          "nullable": true
+        },
+        {
+          "name": "source",
+          "type": "string",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "nullable": false
+        }
+      ],
+      "badges": [],
+      "rlsPolicies": [],
+      "indexes": [],
+      "triggers": []
     }
   ]
 }
