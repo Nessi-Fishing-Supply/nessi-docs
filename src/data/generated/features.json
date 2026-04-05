@@ -622,6 +622,29 @@
           "href": "/api-map"
         }
       ]
+    },
+    {
+      "slug": "webhooks",
+      "name": "Webhooks",
+      "description": "Webhook ingestion and event routing — receives incoming webhook events from external services (Stripe), verifies signatures, deduplicates events, routes to domain-specific handlers, and tracks event lifecycle in the database.",
+      "componentCount": 0,
+      "endpointCount": 1,
+      "hookCount": 0,
+      "serviceCount": 1,
+      "entities": ["webhook_events"],
+      "journeySlugs": [],
+      "links": [
+        {
+          "type": "entity",
+          "label": "webhook_events",
+          "href": "/data-model"
+        },
+        {
+          "type": "api-group",
+          "label": "Webhooks",
+          "href": "/api-map"
+        }
+      ]
     }
   ]
 }

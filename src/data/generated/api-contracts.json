@@ -1471,6 +1471,23 @@
           "sourceFile": "src/app/api/watchlist/route.ts"
         }
       ]
+    },
+    {
+      "name": "Webhooks",
+      "endpoints": [
+        {
+          "method": "POST",
+          "path": "/api/webhooks/stripe",
+          "label": "Stripe Webhook",
+          "auth": "none",
+          "access": [],
+          "errorCodes": [400],
+          "requestFields": [],
+          "description": "Receive and process incoming Stripe webhook events",
+          "tags": ["webhook"],
+          "sourceFile": "src/app/api/webhooks/stripe/route.ts"
+        }
+      ]
     }
   ]
 }
